@@ -6,15 +6,18 @@ class WalletListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.wallet),
+      leading: const Icon(Icons.wallet),
       title: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('N4ZR3fKhTUod34evnEcDQX3i6XufBDU'),
-          Text('226 NOSO', style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-          ),),
+          Text(
+            '226 NOSO',
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
       onTap: () {
