@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SecondPage extends StatelessWidget {
+class ExplorePage extends StatelessWidget {
+  const ExplorePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Друга сторінка'),
+        title: Text('ExplorePage'),
       ),
       body: Center(
-        child: Text('Це друга сторінка'),
+        child: Text('ExplorePage'),
       ),
     );
   }

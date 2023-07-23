@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'AppLocalizations.dart';
 import 'HomePage.dart';
-import 'SecondPage.dart';
+import 'pages/TransferPage.dart';
 
 void main() {
   runApp(const MyApp());
