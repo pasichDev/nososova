@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 
 class WalletListTile extends StatelessWidget {
-  const WalletListTile({super.key, required Text title});
+  final VoidCallback onButtonClick;
+  final String walletAddress;
+  final double  coins;
+  const WalletListTile(
+      {super.key,
+      required  this.walletAddress,
+      required  this.coins,
+      required this.onButtonClick});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.wallet),
-      title: const Row(
+      title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('N4ZR3fKhTUod34evnEcDQX3i6XufBDU'),
+          Text(walletAddress),
           Text(
-            '226 NOSO',
-            style: TextStyle(
+            '$coins noso',
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.bold,
             ),
           ),
         ],
       ),
-      onTap: () {
-        print('Клікнули на ListTile!');
-      },
+      onTap: onButtonClick,
     );
   }
 }
