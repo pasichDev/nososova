@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/components/CustomButton.dart';
+import 'package:nososova/screens/CustomButton.dart';
 
-import '../components/WalletListTile.dart';
+import '../screens/WalletListTile.dart';
 
 class SubHomePage extends StatelessWidget {
   const SubHomePage({super.key});
@@ -17,8 +17,8 @@ class SubHomePage extends StatelessWidget {
 
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
@@ -27,7 +27,10 @@ class SubHomePage extends StatelessWidget {
                   Color(0xFF135385)
                 ],
               ),
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
             ),
             child: const SafeArea( child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
@@ -60,6 +63,7 @@ class SubHomePage extends StatelessWidget {
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+
                         ),
                       ),
                     ],

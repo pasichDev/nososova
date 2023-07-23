@@ -5,10 +5,8 @@ class MarketplacePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('MarketplacePage'),
-      ),
+    return const Scaffold(
+      appBar: null,
       body: Center(
         child: Text('MarketplacePage'),
       ),

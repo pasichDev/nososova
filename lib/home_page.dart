@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/ExplorePage.dart';
-import 'package:nososova/pages/MarketplacePage.dart';
+import 'package:nososova/pages/marketplace_page.dart';
 
-import 'pages/SubHomePage.dart';
-import 'pages/TransferPage.dart';
+import 'pages/sub_home_page.dart';
+import 'pages/transfer_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

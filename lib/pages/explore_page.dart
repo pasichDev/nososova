@@ -5,10 +5,8 @@ class ExplorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ExplorePage'),
-      ),
+    return const Scaffold(
+      appBar: null,
       body: Center(
         child: Text('ExplorePage'),
       ),
