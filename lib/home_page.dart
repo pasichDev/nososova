@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/marketplace_page.dart';
+import 'package:nososova/pages/node/node_page.dart';
 
-import 'pages/sub_home_page.dart';
-import 'pages/transfer_page.dart';
+import 'pages/home/sub_home_page.dart';
+import 'pages/payments/payments_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +15,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const SubHomePage(),
-    const TransferPage(),
-    const MarketplacePage()
+    const PaymentsPage(),
+    const NodePage()
   ];
 
   void _onItemTapped(int index) {
@@ -41,10 +41,9 @@ class _HomePageState extends State<HomePage> {
             label: 'Payments',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.check),
-            label: 'Marketplace',
+            icon: Icon(Icons.computer),
+            label: 'Node',
           ),
-
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

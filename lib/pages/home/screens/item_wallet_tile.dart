@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class WalletListTile extends StatelessWidget {
   final VoidCallback onButtonClick;
   final String walletAddress;
-  final double  coins;
+  final double coins;
   const WalletListTile(
       {super.key,
-      required  this.walletAddress,
-      required  this.coins,
+      required this.walletAddress,
+      required this.coins,
       required this.onButtonClick});
 
   @override

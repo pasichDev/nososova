@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String nameButton;
   final IconData icon;
 
-  const CustomButton(
+  const ActionButton(
       {super.key,
       required this.icon,
       required this.onPressed,
@@ -47,8 +47,8 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class CustomButtonList extends StatelessWidget {
-  const CustomButtonList({super.key});
+class ActionsButtonList extends StatelessWidget {
+  const ActionsButtonList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +56,19 @@ class CustomButtonList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          CustomButton(
+          ActionButton(
               onPressed: () {
                 print('Button 1 was pressed!');
               },
               nameButton: 'Create',
               icon: Icons.add_rounded),
-          CustomButton(
+          ActionButton(
               onPressed: () {
                 print('Button 1 was pressed!');
               },
               nameButton: 'Import',
               icon: Icons.label_important_outline_rounded),
-          CustomButton(
+          ActionButton(
               onPressed: () {
                 print('Button 1 was pressed!');
               },
