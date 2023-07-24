@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/pages/node/node_page.dart';
 
+import 'pages/components/block_state.dart';
 import 'pages/home/sub_home_page.dart';
 import 'pages/payments/payments_page.dart';
 
@@ -28,7 +29,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        title: const BlockState(),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.computer),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
+        backgroundColor: Colors.transparent,
+      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^7.0.0
   qr_flutter: ^4.0.0
+  qr_code_scanner: ^1.0.1
+  permission_handler: ^10.4.3
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dialogs/dialog_import.dart';
 
 class ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -63,9 +64,7 @@ class ActionsButtonList extends StatelessWidget {
               nameButton: 'Create',
               icon: Icons.add_rounded),
           ActionButton(
-              onPressed: () {
-                print('Button 1 was pressed!');
-              },
+              onPressed: () => _showBottomSheetImport(context),
               nameButton: 'Import',
               icon: Icons.label_important_outline_rounded),
           ActionButton(
@@ -78,4 +77,14 @@ class ActionsButtonList extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void _showBottomSheetImport(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return const DialogImport();
+    },
+  );
 }

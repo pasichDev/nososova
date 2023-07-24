@@ -28,9 +28,8 @@ class WalletInfo extends StatelessWidget {
       ListView(
         shrinkWrap: true,
         children: [
-          buildListItem(Icons.delete, 'Delete', 'Home Screen', () {}),
-          buildListItem(Icons.send_rounded, 'Send from this address',
-              'Home Screen', () {}),
+          buildListItem(Icons.delete, 'Delete', () {}),
+          buildListItem(Icons.send_rounded, 'Send from this address', () {}),
         ],
       ),
     ]);
