@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/models/WalletObject.dart';
+import 'package:nososova/models/wallet_object.dart';
 
 class WalletListTile extends StatelessWidget {
   final VoidCallback onButtonClick;

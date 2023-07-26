@@ -4,7 +4,6 @@ import 'package:nososova/pages/home/screens/list_wallets.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:provider/provider.dart';
 
-
 class SubHomePage extends StatelessWidget {
   const SubHomePage({super.key});
 
@@ -19,10 +18,10 @@ class SubHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               CardHeader(totalBalance : homeViewModel.totalBalance),
+              CardHeader(),
               Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 20.0),
                 child: const Text(
                   'My Wallets',
                   style: TextStyle(

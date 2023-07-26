@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/models/WalletObject.dart';
+import 'package:nososova/models/wallet_object.dart';
 import 'package:nososova/pages/home/screens/dialogs/dialog_wallet_info.dart';
 import 'package:nososova/pages/home/screens/item_wallet_tile.dart';
 

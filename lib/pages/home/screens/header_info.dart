@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dialogs/dialog_import.dart';
+import 'package:nososova/pages/home_page_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ItemHeaderInfo extends StatelessWidget {
   final String title, value;
@@ -44,15 +45,22 @@ class HeaderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-         ItemHeaderInfo(title: 'Price', value: '0.1745345345'),
-          ItemHeaderInfo(title: 'Incoming', value: '0.0000000000'),
-          ItemHeaderInfo(title: 'Outgoing', value: '0.0000000000'),
-        ],
-      ),
-    );
+    return Consumer<HomePageViewModel>(builder: (context, homeViewModel, _) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            ItemHeaderInfo(
+                title: 'Price', value: homeViewModel.price.toString()),
+            ItemHeaderInfo(
+                title: 'Incoming',
+                value: homeViewModel.totalIncoming.toString()),
+            ItemHeaderInfo(
+                title: 'Outgoing',
+                value: homeViewModel.totalOutgoing.toString()),
+          ],
+        ),
+      );
+    });
   }
 }
