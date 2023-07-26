@@ -41,6 +41,7 @@ class ActionButton extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(width: 5)
           ],
         ),
       ),

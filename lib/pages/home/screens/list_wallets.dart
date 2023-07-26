@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/models/WalletObject.dart';
 import 'package:nososova/pages/home/screens/dialogs/dialog_wallet_info.dart';
 import 'package:nososova/pages/home/screens/item_wallet_tile.dart';
 
@@ -13,8 +14,7 @@ class ListWallets extends StatelessWidget {
         itemCount: 20,
         itemBuilder: (context, index) {
           return WalletListTile(
-              walletAddress: 'N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP $index',
-              coins: 0.2,
+              wallet: WalletObject(hash: "N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP", balance: 0),
               onButtonClick: () {
                 _showBottomSheet(context, 'N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP');
               });

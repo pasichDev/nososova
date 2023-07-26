@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/models/WalletObject.dart';
 
 class WalletListTile extends StatelessWidget {
   final VoidCallback onButtonClick;
-  final String walletAddress;
-  final double coins;
+  final WalletObject wallet;
   const WalletListTile(
       {super.key,
-      required this.walletAddress,
-      required this.coins,
+      required this.wallet,
       required this.onButtonClick});
 
   @override
@@ -17,9 +16,9 @@ class WalletListTile extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(walletAddress),
+          Text(wallet.hash.toString()),
           Text(
-            '$coins noso',
+            wallet.balance.toString() + ' noso',
             style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.bold,

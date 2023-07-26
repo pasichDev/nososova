@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/pages/home/screens/action_button.dart';
+import 'package:nososova/pages/home/screens/header_info.dart';
 
 class CardHeader extends StatelessWidget {
-  const CardHeader({super.key});
+
+  int totalBalance = 0;
+
+  CardHeader({super.key, required this.totalBalance});
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,33 +24,33 @@ class CardHeader extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
       ),
-      child: const SafeArea(
+      child:  SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Overall on balance',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Text(
-                    '20,888',
-                    style: TextStyle(
+                    totalBalance.toString(),
+                    style: const TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  Text(
+                  const Text(
                     ' NOSO',
                     style: TextStyle(
                       fontSize: 18,
@@ -53,10 +58,12 @@ class CardHeader extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                 ],
               ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
+              const HeaderInfo(),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
                   child: ActionsButtonList()),
             ],
           ),
