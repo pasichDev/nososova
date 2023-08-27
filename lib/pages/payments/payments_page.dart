@@ -5,7 +5,7 @@ class PaymentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: null,
       body: TwoPartRoundedPage(),
     );
@@ -13,6 +13,8 @@ class PaymentsPage extends StatelessWidget {
 }
 
 class TwoPartRoundedPage extends StatelessWidget {
+  const TwoPartRoundedPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

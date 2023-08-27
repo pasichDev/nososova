@@ -167,7 +167,7 @@ final class NosoCripto {
   KeyPair _generateKeysPair() {
     final secureRandom = FortunaRandom()
       ..seed(KeyParameter(Uint8List.fromList(
-          List.generate(32, (index) => 0)))); // Replace with proper seed
+          List.generate(32, (index) => 0))));
 
     final curve = ECCurve_secp256k1();
     final domainParams = ECKeyGeneratorParameters(curve);

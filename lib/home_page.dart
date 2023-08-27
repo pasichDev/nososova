@@ -10,10 +10,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const SubHomePage(),
@@ -52,11 +52,11 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: 'Home',
+              icon: Icon(Icons.wallet),
+              label: 'Wallets',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.payments_outlined),
+              icon: Icon(Icons.import_export_outlined),
               label: 'Payments',
             ),
             BottomNavigationBarItem(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/home/screens/action_button.dart';
 import 'package:nososova/pages/home/screens/header_info.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:provider/provider.dart';
@@ -59,10 +58,10 @@ class CardHeader extends StatelessWidget {
                     ),
                   ],
                 ),
-                const HeaderInfo(),
+               // const ,
                 const Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
-                    child: ActionsButtonList()),
+                    child: HeaderInfo()),
               ],
             ),
           ),

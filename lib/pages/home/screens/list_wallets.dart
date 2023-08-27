@@ -11,7 +11,7 @@ class ListWallets extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-        itemCount: 20,
+        itemCount: 5,
         itemBuilder: (context, index) {
           return WalletListTile(
               wallet: WalletObject(hash: "N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP", balance: 0),
