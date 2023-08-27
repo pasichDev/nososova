@@ -1,4 +1,0 @@
-targets:
-  $default:
-    sources:
-      - "assets/NosoC#.dll"

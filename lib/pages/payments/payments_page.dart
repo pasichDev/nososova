@@ -37,12 +37,11 @@ class TwoPartRoundedPage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 20.0),
-                height: MediaQuery.of(context).size.height *
-                    0.5,
+                height: MediaQuery.of(context).size.height * 0.5,
                 color: Colors.white,
                 child: Container(
                   child: const Text(
-                    'Payments History',
+                    'PubKey => ',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
