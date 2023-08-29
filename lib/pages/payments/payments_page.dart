@@ -41,13 +41,11 @@ class TwoPartRoundedPage extends StatelessWidget {
                     horizontal: 20.0, vertical: 20.0),
                 height: MediaQuery.of(context).size.height * 0.5,
                 color: Colors.white,
-                child: Container(
-                  child: const Text(
-                    'PubKey => ',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: const Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

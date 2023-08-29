@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -15,13 +16,12 @@ import 'package:pointycastle/random/fortuna_random.dart';
 final class NosoCripto {
   WalletObject? createNewAddress() {
     KeyPair keysPair = _generateKeysPair();
-
     WalletObject walletObject = WalletObject();
     walletObject.publicKey = keysPair.publicKey;
     walletObject.privateKey = keysPair.privateKey;
     walletObject.hash = _getAddressWalletFromPublicKey(keysPair.publicKey);
 
-    return null;
+    return walletObject;
   }
 
   WalletObject? importWalletForKeys(String keys) {
@@ -167,7 +167,7 @@ final class NosoCripto {
   KeyPair _generateKeysPair() {
     final secureRandom = FortunaRandom()
       ..seed(KeyParameter(Uint8List.fromList(
-          List.generate(32, (index) => 0))));
+          List.generate(32, (_) => Random.secure().nextInt(256)))));
 
     final curve = ECCurve_secp256k1();
     final domainParams = ECKeyGeneratorParameters(curve);

@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    const SubHomePage(),
+     SubHomePage(),
     const PaymentsPage(),
     const NodePage()
   ];
@@ -50,9 +50,9 @@ class HomePageState extends State<HomePage> {
         ),
         body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items:  const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.wallet),
+              icon:  Icon(Icons.wallet),
               label: 'Wallets',
             ),
             BottomNavigationBarItem(

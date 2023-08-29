@@ -1,26 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/models/wallet_object.dart';
+import 'package:nososova/database/database.dart';
 import 'package:nososova/pages/home/screens/dialogs/dialog_wallet_info.dart';
 import 'package:nososova/pages/home/screens/item_wallet_tile.dart';
 
 class ListWallets extends StatelessWidget {
-  const ListWallets({super.key});
+  ListWallets({super.key});
 
+  final MyDatabase database = MyDatabase();
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
+    return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return WalletListTile(
-              wallet: WalletObject(hash: "N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP", balance: 0),
-              onButtonClick: () {
-                _showBottomSheet(context, 'N3bbDSazRM3AfKJ8st7jxDj8nuPjKEP');
-              });
-        },
-      ),
-    );
+        child: FutureBuilder<List<Wallet>>(
+          future: database.select(database.wallets).get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Text('No wallets available.');
+            } else {
+              final wallets = snapshot.data!;
+
+              return ListView.builder(
+                shrinkWrap: true,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                itemCount: wallets.length,
+                itemBuilder: (context, index) {
+                  final wallet = wallets[index];
+                  return WalletListTile(
+                    wallet: wallet,
+                    onButtonClick: () {
+                      _showBottomSheet(context, wallet.hash);
+                    },
+                  );
+                },
+              );
+            }
+          },
+        ));
   }
 }
 

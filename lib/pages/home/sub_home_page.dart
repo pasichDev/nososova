@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/database/database.dart';
 import 'package:nososova/pages/home/screens/card_header.dart';
+import 'package:nososova/pages/home/screens/dialogs/dialog_add_wallet.dart';
 import 'package:nososova/pages/home/screens/list_wallets.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SubHomePage extends StatelessWidget {
-  const SubHomePage({super.key});
+
+   SubHomePage({super.key});
+  MyDatabase database = MyDatabase();
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +18,17 @@ class SubHomePage extends StatelessWidget {
         return Scaffold(
           appBar: null,
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CardHeader(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                child: const Row(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'My Wallets',
                       style: TextStyle(
                         fontSize: 24.0,
@@ -32,34 +37,34 @@ class SubHomePage extends StatelessWidget {
                     ),
                     Row(
                       children: [
-
-                        Icon(
-                          Icons.add_rounded, // Replace with the desired icon
-                          size: 24.0, // Adjust the size as needed
-                          color: Colors.blue, // Adjust the color as needed
+                        IconButton(
+                          icon: const Icon(Icons.wallet, color: Colors.blue),
+                          onPressed: () {_showBottomSheetAdd(context);},
                         ),
-                        SizedBox(width: 10.0), // Adding some spacing between the icons
-                        Icon(
-                          Icons.label_important_outline_rounded, // Replace with the desired icon
-                          size: 24.0, // Adjust the size as needed
-                          color: Colors.blue, // Adjust the color as needed
-                        ),
-                        SizedBox(width: 10.0), // Adding some spacing between the icons
-                        Icon(
-                          Icons.import_export_rounded, // Replace with the desired icon
-                          size: 24.0, // Adjust the size as needed
-                          color: Colors.blue, // Adjust the color as needed
+                        const IconButton(
+                          icon: Icon(Icons.more_horiz, color: Colors.blue),
+                          onPressed: null,
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const ListWallets(),
+               ListWallets(),
             ],
           ),
         );
       },
     );
   }
+
+
+}
+void _showBottomSheetAdd(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return  DialogAddWallet();
+    },
+  );
 }
