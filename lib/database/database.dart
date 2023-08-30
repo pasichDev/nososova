@@ -12,8 +12,19 @@ part 'database.g.dart';
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  Future<List<Wallet>> getWalletList() async {
+    return await select(wallets).get();
+  }
+
   Future<void> addWallet(Wallet wallet) async {
     await into(wallets).insert(wallet);
+  }
+
+  Future<int> deleteWallet(Wallet wallet) async {
+    return await customUpdate(
+      'DELETE FROM wallets WHERE hash = :hash',
+      variables: [Variable.withString(wallet.hash)],
+    );
   }
 
   @override

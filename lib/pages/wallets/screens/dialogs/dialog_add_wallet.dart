@@ -5,15 +5,19 @@ import 'package:nososova/database/database.dart';
 import 'package:nososova/database/models/wallet_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/noso/cripto.dart';
+import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/item_dialog.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
+import 'package:provider/provider.dart';
 
 class DialogAddWallet extends StatelessWidget {
+
   DialogAddWallet({super.key});
 
-  final MyDatabase database = MyDatabase();
+ // final AppDatabase database = AppDatabase();
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
     return Column(mainAxisSize: MainAxisSize.min, children: [
       ListView(
         shrinkWrap: true,
@@ -26,7 +30,7 @@ class DialogAddWallet extends StatelessWidget {
               () {
             Wallet? wallet = _generateKeysPair();
             if (wallet != null) {
-              database.addWallet(wallet);
+              appState.addWallet(wallet);
             }
             Navigator.pop(context);
           }),

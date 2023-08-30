@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/wallets/screens/card_header.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_add_wallet.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_more.dart';
 import 'package:nososova/pages/wallets/screens/list_wallets.dart';
-import 'package:nososova/pages/wallets_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class WalletsPage extends StatelessWidget {
   WalletsPage({super.key});
 
-  MyDatabase database = MyDatabase();
+  //AppDatabase database = AppDatabase();
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WalletsPageViewModel>(
-      builder: (context, homeViewModel, _) {
+    return Consumer<AppState>(
+      builder: (context, appState, _) {
         return Scaffold(
           appBar: null,
           body: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/const.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
 import 'package:nososova/pages/wallets/screens/header_info.dart';
-import 'package:nososova/pages/wallets_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CardHeader extends StatelessWidget {
@@ -11,14 +11,14 @@ class CardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WalletsPageViewModel>(builder: (context, homeViewModel, _) {
+    return Consumer<AppState>(builder: (context, homeViewModel, _) {
       return Container(
         width: double.infinity,
         decoration: const StandartGradientDecoration(),
         child: SafeArea(
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: CardBody(homeViewModel.totalBalance)),
+              child: CardBody(0)),
         ),
       );
     });

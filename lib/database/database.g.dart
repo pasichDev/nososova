@@ -9,21 +9,21 @@ class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
   final String? _alias;
   $WalletsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _publicKeyMeta =
-      const VerificationMeta('publicKey');
+  const VerificationMeta('publicKey');
   @override
   late final GeneratedColumn<String> publicKey = GeneratedColumn<String>(
       'public_key', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _privateKeyMeta =
-      const VerificationMeta('privateKey');
+  const VerificationMeta('privateKey');
   @override
   late final GeneratedColumn<String> privateKey = GeneratedColumn<String>(
       'private_key', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _hashMeta = const VerificationMeta('hash');
@@ -31,7 +31,7 @@ class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
   late final GeneratedColumn<String> hash = GeneratedColumn<String>(
       'hash', aliasedName, false,
       additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   @override
@@ -140,10 +140,10 @@ class Wallet extends DataClass implements Insertable<Wallet> {
   @override
   String toString() {
     return (StringBuffer('Wallet(')
-          ..write('publicKey: $publicKey, ')
-          ..write('privateKey: $privateKey, ')
-          ..write('hash: $hash')
-          ..write(')'))
+      ..write('publicKey: $publicKey, ')
+      ..write('privateKey: $privateKey, ')
+      ..write('hash: $hash')
+      ..write(')'))
         .toString();
   }
 
@@ -152,10 +152,10 @@ class Wallet extends DataClass implements Insertable<Wallet> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Wallet &&
-          other.publicKey == this.publicKey &&
-          other.privateKey == this.privateKey &&
-          other.hash == this.hash);
+          (other is Wallet &&
+              other.publicKey == this.publicKey &&
+              other.privateKey == this.privateKey &&
+              other.hash == this.hash);
 }
 
 class WalletsCompanion extends UpdateCompanion<Wallet> {
@@ -193,9 +193,9 @@ class WalletsCompanion extends UpdateCompanion<Wallet> {
 
   WalletsCompanion copyWith(
       {Value<String>? publicKey,
-      Value<String>? privateKey,
-      Value<String>? hash,
-      Value<int>? rowid}) {
+        Value<String>? privateKey,
+        Value<String>? hash,
+        Value<int>? rowid}) {
     return WalletsCompanion(
       publicKey: publicKey ?? this.publicKey,
       privateKey: privateKey ?? this.privateKey,
@@ -225,11 +225,11 @@ class WalletsCompanion extends UpdateCompanion<Wallet> {
   @override
   String toString() {
     return (StringBuffer('WalletsCompanion(')
-          ..write('publicKey: $publicKey, ')
-          ..write('privateKey: $privateKey, ')
-          ..write('hash: $hash, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
+      ..write('publicKey: $publicKey, ')
+      ..write('privateKey: $privateKey, ')
+      ..write('hash: $hash, ')
+      ..write('rowid: $rowid')
+      ..write(')'))
         .toString();
   }
 }
