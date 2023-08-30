@@ -51,4 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveFilePkw => 'Save to file .pkw';
+
+  @override
+  String get historyPayments => 'Recent transactions';
 }

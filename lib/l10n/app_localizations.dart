@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save to file .pkw'**
   String get saveFilePkw;
+
+  /// No description provided for @historyPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent transactions'**
+  String get historyPayments;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

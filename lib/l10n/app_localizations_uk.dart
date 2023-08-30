@@ -51,4 +51,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get saveFilePkw => 'Зберегти у файл .pkw';
+
+  @override
+  String get historyPayments => 'Останні транзакції';
 }

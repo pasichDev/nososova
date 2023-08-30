@@ -7,7 +7,7 @@ class AppUserInformation {
 
   AppUserInformation({
     int totalBalance = 0,
-    int block = 0,
+    int block = 12578,
     int price = 0,
     int totalIncoming = 0,
     int totalOutgoing = 0,

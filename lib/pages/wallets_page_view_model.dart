@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:nososova/models/app_user_information.dart';
+import 'package:nososova/database/models/app_user_information.dart';
 
-class HomePageViewModel extends ChangeNotifier {
+class WalletsPageViewModel extends ChangeNotifier {
+
+
+
 
   AppUserInformation _userInfo = AppUserInformation();
 

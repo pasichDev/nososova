@@ -2,19 +2,11 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:nososova/database/models/wallets.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
-
-@DataClassName('Wallet')
-class Wallets extends Table {
-  TextColumn get publicKey => text().withLength(min: 1, max: 100)();
-  TextColumn get privateKey => text().withLength(min: 1, max: 100)();
-  TextColumn get hash => text().withLength(min: 1, max: 100)();
-}
-
-
 
 @DriftDatabase(tables: [Wallets])
 class MyDatabase extends _$MyDatabase {
@@ -23,6 +15,7 @@ class MyDatabase extends _$MyDatabase {
   Future<void> addWallet(Wallet wallet) async {
     await into(wallets).insert(wallet);
   }
+
   @override
   int get schemaVersion => 1;
 }
@@ -37,4 +30,3 @@ LazyDatabase _openConnection() {
     return NativeDatabase.createInBackground(file);
   });
 }
-

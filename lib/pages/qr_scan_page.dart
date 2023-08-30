@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:nososova/models/wallet_object.dart';
+import 'package:nososova/database/models/wallet_object.dart';
 import 'package:nososova/noso/cripto.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';

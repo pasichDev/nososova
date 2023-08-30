@@ -14,5 +14,6 @@
   "genNewKeyPair": "Згенерувати нову пару ключів",
   "scanQrCode": "Відскануйте QR-код",
   "selectFilePkw": "Виберіть файл .pkw",
-  "saveFilePkw": "Зберегти у файл .pkw"
+  "saveFilePkw": "Зберегти у файл .pkw",
+  "historyPayments": "Останні транзакції"
 }

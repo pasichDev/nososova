@@ -14,6 +14,7 @@
   "genNewKeyPair": "Generate new pair keys",
   "scanQrCode": "Scan QR Code",
   "selectFilePkw": "Select file .pkw",
-  "saveFilePkw": "Save to file .pkw"
+  "saveFilePkw": "Save to file .pkw",
+  "historyPayments": "Recent transactions"
 
 }

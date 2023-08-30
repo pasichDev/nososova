@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/components/block_state.dart';
-import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/wallets/wallets_page.dart';
+import 'package:nososova/pages/wallets_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,8 +30,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HomePageViewModel>(
-      create: (context) => HomePageViewModel(),
+    return ChangeNotifierProvider<WalletsPageViewModel>(
+      create: (context) => WalletsPageViewModel(),
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

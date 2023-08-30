@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/home_page_view_model.dart';
+import 'package:nososova/pages/wallets_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class BlockState extends StatelessWidget {
@@ -7,7 +7,7 @@ class BlockState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<HomePageViewModel>(context);
+    final viewModel = Provider.of<WalletsPageViewModel>(context);
 
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),

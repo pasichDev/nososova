@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/home_page_view_model.dart';
+import 'package:nososova/pages/wallets_page_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ItemHeaderInfo extends StatelessWidget {
@@ -46,7 +46,7 @@ class HeaderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageViewModel>(builder: (context, homeViewModel, _) {
+    return Consumer<WalletsPageViewModel>(builder: (context, homeViewModel, _) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
