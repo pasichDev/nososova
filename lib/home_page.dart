@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/components/block_state.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:nososova/pages/node/node_page.dart';
@@ -50,18 +51,18 @@ class HomePageState extends State<HomePage> {
         ),
         body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
-          items:  const <BottomNavigationBarItem>[
+          items:   <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon:  Icon(Icons.wallet),
-              label: 'Wallets',
+              icon:  const Icon(Icons.wallet),
+              label:  AppLocalizations.of(context)!.wallets,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.import_export_outlined),
-              label: 'Payments',
+              icon: const Icon(Icons.import_export_outlined),
+              label:  AppLocalizations.of(context)!.payments,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.computer),
-              label: 'Node',
+              icon: const Icon(Icons.computer),
+              label:  AppLocalizations.of(context)!.node,
             ),
           ],
           currentIndex: _selectedIndex,

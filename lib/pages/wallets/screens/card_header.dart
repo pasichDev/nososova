@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/const.dart';
+import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:nososova/pages/wallets/screens/header_info.dart';
 import 'package:provider/provider.dart';
@@ -11,62 +14,63 @@ class CardHeader extends StatelessWidget {
     return Consumer<HomePageViewModel>(builder: (context, homeViewModel, _) {
       return Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: [Color(0xFF621359), Color(0xFF192052), Color(0xFF135385)],
-          ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30),
-            bottomRight: Radius.circular(30),
-          ),
-        ),
+        decoration: const StandartGradientDecoration(),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  'Overall on balance',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text(
-                      homeViewModel.totalBalance.toString(),
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const Text(
-                      ' NOSO',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-               // const ,
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
-                    child: HeaderInfo()),
-              ],
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: CardBody(homeViewModel.totalBalance)),
         ),
       );
     });
+  }
+}
+
+class CardBody extends StatelessWidget {
+  int totalBalance = 0;
+
+  CardBody(int totalBalance, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          AppLocalizations.of(context)!.overallOnBalance,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Text(
+              totalBalance.toString(),
+              style: const TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 5),
+            const Text(
+              Const.coinName,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        // const ,
+        const Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
+            child: HeaderInfo()),
+      ],
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/pages/components/decoration/other_gradient_decoration.dart';
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});
@@ -18,13 +19,7 @@ class TwoPartRoundedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [Color(0xFF621359), Color(0xFF192052), Color(0xFF135385)],
-        ),
-      ),
+      decoration:  const OtherGradientDecoration(),
       child: Stack(
         children: [
           Positioned(

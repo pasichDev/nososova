@@ -1,0 +1,19 @@
+{
+  "overallOnBalance": "Overall on balance",
+  "price": "Price",
+  "incoming": "Incoming",
+  "outgoing": "Outgoing",
+  "wallets": "Wallets",
+  "payments": "Payments",
+  "node": "Node",
+  "myWallets": "My Wallets",
+  "notImplemented": "The function is not implemented",
+  "newTitle": "New",
+  "import": "Import",
+  "export": "Export",
+  "genNewKeyPair": "Generate new pair keys",
+  "scanQrCode": "Scan QR Code",
+  "selectFilePkw": "Select file .pkw",
+  "saveFilePkw": "Save to file .pkw"
+
+}

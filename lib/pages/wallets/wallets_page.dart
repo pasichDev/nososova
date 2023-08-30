@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
+import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:nososova/pages/wallets/screens/card_header.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_add_wallet.dart';
@@ -44,9 +45,9 @@ class HeaderMyWallets extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'My Wallets',
-          style: TextStyle(
+         Text(
+          AppLocalizations.of(context)!.myWallets,
+          style: const TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),

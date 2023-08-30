@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -51,12 +52,13 @@ class HeaderInfo extends StatelessWidget {
         child: Row(
           children: [
             ItemHeaderInfo(
-                title: 'Price', value: homeViewModel.price.toString()),
+                title: AppLocalizations.of(context)!.price,
+                value: homeViewModel.price.toString()),
             ItemHeaderInfo(
-                title: 'Incoming',
+                title: AppLocalizations.of(context)!.incoming,
                 value: homeViewModel.totalIncoming.toString()),
             ItemHeaderInfo(
-                title: 'Outgoing',
+                title: AppLocalizations.of(context)!.outgoing,
                 value: homeViewModel.totalOutgoing.toString()),
           ],
         ),

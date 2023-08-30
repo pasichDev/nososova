@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
+import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/models/wallet_object.dart';
 import 'package:nososova/noso/cripto.dart';
 import 'package:nososova/pages/components/item_dialog.dart';
@@ -15,35 +16,35 @@ class DialogAddWallet extends StatelessWidget {
       ListView(
         shrinkWrap: true,
         children: [
-          const ListTile(
-              title: Text("New",
+           ListTile(
+              title: Text(AppLocalizations.of(context)!.newTitle,
                   style:
-                      TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
-          buildListItem(Icons.add, 'Generate new pair keys', () {
+                      const TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
+          buildListItem(Icons.add, AppLocalizations.of(context)!.genNewKeyPair, () {
             Wallet? wallet = _generateKeysPair();
             if (wallet != null) {
               database.addWallet(wallet);
             }
             Navigator.pop(context);
           }),
-          const ListTile(
-              title: Text("Import",
+           ListTile(
+              title: Text(AppLocalizations.of(context)!.import,
                   style:
-                      TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
+                      const TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
           buildListItem(
               Icons.qr_code,
-              'Scan QR Code',
+              AppLocalizations.of(context)!.scanQrCode,
               () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const QRScanScreen()),
                   )),
-          buildListItem(Icons.file_copy_outlined, 'Selected file .pkw', () {}),
-          const ListTile(
-              title: Text("Export",
-                  style:
+          buildListItem(Icons.file_copy_outlined,  AppLocalizations.of(context)!.selectFilePkw, () {}),
+           ListTile(
+              title: Text(AppLocalizations.of(context)!.export,
+                  style: const
                       TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
-          buildListItem(Icons.file_copy_outlined, 'Save to file .pkw', () {}),
+          buildListItem(Icons.file_copy_outlined, AppLocalizations.of(context)!.saveFilePkw, () {}),
         ],
       ),
     ]);

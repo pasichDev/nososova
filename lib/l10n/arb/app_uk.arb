@@ -1,0 +1,18 @@
+{
+  "overallOnBalance": "Загалом на балансі",
+  "price": "Вартість",
+  "incoming": "Вхідні",
+  "outgoing": "Вихідні",
+  "wallets": "Гаманці",
+  "payments": "Платежі",
+  "node": "Вузол",
+  "myWallets": "Мої гаманці",
+  "notImplemented": "Функція не реалізована",
+  "newTitle": "Новий",
+  "import": "Імпорт",
+  "export": "Експорт",
+  "genNewKeyPair": "Згенерувати нову пару ключів",
+  "scanQrCode": "Відскануйте QR-код",
+  "selectFilePkw": "Виберіть файл .pkw",
+  "saveFilePkw": "Зберегти у файл .pkw"
+}

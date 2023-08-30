@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/pages/components/decoration/other_gradient_decoration.dart';
 
 class NodePage extends StatelessWidget {
   const NodePage({super.key});
@@ -15,13 +17,7 @@ class NodeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          colors: [Color(0xFF621359), Color(0xFF192052), Color(0xFF135385)],
-        ),
-      ),
+      decoration: const OtherGradientDecoration(),
       child: Stack(
         children: [
           Positioned(
@@ -38,10 +34,10 @@ class NodeBody extends StatelessWidget {
                     horizontal: 20.0, vertical: 20.0),
                 height: MediaQuery.of(context).size.height * 0.8,
                 color: Colors.white,
-                child: const Center(
+                child:  Center(
                   child: Text(
-                    'The function is not implemented',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.notImplemented,
+                    style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
