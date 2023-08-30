@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
@@ -16,35 +18,39 @@ class DialogAddWallet extends StatelessWidget {
       ListView(
         shrinkWrap: true,
         children: [
-           ListTile(
+          ListTile(
               title: Text(AppLocalizations.of(context)!.newTitle,
-                  style:
-                      const TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
-          buildListItem(Icons.add, AppLocalizations.of(context)!.genNewKeyPair, () {
+                  style: const TextStyle(
+                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+          buildListItem(Icons.add, AppLocalizations.of(context)!.genNewKeyPair,
+              () {
             Wallet? wallet = _generateKeysPair();
             if (wallet != null) {
               database.addWallet(wallet);
             }
             Navigator.pop(context);
           }),
-           ListTile(
+          ListTile(
               title: Text(AppLocalizations.of(context)!.import,
-                  style:
-                      const TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
-          buildListItem(
-              Icons.qr_code,
-              AppLocalizations.of(context)!.scanQrCode,
-              () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const QRScanScreen()),
-                  )),
-          buildListItem(Icons.file_copy_outlined,  AppLocalizations.of(context)!.selectFilePkw, () {}),
-           ListTile(
+                  style: const TextStyle(
+                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+          if (Platform.isAndroid || Platform.isIOS)
+            buildListItem(
+                Icons.qr_code,
+                AppLocalizations.of(context)!.scanQrCode,
+                () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const QRScanScreen()),
+                    )),
+          buildListItem(Icons.file_copy_outlined,
+              AppLocalizations.of(context)!.selectFilePkw, () {}),
+          ListTile(
               title: Text(AppLocalizations.of(context)!.export,
-                  style: const
-                      TextStyle(fontSize: 20.00, fontWeight: FontWeight.bold))),
-          buildListItem(Icons.file_copy_outlined, AppLocalizations.of(context)!.saveFilePkw, () {}),
+                  style: const TextStyle(
+                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+          buildListItem(Icons.file_copy_outlined,
+              AppLocalizations.of(context)!.saveFilePkw, () {}),
         ],
       ),
     ]);
