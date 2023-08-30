@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/home/screens/header_info.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
+import 'package:nososova/pages/wallets/screens/header_info.dart';
 import 'package:provider/provider.dart';
 
 class CardHeader extends StatelessWidget {

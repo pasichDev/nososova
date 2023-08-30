@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
-import 'package:nososova/pages/home/screens/dialogs/dialog_wallet_info.dart';
-import 'package:nososova/pages/home/screens/item_wallet_tile.dart';
+import 'package:nososova/pages/wallets/screens/dialogs/dialog_wallet_info.dart';
+import 'package:nososova/pages/wallets/screens/item_wallet_tile.dart';
 
 class ListWallets extends StatelessWidget {
   ListWallets({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/pages/components/block_state.dart';
-import 'package:nososova/pages/home/sub_home_page.dart';
 import 'package:nososova/pages/home_page_view_model.dart';
 import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
+import 'package:nososova/pages/wallets/wallets_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-     SubHomePage(),
+    WalletsPage(),
     const PaymentsPage(),
     const NodePage()
   ];
