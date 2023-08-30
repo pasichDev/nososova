@@ -8,9 +8,8 @@ import 'package:nososova/pages/wallets/screens/list_wallets.dart';
 import 'package:provider/provider.dart';
 
 class WalletsPage extends StatelessWidget {
-  WalletsPage({super.key});
+  const WalletsPage({super.key});
 
-  //AppDatabase database = AppDatabase();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class WalletsPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 10.0),
                   child: const HeaderMyWallets()),
-              ListWallets(),
+              const ListWallets(),
             ],
           ),
         );
@@ -44,8 +43,8 @@ class HeaderMyWallets extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-         Text(
-          AppLocalizations.of(context)!.myWallets,
+        Text(
+          AppLocalizations.of(context)!.myAddresses,
           style: const TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
@@ -54,17 +53,15 @@ class HeaderMyWallets extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.wallet, color: Colors.blue),
-              onPressed: () {
-                _showBottomSheetAddMyWallets(context);
-              }
-            ),
-             IconButton(
-              icon: const Icon(Icons.more_horiz, color: Colors.blue),
+                icon: const Icon(Icons.wallet, color: Colors.blue),
+                onPressed: () {
+                  _showBottomSheetAddMyWallets(context);
+                }),
+            IconButton(
+                icon: const Icon(Icons.more_horiz, color: Colors.blue),
                 onPressed: () {
                   _showBottomSheetMoreMyWallets(context);
-                }
-            ),
+                }),
           ],
         ),
       ],
@@ -76,7 +73,7 @@ void _showBottomSheetAddMyWallets(BuildContext context) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
-      return DialogAddWallet();
+      return const DialogAddAdress();
     },
   );
 }

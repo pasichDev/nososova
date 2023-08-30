@@ -3,27 +3,28 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
+class $AddressesTable extends Addresses
+    with TableInfo<$AddressesTable, Address> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $WalletsTable(this.attachedDatabase, [this._alias]);
+  $AddressesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _publicKeyMeta =
-  const VerificationMeta('publicKey');
+      const VerificationMeta('publicKey');
   @override
   late final GeneratedColumn<String> publicKey = GeneratedColumn<String>(
       'public_key', aliasedName, false,
       additionalChecks:
-      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _privateKeyMeta =
-  const VerificationMeta('privateKey');
+      const VerificationMeta('privateKey');
   @override
   late final GeneratedColumn<String> privateKey = GeneratedColumn<String>(
       'private_key', aliasedName, false,
       additionalChecks:
-      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   static const VerificationMeta _hashMeta = const VerificationMeta('hash');
@@ -31,17 +32,17 @@ class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
   late final GeneratedColumn<String> hash = GeneratedColumn<String>(
       'hash', aliasedName, false,
       additionalChecks:
-      GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [publicKey, privateKey, hash];
   @override
-  String get aliasedName => _alias ?? 'wallets';
+  String get aliasedName => _alias ?? 'addresses';
   @override
-  String get actualTableName => 'wallets';
+  String get actualTableName => 'addresses';
   @override
-  VerificationContext validateIntegrity(Insertable<Wallet> instance,
+  VerificationContext validateIntegrity(Insertable<Address> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -71,9 +72,9 @@ class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  Wallet map(Map<String, dynamic> data, {String? tablePrefix}) {
+  Address map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Wallet(
+    return Address(
       publicKey: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}public_key'])!,
       privateKey: attachedDatabase.typeMapping
@@ -84,16 +85,16 @@ class $WalletsTable extends Wallets with TableInfo<$WalletsTable, Wallet> {
   }
 
   @override
-  $WalletsTable createAlias(String alias) {
-    return $WalletsTable(attachedDatabase, alias);
+  $AddressesTable createAlias(String alias) {
+    return $AddressesTable(attachedDatabase, alias);
   }
 }
 
-class Wallet extends DataClass implements Insertable<Wallet> {
+class Address extends DataClass implements Insertable<Address> {
   final String publicKey;
   final String privateKey;
   final String hash;
-  const Wallet(
+  const Address(
       {required this.publicKey, required this.privateKey, required this.hash});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -104,18 +105,18 @@ class Wallet extends DataClass implements Insertable<Wallet> {
     return map;
   }
 
-  WalletsCompanion toCompanion(bool nullToAbsent) {
-    return WalletsCompanion(
+  AddressesCompanion toCompanion(bool nullToAbsent) {
+    return AddressesCompanion(
       publicKey: Value(publicKey),
       privateKey: Value(privateKey),
       hash: Value(hash),
     );
   }
 
-  factory Wallet.fromJson(Map<String, dynamic> json,
+  factory Address.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Wallet(
+    return Address(
       publicKey: serializer.fromJson<String>(json['publicKey']),
       privateKey: serializer.fromJson<String>(json['privateKey']),
       hash: serializer.fromJson<String>(json['hash']),
@@ -131,19 +132,19 @@ class Wallet extends DataClass implements Insertable<Wallet> {
     };
   }
 
-  Wallet copyWith({String? publicKey, String? privateKey, String? hash}) =>
-      Wallet(
+  Address copyWith({String? publicKey, String? privateKey, String? hash}) =>
+      Address(
         publicKey: publicKey ?? this.publicKey,
         privateKey: privateKey ?? this.privateKey,
         hash: hash ?? this.hash,
       );
   @override
   String toString() {
-    return (StringBuffer('Wallet(')
-      ..write('publicKey: $publicKey, ')
-      ..write('privateKey: $privateKey, ')
-      ..write('hash: $hash')
-      ..write(')'))
+    return (StringBuffer('Address(')
+          ..write('publicKey: $publicKey, ')
+          ..write('privateKey: $privateKey, ')
+          ..write('hash: $hash')
+          ..write(')'))
         .toString();
   }
 
@@ -152,24 +153,24 @@ class Wallet extends DataClass implements Insertable<Wallet> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is Wallet &&
-              other.publicKey == this.publicKey &&
-              other.privateKey == this.privateKey &&
-              other.hash == this.hash);
+      (other is Address &&
+          other.publicKey == this.publicKey &&
+          other.privateKey == this.privateKey &&
+          other.hash == this.hash);
 }
 
-class WalletsCompanion extends UpdateCompanion<Wallet> {
+class AddressesCompanion extends UpdateCompanion<Address> {
   final Value<String> publicKey;
   final Value<String> privateKey;
   final Value<String> hash;
   final Value<int> rowid;
-  const WalletsCompanion({
+  const AddressesCompanion({
     this.publicKey = const Value.absent(),
     this.privateKey = const Value.absent(),
     this.hash = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  WalletsCompanion.insert({
+  AddressesCompanion.insert({
     required String publicKey,
     required String privateKey,
     required String hash,
@@ -177,7 +178,7 @@ class WalletsCompanion extends UpdateCompanion<Wallet> {
   })  : publicKey = Value(publicKey),
         privateKey = Value(privateKey),
         hash = Value(hash);
-  static Insertable<Wallet> custom({
+  static Insertable<Address> custom({
     Expression<String>? publicKey,
     Expression<String>? privateKey,
     Expression<String>? hash,
@@ -191,12 +192,12 @@ class WalletsCompanion extends UpdateCompanion<Wallet> {
     });
   }
 
-  WalletsCompanion copyWith(
+  AddressesCompanion copyWith(
       {Value<String>? publicKey,
-        Value<String>? privateKey,
-        Value<String>? hash,
-        Value<int>? rowid}) {
-    return WalletsCompanion(
+      Value<String>? privateKey,
+      Value<String>? hash,
+      Value<int>? rowid}) {
+    return AddressesCompanion(
       publicKey: publicKey ?? this.publicKey,
       privateKey: privateKey ?? this.privateKey,
       hash: hash ?? this.hash,
@@ -224,22 +225,22 @@ class WalletsCompanion extends UpdateCompanion<Wallet> {
 
   @override
   String toString() {
-    return (StringBuffer('WalletsCompanion(')
-      ..write('publicKey: $publicKey, ')
-      ..write('privateKey: $privateKey, ')
-      ..write('hash: $hash, ')
-      ..write('rowid: $rowid')
-      ..write(')'))
+    return (StringBuffer('AddressesCompanion(')
+          ..write('publicKey: $publicKey, ')
+          ..write('privateKey: $privateKey, ')
+          ..write('hash: $hash, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
         .toString();
   }
 }
 
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
-  late final $WalletsTable wallets = $WalletsTable(this);
+  late final $AddressesTable addresses = $AddressesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [wallets];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [addresses];
 }

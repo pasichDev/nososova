@@ -96,7 +96,7 @@ abstract class AppLocalizations {
   /// No description provided for @overallOnBalance.
   ///
   /// In en, this message translates to:
-  /// **'Overall on balance'**
+  /// **'Overall on wallet'**
   String get overallOnBalance;
 
   /// No description provided for @price.
@@ -120,7 +120,7 @@ abstract class AppLocalizations {
   /// No description provided for @wallets.
   ///
   /// In en, this message translates to:
-  /// **'Wallets'**
+  /// **'Wallet'**
   String get wallets;
 
   /// No description provided for @payments.
@@ -135,11 +135,11 @@ abstract class AppLocalizations {
   /// **'Node'**
   String get node;
 
-  /// No description provided for @myWallets.
+  /// No description provided for @myAddresses.
   ///
   /// In en, this message translates to:
-  /// **'My Wallets'**
-  String get myWallets;
+  /// **'Addresses'**
+  String get myAddresses;
 
   /// No description provided for @notImplemented.
   ///
@@ -168,7 +168,7 @@ abstract class AppLocalizations {
   /// No description provided for @genNewKeyPair.
   ///
   /// In en, this message translates to:
-  /// **'Generate new pair keys'**
+  /// **'Generate new address'**
   String get genNewKeyPair;
 
   /// No description provided for @scanQrCode.
@@ -194,6 +194,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recent transactions'**
   String get historyPayments;
+
+  /// No description provided for @titleScannerCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Qr Code scanner'**
+  String get titleScannerCode;
+
+  /// No description provided for @descriptionScannerCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the viewfinder at your QR Code'**
+  String get descriptionScannerCode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

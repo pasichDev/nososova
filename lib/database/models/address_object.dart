@@ -1,4 +1,4 @@
-class WalletObject {
+class AddressObject {
   String? hash;
   String? custom;
   String? publicKey;
@@ -11,7 +11,7 @@ class WalletObject {
   int incoming;
   int outgoing;
 
-  WalletObject({
+  AddressObject({
     this.hash,
     this.custom,
     this.publicKey,
@@ -25,7 +25,7 @@ class WalletObject {
     this.outgoing = 0,
   });
 
-  WalletObject copyWith({
+  AddressObject copyWith({
     String? hash,
     String? custom,
     String? publicKey,
@@ -38,7 +38,7 @@ class WalletObject {
     int? incoming,
     int? outgoing,
   }) {
-    return WalletObject(
+    return AddressObject(
       hash: hash ?? this.hash,
       custom: custom ?? this.custom,
       publicKey: publicKey ?? this.publicKey,

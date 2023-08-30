@@ -7,18 +7,18 @@ class AppState extends ChangeNotifier {
 
   AppState(this._database);
 
-  Future<List<Wallet>> fetchDataWallets() async {
+  Future<List<Address>> fetchDataWallets() async {
     final wallets = await _database.getWalletList();
     return wallets;
   }
 
-  void deleteWallet(Wallet wallet) async {
-    await _database.deleteWallet(wallet);
+  void deleteWallet(Address adr) async {
+    await _database.deleteWallet(adr);
     notifyListeners();
   }
 
-  void addWallet(Wallet wallet) async {
-    await _database.addWallet(wallet);
+  void addWallet(Address adr) async {
+    await _database.addWallet(adr);
     notifyListeners();
   }
 }

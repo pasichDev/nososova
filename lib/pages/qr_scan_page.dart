@@ -1,19 +1,19 @@
-
 import 'package:flutter/material.dart';
-import 'package:nososova/database/models/wallet_object.dart';
+import 'package:nososova/database/models/address_object.dart';
+import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/noso/cripto.dart';
+import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
 
 class QRScanScreen extends StatefulWidget {
   const QRScanScreen({super.key});
 
   @override
-  _QRScanScreenState createState() => _QRScanScreenState();
+  QRScanScreenState createState() => QRScanScreenState();
 }
 
-class _QRScanScreenState extends State<QRScanScreen> {
+class QRScanScreenState extends State<QRScanScreen> {
   late QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -41,24 +41,24 @@ class _QRScanScreenState extends State<QRScanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QR Code Scanner'),
-      ),
+          title: Text(AppLocalizations.of(context)!.titleScannerCode),
+          backgroundColor: Colors.transparent,
+          flexibleSpace:
+              Container(decoration: const StandartGradientDecoration())),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: _buildQrView(context),
           ),
-       /*   const Padding(
-            padding: EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Наведіть видошукач на ваш QR Code',
+              AppLocalizations.of(context)!.descriptionScannerCode,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
-
-        */
         ],
       ),
     );
@@ -78,24 +78,20 @@ class _QRScanScreenState extends State<QRScanScreen> {
     );
   }
 
-
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       // Обробка результатів сканування QR-коду тут
       //    print('Scanned data: ${scanData.code}');
-     NosoCripto cripto = NosoCripto();
+      NosoCripto cripto = NosoCripto();
 
-     WalletObject? wallets = cripto.importWalletForKeys(scanData.code.toString());
+      AddressObject? wallets =
+          cripto.importWalletForKeys(scanData.code.toString());
 
-        print('hash ${wallets?.hash}');
-        print('privateKey ${wallets?.privateKey}');
-        print('publicKey ${wallets?.publicKey}');
-     Navigator.pop(context);
+      print('hash ${wallets?.hash}');
+      print('privateKey ${wallets?.privateKey}');
+      print('publicKey ${wallets?.publicKey}');
+      Navigator.pop(context);
     });
   }
-
-
-
 }
-

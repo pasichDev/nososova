@@ -4,8 +4,8 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:nososova/const.dart';
+import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/database/models/objects.dart';
-import 'package:nososova/database/models/wallet_object.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
 import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/ecc/curves/secp256k1.dart';
@@ -14,17 +14,15 @@ import 'package:pointycastle/pointycastle.dart';
 import 'package:pointycastle/random/fortuna_random.dart';
 
 final class NosoCripto {
-  WalletObject? createNewAddress() {
+  AddressObject? createNewAddress() {
     KeyPair keysPair = _generateKeysPair();
-    WalletObject walletObject = WalletObject();
-    walletObject.publicKey = keysPair.publicKey;
-    walletObject.privateKey = keysPair.privateKey;
-    walletObject.hash = _getAddressWalletFromPublicKey(keysPair.publicKey);
-
-    return walletObject;
+    return AddressObject().copyWith(
+        publicKey: keysPair.publicKey,
+        privateKey: keysPair.privateKey,
+        hash: _getAddressWalletFromPublicKey(keysPair.publicKey));
   }
 
-  WalletObject? importWalletForKeys(String keys) {
+  AddressObject? importWalletForKeys(String keys) {
     List<String> keyParts = keys.split(' ');
 
     if (keyParts.length == 2) {
@@ -36,12 +34,10 @@ final class NosoCripto {
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {
-        WalletObject walletObject = WalletObject();
-        walletObject.publicKey = publicKeyPart;
-        walletObject.privateKey = privateKeyPart;
-        walletObject.hash = _getAddressWalletFromPublicKey(publicKeyPart);
-
-        return walletObject;
+        return AddressObject().copyWith(
+            publicKey: publicKeyPart,
+            privateKey: privateKeyPart,
+            hash: _getAddressWalletFromPublicKey(publicKeyPart));
       }
     }
     return null;

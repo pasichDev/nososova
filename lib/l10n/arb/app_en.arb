@@ -1,20 +1,22 @@
 {
-  "overallOnBalance": "Overall on balance",
+  "overallOnBalance": "Overall on wallet",
   "price": "Price",
   "incoming": "Incoming",
   "outgoing": "Outgoing",
-  "wallets": "Wallets",
+  "wallets": "Wallet",
   "payments": "Payments",
   "node": "Node",
-  "myWallets": "My Wallets",
+  "myAddresses": "Addresses",
   "notImplemented": "The function is not implemented",
   "newTitle": "New",
   "import": "Import",
   "export": "Export",
-  "genNewKeyPair": "Generate new pair keys",
+  "genNewKeyPair": "Generate new address",
   "scanQrCode": "Scan QR Code",
   "selectFilePkw": "Select file .pkw",
   "saveFilePkw": "Save to file .pkw",
-  "historyPayments": "Recent transactions"
+  "historyPayments": "Recent transactions",
+  "titleScannerCode": "Qr Code scanner",
+  "descriptionScannerCode": "Point the viewfinder at your QR Code"
 
 }

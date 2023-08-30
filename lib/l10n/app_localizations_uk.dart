@@ -5,7 +5,7 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get overallOnBalance => 'Загалом на балансі';
+  String get overallOnBalance => 'Загалом в гаманці';
 
   @override
   String get price => 'Вартість';
@@ -17,7 +17,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get outgoing => 'Вихідні';
 
   @override
-  String get wallets => 'Гаманці';
+  String get wallets => 'Гаманець';
 
   @override
   String get payments => 'Платежі';
@@ -26,7 +26,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get node => 'Вузол';
 
   @override
-  String get myWallets => 'Мої гаманці';
+  String get myAddresses => 'Адреси';
 
   @override
   String get notImplemented => 'Функція не реалізована';
@@ -41,7 +41,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get export => 'Експорт';
 
   @override
-  String get genNewKeyPair => 'Згенерувати нову пару ключів';
+  String get genNewKeyPair => 'Згенерувати нову адресу';
 
   @override
   String get scanQrCode => 'Відскануйте QR-код';
@@ -54,4 +54,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get historyPayments => 'Останні транзакції';
+
+  @override
+  String get titleScannerCode => 'Сканер Qr-коду';
+
+  @override
+  String get descriptionScannerCode => 'Наведіть видошукач на свій QR-код';
 }

@@ -5,10 +5,10 @@ import 'package:nososova/pages/components/item_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class WalletInfo extends StatelessWidget {
-  final Wallet wallet;
+class AddressInfo extends StatelessWidget {
+  final Address address;
 
-  const WalletInfo({Key? key, required this.wallet}) : super(key: key);
+  const AddressInfo({Key? key, required this.address}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class WalletInfo extends StatelessWidget {
       Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: QrImageView(
-            data: wallet.hash,
+            data: address.hash,
             version: QrVersions.auto,
             size: 200.0,
           )),
       Text(
-        wallet.hash,
+        address.hash,
         style: const TextStyle(
           fontSize: 18,
           color: Colors.black,
@@ -33,7 +33,7 @@ class WalletInfo extends StatelessWidget {
         shrinkWrap: true,
         children: [
           buildListItem(Icons.delete, 'Delete', () {
-            appState.deleteWallet(wallet);
+            appState.deleteWallet(address);
             Navigator.pop(context);
           }),
           buildListItem(Icons.send_rounded, 'Send from this address', () {}),

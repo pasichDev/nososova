@@ -2,28 +2,28 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:nososova/database/models/wallets.dart';
+import 'package:nososova/database/models/address.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Wallets])
+@DriftDatabase(tables: [Addresses])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
-  Future<List<Wallet>> getWalletList() async {
-    return await select(wallets).get();
+  Future<List<Address>> getWalletList() async {
+    return await select(addresses).get();
   }
 
-  Future<void> addWallet(Wallet wallet) async {
-    await into(wallets).insert(wallet);
+  Future<void> addWallet(Address addr) async {
+    await into(addresses).insert(addr);
   }
 
-  Future<int> deleteWallet(Wallet wallet) async {
+  Future<int> deleteWallet(Address addr) async {
     return await customUpdate(
       'DELETE FROM wallets WHERE hash = :hash',
-      variables: [Variable.withString(wallet.hash)],
+      variables: [Variable.withString(addr.hash)],
     );
   }
 

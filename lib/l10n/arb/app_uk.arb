@@ -1,19 +1,22 @@
 {
-  "overallOnBalance": "Загалом на балансі",
+  "overallOnBalance": "Загалом в гаманці",
   "price": "Вартість",
   "incoming": "Вхідні",
   "outgoing": "Вихідні",
-  "wallets": "Гаманці",
+  "wallets": "Гаманець",
   "payments": "Платежі",
   "node": "Вузол",
-  "myWallets": "Мої гаманці",
+  "myAddresses": "Адреси",
   "notImplemented": "Функція не реалізована",
   "newTitle": "Новий",
   "import": "Імпорт",
   "export": "Експорт",
-  "genNewKeyPair": "Згенерувати нову пару ключів",
+  "genNewKeyPair": "Згенерувати нову адресу",
   "scanQrCode": "Відскануйте QR-код",
   "selectFilePkw": "Виберіть файл .pkw",
   "saveFilePkw": "Зберегти у файл .pkw",
-  "historyPayments": "Останні транзакції"
+  "historyPayments": "Останні транзакції",
+  "titleScannerCode": "Сканер Qr-коду",
+  "descriptionScannerCode": "Наведіть видошукач на свій QR-код"
+
 }

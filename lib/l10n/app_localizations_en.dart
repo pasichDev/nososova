@@ -5,7 +5,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get overallOnBalance => 'Overall on balance';
+  String get overallOnBalance => 'Overall on wallet';
 
   @override
   String get price => 'Price';
@@ -17,7 +17,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get outgoing => 'Outgoing';
 
   @override
-  String get wallets => 'Wallets';
+  String get wallets => 'Wallet';
 
   @override
   String get payments => 'Payments';
@@ -26,7 +26,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get node => 'Node';
 
   @override
-  String get myWallets => 'My Wallets';
+  String get myAddresses => 'Addresses';
 
   @override
   String get notImplemented => 'The function is not implemented';
@@ -41,7 +41,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get export => 'Export';
 
   @override
-  String get genNewKeyPair => 'Generate new pair keys';
+  String get genNewKeyPair => 'Generate new address';
 
   @override
   String get scanQrCode => 'Scan QR Code';
@@ -54,4 +54,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyPayments => 'Recent transactions';
+
+  @override
+  String get titleScannerCode => 'Qr Code scanner';
+
+  @override
+  String get descriptionScannerCode => 'Point the viewfinder at your QR Code';
 }
