@@ -3,7 +3,6 @@ import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/wallets/screens/card_header.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_add_address.dart';
-import 'package:nososova/pages/wallets/screens/dialogs/dialog_search_address.dart';
 import 'package:nososova/pages/wallets/screens/list_wallets.dart';
 import 'package:nososova/utils/colors.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +60,7 @@ class HeaderMyWallets extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.more_horiz, color: CustomColors.primaryColor),
                 onPressed: () {
-                  _showBottomSheetMoreMyWallets(context);
+                 // _showBottomSheetMoreMyWallets(context);
                 }),
           ],
         ),
@@ -79,11 +78,4 @@ void _showBottomSheetAddMyWallets(BuildContext context) {
   );
 }
 
-void _showBottomSheetMoreMyWallets(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return const DialogSearchAddress();
-    },
-  );
-}
+

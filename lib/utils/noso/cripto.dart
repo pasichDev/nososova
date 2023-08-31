@@ -16,7 +16,7 @@ import 'package:pointycastle/random/fortuna_random.dart';
 final class NosoCripto {
   AddressObject? createNewAddress() {
     KeyPair keysPair = _generateKeysPair();
-    return AddressObject().copyWith(
+    return AddressObject(
         publicKey: keysPair.publicKey,
         privateKey: keysPair.privateKey,
         hash: _getAddressWalletFromPublicKey(keysPair.publicKey));
@@ -34,10 +34,10 @@ final class NosoCripto {
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {
-        return AddressObject().copyWith(
-            publicKey: publicKeyPart,
+        return AddressObject(
+            hash: _getAddressWalletFromPublicKey(publicKeyPart),
             privateKey: privateKeyPart,
-            hash: _getAddressWalletFromPublicKey(publicKeyPart));
+            publicKey: publicKeyPart);
       }
     }
     return null;

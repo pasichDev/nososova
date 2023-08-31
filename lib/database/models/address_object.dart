@@ -1,8 +1,8 @@
 class AddressObject {
-  String? hash;
-  String? custom;
-  String? publicKey;
-  String? privateKey;
+  String hash;
+  String custom;
+  String publicKey;
+  String privateKey;
   int balance;
   int pending;
   int score;
@@ -12,10 +12,10 @@ class AddressObject {
   int outgoing;
 
   AddressObject({
-    this.hash,
-    this.custom,
-    this.publicKey,
-    this.privateKey,
+    required this.hash,
+    this.custom = "",
+    required this.publicKey,
+    required this.privateKey,
     this.balance = 0,
     this.pending = 0,
     this.score = 0,
@@ -26,10 +26,10 @@ class AddressObject {
   });
 
   AddressObject copyWith({
-    String? hash,
-    String? custom,
-    String? publicKey,
-    String? privateKey,
+    required String hash,
+    String custom = "",
+    required String publicKey,
+    required String privateKey,
     int? balance,
     int? pending,
     int? score,
@@ -39,10 +39,10 @@ class AddressObject {
     int? outgoing,
   }) {
     return AddressObject(
-      hash: hash ?? this.hash,
-      custom: custom ?? this.custom,
-      publicKey: publicKey ?? this.publicKey,
-      privateKey: privateKey ?? this.privateKey,
+      hash: hash,
+      custom: custom,
+      publicKey: publicKey,
+      privateKey: privateKey,
       balance: balance ?? this.balance,
       pending: pending ?? this.pending,
       score: score ?? this.score,

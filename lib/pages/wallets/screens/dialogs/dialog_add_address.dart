@@ -15,7 +15,7 @@ class DialogAddAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
+    final appState = Provider.of<AppState>(context,listen: false);
     return Column(mainAxisSize: MainAxisSize.min, children: [
       ListView(
         shrinkWrap: true,

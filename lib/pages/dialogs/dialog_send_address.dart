@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/wallets/screens/item_wallet_tile.dart';
 import 'package:nososova/utils/colors.dart';
 
-class DialogSearchAddress extends StatelessWidget {
-  const DialogSearchAddress({Key? key}) : super(key: key);
+typedef OnCancelButtonPressedSend = void Function();
+typedef OnSendButtonPressed = void Function();
+
+class DialogSendAddress extends StatelessWidget {
+  final String addressTo;
+  final OnCancelButtonPressedSend onCancelButtonPressedSend;
+  final OnSendButtonPressed onSendButtonPressed;
+
+  const DialogSendAddress({
+    Key? key,
+    required this.addressTo,
+    required this.onCancelButtonPressedSend,
+    required this.onSendButtonPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +30,7 @@ class DialogSearchAddress extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          AddressListTile(
-              address: const Address(
-                  publicKey: "test",
-                  privateKey: "test",
-                  hash: "N4ZR3fKhTUod34evnEcDQX3i6XufBDU"),
-              onButtonClick: () {}),
+
           const SizedBox(height: 20),
           Center(
             child: Row(
@@ -33,18 +38,22 @@ class DialogSearchAddress extends StatelessWidget {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    backgroundColor: Colors.grey,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    onCancelButtonPressedSend();
+                    Navigator.pop(context);
+                  },
                   child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: CustomColors.primaryColor,
+                    backgroundColor: CustomColors.primaryColor,
                   ),
                   onPressed: () {
-
+                    onSendButtonPressed();
+                    Navigator.pop(context);
                   },
                   child: Text(AppLocalizations.of(context)!.addToWallet),
                 ),

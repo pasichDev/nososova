@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/database/database.dart';
 import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
+import 'package:nososova/pages/dialogs/dialog_search_address.dart';
+import 'package:nososova/pages/dialogs/dialog_send_address.dart';
 import 'package:nososova/utils/noso/cripto.dart';
+import 'package:nososova/utils/status_qr.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScanScreen extends StatefulWidget {
@@ -34,7 +40,6 @@ class QRScanScreenState extends State<QRScanScreen> {
     if (status.isGranted) {
     } else {
       Navigator.pop(context);
-      dispose();
     }
   }
 
@@ -44,8 +49,9 @@ class QRScanScreenState extends State<QRScanScreen> {
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.titleScannerCode),
           backgroundColor: Colors.transparent,
-          flexibleSpace:
-              Container(decoration: const StandartGradientDecoration(borderRadius: null))),
+          flexibleSpace: Container(
+              decoration:
+                  const StandartGradientDecoration(borderRadius: null))),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +59,7 @@ class QRScanScreenState extends State<QRScanScreen> {
           Expanded(
             child: _buildQrView(context),
           ),
-
-    Padding(
+          Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               AppLocalizations.of(context)!.descriptionScannerCode,
@@ -84,16 +89,62 @@ class QRScanScreenState extends State<QRScanScreen> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      NosoCripto cripto = NosoCripto();
+      String data = scanData.code.toString();
+      final int qrStatus = StatusQrScan.checkQrScan(data);
 
-      AddressObject? wallets =
-          cripto.importWalletForKeys(scanData.code.toString());
+      if (qrStatus == StatusQrScan.qrKeys) {
+        controller.pauseCamera();
+        final AddressObject? address =
+            NosoCripto().importWalletForKeys(scanData.code.toString());
 
-      print('hash ${wallets?.hash}');
-      print('privateKey ${wallets?.privateKey}');
-      print('publicKey ${wallets?.publicKey}');
-      Navigator.pop(context);
-      dispose();
+        if (address != null) {
+         Address addressDB = Address(
+              publicKey: address.publicKey.toString(),
+              privateKey: address.privateKey.toString(),
+              hash: address.hash.toString());
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogSearchAddress(
+                addressObject: addressDB,
+                onCancelButtonPressed: () {
+                  controller.resumeCamera();
+                },
+                onAddToWalletButtonPressed: () {
+                  _addAddress(addressDB);
+                  Navigator.pop(context);
+                },
+              );
+            },
+          );
+        } else {
+          controller.resumeCamera();
+        }
+      } else if (qrStatus == StatusQrScan.qrAddress){
+        controller.pauseCamera();
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return DialogSendAddress(
+              addressTo: data,
+              onCancelButtonPressedSend: () {
+                controller.resumeCamera();
+              },
+              onSendButtonPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      }
+
+
     });
+  }
+
+
+  void _addAddress(Address address){
+    final appState = Provider.of<AppState>(context,listen: false);
+    appState.addWallet(address);
   }
 }
