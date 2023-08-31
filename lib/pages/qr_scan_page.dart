@@ -64,7 +64,7 @@ class QRScanScreenState extends State<QRScanScreen> {
             child: Text(
               AppLocalizations.of(context)!.descriptionScannerCode,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
         ],

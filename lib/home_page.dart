@@ -5,6 +5,7 @@ import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/pages/wallets/wallets_page.dart';
+import 'package:nososova/utils/colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -43,7 +44,9 @@ class HomePageState extends State<HomePage> {
         ],
         backgroundColor: Colors.transparent,),
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: CustomColors.primaryColor,
+        items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: const Icon(Icons.wallet),
           label: AppLocalizations.of(context)!.wallets,),
         BottomNavigationBarItem(icon: const Icon(Icons.import_export_outlined),
