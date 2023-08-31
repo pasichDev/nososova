@@ -22,7 +22,7 @@ class MyDatabase extends _$MyDatabase {
 
   Future<int> deleteWallet(Address addr) async {
     return await customUpdate(
-      'DELETE FROM wallets WHERE hash = :hash',
+      'DELETE FROM addresses WHERE hash = :hash',
       variables: [Variable.withString(addr.hash)],
     );
   }
