@@ -17,6 +17,9 @@
   "saveFilePkw": "Зберегти у файл .pkw",
   "historyPayments": "Останні транзакції",
   "titleScannerCode": "Сканер Qr-коду",
-  "descriptionScannerCode": "Наведіть видошукач на свій QR-код"
-
+  "descriptionScannerCode": "Наведіть видошукач на свій QR-код",
+  "foundAddresses": "Знайдені адреси",
+  "cancel": "Відмінити",
+  "addToWallet": "Додати в гаманець",
+  "titleSetNetwork": "Налаштування мережі"
 }

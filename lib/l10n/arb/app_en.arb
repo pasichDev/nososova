@@ -17,6 +17,10 @@
   "saveFilePkw": "Save to file .pkw",
   "historyPayments": "Recent transactions",
   "titleScannerCode": "Qr Code scanner",
-  "descriptionScannerCode": "Point the viewfinder at your QR Code"
+  "descriptionScannerCode": "Point the viewfinder at your QR Code",
+  "foundAddresses": "Found addresses",
+  "cancel": "Cancel",
+  "addToWallet": "Add to Wallet",
+  "titleSetNetwork": "Network settings"
 
 }

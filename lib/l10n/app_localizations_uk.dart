@@ -60,4 +60,16 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get descriptionScannerCode => 'Наведіть видошукач на свій QR-код';
+
+  @override
+  String get foundAddresses => 'Знайдені адреси';
+
+  @override
+  String get cancel => 'Відмінити';
+
+  @override
+  String get addToWallet => 'Додати в гаманець';
+
+  @override
+  String get titleSetNetwork => 'Налаштування мережі';
 }

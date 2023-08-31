@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/components/block_state.dart';
+import 'package:nososova/pages/components/network_info.dart';
 import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
@@ -31,7 +31,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(extendBodyBehindAppBar: true,
       appBar: AppBar(elevation: 0,
-        title: const BlockState(),
+        title: const NetworkInfo(),
         actions: [
           IconButton(
             icon: const Icon(Icons.qr_code_scanner_outlined), onPressed: () {

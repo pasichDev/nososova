@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/const.dart';
+import 'package:nososova/pages/dialog_set_network.dart';
 
-class BlockState extends StatelessWidget {
-  const BlockState({super.key});
+class NetworkInfo extends StatelessWidget {
+  const NetworkInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.0),
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(
           children: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.computer, color: Colors.white,
               ),
-              onPressed: null,
+              onPressed: () {
+                _showBottomSetNetwork(context);
+              },
             ),
-            Text(
+            const Text(
               '12387',
               style: TextStyle(
                 fontSize: 16,
@@ -28,7 +31,7 @@ class BlockState extends StatelessWidget {
   }
 
 
-  IconData getStatusConnected(int status){
+  IconData getStatusConnected(int status) {
     switch (status) {
       case StatusConnectNodes.statusConnected:
         return Icons.computer;
@@ -41,5 +44,15 @@ class BlockState extends StatelessWidget {
       default:
         return Icons.signal_wifi_connected_no_internet_4;
     }
+  }
+
+
+  void _showBottomSetNetwork(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return const DialogSetNetwork();
+      },
+    );
   }
 }

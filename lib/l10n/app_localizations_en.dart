@@ -60,4 +60,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get descriptionScannerCode => 'Point the viewfinder at your QR Code';
+
+  @override
+  String get foundAddresses => 'Found addresses';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get addToWallet => 'Add to Wallet';
+
+  @override
+  String get titleSetNetwork => 'Network settings';
 }

@@ -206,6 +206,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Point the viewfinder at your QR Code'**
   String get descriptionScannerCode;
+
+  /// No description provided for @foundAddresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Found addresses'**
+  String get foundAddresses;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @addToWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Wallet'**
+  String get addToWallet;
+
+  /// No description provided for @titleSetNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network settings'**
+  String get titleSetNetwork;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

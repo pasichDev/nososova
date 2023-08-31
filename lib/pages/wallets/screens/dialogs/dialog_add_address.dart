@@ -10,8 +10,8 @@ import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/utils/noso/cripto.dart';
 import 'package:provider/provider.dart';
 
-class DialogAddAdress extends StatelessWidget {
-  const DialogAddAdress({super.key});
+class DialogAddAddress extends StatelessWidget {
+  const DialogAddAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +53,7 @@ class DialogAddAdress extends StatelessWidget {
                       fontSize: 20.00, fontWeight: FontWeight.bold))),
           buildListItem(Icons.file_copy_outlined,
               AppLocalizations.of(context)!.saveFilePkw, () {}),
+          const SizedBox(height: 10)
         ],
       ),
     ]);
