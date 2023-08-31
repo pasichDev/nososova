@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/noso/cripto.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
+import 'package:nososova/utils/noso/cripto.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -34,6 +34,7 @@ class QRScanScreenState extends State<QRScanScreen> {
     if (status.isGranted) {
     } else {
       Navigator.pop(context);
+      dispose();
     }
   }
 
@@ -44,14 +45,16 @@ class QRScanScreenState extends State<QRScanScreen> {
           title: Text(AppLocalizations.of(context)!.titleScannerCode),
           backgroundColor: Colors.transparent,
           flexibleSpace:
-              Container(decoration: const StandartGradientDecoration())),
+              Container(decoration: const StandartGradientDecoration(borderRadius: null))),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: _buildQrView(context),
           ),
-          Padding(
+
+    Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               AppLocalizations.of(context)!.descriptionScannerCode,
@@ -70,7 +73,7 @@ class QRScanScreenState extends State<QRScanScreen> {
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
         borderRadius: 16,
-        borderColor: Colors.red,
+        borderColor: Colors.blue,
         borderLength: 32,
         borderWidth: 8,
         cutOutSize: MediaQuery.of(context).size.width * 0.8,
@@ -81,8 +84,6 @@ class QRScanScreenState extends State<QRScanScreen> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      // Обробка результатів сканування QR-коду тут
-      //    print('Scanned data: ${scanData.code}');
       NosoCripto cripto = NosoCripto();
 
       AddressObject? wallets =
@@ -92,6 +93,7 @@ class QRScanScreenState extends State<QRScanScreen> {
       print('privateKey ${wallets?.privateKey}');
       print('publicKey ${wallets?.publicKey}');
       Navigator.pop(context);
+      dispose();
     });
   }
 }
