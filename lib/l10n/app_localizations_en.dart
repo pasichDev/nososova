@@ -72,4 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get titleSetNetwork => 'Network settings';
+
+  @override
+  String get debugInfo => 'Debug Information';
 }

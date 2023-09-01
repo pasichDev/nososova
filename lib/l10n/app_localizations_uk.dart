@@ -72,4 +72,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get titleSetNetwork => 'Налаштування мережі';
+
+  @override
+  String get debugInfo => 'Інформація про налагодження';
 }

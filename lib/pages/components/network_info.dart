@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/const.dart';
-import 'package:nososova/pages/dialog_set_network.dart';
+import 'package:nososova/pages/dialogs/dialog_set_network.dart';
 
 class NetworkInfo extends StatelessWidget {
   const NetworkInfo({super.key});

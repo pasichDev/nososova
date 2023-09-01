@@ -230,6 +230,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Network settings'**
   String get titleSetNetwork;
+
+  /// No description provided for @debugInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Debug Information'**
+  String get debugInfo;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

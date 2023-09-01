@@ -4,7 +4,7 @@ class Seed {
   bool online;
 
   Seed({
-    required this.ip,
+    this.ip = "127.0.0.1",
     this.ping = 0,
     this.online = false,
   });
