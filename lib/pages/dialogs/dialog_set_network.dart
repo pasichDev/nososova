@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/debug_info_page.dart';
+import 'package:nososova/utils/colors.dart';
 
 class DialogSetNetwork extends StatelessWidget {
   const DialogSetNetwork({Key? key}) : super(key: key);
@@ -22,8 +23,15 @@ class DialogSetNetwork extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text("Status : ok"),
-              Text("Block : 12876"),
+              const Row(
+                children: [
+                  TagWidget(text: "Block : 12876"),
+                  SizedBox(width: 8.0),
+                  TagWidget(text: "Status : Connected"),
+                  SizedBox(width: 8.0),
+                  TagWidget(text: "Time : 12876")
+                ],
+              ),
               const SizedBox(height: 20),
               ListTile(
                 leading: const Icon(Icons.computer),
@@ -33,7 +41,7 @@ class DialogSetNetwork extends StatelessWidget {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "192.168.22.11:8080",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -73,12 +81,37 @@ class DialogSetNetwork extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const DebugInfoPage()),
                   );
-               //   Navigator.pop(context);
+                  //   Navigator.pop(context);
                 },
               ),
               const SizedBox(height: 30),
             ]));
   }
+}
 
+class TagWidget extends StatelessWidget {
+  final String text;
 
+  const TagWidget({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        color: CustomColors.primaryColor,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 }

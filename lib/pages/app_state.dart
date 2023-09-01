@@ -8,11 +8,7 @@ import 'package:nososova/network/models/seed.dart';
 import 'package:nososova/network/network_const.dart';
 
 class AppState extends ChangeNotifier {
-  /*
-  1. Коли стартує апка вибираємо сід і підключаємось до нього
-  2. Кожних 5хв тестуєм сіди чи доступні, і в залежності від пінгу міняємо дефолт сід
-  3.
-   */
+
 
   final MyDatabase _database;
   late List<Seed> seeds;
@@ -101,6 +97,7 @@ class AppState extends ChangeNotifier {
 
         if (responseBytes.isNotEmpty) {
           final response = String.fromCharCodes(responseBytes);
+          print("${response}");
         }
       } on TimeoutException catch (_) {
         if (kDebugMode) {
