@@ -1,21 +1,19 @@
-
-// Імпортуйте вашу локальну базу даних та таблиці
 import 'package:nososova/database/database.dart';
 
 class LocalRepository {
-  final MyDatabase database;
+  final MyDatabase _database;
 
-  LocalRepository(this.database);
+  LocalRepository(this._database);
 
   Stream<List<Address>> fetchAddress() {
-    return Stream.fromFuture(database.getWalletList());
+    return Stream.fromFuture(_database.getWalletList());
   }
 
   Future<void> deleteWallet(Address adr) async {
-    await database.deleteWallet(adr);
+    await _database.deleteWallet(adr);
   }
 
   Future<void> addWallet(Address adr) async {
-    await database.addWallet(adr);
+    await _database.addWallet(adr);
   }
 }

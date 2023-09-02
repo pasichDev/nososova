@@ -1,30 +1,35 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:nososova/network/models/node_info.dart';
 import 'package:nososova/network/models/seed.dart';
+import 'package:nososova/repositories/local_repository.dart';
+import 'package:nososova/repositories/server_repository.dart';
 
-// Події та стан для глобальних даних
 abstract class AppDataEvent {}
 
-class UpdateServerInfoEvent extends AppDataEvent {
-  final NodeInfo nodeInfo;
-  UpdateServerInfoEvent(this.nodeInfo);
-}
+class StartNode extends AppDataEvent {}
 
 class AppDataState {
   final NodeInfo nodeInfo;
+  final Seed seedActive;
 
-  AppDataState({required this.nodeInfo});
+  AppDataState({NodeInfo? nodeInfo, Seed? seedActive})
+      : nodeInfo = nodeInfo ?? NodeInfo(seed: Seed()),
+        seedActive = seedActive ?? Seed();
 }
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
-  AppDataBloc() : super(AppDataState(nodeInfo: NodeInfo(seed: Seed())));
-
-  @override
-  Stream<AppDataState> mapEventToState(AppDataEvent event) async* {
-    if (event is UpdateServerInfoEvent) {
-      yield AppDataState(nodeInfo: event.nodeInfo);
-    }
+  final ServerRepository _serverRepository;
+  final LocalRepository _localRepository;
+  AppDataBloc({
+    required ServerRepository serverRepository,
+    required LocalRepository localRepository,
+  })  : _serverRepository = serverRepository,
+        _localRepository = localRepository,
+        super(AppDataState()) {
+    on<StartNode>((event, emit) async {
+      final seed = await _serverRepository.listenNodes();
+      final nodeInfo = await _serverRepository.fetchNode(seed);
+      emit(AppDataState(seedActive: seed, nodeInfo: nodeInfo));
+    });
   }
 }

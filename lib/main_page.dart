@@ -30,10 +30,9 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(extendBodyBehindAppBar: true,
       appBar: AppBar(elevation: 0,
-        title: const NetworkInfo(),
+        title:  const NetworkInfo(),
         actions: [
           IconButton(
             icon: const Icon(Icons.qr_code_scanner_outlined), onPressed: () {

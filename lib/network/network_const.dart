@@ -10,3 +10,8 @@ class StatusConnectNodes {
   static const int statusNoConnected = -1;
   static const int statusLoading = 2;
 }
+
+class NetworkConst {
+  static const int durationTimeOut = 4;
+
+}

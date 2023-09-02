@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nososova/const.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/network/models/node_info.dart';
 import 'package:nososova/network/models/seed.dart';
-import 'package:nososova/network/network_const.dart';
 
 class AppState extends ChangeNotifier {
   final MyDatabase _database;
@@ -20,14 +17,14 @@ class AppState extends ChangeNotifier {
   get userNode => _userNodeInfo;
 
   AppState(this._database) {
-    _seeds = Const.defaultSeed.map((ip) => Seed(ip: ip)).toList();
+   // _seeds = Const.defaultSeed.map((ip) => Seed(ip: ip)).toList();
     _connectToSeed();
   }
 
   void _connectToSeed() async {
     debugInfo.add("Start Connect");
-    await _checkSeed();
-    await _syncInformation();
+ //   await _checkSeed();
+ //   await _syncInformation();
   }
 
   /**
@@ -37,6 +34,7 @@ class AppState extends ChangeNotifier {
   static const int durationTimeOut = 4;
 
   // Перебираємо список сідів, і формуємо його для подальшого використання
+  /*
   Future<void> _checkSeed() async {
     debugInfo.add("Check seeds...");
     for (var seed in _seeds) {
@@ -136,6 +134,8 @@ class AppState extends ChangeNotifier {
       }
     }
   }
+
+   */
 
   Future<List<Address>> fetchDataWallets() async {
     final wallets = await _database.getWalletList();

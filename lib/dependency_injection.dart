@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/local_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
@@ -22,6 +23,9 @@ void setupLocator() {
         serverRepository: locator<ServerRepository>());
   });
 
-  //locator.registerLazySingleton(() => WalletBloc(dataBloc: locator<DataBloc>()));
-  locator.registerLazySingleton(() => AppDataBloc());
+  locator
+      .registerLazySingleton(() => WalletBloc(dataBloc: locator<DataBloc>()));
+  locator.registerLazySingleton(() => AppDataBloc(
+      _localRepository: locator<LocalRepository>(),
+      _serverRepository: locator<ServerRepository>()));
 }

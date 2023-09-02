@@ -1,15 +1,16 @@
+import 'package:nososova/network/models/node_info.dart';
+import 'package:nososova/network/models/seed.dart';
 import 'package:nososova/services/server_service.dart';
 
 class ServerRepository {
-  final ServerService serverService;
+  final ServerService _serverService;
 
-  ServerRepository(this.serverService);
-/*
-  Future<List<ServerData>> fetchServerData() async {
-    // Використовуйте serverService для отримання даних з сервера
-    final serverData = await serverService.fetchDataFromServer();
-    return serverData;
+  ServerRepository(this._serverService);
+
+  Future<Seed> listenNodes(){
+    return _serverService.checkSeed();
   }
-
-  */
+  Future<NodeInfo> fetchNode(Seed seedActive){
+    return _serverService.fetchNodeInfo(seedActive);
+  }
 }

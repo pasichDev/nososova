@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/network/network_const.dart';
 import 'package:nososova/pages/dialogs/dialog_set_network.dart';
 
 class NetworkInfo extends StatelessWidget {
+
   const NetworkInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
- //   final appState = Provider.of<AppState>(context);
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.computer, color: Colors.white,
+    return BlocBuilder<AppDataBloc, AppDataState>(
+        builder: (context, state) {
+           return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.computer, color: Colors.white,
+                ),
+                onPressed: () {
+                  _showBottomSetNetwork(context, state);
+                },
               ),
-              onPressed: () {
-                _showBottomSetNetwork(context);
-              },
-            ),
-             Text(
-               "",
-           //   appState.userNode.lastblock.toString(),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            )
-          ],
-        ));
+              Text(
+                state.nodeInfo.lastblock.toString(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ));
+    });
   }
 
 
@@ -49,11 +53,11 @@ class NetworkInfo extends StatelessWidget {
   }
 
 
-  void _showBottomSetNetwork(BuildContext context) {
+  void _showBottomSetNetwork(BuildContext context, AppDataState state) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return const DialogSetNetwork();
+        return  DialogSetNetwork(state: state);
       },
     );
   }
