@@ -4,22 +4,23 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:nososova/const.dart';
 import 'package:nososova/database/database.dart';
+import 'package:nososova/network/models/node_info.dart';
 import 'package:nososova/network/models/seed.dart';
 import 'package:nososova/network/network_const.dart';
 
 class AppState extends ChangeNotifier {
-
-
   final MyDatabase _database;
-  late List<Seed> seeds;
+  late List<Seed> _seeds;
 
-  List<String> debugInfo = [];
-  Seed selectUseSeed = Seed();
+  final List<String> _debugInfo = [];
+  Seed _selectUseSeed = Seed();
+  NodeInfo _userNodeInfo = NodeInfo(seed: Seed());
+
+  get debugInfo => _debugInfo;
+  get userNode => _userNodeInfo;
 
   AppState(this._database) {
-    seeds = Const.defaultSeed
-        .map((ip) => Seed(ip: ip))
-        .toList(); //це можна замінити на готовий список
+    _seeds = Const.defaultSeed.map((ip) => Seed(ip: ip)).toList();
     _connectToSeed();
   }
 
@@ -29,13 +30,19 @@ class AppState extends ChangeNotifier {
     await _syncInformation();
   }
 
+  /**
+   * Реалізацію запитів нод винести окремо
+   */
+
+  static const int durationTimeOut = 4;
+
   // Перебираємо список сідів, і формуємо його для подальшого використання
   Future<void> _checkSeed() async {
     debugInfo.add("Check seeds...");
-    for (var seed in seeds) {
+    for (var seed in _seeds) {
       try {
         final clientSocket = await Socket.connect(seed.ip, 8080,
-            timeout: const Duration(seconds: 4));
+            timeout: const Duration(seconds: durationTimeOut));
         final startTime = DateTime.now().millisecondsSinceEpoch;
         clientSocket.write(NetworkRequest.nodeStatus);
         final responseBytes = <int>[];
@@ -72,49 +79,64 @@ class AppState extends ChangeNotifier {
       }
     }
 
-    final onlineSeeds = seeds.where((seed) => seed.online).toList();
+    final onlineSeeds = _seeds.where((seed) => seed.online).toList();
     if (onlineSeeds.isNotEmpty) {
-      selectUseSeed = onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b);
-      debugInfo.add("The smallest seed with the lowest ping is selected  ${selectUseSeed.ip}");
+      _selectUseSeed = onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b);
+      debugInfo.add(
+          "The smallest seed with the lowest ping is selected  ${_selectUseSeed.ip}");
     } else {
       debugInfo.add("No working seeds were found");
     }
-
   }
 
   Future<void> _syncInformation() async {
-      try {
-        final clientSocket = await Socket.connect(selectUseSeed.ip, 8080,
-            timeout: const Duration(seconds: 4));
-        clientSocket.write(NetworkRequest.nodeStatus);
-        final responseBytes = <int>[];
-        await for (var byteData in clientSocket) {
-          responseBytes.addAll(byteData);
-        }
-        await clientSocket.close();
-        debugInfo.add("Information about the status of the node has been received");
-        debugInfo.add("Seed connected -> ${selectUseSeed.ip}");
+    try {
+      final clientSocket = await Socket.connect(_selectUseSeed.ip, 8080,
+          timeout: const Duration(seconds: durationTimeOut));
+      clientSocket.write(NetworkRequest.nodeStatus);
+      final responseBytes = <int>[];
+      await for (var byteData in clientSocket) {
+        responseBytes.addAll(byteData);
+      }
+      await clientSocket.close();
+      debugInfo
+          .add("Information about the status of the node has been received");
+      debugInfo.add("Seed connected -> ${_selectUseSeed.ip}");
 
-        if (responseBytes.isNotEmpty) {
-          final response = String.fromCharCodes(responseBytes);
-          print("${response}");
-        }
-      } on TimeoutException catch (_) {
-        if (kDebugMode) {
-          print("Connection timed out. Check server availability.");
-        }
-      } on SocketException catch (e) {
-        if (kDebugMode) {
-          print("SocketException: ${e.message}");
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          print("Unhandled Exception: $e");
-        }
+      if (responseBytes.isNotEmpty) {
 
+        /**
+         * Цей метод зробити окремо
+         */
+        List<String> values = String.fromCharCodes(responseBytes).split(" ");
+        _userNodeInfo = NodeInfo(
+          seed: _selectUseSeed,
+          connections: int.tryParse(values[1]) ?? 0,
+          lastblock: int.tryParse(values[2]) ?? 0,
+          pendings: int.tryParse(values[3]) ?? 0,
+          delta: int.tryParse(values[4]) ?? 0,
+          branch: values[5],
+          version: values[6],
+          utcTime: int.tryParse(values[7]) ?? 0,
+        );
+        notifyListeners();
+
+      }
+    } on TimeoutException catch (_) {
+      if (kDebugMode) {
+        print("Connection timed out. Check server availability.");
+      }
+    } on SocketException catch (e) {
+      if (kDebugMode) {
+        print("SocketException: ${e.message}");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Unhandled Exception: $e");
+      }
     }
-
   }
+
   Future<List<Address>> fetchDataWallets() async {
     final wallets = await _database.getWalletList();
     return wallets;

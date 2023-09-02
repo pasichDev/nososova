@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/const.dart';
+import 'package:nososova/network/network_const.dart';
+import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/dialogs/dialog_set_network.dart';
+import 'package:provider/provider.dart';
 
 class NetworkInfo extends StatelessWidget {
   const NetworkInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Row(
@@ -19,9 +22,9 @@ class NetworkInfo extends StatelessWidget {
                 _showBottomSetNetwork(context);
               },
             ),
-            const Text(
-              '12387',
-              style: TextStyle(
+             Text(
+              appState.userNode.lastblock.toString(),
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white,
               ),
