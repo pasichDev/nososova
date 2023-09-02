@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
 import 'package:nososova/pages/dialogs/dialog_search_address.dart';
 import 'package:nososova/pages/dialogs/dialog_send_address.dart';
 import 'package:nososova/utils/noso/cripto.dart';
 import 'package:nososova/utils/status_qr.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScanScreen extends StatefulWidget {
@@ -144,7 +142,7 @@ class QRScanScreenState extends State<QRScanScreen> {
 
 
   void _addAddress(Address address){
-    final appState = Provider.of<AppState>(context,listen: false);
-    appState.addWallet(address);
+   // final appState = Provider.of<AppState>(context,listen: false);
+  //  appState.addWallet(address);
   }
 }

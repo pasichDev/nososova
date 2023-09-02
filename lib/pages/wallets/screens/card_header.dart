@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/const.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration_round.dart';
 import 'package:nososova/pages/wallets/screens/header_info.dart';
-import 'package:provider/provider.dart';
 
 class CardHeader extends StatelessWidget {
   const CardHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(builder: (context, homeViewModel, _) {
       return Container(
         width: double.infinity,
         decoration: const StandartGradientDecorationRound(),
@@ -21,7 +18,6 @@ class CardHeader extends StatelessWidget {
               child: CardBody(0)),
         ),
       );
-    });
   }
 }
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
-import 'package:provider/provider.dart';
 
 class ItemHeaderInfo extends StatelessWidget {
   final String title, value;
@@ -46,7 +44,6 @@ class HeaderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(builder: (context, appState, _) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -63,6 +60,5 @@ class HeaderInfo extends StatelessWidget {
           ],
         ),
       );
-    });
   }
 }

@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nososova/blocs/data_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/components/item_dialog.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/utils/noso/cripto.dart';
-import 'package:provider/provider.dart';
 
 class DialogAddAddress extends StatelessWidget {
-  const DialogAddAddress({super.key});
+  final DataBloc dataBloc;
+
+  const DialogAddAddress({required this.dataBloc, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context,listen: false);
     return Column(mainAxisSize: MainAxisSize.min, children: [
       ListView(
         shrinkWrap: true,
@@ -28,7 +28,7 @@ class DialogAddAddress extends StatelessWidget {
               () {
             Address? wallet = _generateKeysPair();
             if (wallet != null) {
-              appState.addWallet(wallet);
+              dataBloc.add(AddWallet(wallet));
             }
             Navigator.pop(context);
           }),

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nososova/database/database.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
-import 'package:provider/provider.dart';
 
-import 'home_page.dart';
+import 'main_page.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -19,18 +21,24 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AppState>(
-          create: (context) => AppState(MyDatabase()),
-        ),
-        // You can add more providers here if needed
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: HomePage(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<DataBloc>(
+            create: (context) {
+              final dataBloc = locator<DataBloc>();
+              dataBloc.add(FetchAddress());
+              return dataBloc;
+            },
+          ),
+          BlocProvider<AppDataBloc>(
+            create: (context) => locator<AppDataBloc>(),
+          ),
+        ],
+        child: const MainPage(),
       ),
     );
   }

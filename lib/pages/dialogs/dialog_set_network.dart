@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/debug_info_page.dart';
 import 'package:nososova/utils/colors.dart';
-import 'package:provider/provider.dart';
 
 class DialogSetNetwork extends StatelessWidget {
   const DialogSetNetwork({Key? key}) : super(key: key);
@@ -12,7 +10,7 @@ class DialogSetNetwork extends StatelessWidget {
   final TextStyle _smallTextSize = const TextStyle(fontSize: 12.0);
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context,listen: false);
+ //   final appState = Provider.of<AppState>(context,listen: false);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: Column(
@@ -29,11 +27,11 @@ class DialogSetNetwork extends StatelessWidget {
               const SizedBox(height: 20),
                Row(
                 children: [
-                  TagWidget(text: "Block : ${appState.userNode.lastblock}"),
+              //    TagWidget(text: "Block : ${appState.userNode.lastblock}"),
                  // SizedBox(width: 8.0),
                  // TagWidget(text: "Status : Connected"),
                   const SizedBox(width: 8.0),
-                  TagWidget(text: "Time : ${getNormalTime(appState.userNode.utcTime)}")
+           //       TagWidget(text: "Time : ${getNormalTime(appState.userNode.utcTime)}")
                 ],
               ),
               const SizedBox(height: 20),
@@ -46,7 +44,8 @@ class DialogSetNetwork extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                              Text(
-                              "${appState.userNode.seed.ip}:${appState.userNode.seed.port.toString()}",
+                     //         "${appState.userNode.seed.ip}:${appState.userNode.seed.port.toString()}",
+                               "t",
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 5),
@@ -59,7 +58,8 @@ class DialogSetNetwork extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    "Ping: ${appState.userNode.seed.ping.toString()} ms",
+                                //    "Ping: ${appState.userNode.seed.ping.toString()} ms",
+                                    "t",
                                     style: _smallTextSize,
                                   )
                                 ])

@@ -7,14 +7,14 @@ import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/pages/wallets/wallets_page.dart';
 import 'package:nososova/utils/colors.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  MainPageState createState() => MainPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const WalletsPage(),
@@ -30,6 +30,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(extendBodyBehindAppBar: true,
       appBar: AppBar(elevation: 0,
         title: const NetworkInfo(),

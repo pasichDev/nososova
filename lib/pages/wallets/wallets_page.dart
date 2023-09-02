@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
 import 'package:nososova/pages/wallets/screens/card_header.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_add_address.dart';
 import 'package:nososova/pages/wallets/screens/list_wallets.dart';
 import 'package:nososova/utils/colors.dart';
-import 'package:provider/provider.dart';
 
 class WalletsPage extends StatelessWidget {
   const WalletsPage({super.key});
@@ -13,8 +13,7 @@ class WalletsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppState>(
-      builder: (context, appState, _) {
+
         return Scaffold(
           appBar: null,
           body: Column(
@@ -26,12 +25,12 @@ class WalletsPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 10.0),
                   child: const HeaderMyWallets()),
-              const ListWallets(),
+             const ListWallets(), // Ваш віджет
+
             ],
           ),
         );
-      },
-    );
+
   }
 }
 
@@ -55,7 +54,7 @@ class HeaderMyWallets extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.wallet, color: CustomColors.primaryColor),
                 onPressed: () {
-                  _showBottomSheetAddMyWallets(context);
+                  _showBottomSheetAddMyWallets(context, BlocProvider.of<DataBloc>(context));
                 }),
             IconButton(
                 icon: const Icon(Icons.more_horiz, color: CustomColors.primaryColor),
@@ -69,13 +68,16 @@ class HeaderMyWallets extends StatelessWidget {
   }
 }
 
-void _showBottomSheetAddMyWallets(BuildContext context) {
+void _showBottomSheetAddMyWallets(BuildContext context, DataBloc dataBloc) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
-      return const DialogAddAddress();
+      return DialogAddAddress(dataBloc: dataBloc);
     },
   );
 }
+
+
+
 
 
