@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/app_state.dart';
-import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
-import 'package:provider/provider.dart';
 
 class DebugInfoPage extends StatefulWidget {
   const DebugInfoPage({super.key});
@@ -24,9 +20,10 @@ class QRScanScreenState extends State<DebugInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context, listen: false);
+   // final appState = Provider.of<AppState>(context, listen: false);
 
-    return Scaffold(
+    return Container();
+   /* return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.debugInfo),
           backgroundColor: Colors.transparent,
@@ -53,5 +50,7 @@ class QRScanScreenState extends State<DebugInfoPage> {
             ],
           )),
     );
+
+    */
   }
 }

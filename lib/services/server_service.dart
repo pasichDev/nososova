@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nososova/network/models/node_info.dart';
-import 'package:nososova/network/models/seed.dart';
-import 'package:nososova/network/network_const.dart';
+import 'package:nososova/utils/network/models/node_info.dart';
+import 'package:nososova/utils/network/models/seed.dart';
+import 'package:nososova/utils/network/network_const.dart';
 import 'package:nososova/utils/noso/parse.dart';
 
 class ServerService {
@@ -22,38 +22,15 @@ class ServerService {
     Seed(ip: "81.22.38.101"),
   ];
 
-  final List<Seed> _testNodes = [
-    Seed(ip: "20.199.50.27"),
-  ];
-
-
   Future<Socket> _connectSocket(Seed seed) async {
     return Socket.connect(seed.ip, seed.port,
         timeout: const Duration(seconds: NetworkConst.durationTimeOut));
   }
 
-  Future<Seed> checkSeed() async {
-    for (var seed in _testNodes) {
+  Future<Seed> checkSeeds() async {
+    for (var seed in _defaultSeed) {
       try {
-        final clientSocket = await _connectSocket(seed);
-        final startTime = DateTime.now().millisecondsSinceEpoch;
-        clientSocket.write(NetworkRequest.nodeStatus);
-        final responseBytes = <int>[];
-        await for (var byteData in clientSocket) {
-          responseBytes.addAll(byteData);
-        }
-        final endTime = DateTime.now().millisecondsSinceEpoch;
-        final responseTime = endTime - startTime;
-
-        await clientSocket.close();
-
-        if (responseBytes.isNotEmpty) {
-          if (kDebugMode) {
-            print("Server response time: $responseTime ms");
-          }
-          seed.ping = responseTime;
-          seed.online = true;
-        }
+        seed = await _testPingNode(seed);
       } on TimeoutException catch (_) {
         if (kDebugMode) {
           print("Connection timed out. Check server availability.");
@@ -78,9 +55,54 @@ class ServerService {
       // debugInfo.add(
       //     "The smallest seed with the lowest ping is selected  ${_selectUseSeed.ip}");
     } else {
-      return checkSeed();
+      return checkSeeds();
       //  debugInfo.add("No working seeds were found");
     }
+  }
+
+  Future<Seed> _testPingNode(Seed seed) async {
+    final clientSocket = await _connectSocket(seed);
+    final startTime = DateTime.now().millisecondsSinceEpoch;
+    clientSocket.write(NetworkRequest.nodeStatus);
+    final responseBytes = <int>[];
+    await for (var byteData in clientSocket) {
+      responseBytes.addAll(byteData);
+    }
+    final endTime = DateTime.now().millisecondsSinceEpoch;
+    final responseTime = endTime - startTime;
+
+    await clientSocket.close();
+
+    if (responseBytes.isNotEmpty) {
+      if (kDebugMode) {
+        print("Server response time: $responseTime ms");
+      }
+      seed.ping = responseTime;
+      seed.online = true;
+    }
+    return seed;
+  }
+
+  Future<Seed> testConnectionNode(Seed seed) async {
+    try {
+      seed = await _testPingNode(seed);
+    } on TimeoutException catch (_) {
+      if (kDebugMode) {
+        print("Connection timed out. Check server availability.");
+      }
+      seed.online = false;
+    } on SocketException catch (e) {
+      if (kDebugMode) {
+        print("SocketException: ${e.message}");
+      }
+      seed.online = false;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Unhandled Exception: $e");
+      }
+      seed.online = false;
+    }
+    return seed;
   }
 
   Future<NodeInfo> fetchNodeInfo(Seed seedActive) async {

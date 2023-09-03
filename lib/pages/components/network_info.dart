@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/network/network_const.dart';
 import 'package:nososova/pages/dialogs/dialog_set_network.dart';
+import 'package:nososova/utils/network/network_const.dart';
 
 class NetworkInfo extends StatelessWidget {
 

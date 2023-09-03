@@ -1,5 +1,5 @@
-import 'package:nososova/network/models/node_info.dart';
-import 'package:nososova/network/models/seed.dart';
+import 'package:nososova/utils/network/models/node_info.dart';
+import 'package:nososova/utils/network/models/seed.dart';
 
 class NosoParse {
  static NodeInfo parseResponseNode(List<int> response, Seed seedActive){

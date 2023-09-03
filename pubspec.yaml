@@ -24,6 +24,7 @@ dependencies:
   path: ^1.8.3
   bloc: ^8.1.2
   get_it: ^7.6.2
+  shared_preferences: ^2.2.1
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.0
