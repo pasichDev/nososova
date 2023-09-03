@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/database/database.dart';
-import 'package:nososova/database/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/models/address_object.dart';
 import 'package:nososova/pages/components/decoration/standart_gradient_decoration.dart';
 import 'package:nososova/pages/dialogs/dialog_search_address.dart';
 import 'package:nososova/pages/dialogs/dialog_send_address.dart';

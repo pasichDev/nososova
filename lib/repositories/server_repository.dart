@@ -1,7 +1,7 @@
 
+import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/seed.dart';
 import 'package:nososova/services/server_service.dart';
-import 'package:nososova/utils/network/models/node_info.dart';
-import 'package:nososova/utils/network/models/seed.dart';
 
 class ServerRepository {
   final ServerService _serverService;

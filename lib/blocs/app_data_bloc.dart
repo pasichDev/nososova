@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/seed.dart';
 import 'package:nososova/repositories/local_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/services/shared_service.dart';
-import 'package:nososova/utils/network/models/node_info.dart';
-import 'package:nososova/utils/network/models/seed.dart';
 
 abstract class AppDataEvent {}
 

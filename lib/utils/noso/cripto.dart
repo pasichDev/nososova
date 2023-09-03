@@ -4,8 +4,8 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:nososova/const.dart';
-import 'package:nososova/database/models/address_object.dart';
-import 'package:nososova/database/models/objects.dart';
+import 'package:nososova/models/address_object.dart';
+import 'package:nososova/utils/noso/noso_objects.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
 import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/ecc/curves/secp256k1.dart';

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nososova/utils/network/models/node_info.dart';
-import 'package:nososova/utils/network/models/seed.dart';
+import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/network/network_const.dart';
 import 'package:nososova/utils/noso/parse.dart';
 

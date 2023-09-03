@@ -1,4 +1,4 @@
-import 'package:nososova/utils/network/models/seed.dart';
+import 'package:nososova/models/seed.dart';
 
 class NodeInfo {
   Seed seed;
