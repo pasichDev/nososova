@@ -8,7 +8,6 @@ final class NetworkRequest {
 class StatusConnectNodes {
   static const int statusConnected = 1;
   static const int statusError = 0;
- // static const int statusNoConnected = -1;
   static const int statusLoading = 2;
 
  static IconData getStatusConnected(int status) {

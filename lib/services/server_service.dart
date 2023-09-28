@@ -22,28 +22,6 @@ class ServerService {
     Seed(ip: "81.22.38.101"),
   ];
 
-  /*
-   final clientSocket = await _connectSocket(seed);
-    final startTime = DateTime.now().millisecondsSinceEpoch;
-    clientSocket.write(NetworkRequest.nodeStatus);
-    final responseBytes = <int>[];
-    await for (var byteData in clientSocket) {
-      responseBytes.addAll(byteData);
-    }
-    final endTime = DateTime.now().millisecondsSinceEpoch;
-    final responseTime = endTime - startTime;
-
-    await clientSocket.close();
-
-    if (responseBytes.isNotEmpty) {
-      if (kDebugMode) {
-        print("Server response time: $responseTime ms");
-      }
-      seed.ping = responseTime;
-      seed.online = true;
-   */
-
-
   Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) async {
     final responseBytes = <int>[];
     try {

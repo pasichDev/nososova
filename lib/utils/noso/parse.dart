@@ -14,15 +14,13 @@ class NosoParse {
 
       for (final rawNodeInfo in tokens) {
         final sanitizedNodeInfo =
-        rawNodeInfo.replaceAll(':', ' ').replaceAll(';', ' ');
+            rawNodeInfo.replaceAll(':', ' ').replaceAll(';', ' ');
         final nodeValues = sanitizedNodeInfo.split(' ');
 
         if (nodeValues.length >= 4) {
           final nodeInfo = Seed()
             ..ip = nodeValues[0]
-            ..port = int.tryParse(nodeValues[1])!
-            ..nosoAddress = nodeValues[2]
-            ..count = int.tryParse(nodeValues[3]);
+            ..port = int.tryParse(nodeValues[1])!;
 
           resultMNList.add(nodeInfo);
           parsedData.write('${nodeInfo.ip}:${nodeInfo.port}|');
@@ -32,8 +30,6 @@ class NosoParse {
 
     return parsedData.toString();
   }
-
-
 
   static NodeInfo parseResponseNode(List<int> response, Seed seedActive) {
     List<String> values = String.fromCharCodes(response).split(" ");
@@ -49,9 +45,8 @@ class NosoParse {
     );
   }
 
-
   static String getRandomNode(String? inputString) {
-    if(inputString == null){
+    if (inputString == null) {
       return "127.0.0.1:8080";
     }
 

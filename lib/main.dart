@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/blocs/debug_block.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
               return debugBloc;
             },
           ),
-          BlocProvider<DataBloc>(
+          BlocProvider<WalletBloc>(
             create: (context) {
-              final dataBloc = locator<DataBloc>();
+              final dataBloc = locator<WalletBloc>();
               dataBloc.add(FetchAddress());
               return dataBloc;
             },

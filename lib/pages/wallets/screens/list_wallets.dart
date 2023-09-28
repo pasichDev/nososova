@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_wallet_info.dart';
 import 'package:nososova/pages/wallets/screens/item_wallet_tile.dart';
@@ -10,7 +10,7 @@ class ListWallets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataBloc, DataState>(
+    return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
 
           final wallets = state.address;
@@ -27,7 +27,7 @@ class ListWallets extends StatelessWidget {
                     return AddressListTile(
                       address: address,
                       onButtonClick: () {
-                        _showBottomSheet(context, address, BlocProvider.of<DataBloc>(context));
+                        _showBottomSheet(context, address, BlocProvider.of<WalletBloc>(context));
                       },
                     );
                   }));
@@ -37,13 +37,13 @@ class ListWallets extends StatelessWidget {
   }
 }
 
-void _showBottomSheet(BuildContext context, Address adr, DataBloc dataBloc) {
+void _showBottomSheet(BuildContext context, Address adr, WalletBloc dataBloc) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
       return AddressInfo(
         address: adr,
-        dataBloc: dataBloc,
+        walletBloc: dataBloc,
       );
     },
   );

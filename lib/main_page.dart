@@ -32,41 +32,63 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(extendBodyBehindAppBar: true,
-      appBar: AppBar(elevation: 0,
-        title:   NetworkInfo(nodeStatusDialog: (){
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        title: NetworkInfo(nodeStatusDialog: () {
           showModalBottomSheet(
             context: context,
             builder: (_) {
-              return   DialogInfoNetwork(parentContext: context);
+              return DialogInfoNetwork(parentContext: context);
             },
           );
         }),
         actions: [
-          if (Platform.isAndroid || Platform.isIOS)
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner_outlined), onPressed: () {
-            Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const QRScanScreen())
-            );
-          },),
-          IconButton(icon: const Icon(Icons.settings), onPressed: () {},),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                if (Platform.isAndroid || Platform.isIOS)
+                  IconButton(
+                    icon: const Icon(Icons.qr_code_scanner_outlined),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const QRScanScreen()));
+                    },
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {},
+                )
+              ],
+            ),
+          ),
         ],
-        backgroundColor: Colors.transparent,),
+        backgroundColor: Colors.transparent,
+      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: CustomColors.primaryColor,
         items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: const Icon(Icons.wallet),
-          label: AppLocalizations.of(context)!.wallets,),
-        BottomNavigationBarItem(icon: const Icon(Icons.import_export_outlined),
-          label: AppLocalizations.of(context)!.payments,),
-        BottomNavigationBarItem(icon: const Icon(Icons.computer),
-          label: AppLocalizations.of(context)!.node,),
-      ], currentIndex: _selectedIndex, onTap: _onItemTapped,),);
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.wallet),
+            label: AppLocalizations.of(context)!.wallets,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.import_export_outlined),
+            label: AppLocalizations.of(context)!.payments,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.computer),
+            label: AppLocalizations.of(context)!.node,
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+    );
   }
-
-
-
 }
-

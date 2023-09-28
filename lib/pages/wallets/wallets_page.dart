@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/wallets/screens/card_header.dart';
 import 'package:nososova/pages/wallets/screens/dialogs/dialog_add_address.dart';
@@ -54,7 +54,7 @@ class HeaderMyWallets extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.wallet, color: CustomColors.primaryColor),
                 onPressed: () {
-                  _showBottomSheetAddMyWallets(context, BlocProvider.of<DataBloc>(context));
+                  _showBottomSheetAddMyWallets(context, BlocProvider.of<WalletBloc>(context));
                 }),
             IconButton(
                 icon: const Icon(Icons.more_horiz, color: CustomColors.primaryColor),
@@ -68,11 +68,11 @@ class HeaderMyWallets extends StatelessWidget {
   }
 }
 
-void _showBottomSheetAddMyWallets(BuildContext context, DataBloc dataBloc) {
+void _showBottomSheetAddMyWallets(BuildContext context, WalletBloc walletBloc) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context) {
-      return DialogAddAddress(dataBloc: dataBloc);
+      return DialogAddAddress(walletBloc: walletBloc);
     },
   );
 }

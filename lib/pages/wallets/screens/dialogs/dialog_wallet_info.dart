@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/pages/components/tiles/item_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AddressInfo extends StatelessWidget {
   final Address address;
-  final DataBloc dataBloc;
+  final WalletBloc walletBloc;
   const AddressInfo({
     Key? key,
     required this.address,
-    required this.dataBloc,
+    required this.walletBloc,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class AddressInfo extends StatelessWidget {
         shrinkWrap: true,
         children: [
           buildListItem(Icons.delete, 'Delete', () {
-            dataBloc.add(DeleteWallet(address));
+            walletBloc.add(DeleteAddress(address));
             Navigator.pop(context);
           }),
           buildListItem(Icons.send_rounded, 'Send from this address', () {}),
