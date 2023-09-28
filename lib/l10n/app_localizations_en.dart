@@ -71,7 +71,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addToWallet => 'Add to Wallet';
 
   @override
-  String get titleSetNetwork => 'Network settings';
+  String get titleInfoNetwork => 'Node info';
 
   @override
   String get debugInfo => 'Debug Information';

@@ -71,7 +71,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get addToWallet => 'Додати в гаманець';
 
   @override
-  String get titleSetNetwork => 'Налаштування мережі';
+  String get titleInfoNetwork => 'Інформація про вузол';
 
   @override
   String get debugInfo => 'Інформація про налагодження';

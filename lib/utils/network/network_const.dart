@@ -19,8 +19,6 @@ class StatusConnectNodes {
         return Icons.report_gmailerrorred_outlined;
       case StatusConnectNodes.statusLoading:
         return Icons.downloading;
-    //  case StatusConnectNodes.statusNoConnected:
-    //    return Icons.signal_wifi_connected_no_internet_4;
       default:
         return Icons.signal_wifi_connected_no_internet_4;
     }
@@ -29,5 +27,10 @@ class StatusConnectNodes {
 
 class NetworkConst {
   static const int durationTimeOut = 4;
+}
 
+class InitialNodeAlgh {
+  static const int listenDefaultNodes = 0;
+  static const int connectLastNode = 1;
+  static const int listenUserNodes = 2;
 }

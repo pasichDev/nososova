@@ -5,18 +5,12 @@ import '../../../utils/network/network_const.dart';
 
 class SeedListItem extends StatelessWidget {
   final Seed seed;
-  final VoidCallback moreSeeds;
-  final VoidCallback reConnected;
-  final bool moreSeedsOn;
   final bool isNodeListVisible;
   final int statusConnected;
 
   const SeedListItem({
     super.key,
     required this.seed,
-    required this.moreSeeds,
-    required this.reConnected,
-    this.moreSeedsOn = false,
     required this.isNodeListVisible,
     this.statusConnected = StatusConnectNodes.statusLoading,
   });
@@ -72,22 +66,9 @@ class SeedListItem extends StatelessWidget {
               _descriptions(),
             ],
           ),
-          if (moreSeedsOn)
-            IconButton(
-              icon: isNodeListVisible
-                  ? const Icon(Icons.expand_less)
-                  : const Icon(Icons.expand_more),
-              onPressed: () {
-                moreSeeds();
-              },
-            ),
         ],
       ),
-      onTap: () {
-        if (!seed.online) {
-          reConnected();
-        }
-      },
+      onTap: () {},
     );
   }
 }

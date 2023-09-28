@@ -14,8 +14,8 @@ class Seed {
     this.nosoAddress, this.count
   });
 
-  Seed tokenizer(String string){
-    if(string.length <= 5) {
+  Seed tokenizer(String? string){
+    if(string == null || string.length <= 5 ) {
       return this;
     }
     List<String> seedPart = string.split(":");

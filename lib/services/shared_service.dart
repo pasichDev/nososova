@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedService {
   static const String lastSeed = "lastSeed";
   static const String lastBlock = "lastBlock";
+  static const String listNodes = "nodesList";
 
   late SharedPreferences _prefs;
 
@@ -32,5 +33,13 @@ class SharedService {
 
   Future<int?> loadLastBlock() async {
     return _prefs.getInt(lastBlock);
+  }
+
+  Future<void> saveListNodes(String value) async {
+    await _prefs.setString(listNodes, value);
+  }
+
+  Future<String?> loadNodesList() async {
+    return _prefs.getString(listNodes);
   }
 }

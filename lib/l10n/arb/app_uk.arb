@@ -21,6 +21,6 @@
   "foundAddresses": "Знайдені адреси",
   "cancel": "Відмінити",
   "addToWallet": "Додати в гаманець",
-  "titleSetNetwork": "Налаштування мережі",
+  "titleInfoNetwork": "Інформація про вузол",
   "debugInfo": "Інформація про налагодження"
 }

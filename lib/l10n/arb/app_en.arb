@@ -21,7 +21,7 @@
   "foundAddresses": "Found addresses",
   "cancel": "Cancel",
   "addToWallet": "Add to Wallet",
-  "titleSetNetwork": "Network settings",
+  "titleInfoNetwork": "Node info",
   "debugInfo": "Debug Information"
 
 }

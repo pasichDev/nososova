@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/components/network_info.dart';
-import 'package:nososova/pages/dialogs/dialog_set_network.dart';
+import 'package:nososova/pages/dialogs/dialog_info_network.dart';
 import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
@@ -38,7 +38,7 @@ class MainPageState extends State<MainPage> {
           showModalBottomSheet(
             context: context,
             builder: (_) {
-              return   DialogSetNetwork(parentContext: context);
+              return   DialogInfoNetwork(parentContext: context);
             },
           );
         }),

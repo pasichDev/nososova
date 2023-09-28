@@ -5,26 +5,20 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/debug_info_page.dart';
 
+import '../components/seed_info_card.dart';
 import '../components/tiles/seed_tile.dart';
 
-class DialogSetNetwork extends StatefulWidget {
- // final AppDataState state;
+class DialogInfoNetwork extends StatefulWidget {
   final BuildContext parentContext;
 
-  const DialogSetNetwork({Key? key, required this.parentContext}) : super(key: key);
+  const DialogInfoNetwork({Key? key, required this.parentContext}) : super(key: key);
 
   @override
-  _DialogSetNetworkState createState() => _DialogSetNetworkState();
+  _DialogInfoNetworkState createState() => _DialogInfoNetworkState();
 }
 
+class _DialogInfoNetworkState extends State<DialogInfoNetwork> {
 
-///Реалізувати перепідключення
-
-
-class _DialogSetNetworkState extends State<DialogSetNetwork> {
-
-
-  //late AppDataBloc appDataBloc;
   bool _isNodeListVisible = false;
 
 
@@ -33,10 +27,6 @@ class _DialogSetNetworkState extends State<DialogSetNetwork> {
   Widget build(BuildContext context) {
     final appDataBloc = BlocProvider.of<AppDataBloc>(widget.parentContext);
 
- //   appDataBloc.add(FetchNodesList());
-    final nodesList = appDataBloc.state.nodesList;
-
-
   return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
@@ -44,49 +34,45 @@ class _DialogSetNetworkState extends State<DialogSetNetwork> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppLocalizations.of(context)!.titleSetNetwork,
+            AppLocalizations.of(context)!.titleInfoNetwork,
             style: const TextStyle(
-              fontSize: 22.0,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
           ),
+
           const SizedBox(height: 20),
           Row(
             children: [
-              TagWidget(text: "Block : ${appDataBloc.state.nodeInfo.lastblock}"),
-              const SizedBox(width: 8.0),
-              TagWidget(
-                  text:
-                      "Time : ${getNormalTime(appDataBloc.state.nodeInfo.utcTime)}")
+              Expanded(
+                child: SeedListItem(
+                  seed: appDataBloc.state.seedActive,
+                  isNodeListVisible: _isNodeListVisible,
+                  statusConnected: appDataBloc.state.statusConnected,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.restart_alt_outlined),
+                onPressed: () {
+                  appDataBloc.add(ReconnectSeed());
+                },
+              ),
+              IconButton(
+                icon: _isNodeListVisible
+                    ? const Icon(Icons.expand_less)
+                    : const Icon(Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    _isNodeListVisible = !_isNodeListVisible;
+                  });
+                },
+              ),
             ],
           ),
-          const SizedBox(height: 20),
-          SeedListItem(
-           seed: appDataBloc.state.seedActive,
-            moreSeeds: () {
-              setState(() {
-                _isNodeListVisible = !_isNodeListVisible;
-              });
-            },
-            reConnected: (){
-             // appDataBloc.add(ReconnectSeed());
-            },
-            moreSeedsOn: true,
-            isNodeListVisible: _isNodeListVisible,
-            statusConnected: appDataBloc.state.statusConnected,
-          ),
           if (_isNodeListVisible) ...[
-            ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 0.0),
-                itemCount: nodesList.length,
-                itemBuilder: (context, index) {
-                  final node = nodesList[index];
-                  return ListTile(title: Text(node.toTokenizer()));
-                })
+            SeedInfoCard(nodeInfo : appDataBloc.state.nodeInfo)
           ],
-          if (!_isNodeListVisible) ...[
+        //  if (!_isNodeListVisible) ...[
             ListTile(
               leading: const Icon(Icons.bug_report_outlined),
               title: Row(
@@ -108,7 +94,7 @@ class _DialogSetNetworkState extends State<DialogSetNetwork> {
                 );
               },
             ),
-          ]
+       //   ]
         ],
       ),
     );

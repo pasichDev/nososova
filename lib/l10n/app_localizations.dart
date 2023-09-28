@@ -225,11 +225,11 @@ abstract class AppLocalizations {
   /// **'Add to Wallet'**
   String get addToWallet;
 
-  /// No description provided for @titleSetNetwork.
+  /// No description provided for @titleInfoNetwork.
   ///
   /// In en, this message translates to:
-  /// **'Network settings'**
-  String get titleSetNetwork;
+  /// **'Node info'**
+  String get titleInfoNetwork;
 
   /// No description provided for @debugInfo.
   ///

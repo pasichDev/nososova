@@ -1,5 +1,6 @@
 
 import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/services/server_service.dart';
 
@@ -8,19 +9,14 @@ class ServerRepository {
 
   ServerRepository(this._serverService);
 
-  Future<Seed> listenNodes() {
-    return _serverService.checkSeeds();
+  Future<ResponseNode> listenNodes() {
+    return _serverService.testsListDefaultSeeds();
+  }
+  Future<ResponseNode> testNode(Seed seed) {
+    return _serverService.testLastSeed(seed);
+  }
+  Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) {
+    return _serverService.fetchNode(command, seed);
   }
 
-  Future<NodeInfo> fetchNode(Seed seedActive) {
-    return _serverService.fetchNodeInfo(seedActive);
-  }
-
-  Future<List<Seed>> fetchNodeList(Seed seedActive) {
-    return _serverService.fetchNodesList(seedActive);
-  }
-
-  Future<Seed> testNode(Seed seed) {
-    return _serverService.testConnectionNode(seed);
-  }
 }

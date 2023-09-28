@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/data_bloc.dart';
+import 'package:nososova/blocs/debug_block.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
@@ -27,6 +28,13 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: MultiBlocProvider(
         providers: [
+          BlocProvider<DebugBloc>(
+            create: (context) {
+              final debugBloc = locator<DebugBloc>();
+             // dataBloc.add(FetchAddress());
+              return debugBloc;
+            },
+          ),
           BlocProvider<DataBloc>(
             create: (context) {
               final dataBloc = locator<DataBloc>();

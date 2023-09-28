@@ -20,4 +20,12 @@ class SharedRepository {
   Future<int?> loadLastBlock() async {
     return _sharedService.loadLastBlock();
   }
+
+  Future<void> saveNodesList(String nodesList) async {
+    await _sharedService.saveListNodes(nodesList);
+  }
+
+  Future<String?> loadNodesList() async {
+    return _sharedService.loadNodesList();
+  }
 }
