@@ -18,8 +18,28 @@ class NodeInfo {
     this.delta = 0,
     this.branch = "",
     this.version = "",
-    this.utcTime  = 0,
+    this.utcTime = 0,
   });
 
-
+  NodeInfo copyWith({
+    Seed? seed,
+    int? connections,
+    int? lastblock,
+    int? pendings,
+    int? delta,
+    String? branch,
+    String? version,
+    int? utcTime,
+  }) {
+    return NodeInfo(
+      seed: seed ?? this.seed,
+      connections: connections ?? this.connections,
+      lastblock: lastblock ?? this.lastblock,
+      pendings: pendings ?? this.pendings,
+      delta: delta ?? this.delta,
+      branch: branch ?? this.branch,
+      version: version ?? this.version,
+      utcTime: utcTime ?? this.utcTime,
+    );
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/blocs/data_bloc.dart';
 import 'package:nososova/database/database.dart';
-import 'package:nososova/pages/components/item_dialog.dart';
+import 'package:nososova/pages/components/tiles/item_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AddressInfo extends StatelessWidget {

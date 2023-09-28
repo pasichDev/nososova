@@ -5,7 +5,7 @@ import 'package:nososova/blocs/data_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/models/address_object.dart';
-import 'package:nososova/pages/components/item_dialog.dart';
+import 'package:nososova/pages/components/tiles/item_dialog.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/utils/noso/cripto.dart';
 

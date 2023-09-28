@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/pages/components/item_dialog.dart';
+import 'package:nososova/pages/components/tiles/item_dialog.dart';
 
 class DialogMore extends StatelessWidget {
 

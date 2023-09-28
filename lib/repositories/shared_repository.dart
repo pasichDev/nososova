@@ -13,11 +13,11 @@ class SharedRepository {
     return _sharedService.loadLastSeed();
   }
 
-  Future<void> saveLastBlock(String block) async {
+  Future<void> saveLastBlock(int block) async {
     await _sharedService.saveLastBlock(block);
   }
 
-  Future<String?> loadLastBlock() async {
+  Future<int?> loadLastBlock() async {
     return _sharedService.loadLastBlock();
   }
 }

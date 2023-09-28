@@ -16,6 +16,10 @@ class ServerRepository {
     return _serverService.fetchNodeInfo(seedActive);
   }
 
+  Future<List<Seed>> fetchNodeList(Seed seedActive) {
+    return _serverService.fetchNodesList(seedActive);
+  }
+
   Future<Seed> testNode(Seed seed) {
     return _serverService.testConnectionNode(seed);
   }

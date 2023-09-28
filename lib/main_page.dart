@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/components/network_info.dart';
+import 'package:nososova/pages/dialogs/dialog_set_network.dart';
 import 'package:nososova/pages/node/node_page.dart';
 import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
@@ -32,8 +34,16 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(extendBodyBehindAppBar: true,
       appBar: AppBar(elevation: 0,
-        title:  const NetworkInfo(),
+        title:   NetworkInfo(nodeStatusDialog: (){
+          showModalBottomSheet(
+            context: context,
+            builder: (_) {
+              return   DialogSetNetwork(parentContext: context);
+            },
+          );
+        }),
         actions: [
+          if (Platform.isAndroid || Platform.isIOS)
           IconButton(
             icon: const Icon(Icons.qr_code_scanner_outlined), onPressed: () {
             Navigator.push(context,
@@ -55,4 +65,8 @@ class MainPageState extends State<MainPage> {
           label: AppLocalizations.of(context)!.node,),
       ], currentIndex: _selectedIndex, onTap: _onItemTapped,),);
   }
+
+
+
 }
+

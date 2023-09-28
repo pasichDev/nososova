@@ -138,4 +138,39 @@ class ServerService {
     }
     return NodeInfo(seed: seedActive);
   }
+
+
+  Future<List<Seed>> fetchNodesList(Seed seedActive) async {
+    try {
+      final clientSocket = await _connectSocket(seedActive);
+      clientSocket.write(NetworkRequest.nodeList);
+      final responseBytes = <int>[];
+      await for (var byteData in clientSocket) {
+        responseBytes.addAll(byteData);
+      }
+      await clientSocket.close();
+      /*   debugInfo
+          .add("Information about the status of the node has been received");
+      debugInfo.add("Seed connected -> ${_selectUseSeed.ip}");
+
+    */
+
+      if (responseBytes.isNotEmpty) {
+        return NosoParse.parseMNString(String.fromCharCodes(responseBytes));
+      }
+    } on TimeoutException catch (_) {
+      if (kDebugMode) {
+        print("Connection timed out. Check server availability.");
+      }
+    } on SocketException catch (e) {
+      if (kDebugMode) {
+        print("SocketException: ${e.message}");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Unhandled Exception: $e");
+      }
+    }
+    return List.empty();
+  }
 }

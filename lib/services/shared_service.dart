@@ -18,19 +18,19 @@ class SharedService {
     return instance;
   }
 
-  Future<void> saveLastSeed(String ipPort) async {
-    await _prefs.setString(lastSeed, ipPort);
+  Future<void> saveLastSeed(String value) async {
+    await _prefs.setString(lastSeed, value);
   }
 
   Future<String?> loadLastSeed() async {
     return _prefs.getString(lastSeed);
   }
 
-  Future<void> saveLastBlock(String lastBlock) async {
-    await _prefs.setString(lastBlock, lastBlock);
+  Future<void> saveLastBlock(int value) async {
+    await _prefs.setInt(lastBlock, value);
   }
 
-  Future<String?> loadLastBlock() async {
-    return _prefs.getString(lastBlock);
+  Future<int?> loadLastBlock() async {
+    return _prefs.getInt(lastBlock);
   }
 }

@@ -25,29 +25,11 @@ class WalletsPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 10.0),
                 child: const HeaderMyWallets()),
-            const ListWallets(), // Ваш віджет
-
+            const ListWallets(),
           ],
         ),
 
     );
-
-        return Scaffold(
-          appBar: null,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CardHeader(),
-              Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: const HeaderMyWallets()),
-             const ListWallets(), // Ваш віджет
-
-            ],
-          ),
-        );
 
   }
 }
