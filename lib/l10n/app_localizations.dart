@@ -236,6 +236,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Debug Information'**
   String get debugInfo;
+
+  /// No description provided for @connections.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections'**
+  String get connections;
+
+  /// No description provided for @lastBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Block'**
+  String get lastBlock;
+
+  /// No description provided for @pendings.
+  ///
+  /// In en, this message translates to:
+  /// **'Pendings'**
+  String get pendings;
+
+  /// No description provided for @branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get branch;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @utcTime.
+  ///
+  /// In en, this message translates to:
+  /// **'UTC Time'**
+  String get utcTime;
+
+  /// No description provided for @pingMs.
+  ///
+  /// In en, this message translates to:
+  /// **'ms'**
+  String get pingMs;
+
+  /// No description provided for @ping.
+  ///
+  /// In en, this message translates to:
+  /// **'Ping'**
+  String get ping;
+
+  /// No description provided for @activeConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get activeConnect;
+
+  /// No description provided for @connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection..'**
+  String get connection;
+
+  /// No description provided for @errorConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error'**
+  String get errorConnection;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -75,4 +75,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get debugInfo => 'Debug Information';
+
+  @override
+  String get connections => 'Connections';
+
+  @override
+  String get lastBlock => 'Last Block';
+
+  @override
+  String get pendings => 'Pendings';
+
+  @override
+  String get branch => 'Branch';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get utcTime => 'UTC Time';
+
+  @override
+  String get pingMs => 'ms';
+
+  @override
+  String get ping => 'Ping';
+
+  @override
+  String get activeConnect => 'Connected';
+
+  @override
+  String get connection => 'Connection..';
+
+  @override
+  String get errorConnection => 'Connection error';
 }

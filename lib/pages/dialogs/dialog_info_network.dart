@@ -4,7 +4,7 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/debug_info_page.dart';
 
-import '../components/seed_info_card.dart';
+import '../components/tiles/seed_info_tile.dart';
 import '../components/tiles/seed_tile.dart';
 
 class DialogInfoNetwork extends StatefulWidget {
@@ -66,33 +66,31 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
             ],
           ),
           if (_isNodeListVisible) ...[
-            SeedInfoCard(nodeInfo: appDataBloc.state.nodeInfo)
+            SeedInfoTile(nodeInfo: appDataBloc.state.nodeInfo)
           ],
-          ListTile(
-            leading: const Icon(Icons.bug_report_outlined),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.debugInfo,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                //        const Icon(Icons.navigate_next_outlined)
-              ],
+          if (!_isNodeListVisible) ...[
+            ListTile(
+              leading: const Icon(Icons.bug_report_outlined),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.debugInfo,
+                  ),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DebugInfoPage(),
+                  ),
+                );
+              },
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DebugInfoPage(),
-                ),
-              );
-            },
-          ),
+          ],
         ],
       ),
     );
   }
-
-
 }

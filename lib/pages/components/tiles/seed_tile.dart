@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../models/seed.dart';
 import '../../../utils/network/network_const.dart';
 
@@ -17,11 +18,11 @@ class SeedListItem extends StatelessWidget {
 
   final TextStyle _smallTextSize = const TextStyle(fontSize: 12.0);
 
-  Widget _descriptions() {
+  Widget _descriptions(BuildContext context) {
     if (statusConnected == StatusConnectNodes.statusLoading) {
-      return const Text(
-        "Підключення..",
-        style: TextStyle(fontSize: 12.0),
+      return Text(
+        AppLocalizations.of(context)!.connection,
+        style: _smallTextSize,
       );
     } else {
       if (seed.online) {
@@ -29,20 +30,20 @@ class SeedListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "Status: Connected",
+              AppLocalizations.of(context)!.activeConnect,
               style: _smallTextSize,
             ),
             const SizedBox(width: 5),
             Text(
-              "Ping: ${seed.ping.toString()} ms",
+              "(${seed.ping.toString()} ${AppLocalizations.of(context)!.pingMs})",
               style: _smallTextSize,
             )
           ],
         );
       } else {
-        return const Text(
-          "Помилка при підключені, натисніть щоб спробувати ще раз",
-          style: TextStyle(fontSize: 12.0, color: Colors.redAccent),
+        return Text(
+          AppLocalizations.of(context)!.errorConnection,
+          style: const TextStyle(fontSize: 12.0, color: Colors.redAccent),
         );
       }
     }
@@ -51,7 +52,9 @@ class SeedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.computer),
+      leading: Icon(
+        StatusConnectNodes.getStatusConnected(statusConnected),
+      ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -63,12 +66,12 @@ class SeedListItem extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 5),
-              _descriptions(),
+              _descriptions(context),
             ],
           ),
         ],
       ),
-      onTap: () {},
+      onTap: null,
     );
   }
 }

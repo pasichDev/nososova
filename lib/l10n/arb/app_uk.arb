@@ -22,5 +22,16 @@
   "cancel": "Відмінити",
   "addToWallet": "Додати в гаманець",
   "titleInfoNetwork": "Інформація про вузол",
-  "debugInfo": "Інформація про налагодження"
+  "debugInfo": "Інформація про налагодження",
+  "connections": "Підключеннь",
+  "lastBlock": "Останній Блок",
+  "pendings": "В очікуванні",
+  "branch": "Гілка",
+  "version": "Версія",
+  "utcTime": "Час за UTC",
+  "pingMs": "мс",
+  "ping": "Пінг",
+  "activeConnect": "Підключенно",
+  "connection": "Підключення..",
+  "errorConnection": "Помилка при підключені"
 }

@@ -75,4 +75,37 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get debugInfo => 'Інформація про налагодження';
+
+  @override
+  String get connections => 'Підключеннь';
+
+  @override
+  String get lastBlock => 'Останній Блок';
+
+  @override
+  String get pendings => 'В очікуванні';
+
+  @override
+  String get branch => 'Гілка';
+
+  @override
+  String get version => 'Версія';
+
+  @override
+  String get utcTime => 'Час за UTC';
+
+  @override
+  String get pingMs => 'мс';
+
+  @override
+  String get ping => 'Пінг';
+
+  @override
+  String get activeConnect => 'Підключенно';
+
+  @override
+  String get connection => 'Підключення..';
+
+  @override
+  String get errorConnection => 'Помилка при підключені';
 }

@@ -22,6 +22,16 @@
   "cancel": "Cancel",
   "addToWallet": "Add to Wallet",
   "titleInfoNetwork": "Node info",
-  "debugInfo": "Debug Information"
-
+  "debugInfo": "Debug Information",
+  "connections": "Connections",
+  "lastBlock": "Last Block",
+  "pendings": "Pendings",
+  "branch": "Branch",
+  "version": "Version",
+  "utcTime": "UTC Time",
+  "pingMs": "ms",
+  "ping": "Ping",
+  "activeConnect": "Connected",
+  "connection": "Connection..",
+  "errorConnection": "Connection error"
 }
