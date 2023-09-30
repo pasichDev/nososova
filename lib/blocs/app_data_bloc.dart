@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/node.dart';
 import 'package:nososova/models/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/repositories/local_repository.dart';
@@ -9,7 +9,6 @@ import 'package:nososova/services/shared_service.dart';
 
 import '../utils/network/network_const.dart';
 import '../utils/noso/parse.dart';
-import 'debug_block.dart';
 
 abstract class AppDataEvent {}
 
@@ -24,28 +23,26 @@ class ReconnectSeed extends AppDataEvent {
 }
 
 class AppDataState {
-  final NodeInfo nodeInfo;
+  final Node node;
   final Seed seedActive;
   final int statusConnected;
 
 
   AppDataState({
     this.statusConnected = StatusConnectNodes.statusLoading,
-    NodeInfo? nodeInfo,
+    Node? node,
     Seed? seedActive,
-    List<Seed>? nodesList,
-  })  : nodeInfo = nodeInfo ?? NodeInfo(seed: Seed()),
+  })  : node = node ?? Node(seed: Seed()),
         seedActive = seedActive ?? Seed();
 
 
   AppDataState copyWith({
-    NodeInfo? nodeInfo,
+    Node? node,
     Seed? seedActive,
     int? statusConnected,
-    List<Seed>? nodesList,
   }) {
     return AppDataState(
-      nodeInfo: nodeInfo ?? this.nodeInfo,
+      node: node ?? this.node,
       seedActive: seedActive ?? this.seedActive,
       statusConnected: statusConnected ?? this.statusConnected,
     );
@@ -66,7 +63,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppDataBloc({
     required ServerRepository serverRepository,
     required LocalRepository localRepository,
-    required DebugBloc debugBloc,
   })  : _serverRepository = serverRepository,
         _localRepository = localRepository,
         super(AppDataState()) {
@@ -149,7 +145,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (response.errors != null) {
       print("error connecting save");
       emit(state.copyWith(
-          nodeInfo: state.nodeInfo.copyWith(lastblock: lastBlock),
+          node: state.node.copyWith(lastblock: lastBlock),
           statusConnected: StatusConnectNodes.statusError));
     } else {
       //якщо помилки відстуні продовжимо завнтаження інформації
@@ -167,7 +163,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       if (responseNodeInfo.value != null) {
         emit(state.copyWith(
             seedActive: response.seed,
-            nodeInfo: NosoParse.parseResponseNode(
+            node: NosoParse.parseResponseNode(
                 responseNodeInfo.value as List<int>, state.seedActive),
             statusConnected: StatusConnectNodes.statusConnected));
       }

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:nososova/models/node_info.dart';
+import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
 
 class NosoParse {
@@ -31,9 +31,9 @@ class NosoParse {
     return parsedData.toString();
   }
 
-  static NodeInfo parseResponseNode(List<int> response, Seed seedActive) {
+  static Node parseResponseNode(List<int> response, Seed seedActive) {
     List<String> values = String.fromCharCodes(response).split(" ");
-    return NodeInfo(
+    return Node(
       seed: seedActive,
       connections: int.tryParse(values[1]) ?? 0,
       lastblock: int.tryParse(values[2]) ?? 0,

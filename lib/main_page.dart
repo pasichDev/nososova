@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/pages/components/network_info.dart';
-import 'package:nososova/pages/dialogs/dialog_info_network.dart';
-import 'package:nososova/pages/node/node_page.dart';
-import 'package:nososova/pages/payments/payments_page.dart';
-import 'package:nososova/pages/qr_scan_page.dart';
-import 'package:nososova/pages/wallets/wallets_page.dart';
-import 'package:nososova/utils/colors.dart';
+import 'package:nososova/ui/components/network_info.dart';
+import 'package:nososova/ui/dialogs/dialog_info_network.dart';
+import 'package:nososova/ui/pages/node/node_page.dart';
+import 'package:nososova/ui/pages/payments/payments_page.dart';
+import 'package:nososova/ui/pages/qrscanner/qr_scan_page.dart';
+import 'package:nososova/ui/pages/wallets/wallets_page.dart';
+import 'package:nososova/ui/theme/style/colors.dart';
 
 import 'blocs/app_data_bloc.dart';
 
