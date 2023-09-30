@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/blocs/debug_block.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
@@ -28,13 +28,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<DebugBloc>(
-            create: (context) {
-              final debugBloc = locator<DebugBloc>();
-             // dataBloc.add(FetchAddress());
-              return debugBloc;
-            },
-          ),
+          BlocProvider<DebugBloc>(create: (context) => locator<DebugBloc>()),
           BlocProvider<WalletBloc>(
             create: (context) {
               final dataBloc = locator<WalletBloc>();
@@ -42,13 +36,7 @@ class MyApp extends StatelessWidget {
               return dataBloc;
             },
           ),
-          BlocProvider<AppDataBloc>(
-            create: (context) {
-              final appDataBloc = locator<AppDataBloc>();
-           //   appDataBloc.add(StartNode());
-              return appDataBloc;
-            },
-          ),
+          BlocProvider<AppDataBloc>(create: (context) => locator<AppDataBloc>()),
         ],
         child: const MainPage(),
       ),

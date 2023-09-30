@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/seed.dart';
 import '../../../utils/network/network_const.dart';
+import '../../../utils/shimmer.dart';
 
 class SeedListItem extends StatelessWidget {
   final Seed seed;
@@ -61,11 +62,31 @@ class SeedListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                seed.toTokenizer(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
+              if (statusConnected == StatusConnectNodes.statusLoading)
+                Container(
+                  margin: EdgeInsets.zero,
+                  child: ShimmerPro.sized(
+                    depth: 10,
+                    scaffoldBackgroundColor: Colors.grey.shade100,
+                    width: 150,
+                    borderRadius: 1,
+                    height: 14,
+
+                  ),
+                )
+              else
+                Column(
+                  children: [
+                    Text(
+                      seed.toTokenizer(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 2),
               _descriptions(context),
             ],
           ),

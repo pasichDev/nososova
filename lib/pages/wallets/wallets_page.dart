@@ -45,7 +45,7 @@ class HeaderMyWallets extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.myAddresses,
           style: const TextStyle(
-            fontSize: 24.0,
+            fontSize: 18.0,
             fontWeight: FontWeight.bold,
           ),
         ),

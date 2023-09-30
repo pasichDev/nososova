@@ -294,7 +294,7 @@ abstract class AppLocalizations {
   /// No description provided for @connection.
   ///
   /// In en, this message translates to:
-  /// **'Connection..'**
+  /// **'Searching for an available node..'**
   String get connection;
 
   /// No description provided for @errorConnection.

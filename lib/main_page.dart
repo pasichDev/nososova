@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/pages/components/network_info.dart';
 import 'package:nososova/pages/dialogs/dialog_info_network.dart';
@@ -8,6 +9,8 @@ import 'package:nososova/pages/payments/payments_page.dart';
 import 'package:nososova/pages/qr_scan_page.dart';
 import 'package:nososova/pages/wallets/wallets_page.dart';
 import 'package:nososova/utils/colors.dart';
+
+import 'blocs/app_data_bloc.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -32,6 +35,7 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appDataBloc = BlocProvider.of<AppDataBloc>(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -39,9 +43,10 @@ class MainPageState extends State<MainPage> {
         title: NetworkInfo(nodeStatusDialog: () {
           showModalBottomSheet(
             context: context,
-            builder: (_) {
-              return DialogInfoNetwork(parentContext: context);
-            },
+            builder: (_) => BlocProvider.value(
+            value: appDataBloc,
+            child: const DialogInfoNetwork(),
+          )
           );
         }),
         actions: [

@@ -104,7 +104,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activeConnect => 'Connected';
 
   @override
-  String get connection => 'Connection..';
+  String get connection => 'Searching for an available node..';
 
   @override
   String get errorConnection => 'Connection error';

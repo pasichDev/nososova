@@ -32,6 +32,6 @@
   "pingMs": "ms",
   "ping": "Ping",
   "activeConnect": "Connected",
-  "connection": "Connection..",
+  "connection": "Searching for an available node..",
   "errorConnection": "Connection error"
 }

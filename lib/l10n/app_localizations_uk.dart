@@ -104,7 +104,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get activeConnect => 'Підключенно';
 
   @override
-  String get connection => 'Підключення..';
+  String get connection => 'Пошук доступного вузла..';
 
   @override
   String get errorConnection => 'Помилка при підключені';

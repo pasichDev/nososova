@@ -17,7 +17,8 @@ class SeedInfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.arrow_right),
-      title: Column(children: [
+      title:
+      Column(children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

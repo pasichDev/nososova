@@ -32,6 +32,6 @@
   "pingMs": "мс",
   "ping": "Пінг",
   "activeConnect": "Підключенно",
-  "connection": "Підключення..",
+  "connection": "Пошук доступного вузла..",
   "errorConnection": "Помилка при підключені"
 }

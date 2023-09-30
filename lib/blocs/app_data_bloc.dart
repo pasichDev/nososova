@@ -60,7 +60,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   final ServerRepository _serverRepository;
   final LocalRepository _localRepository;
   late SharedRepository _sharedRepository;
-  final DebugBloc _debugBloc;
+
+
 
   AppDataBloc({
     required ServerRepository serverRepository,
@@ -68,10 +69,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     required DebugBloc debugBloc,
   })  : _serverRepository = serverRepository,
         _localRepository = localRepository,
-        _debugBloc = debugBloc,
         super(AppDataState()) {
     _init();
     on<ReconnectSeed>((event, emit) async {
+      emit(state.copyWith(
+          statusConnected: StatusConnectNodes.statusLoading));
       _startNode(InitialNodeAlgh.listenUserNodes);
     });
   }
@@ -80,7 +82,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   //додати збереженя останього блоку
   void _init() async {
 
-    _debugBloc.add(AddLogString("Initialize connection and synchronization"));
+    //_debugBloc.add(AddLogString("Initialize connection and synchronization"));
     final sharedService = SharedService();
     await sharedService.init();
     _sharedRepository = SharedRepository(sharedService);
@@ -90,7 +92,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (lastSeed != null) {
 
-      _debugBloc.add(AddLogString("Attempting to connect to the last node"));
+    //  _debugBloc.add(AddLogString("Attempting to connect to the last node"));
      // print("start connect to last seed");
       //start connect to last seed
       _startNode(InitialNodeAlgh.connectLastNode);
