@@ -8,7 +8,7 @@ import '../../utils/custom_class/shimmer.dart';
 class SeedListItem extends StatelessWidget {
   final Seed seed;
   final bool isNodeListVisible;
-  final int statusConnected;
+  final StatusConnectNodes statusConnected;
 
   const SeedListItem({
     super.key,
@@ -54,7 +54,7 @@ class SeedListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-        StatusConnectNodes.getStatusConnected(statusConnected),
+        CheckConnect.getStatusConnected(statusConnected),
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

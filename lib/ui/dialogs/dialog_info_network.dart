@@ -6,6 +6,7 @@ import 'package:nososova/l10n/app_localizations.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
 import '../pages/debug/debug_info_page.dart';
+import '../theme/style/text_style.dart';
 
 
 class DialogInfoNetwork extends StatefulWidget {
@@ -29,10 +30,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
           children: [
             Text(
               AppLocalizations.of(context)!.titleInfoNetwork,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTextStyles.dialogTitle,
             ),
             const SizedBox(height: 20),
             Row(

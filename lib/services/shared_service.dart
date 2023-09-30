@@ -4,6 +4,7 @@ class SharedService {
   static const String lastSeed = "lastSeed";
   static const String lastBlock = "lastBlock";
   static const String listNodes = "nodesList";
+  static const String delaySync = "delaySync";
 
   late SharedPreferences _prefs;
 
@@ -41,5 +42,13 @@ class SharedService {
 
   Future<String?> loadNodesList() async {
     return _prefs.getString(listNodes);
+  }
+
+  Future<void> saveDelaySync(int value) async {
+    await _prefs.setInt(delaySync, value);
+  }
+
+  Future<int?> loadDelaySync() async {
+    return _prefs.getInt(delaySync);
   }
 }

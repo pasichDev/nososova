@@ -5,12 +5,8 @@ final class NetworkRequest {
   static const String nodeList = "NSLMNS\n";
 }
 
-class StatusConnectNodes {
-  static const int statusConnected = 1;
-  static const int statusError = 0;
-  static const int statusLoading = 2;
-
- static IconData getStatusConnected(int status) {
+class CheckConnect {
+  static IconData getStatusConnected(StatusConnectNodes status) {
     switch (status) {
       case StatusConnectNodes.statusConnected:
         return Icons.computer;
@@ -28,8 +24,6 @@ class NetworkConst {
   static const int durationTimeOut = 4;
 }
 
-class InitialNodeAlgh {
-  static const int listenDefaultNodes = 0;
-  static const int connectLastNode = 1;
-  static const int listenUserNodes = 2;
-}
+enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
+
+enum StatusConnectNodes { statusConnected, statusError, statusLoading }

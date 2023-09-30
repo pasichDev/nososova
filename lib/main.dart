@@ -34,7 +34,11 @@ class MyApp extends StatelessWidget {
               return dataBloc;
             },
           ),
-          BlocProvider<AppDataBloc>(create: (context) => locator<AppDataBloc>()),
+          BlocProvider<AppDataBloc>(create: (context) {
+            final appDataBloc = locator<AppDataBloc>();
+            appDataBloc.add(InitialConnect());
+            return appDataBloc;
+          }),
         ],
         child: const MainPage(),
       ),

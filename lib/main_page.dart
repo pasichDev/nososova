@@ -1,12 +1,14 @@
 import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
+import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
 import 'package:nososova/ui/pages/node/node_page.dart';
 import 'package:nososova/ui/pages/payments/payments_page.dart';
-import 'package:nososova/ui/pages/qrscanner/qr_scan_page.dart';
 import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
@@ -20,6 +22,7 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const WalletsPage(),
@@ -42,12 +45,14 @@ class MainPageState extends State<MainPage> {
         elevation: 0,
         title: NetworkInfo(nodeStatusDialog: () {
           showModalBottomSheet(
-            context: context,
-            builder: (_) => BlocProvider.value(
-            value: appDataBloc,
-            child: const DialogInfoNetwork(),
-          )
-          );
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+              ),
+              context: context,
+              builder: (_) => BlocProvider.value(
+                    value: appDataBloc,
+                    child: const DialogInfoNetwork(),
+                  ));
         }),
         actions: [
           Padding(
@@ -58,10 +63,7 @@ class MainPageState extends State<MainPage> {
                   IconButton(
                     icon: const Icon(Icons.qr_code_scanner_outlined),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const QRScanScreen()));
+                      DialogScanQr().loadDialog(context: context);
                     },
                   ),
                 IconButton(

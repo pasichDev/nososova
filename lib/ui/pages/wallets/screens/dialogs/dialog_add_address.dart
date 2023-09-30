@@ -8,6 +8,7 @@ import 'package:nososova/models/address_object.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 import 'package:nososova/utils/noso/cripto.dart';
 
+import '../../../../theme/style/text_style.dart';
 import '../../../qrscanner/qr_scan_page.dart';
 
 
@@ -24,8 +25,7 @@ class DialogAddAddress extends StatelessWidget {
         children: [
           ListTile(
               title: Text(AppLocalizations.of(context)!.newTitle,
-                  style: const TextStyle(
-                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+                  style: AppTextStyles.dialogTitle)),
           buildListTile(Icons.add, AppLocalizations.of(context)!.genNewKeyPair,
               () {
             Address? wallet = _generateKeysPair();
@@ -36,8 +36,7 @@ class DialogAddAddress extends StatelessWidget {
           }),
           ListTile(
               title: Text(AppLocalizations.of(context)!.import,
-                  style: const TextStyle(
-                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+                  style: AppTextStyles.dialogTitle)),
           if (Platform.isAndroid || Platform.isIOS)
             buildListTile(
                 Icons.qr_code,
@@ -51,8 +50,7 @@ class DialogAddAddress extends StatelessWidget {
               AppLocalizations.of(context)!.selectFilePkw, () {}),
           ListTile(
               title: Text(AppLocalizations.of(context)!.export,
-                  style: const TextStyle(
-                      fontSize: 20.00, fontWeight: FontWeight.bold))),
+                  style: AppTextStyles.dialogTitle)),
           buildListTile(Icons.file_copy_outlined,
               AppLocalizations.of(context)!.saveFilePkw, () {}),
           const SizedBox(height: 10)

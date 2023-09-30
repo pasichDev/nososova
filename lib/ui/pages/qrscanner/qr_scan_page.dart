@@ -20,7 +20,7 @@ class QRScanScreen extends StatefulWidget {
 
 class QRScanScreenState extends State<QRScanScreen> {
   late QRViewController controller;
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QRNoso');
 
   @override
   void initState() {
@@ -89,8 +89,8 @@ class QRScanScreenState extends State<QRScanScreen> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       String data = scanData.code.toString();
-      final int qrStatus = StatusQrScan.checkQrScan(data);
-
+     // final int qrStatus = StatusQrScan.checkQrScan(data);
+/*
       if (qrStatus == StatusQrScan.qrKeys) {
         controller.pauseCamera();
         final AddressObject? address =
@@ -137,6 +137,8 @@ class QRScanScreenState extends State<QRScanScreen> {
         );
       }
 
+
+ */
 
     });
   }

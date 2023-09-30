@@ -70,6 +70,9 @@ class HeaderMyWallets extends StatelessWidget {
 
 void _showBottomSheetAddMyWallets(BuildContext context, WalletBloc walletBloc) {
   showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+    ),
     context: context,
     builder: (BuildContext context) {
       return DialogAddAddress(walletBloc: walletBloc);

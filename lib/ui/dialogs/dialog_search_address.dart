@@ -4,6 +4,7 @@ import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../pages/wallets/screens/item_wallet_tile.dart';
+import '../theme/style/text_style.dart';
 
 typedef OnCancelButtonPressed = void Function();
 typedef OnAddToWalletButtonPressed = void Function();
@@ -27,10 +28,7 @@ class DialogSearchAddress extends StatelessWidget {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Text(
             AppLocalizations.of(context)!.foundAddresses,
-            style: const TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.dialogTitle,
           ),
           const SizedBox(height: 20),
           AddressListTile(

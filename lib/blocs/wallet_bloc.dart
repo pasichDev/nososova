@@ -31,28 +31,31 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   WalletBloc({required this.serverRepository, required this.localRepository})
       : super(WalletState(address: [])) {
-    on<FetchAddress>((event, emit) async {
-      final addressStream = localRepository.fetchAddress();
-      await for (final addressList in addressStream) {
-        emit(WalletState(address: addressList));
-      }
-    });
+    on<FetchAddress>(_fetchAddresses);
+    on<DeleteAddress>(_deleteAddress);
+    on<AddAddress>(_addAddress);
+  }
 
-    on<DeleteAddress>((event, emit) async {
-      await localRepository.deleteWallet(event.address);
-      final addressStream = localRepository.fetchAddress();
-      await for (final addressList in addressStream) {
-        emit(WalletState(address: addressList));
-      }
-    });
+  void _addAddress(event, emit) async {
+    await localRepository.addWallet(event.address);
+    final addressStream = localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      emit(WalletState(address: addressList));
+    }
+  }
 
-    on<AddAddress>((event, emit) async {
-      // Викликаємо метод для додавання гаманця і оновлюємо стан
-      await localRepository.addWallet(event.address);
-      final addressStream = localRepository.fetchAddress();
-      await for (final addressList in addressStream) {
-        emit(WalletState(address: addressList));
-      }
-    });
+  void _deleteAddress(event, emit) async {
+    await localRepository.deleteWallet(event.address);
+    final addressStream = localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      emit(WalletState(address: addressList));
+    }
+  }
+
+  void _fetchAddresses(event, emit) async {
+    final addressStream = localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      emit(WalletState(address: addressList));
+    }
   }
 }

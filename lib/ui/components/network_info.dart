@@ -20,7 +20,7 @@ class NetworkInfo extends StatelessWidget {
             children: [
               IconButton(
                 icon: Icon(
-                  StatusConnectNodes.getStatusConnected(state.statusConnected),
+                  CheckConnect.getStatusConnected(state.statusConnected),
                   color: Colors.white,
                 ),
                 onPressed: () {

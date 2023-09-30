@@ -28,4 +28,12 @@ class SharedRepository {
   Future<String?> loadNodesList() async {
     return _sharedService.loadNodesList();
   }
+
+  Future<void> saveDelaySync(int nodesList) async {
+    await _sharedService.saveDelaySync(nodesList);
+  }
+
+  Future<int?> loadDelaySync() async {
+    return _sharedService.loadDelaySync();
+  }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
+import 'package:nososova/ui/tiles/dialog_tile.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import '../../../../tiles/dialog_tile.dart';
-
 
 
 class AddressInfo extends StatelessWidget {
