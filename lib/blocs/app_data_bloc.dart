@@ -169,6 +169,12 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
               responseNodeInfo.value as List<int>, state.seedActive),
           statusConnected: StatusConnectNodes.statusConnected));
     }
+
+   // ResponseNode<List<int>> respd = await _fetchNode("NSLBALANCE N44pzj8pJ6M63fmJT22QuXbqN3vSiDG\n", seed);
+
+    //print( String.fromCharCodes(respd.value as Iterable<int>));
+    //print(respd.errors);
+
   }
 
   Future<ResponseNode<List<int>>> _fetchNode(String command, Seed? seed) async {

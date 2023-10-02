@@ -9,13 +9,12 @@ import 'package:nososova/ui/tiles/dialog_tile.dart';
 import 'package:nososova/utils/noso/cripto.dart';
 
 import '../../../../theme/style/text_style.dart';
-import '../../../qrscanner/qr_scan_page.dart';
-
 
 class DialogAddAddress extends StatelessWidget {
   final WalletBloc walletBloc;
 
-  const DialogAddAddress({required this.walletBloc, Key? key}) : super(key: key);
+  const DialogAddAddress({required this.walletBloc, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +40,9 @@ class DialogAddAddress extends StatelessWidget {
             buildListTile(
                 Icons.qr_code,
                 AppLocalizations.of(context)!.scanQrCode,
-                () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const QRScanScreen()),
-                    )),
+               // () => DialogScanQr().loadDialog(context: context)
+                  () => {}
+              ),
           buildListTile(Icons.file_copy_outlined,
               AppLocalizations.of(context)!.selectFilePkw, () {}),
           ListTile(

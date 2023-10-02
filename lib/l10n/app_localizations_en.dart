@@ -108,4 +108,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorConnection => 'Connection error';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get keys => 'Keys';
+
+  @override
+  String get certificate => 'Certificate';
+
+  @override
+  String get sendFromAddress => 'Send from this address';
+
+  @override
+  String get lock => 'Lock';
+
+  @override
+  String get delete => 'Delete';
 }

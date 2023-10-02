@@ -33,5 +33,11 @@
   "ping": "Пінг",
   "activeConnect": "Підключенно",
   "connection": "Пошук доступного вузла..",
-  "errorConnection": "Помилка при підключені"
+  "errorConnection": "Помилка при підключені",
+  "address": "Адреса",
+  "keys": "Ключі",
+  "certificate": "Сертифікат",
+  "sendFromAddress": "Відправити з цієї адреси",
+  "delete": "Видалити",
+  "lock": "Заблокувати"
 }

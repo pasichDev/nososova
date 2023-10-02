@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../database/database.dart';
@@ -14,31 +16,32 @@ import 'dialog_search_address.dart';
 import 'dialog_send_address.dart';
 
 class DialogScanQr {
-  void loadDialog(
-      {BuildContext? context}) {
+  void loadDialog({BuildContext? context, required AppDataBloc appDataBloc}) {
     assert(context != null);
 
     showDialog(
         context: context!,
-        builder: (context) => Container(
-              alignment: Alignment.center,
+        builder: (context) => BlocProvider.value(
+              value: appDataBloc,
               child: Container(
-                height: 400,
-                width: 600,
-                margin: const EdgeInsets.all(20),
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                alignment: Alignment.center,
+                child: Container(
+                  height: 400,
+                  width: 600,
+                  margin: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const ScannerWidget(),
                 ),
-                child: const ScannerWidget(),
               ),
             ));
   }
 }
 
 class ScannerWidget extends StatefulWidget {
-
   const ScannerWidget({super.key});
 
   @override
@@ -68,26 +71,28 @@ class ScannerWidgetState extends State<ScannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: _buildQrView(context),
+    return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: _buildQrView(context),
+            ),
           ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: ElevatedButton.styleFrom(
-            primary: CustomColors.primaryColor,
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: CustomColors.primaryColor,
+            ),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
-          child: Text(AppLocalizations.of(context)!.cancel),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -113,7 +118,6 @@ class ScannerWidgetState extends State<ScannerWidget> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((Barcode scanData) async {
-
       ///це все потрібно перенести в логіку блок
       ///в діалог передавати рядок з кодом
       ///а в тих діалогах вже працювати з блоком
@@ -121,10 +125,15 @@ class ScannerWidgetState extends State<ScannerWidget> {
       String data = scanData.code.toString();
       final TypeQrCode qrStatus = CheckQrCode.checkQrScan(data);
 
+
+
+
+
+
       if (qrStatus == TypeQrCode.qrKeys) {
         controller.pauseCamera();
         final AddressObject? address =
-        NosoCripto().importWalletForKeys(scanData.code.toString());
+            NosoCripto().importWalletForKeys(scanData.code.toString());
 
         if (address != null) {
           Address addressDB = Address(
@@ -140,7 +149,7 @@ class ScannerWidgetState extends State<ScannerWidget> {
                   controller.resumeCamera();
                 },
                 onAddToWalletButtonPressed: () {
-                 // _addAddress(addressDB);
+                  // _addAddress(addressDB);
                   Navigator.pop(context);
                 },
               );
@@ -149,7 +158,7 @@ class ScannerWidgetState extends State<ScannerWidget> {
         } else {
           controller.resumeCamera();
         }
-      } else if (qrStatus == TypeQrCode.qrAddress){
+      } else if (qrStatus == TypeQrCode.qrAddress) {
         controller.pauseCamera();
         showModalBottomSheet(
             context: context,
@@ -164,13 +173,7 @@ class ScannerWidgetState extends State<ScannerWidget> {
                 },
               );
             });
-            }
-
-
-
-
-
-
+      }
     });
   }
 }

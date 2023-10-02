@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:nososova/database/database.dart';
 import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
 
@@ -60,5 +61,9 @@ class NosoParse {
     } else {
       return "127.0.0.1:8080";
     }
+  }
+
+  static String getQrKeys(Address address) {
+    return "${address.publicKey} ${address.privateKey}";
   }
 }

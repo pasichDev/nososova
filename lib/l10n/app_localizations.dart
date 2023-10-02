@@ -302,6 +302,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connection error'**
   String get errorConnection;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @keys.
+  ///
+  /// In en, this message translates to:
+  /// **'Keys'**
+  String get keys;
+
+  /// No description provided for @certificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate'**
+  String get certificate;
+
+  /// No description provided for @sendFromAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Send from this address'**
+  String get sendFromAddress;
+
+  /// No description provided for @lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock'**
+  String get lock;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

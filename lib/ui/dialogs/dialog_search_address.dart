@@ -3,7 +3,7 @@ import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
-import '../pages/wallets/screens/item_wallet_tile.dart';
+import '../tiles/tile_wallet_address.dart';
 import '../theme/style/text_style.dart';
 
 typedef OnCancelButtonPressed = void Function();

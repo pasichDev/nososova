@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
@@ -63,7 +62,7 @@ class MainPageState extends State<MainPage> {
                   IconButton(
                     icon: const Icon(Icons.qr_code_scanner_outlined),
                     onPressed: () {
-                      DialogScanQr().loadDialog(context: context);
+                      DialogScanQr().loadDialog(context: context,  appDataBloc: appDataBloc);
                     },
                   ),
                 IconButton(

@@ -33,5 +33,12 @@
   "ping": "Ping",
   "activeConnect": "Connected",
   "connection": "Searching for an available node..",
-  "errorConnection": "Connection error"
+  "errorConnection": "Connection error",
+  "address": "Address",
+  "keys": "Keys",
+  "certificate": "Certificate",
+  "sendFromAddress": "Send from this address",
+  "lock": "Lock",
+  "delete": "Delete"
+
 }

@@ -108,4 +108,22 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorConnection => 'Помилка при підключені';
+
+  @override
+  String get address => 'Адреса';
+
+  @override
+  String get keys => 'Ключі';
+
+  @override
+  String get certificate => 'Сертифікат';
+
+  @override
+  String get sendFromAddress => 'Відправити з цієї адреси';
+
+  @override
+  String get lock => 'Заблокувати';
+
+  @override
+  String get delete => 'Видалити';
 }
