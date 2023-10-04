@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:nososova/models/response_node.dart';
+import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/network/network_const.dart';
 
@@ -33,6 +33,12 @@ class ServerService {
       }
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
+     // print(responseBytes);
+
+    //  print("${command} : ${ String.fromCharCodes(responseBytes)}");
+   //   if(responseBytes.isNotEmpty){
+    //    print("${command} :not respons");
+   //   }
 
       socket.close();
       if (responseBytes.isNotEmpty) {

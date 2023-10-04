@@ -3,9 +3,18 @@ import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/local_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
 
+import '../models/app/wallet.dart';
+import '../models/pending_transaction.dart';
+
 abstract class WalletEvent {}
 
 class FetchAddress extends WalletEvent {}
+
+class SyncBalance extends WalletEvent {
+  final List<PendingTransaction> pendings;
+
+  SyncBalance(this.pendings);
+}
 
 class DeleteAddress extends WalletEvent {
   final Address address;
@@ -20,9 +29,17 @@ class AddAddress extends WalletEvent {
 }
 
 class WalletState {
-  final List<Address> address;
+  final Wallet wallet;
 
-  WalletState({required this.address});
+  WalletState({Wallet? wallet}) : wallet = wallet ?? Wallet();
+
+  WalletState copyWith({
+    Wallet? wallet,
+  }) {
+    return WalletState(
+      wallet: wallet ?? this.wallet,
+    );
+  }
 }
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
@@ -30,17 +47,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final LocalRepository localRepository;
 
   WalletBloc({required this.serverRepository, required this.localRepository})
-      : super(WalletState(address: [])) {
+      : super(WalletState()) {
     on<FetchAddress>(_fetchAddresses);
     on<DeleteAddress>(_deleteAddress);
     on<AddAddress>(_addAddress);
+    on<SyncBalance>(_syncBalance);
   }
 
   void _addAddress(event, emit) async {
     await localRepository.addWallet(event.address);
     final addressStream = localRepository.fetchAddress();
     await for (final addressList in addressStream) {
-      emit(WalletState(address: addressList));
+      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
   }
 
@@ -48,14 +66,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     await localRepository.deleteWallet(event.address);
     final addressStream = localRepository.fetchAddress();
     await for (final addressList in addressStream) {
-      emit(WalletState(address: addressList));
+      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
   }
 
   void _fetchAddresses(event, emit) async {
     final addressStream = localRepository.fetchAddress();
     await for (final addressList in addressStream) {
-      emit(WalletState(address: addressList));
+      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
   }
+
+  void _syncBalance(event, emit) async {}
 }

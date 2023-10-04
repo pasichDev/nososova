@@ -42,7 +42,7 @@ class MainPageState extends State<MainPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        title: NetworkInfo(nodeStatusDialog: () {
+        title:  NetworkInfo(nodeStatusDialog: () {
           showModalBottomSheet(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),

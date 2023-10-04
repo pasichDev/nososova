@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:nososova/models/app/app_bloc_config.dart';
+import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/node.dart';
-import 'package:nososova/models/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/repositories/local_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/services/shared_service.dart';
 
+import '../models/pending_transaction.dart';
 import '../utils/network/network_const.dart';
 import '../utils/noso/parse.dart';
 
@@ -27,38 +29,38 @@ class ReconnectSeed extends AppDataEvent {
 
 class AppDataState {
   final Node node;
-  final Seed seedActive;
   final StatusConnectNodes statusConnected;
-  final ConnectivityResult connectivityResult;
+  final ConnectivityResult deviceConnectedNetworkStatus;
+
+  //wallet
+  final List<PendingTransaction> pendings;
 
   AppDataState({
     this.statusConnected = StatusConnectNodes.statusLoading,
-    this.connectivityResult = ConnectivityResult.none,
+    this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
     Seed? seedActive,
+    List<PendingTransaction>? pendings,
   })  : node = node ?? Node(seed: Seed()),
-        seedActive = seedActive ?? Seed();
+        pendings = pendings ?? [];
 
-  AppDataState copyWith({
-    Node? node,
-    Seed? seedActive,
-    StatusConnectNodes? statusConnected,
-    ConnectivityResult? connectivityResult,
-  }) {
+  AppDataState copyWith(
+      {Node? node,
+      StatusConnectNodes? statusConnected,
+      ConnectivityResult? deviceConnectedNetworkStatus,
+      List<PendingTransaction>? pendings}) {
     return AppDataState(
       node: node ?? this.node,
-      seedActive: seedActive ?? this.seedActive,
       statusConnected: statusConnected ?? this.statusConnected,
-      connectivityResult: connectivityResult ?? this.connectivityResult,
+      deviceConnectedNetworkStatus:
+          deviceConnectedNetworkStatus ?? this.deviceConnectedNetworkStatus,
+      pendings: pendings ?? this.pendings,
     );
   }
 }
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
-  late String? _lastSeed;
-  late String? _nodesList;
-  late int? _lastBlock;
-  late int? _delaySync;
+  AppBlocConfig appBlocConfig = AppBlocConfig();
   late Timer? _timerDelaySync;
 
   final ServerRepository _serverRepository;
@@ -72,7 +74,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   })  : _serverRepository = serverRepository,
         _localRepository = localRepository,
         super(AppDataState()) {
-    Connectivity().onConnectivityChanged.listen((result) {});
+    Connectivity().onConnectivityChanged.listen((result) {
+      if (result == ConnectivityResult.none) {}
+    });
     on<ReconnectSeed>(_reconnectNode);
     on<InitialConnect>(_init);
   }
@@ -82,15 +86,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     final sharedService = SharedService();
     await sharedService.init();
     _sharedRepository = SharedRepository(sharedService);
-    _lastSeed = await _sharedRepository.loadLastSeed();
-    _nodesList = await _sharedRepository.loadNodesList();
-    _lastBlock = await _sharedRepository.loadLastBlock();
-    _delaySync = await _sharedRepository.loadDelaySync();
-    _delaySync ??= 15;
+    await loadConfig();
 
-    if (_lastSeed != null) {
+    if (appBlocConfig.lastSeed != null) {
       _selectNode(InitialNodeAlgh.connectLastNode);
-    } else if (_nodesList != null) {
+    } else if (appBlocConfig.nodesList != null) {
       _selectNode(InitialNodeAlgh.listenUserNodes);
     } else {
       _selectNode(InitialNodeAlgh.listenDefaultNodes);
@@ -99,7 +99,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   Future<void> _reconnectNode(AppDataEvent e, Emitter emit) async {
     emit(state.copyWith(statusConnected: StatusConnectNodes.statusLoading));
-    await _selectNode(InitialNodeAlgh.listenUserNodes);
+    await _selectNode(InitialNodeAlgh.connectLastNode);
   }
 
   /// Підключення та вибір ноди
@@ -109,8 +109,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     switch (initNodeAlgh) {
       case InitialNodeAlgh.connectLastNode:
         {
-          response =
-              await _serverRepository.testNode(Seed().tokenizer(_lastSeed));
+          response = await _serverRepository
+              .testNode(Seed().tokenizer(appBlocConfig.lastSeed));
           if (response.errors != null) {
             await _selectNode(InitialNodeAlgh.listenDefaultNodes);
             return;
@@ -119,7 +119,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         break;
       case InitialNodeAlgh.listenUserNodes:
         {
-          var seed = Seed().tokenizer(NosoParse.getRandomNode(_nodesList));
+          var seed = Seed()
+              .tokenizer(NosoParse.getRandomNode(appBlocConfig.nodesList));
           response = await _serverRepository.testNode(seed);
           if (response.errors == null) {
             _sharedRepository.saveLastSeed(response.seed.toTokenizer());
@@ -142,47 +143,76 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (response.errors != null) {
       emit(state.copyWith(
-          node: state.node.copyWith(lastblock: _lastBlock),
+          node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
           statusConnected: StatusConnectNodes.statusError));
     } else {
-      _syncApp(response.seed);
-      _timerDelaySync = Timer.periodic(Duration(seconds: _delaySync!), (timer) {
-        _syncApp(response.seed);
+      _syncDataToNode(response.seed);
+      _timerDelaySync =
+          Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
+            _syncDataToNode(response.seed);
       });
     }
   }
 
-  Future<void> _syncApp(Seed seed) async {
+
+  Future<void> _syncDataToNode(Seed seed) async {
     ResponseNode<List<int>> responseNodeInfo =
         await _fetchNode(NetworkRequest.nodeStatus, seed);
-    ResponseNode<List<int>> responseNodeList =
-        await _fetchNode(NetworkRequest.nodeList, seed);
+    ResponseNode<List<int>> responsePendings =
+        await _fetchNode(NetworkRequest.pendingsList, seed);
 
-    if (responseNodeList.value != null) {
-      _sharedRepository.saveNodesList(
-          NosoParse.parseMNString(responseNodeList.value as List<int>));
+    List<PendingTransaction> pendingsOutput = [];
+    final Node nodeOutput = NosoParse.parseResponseNode(
+        responseNodeInfo.value, responseNodeInfo.seed);
+
+    if (state.node.lastblock != nodeOutput.lastblock) {
+      //Оновлення іншої інфи якщо пербудувався блок
+      ResponseNode<List<int>> responseNodeList =
+          await _fetchNode(NetworkRequest.nodeList, seed);
+      if (responseNodeList.value != null) {
+        _sharedRepository.saveNodesList(
+            NosoParse.parseMNString(responseNodeList.value));
+      }
+
+      // TODO: Ось тут має бути оновленя zipsummary
+    } else {
+      //Оновлення статусу ноди якщо немає зміни блоку
+      if (responsePendings.errors == null) {
+        //pendingsOutput = NosoParse.parsePendings(responsePendings.value);
+
+        // TODO: Ось тут потрібно отримати список як вище і відправити його через подію в walletBloc (SyncBalance)
+      }
     }
+
     if (responseNodeInfo.value != null) {
       emit(state.copyWith(
-          seedActive: seed,
-          node: NosoParse.parseResponseNode(
-              responseNodeInfo.value as List<int>, state.seedActive),
+          node: nodeOutput,
           statusConnected: StatusConnectNodes.statusConnected));
     }
-
-   // ResponseNode<List<int>> respd = await _fetchNode("NSLBALANCE N44pzj8pJ6M63fmJT22QuXbqN3vSiDG\n", seed);
-
-    //print( String.fromCharCodes(respd.value as Iterable<int>));
-    //print(respd.errors);
-
   }
 
+  /// The base method for referencing a request to a node
   Future<ResponseNode<List<int>>> _fetchNode(String command, Seed? seed) async {
-    seed ??= state.seedActive;
+    seed ??= state.node.seed;
     if (state.statusConnected == StatusConnectNodes.statusError) {
       return ResponseNode(errors: "You are not connected to nodes.");
     }
     return await _serverRepository.fetchNode(command, seed);
+  }
+
+
+  /// Request data from sharedPrefs
+  Future<void> loadConfig() async {
+    var lastSeed = await _sharedRepository.loadLastSeed();
+    var nodesList = await _sharedRepository.loadNodesList();
+    var lastBlock = await _sharedRepository.loadLastBlock();
+    var delaySync = await _sharedRepository.loadDelaySync();
+
+    appBlocConfig = appBlocConfig.copyWith(
+        lastSeed: lastSeed,
+        nodesList: nodesList,
+        lastBlock: lastBlock,
+        delaySync: delaySync);
   }
 
   @override

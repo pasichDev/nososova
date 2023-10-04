@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 final class NetworkRequest {
   static const String nodeStatus = "NODESTATUS\n";
   static const String nodeList = "NSLMNS\n";
+  static const String pendingsList = "NSLPEND\n";
 }
 
 class CheckConnect {
@@ -21,7 +22,8 @@ class CheckConnect {
 }
 
 class NetworkConst {
-  static const int durationTimeOut = 4;
+  static const int durationTimeOut = 5;
+  static const int delaySync = 15;
 }
 
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }

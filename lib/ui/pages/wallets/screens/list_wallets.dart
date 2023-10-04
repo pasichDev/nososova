@@ -13,7 +13,7 @@ class ListWallets extends StatelessWidget {
     var walletBloc = BlocProvider.of<WalletBloc>(context);
     return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
-        final wallets = state.address;
+        final wallets = state.wallet.address;
         return Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),

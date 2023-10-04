@@ -37,7 +37,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
               children: [
                 Expanded(
                   child: SeedListItem(
-                    seed: state.seedActive,
+                    seed: state.node.seed,
                     isNodeListVisible: _isNodeListVisible,
                     statusConnected: state.statusConnected,
                   ),

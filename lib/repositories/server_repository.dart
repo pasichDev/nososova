@@ -1,6 +1,6 @@
 
 import 'package:nososova/models/node.dart';
-import 'package:nososova/models/response_node.dart';
+import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/services/server_service.dart';
 
