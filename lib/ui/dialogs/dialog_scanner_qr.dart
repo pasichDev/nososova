@@ -9,8 +9,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../database/database.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/address_object.dart';
-import '../../utils/noso/cripto.dart';
-import '../../utils/status_qr.dart';
+import '../../utils/noso/crypto.dart';
+import '../../utils/const/status_qr.dart';
 import '../theme/style/colors.dart';
 import 'dialog_search_address.dart';
 import 'dialog_send_address.dart';
@@ -132,8 +132,8 @@ class ScannerWidgetState extends State<ScannerWidget> {
 
       if (qrStatus == TypeQrCode.qrKeys) {
         controller.pauseCamera();
-        final AddressObject? address =
-            NosoCripto().importWalletForKeys(scanData.code.toString());
+        final AddressObject? address = null;
+           // NosoCripto().importWalletForKeys(scanData.code.toString());
 
         if (address != null) {
           Address addressDB = Address(

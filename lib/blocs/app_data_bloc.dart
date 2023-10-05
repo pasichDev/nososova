@@ -12,7 +12,7 @@ import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/services/shared_service.dart';
 
 import '../models/pending_transaction.dart';
-import '../utils/network/network_const.dart';
+import '../utils/const/network_const.dart';
 import '../utils/noso/parse.dart';
 
 abstract class AppDataEvent {}
@@ -175,6 +175,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       }
 
       // TODO: Ось тут має бути оновленя zipsummary
+      // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, фантажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
     } else {
       //Оновлення статусу ноди якщо немає зміни блоку
       if (responsePendings.errors == null) {

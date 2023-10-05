@@ -1,32 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/local_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
+import 'package:nososova/utils/noso/crypto.dart';
 
+import '../database/database.dart';
+import '../models/address_object.dart';
 import '../models/app/wallet.dart';
-import '../models/pending_transaction.dart';
+import 'events/wallet_events.dart';
 
-abstract class WalletEvent {}
-
-class FetchAddress extends WalletEvent {}
-
-class SyncBalance extends WalletEvent {
-  final List<PendingTransaction> pendings;
-
-  SyncBalance(this.pendings);
-}
-
-class DeleteAddress extends WalletEvent {
-  final Address address;
-
-  DeleteAddress(this.address);
-}
-
-class AddAddress extends WalletEvent {
-  final Address address;
-
-  AddAddress(this.address);
-}
 
 class WalletState {
   final Wallet wallet;
@@ -43,35 +24,56 @@ class WalletState {
 }
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
-  final ServerRepository serverRepository;
-  final LocalRepository localRepository;
+  final NosoCrypto _nosoCrypto;
+  final LocalRepository _localRepository;
 
-  WalletBloc({required this.serverRepository, required this.localRepository})
-      : super(WalletState()) {
+  WalletBloc({
+    required NosoCrypto nosoCrypto,
+    required LocalRepository localRepository,
+  })   : _nosoCrypto = nosoCrypto,
+        _localRepository = localRepository,
+        super(WalletState()) {
     on<FetchAddress>(_fetchAddresses);
     on<DeleteAddress>(_deleteAddress);
     on<AddAddress>(_addAddress);
     on<SyncBalance>(_syncBalance);
+    on<CreateNewAddress>(_createNewAddress);
+  }
+
+
+  /// TODO Тут дуже крива реалізація, порібно переглянути
+  void _createNewAddress(event, emit) async {
+     AddressObject addressObject = _nosoCrypto.createNewAddress();
+    var address = Address(
+         publicKey: addressObject.publicKey.toString(),
+        privateKey: addressObject.privateKey.toString(),
+        hash: addressObject.hash.toString());
+
+    await _localRepository.addWallet(address);
+    final addressStream = _localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
+    }
   }
 
   void _addAddress(event, emit) async {
-    await localRepository.addWallet(event.address);
-    final addressStream = localRepository.fetchAddress();
+    await _localRepository.addWallet(event.address);
+    final addressStream = _localRepository.fetchAddress();
     await for (final addressList in addressStream) {
       emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
   }
 
   void _deleteAddress(event, emit) async {
-    await localRepository.deleteWallet(event.address);
-    final addressStream = localRepository.fetchAddress();
+    await _localRepository.deleteWallet(event.address);
+    final addressStream = _localRepository.fetchAddress();
     await for (final addressList in addressStream) {
       emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
   }
 
   void _fetchAddresses(event, emit) async {
-    final addressStream = localRepository.fetchAddress();
+    final addressStream = _localRepository.fetchAddress();
     await for (final addressList in addressStream) {
       emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }

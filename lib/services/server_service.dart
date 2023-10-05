@@ -4,23 +4,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/seed.dart';
-import 'package:nososova/utils/network/network_const.dart';
+import 'package:nososova/utils/const/network_const.dart';
 
 class ServerService {
 
-  final List<Seed> _defaultSeed = [
-    Seed(ip: "47.87.181.190"),
-    Seed(ip: "47.87.178.205"),
-    Seed(ip: "66.151.117.247"),
-    Seed(ip: "47.87.180.219"),
-    Seed(ip: "47.87.137.96"),
-    Seed(ip: "192.3.85.196"),
-    Seed(ip: "192.3.254.186"),
-    Seed(ip: "198.46.218.125"),
-    Seed(ip: "20.199.50.27"),
-    Seed(ip: "63.227.69.162"),
-    Seed(ip: "81.22.38.101"),
-  ];
+
 
   Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) async {
     final responseBytes = <int>[];
@@ -69,7 +57,7 @@ class ServerService {
 
   /// Метод який перебирає дефолтні сіди, і поаертає активний сід
   Future<ResponseNode> testsListDefaultSeeds() async {
-    for (var seed in _defaultSeed) {
+    for (var seed in NetworkConst.defaultSeed) {
       try {
         seed = await _testPingNode(seed);
       } on TimeoutException catch (_) {
@@ -89,7 +77,7 @@ class ServerService {
         seed.online = false;
       }
     }
-    final onlineSeeds = _defaultSeed.where((seed) => seed.online).toList();
+    final onlineSeeds = NetworkConst.defaultSeed.where((seed) => seed.online).toList();
     if (onlineSeeds.isNotEmpty) {
       ResponseNode responseNode = ResponseNode(
           seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b));

@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 
+import '../../models/seed.dart';
+
+final class NetworkConst {
+  static const int durationTimeOut = 5;
+  static const int delaySync = 15;
+
+  static List<Seed> defaultSeed = [
+    Seed(ip: "47.87.181.190"),
+    Seed(ip: "47.87.178.205"),
+    Seed(ip: "66.151.117.247"),
+    Seed(ip: "47.87.180.219"),
+    Seed(ip: "47.87.137.96"),
+    Seed(ip: "192.3.85.196"),
+    Seed(ip: "192.3.254.186"),
+    Seed(ip: "198.46.218.125"),
+    Seed(ip: "20.199.50.27"),
+    Seed(ip: "63.227.69.162"),
+    Seed(ip: "81.22.38.101"),
+  ];
+}
+
 final class NetworkRequest {
   static const String nodeStatus = "NODESTATUS\n";
   static const String nodeList = "NSLMNS\n";
   static const String pendingsList = "NSLPEND\n";
 }
 
-class CheckConnect {
+final class CheckConnect {
   static IconData getStatusConnected(StatusConnectNodes status) {
     switch (status) {
       case StatusConnectNodes.statusConnected:
@@ -21,10 +42,6 @@ class CheckConnect {
   }
 }
 
-class NetworkConst {
-  static const int durationTimeOut = 5;
-  static const int delaySync = 15;
-}
 
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../models/seed.dart';
-import '../../../utils/network/network_const.dart';
+import '../../utils/const/network_const.dart';
 import '../../utils/custom_class/shimmer.dart';
 
 class SeedListItem extends StatelessWidget {

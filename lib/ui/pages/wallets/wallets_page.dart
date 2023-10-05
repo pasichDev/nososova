@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
-import 'package:nososova/ui/pages/wallets/screens/dialogs/dialog_add_address.dart';
+import 'package:nososova/ui/dialogs/dialog_wallet_actions.dart';
 import 'package:nososova/ui/pages/wallets/screens/list_wallets.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
@@ -75,7 +75,7 @@ void _showBottomSheetAddMyWallets(BuildContext context, WalletBloc walletBloc) {
     ),
     context: context,
     builder: (BuildContext context) {
-      return DialogAddAddress(walletBloc: walletBloc);
+      return DialogWalletActions(walletBloc: walletBloc);
     },
   );
 }

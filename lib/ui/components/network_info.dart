@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/utils/network/network_const.dart';
+import 'package:nososova/utils/const/network_const.dart';
 
 class NetworkInfo extends StatelessWidget {
   final VoidCallback nodeStatusDialog;

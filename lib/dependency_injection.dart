@@ -7,11 +7,13 @@ import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/services/server_service.dart';
 import 'package:nososova/services/shared_service.dart';
+import 'package:nososova/utils/noso/crypto.dart';
 
 final GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerLazySingleton<MyDatabase>(() => MyDatabase());
+  locator.registerLazySingleton<NosoCrypto>(() => NosoCrypto());
   locator.registerLazySingleton<ServerService>(() => ServerService());
   locator.registerLazySingleton<LocalRepository>(
       () => LocalRepository(locator<MyDatabase>()));
@@ -23,7 +25,7 @@ void setupLocator() {
   locator.registerLazySingleton<WalletBloc>(() {
     return WalletBloc(
         localRepository: locator<LocalRepository>(),
-        serverRepository: locator<ServerRepository>());
+        nosoCrypto: locator<NosoCrypto>());
   });
   locator.registerLazySingleton(() => AppDataBloc(
       localRepository: locator<LocalRepository>(),

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:nososova/const.dart';
+import 'package:nososova/utils/const/const.dart';
 import 'package:nososova/models/address_object.dart';
 import 'package:nososova/utils/noso/noso_objects.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
@@ -13,8 +13,12 @@ import 'package:pointycastle/key_generators/ec_key_generator.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:pointycastle/random/fortuna_random.dart';
 
-final class NosoCripto {
-  AddressObject? createNewAddress() {
+
+/// TODO Виправлення орфографії змінних, а також упорядкування класу
+/// TODO Додати методи верифікації підпису повідомлення
+final class NosoCrypto {
+
+  AddressObject createNewAddress() {
     KeyPair keysPair = _generateKeysPair();
     return AddressObject(
         publicKey: keysPair.publicKey,

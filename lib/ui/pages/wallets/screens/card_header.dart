@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/const.dart';
+import 'package:nososova/utils/const/const.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
 import '../../../theme/decoration/standart_gradient_decoration_round.dart';

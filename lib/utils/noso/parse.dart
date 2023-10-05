@@ -1,11 +1,42 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:nososova/database/database.dart';
+import 'package:nososova/models/address_object.dart';
 import 'package:nososova/models/node.dart';
 import 'package:nososova/models/pending_transaction.dart';
 import 'package:nososova/models/seed.dart';
 
 class NosoParse {
+  static List<AddressObject> parseExternalWallet(Uint8List? fileBytes) {
+    final List<AddressObject> address = [];
+    if (fileBytes == null) {
+      return address;
+    }
+    Uint8List current = fileBytes.sublist(0, 625);
+    Uint8List bytes = fileBytes.sublist(626);
+
+    while (current.isNotEmpty) {
+      AddressObject addressObject = AddressObject(
+          hash: String.fromCharCodes(current.sublist(1, current[0] + 1)),
+          custom: String.fromCharCodes(current.sublist(42, 42 + current[41])),
+          publicKey:
+              String.fromCharCodes(current.sublist(83, 83 + current[82])),
+          privateKey:
+              String.fromCharCodes(current.sublist(339, 339 + current[338])));
+
+      if (bytes.length >= 626) {
+        current = bytes.sublist(0, 625);
+        bytes = bytes.sublist(626);
+      } else {
+        current = Uint8List(0);
+      }
+
+      address.add(addressObject);
+    }
+    return address;
+  }
+
   static String parseMNString(List<int>? response) {
     final resultMNList = <Seed>[];
     final StringBuffer parsedData = StringBuffer();

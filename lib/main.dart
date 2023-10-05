@@ -6,6 +6,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
+import 'blocs/events/wallet_events.dart';
 import 'main_page.dart';
 
 void main() {
