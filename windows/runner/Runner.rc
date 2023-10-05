@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.pasivhdev.nososova" "\0"
-            VALUE "FileDescription", "nososova" "\0"
+            VALUE "CompanyName", "NosoCoin" "\0"
+            VALUE "FileDescription", "NosoSova" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "nososova" "\0"
+            VALUE "InternalName", "NosoSova" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.pasivhdev.nososova. All rights reserved." "\0"
-            VALUE "OriginalFilename", "nososova.exe" "\0"
-            VALUE "ProductName", "nososova" "\0"
+            VALUE "OriginalFilename", "NosoSova.exe" "\0"
+            VALUE "ProductName", "NosoSova" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
