@@ -32,7 +32,10 @@ class NosoParse {
         current = Uint8List(0);
       }
 
-      address.add(addressObject);
+      if (addressObject.privateKey.length == 44 &&
+          addressObject.publicKey.length == 88) {
+        address.add(addressObject);
+      }
     }
     return address;
   }

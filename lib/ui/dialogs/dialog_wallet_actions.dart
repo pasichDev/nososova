@@ -24,28 +24,88 @@ class DialogWalletActions extends StatelessWidget {
       ListView(
         shrinkWrap: true,
         children: [
-          ListTile(
-              title: Text(AppLocalizations.of(context)!.newTitle,
-                  style: AppTextStyles.dialogTitle)),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: Card(
+              color: Colors.transparent,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(color: Colors.grey, width: 0.2),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(5.0),
+                child: ListTile(
+                  leading: const Icon(Icons.info_outline_rounded),
+                  title: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: AppLocalizations.of(context)!
+                              .newFormatWalletFileDescrypt,
+                          style: const TextStyle(fontSize: 14.0),
+                        ),
+                        const TextSpan(
+                          text: " .nososova",
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           buildListTile(Icons.add, AppLocalizations.of(context)!.genNewKeyPair,
               () => _createNewAddress(context)),
-          ListTile(
-              title: Text(AppLocalizations.of(context)!.import,
-                  style: AppTextStyles.dialogTitle)),
+          //  ListTile(
+          //        title: Text(AppLocalizations.of(context)!.import,
+          //            style: AppTextStyles.dialogTitle)),
           if (Platform.isAndroid || Platform.isIOS)
             buildListTile(Icons.qr_code,
                 AppLocalizations.of(context)!.scanQrCode, () => {}),
-          buildListTile(
-              Icons.file_copy_outlined,
-              AppLocalizations.of(context)!.selectFilePkw,
-              () => _importWalletFile(context)),
+
           ListTile(
-              title: Text(AppLocalizations.of(context)!.export,
+              title: Text(AppLocalizations.of(context)!.fileWallet,
                   style: AppTextStyles.dialogTitle)),
-          buildListTile(
-              Icons.file_copy_outlined,
-              AppLocalizations.of(context)!.saveFilePkw,
-              () => _exportWalletFile(context)),
+
+          ListTile(
+              leading: const Icon(Icons.file_copy_outlined),
+              title: Text(AppLocalizations.of(context)!.importFile),
+              subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle),
+              onTap: () => _importWalletFile(context)),
+
+          ListTile(
+              leading: const Icon(Icons.file_copy_outlined),
+              title: Text(AppLocalizations.of(context)!.exportFile),
+              subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle),
+              trailing: PopupMenuButton<String>(
+                onSelected: (String choice) {
+                  if (choice == '.pkw') {
+                    _exportWalletFile(context, FormatWalletFile.pkw);
+                  } else if (choice == '.nososova') {
+                    _exportWalletFile(context, FormatWalletFile.nososova);
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'pkw',
+                      child: Text('.pkw'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: '.nososova',
+                      child: Text('.nososova'),
+                    ),
+                  ];
+                },
+              ),
+              onTap: () =>
+                  _exportWalletFile(context, FormatWalletFile.nososova)),
           const SizedBox(height: 10)
         ],
       ),
@@ -57,7 +117,8 @@ class DialogWalletActions extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  void _exportWalletFile(BuildContext context) async {}
+  void _exportWalletFile(
+      BuildContext context, FormatWalletFile formatFile) async {}
 
   // TODO Перенести деякі операції при роботі з файлом інший класс (наприклад перевірка розширення)
   void _importWalletFile(BuildContext context) async {

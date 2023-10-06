@@ -68,7 +68,7 @@ package_rename_config:
 
 
   windows:
-    app_name: NosoSova # (String) The window title & software name of the windows app
+    app_name: nososova # (String) The window title & software name of the windows app
     organization: NosoCoin # (String) The organization name (company name) of the windows app
     copyright_notice: # (String) The legal copyright of the windows app
     exe_name: NosoSova # (String) The executable name (binary name) of the windows app

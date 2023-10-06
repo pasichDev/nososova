@@ -47,12 +47,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get scanQrCode => 'Відскануйте QR-код';
 
   @override
-  String get selectFilePkw => 'Виберіть файл .pkw';
-
-  @override
-  String get saveFilePkw => 'Зберегти у файл .pkw';
-
-  @override
   String get historyPayments => 'Останні транзакції';
 
   @override
@@ -126,4 +120,22 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get delete => 'Видалити';
+
+  @override
+  String get importFile => 'Імпортувати з файлу';
+
+  @override
+  String get importFileSubtitle => 'Виберіть файл гаманця .pkw або .nososova';
+
+  @override
+  String get exportFile => 'Експортувати в файл';
+
+  @override
+  String get exportFileSubtitle => 'Зебережіть файл гаманця .pkw або .nososova';
+
+  @override
+  String get fileWallet => 'Файл гаманця';
+
+  @override
+  String get newFormatWalletFileDescrypt => 'Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі';
 }

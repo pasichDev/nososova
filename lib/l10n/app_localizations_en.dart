@@ -47,12 +47,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanQrCode => 'Scan QR Code';
 
   @override
-  String get selectFilePkw => 'Select file .pkw';
-
-  @override
-  String get saveFilePkw => 'Save to file .pkw';
-
-  @override
   String get historyPayments => 'Recent transactions';
 
   @override
@@ -126,4 +120,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'Delete';
+
+  @override
+  String get importFile => 'Import from File';
+
+  @override
+  String get importFileSubtitle => 'Choose a wallet file in .pkw or .nososova';
+
+  @override
+  String get exportFile => 'Export to File';
+
+  @override
+  String get exportFileSubtitle => 'Save the wallet file in .pkw or .nososova';
+
+  @override
+  String get fileWallet => 'Wallet file';
+
+  @override
+  String get newFormatWalletFileDescrypt => 'Our exciting application offers you the opportunity to store your wallet in the most secure format';
 }

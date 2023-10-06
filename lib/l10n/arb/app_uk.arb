@@ -13,8 +13,6 @@
   "export": "Експорт",
   "genNewKeyPair": "Згенерувати нову адресу",
   "scanQrCode": "Відскануйте QR-код",
-  "selectFilePkw": "Виберіть файл .pkw",
-  "saveFilePkw": "Зберегти у файл .pkw",
   "historyPayments": "Останні транзакції",
   "titleScannerCode": "Сканер Qr-коду",
   "descriptionScannerCode": "Наведіть видошукач на свій QR-код",
@@ -39,5 +37,11 @@
   "certificate": "Сертифікат",
   "sendFromAddress": "Відправити з цієї адреси",
   "delete": "Видалити",
-  "lock": "Заблокувати"
+  "lock": "Заблокувати",
+  "importFile": "Імпортувати з файлу",
+  "importFileSubtitle": "Виберіть файл гаманця .pkw або .nososova",
+  "exportFile": "Експортувати в файл",
+  "exportFileSubtitle": "Зебережіть файл гаманця .pkw або .nososova",
+  "fileWallet": "Файл гаманця",
+  "newFormatWalletFileDescrypt" : "Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі"
 }

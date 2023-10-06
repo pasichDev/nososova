@@ -13,8 +13,6 @@
   "export": "Export",
   "genNewKeyPair": "Generate new address",
   "scanQrCode": "Scan QR Code",
-  "selectFilePkw": "Select file .pkw",
-  "saveFilePkw": "Save to file .pkw",
   "historyPayments": "Recent transactions",
   "titleScannerCode": "Qr Code scanner",
   "descriptionScannerCode": "Point the viewfinder at your QR Code",
@@ -39,6 +37,13 @@
   "certificate": "Certificate",
   "sendFromAddress": "Send from this address",
   "lock": "Lock",
-  "delete": "Delete"
+  "delete": "Delete",
+  "importFile": "Import from File",
+  "importFileSubtitle": "Choose a wallet file in .pkw or .nososova",
+  "exportFile": "Export to File",
+  "exportFileSubtitle": "Save the wallet file in .pkw or .nososova",
+  "fileWallet": "Wallet file",
+  "newFormatWalletFileDescrypt" : "Our exciting application offers you the opportunity to store your wallet in the most secure format"
+
 
 }

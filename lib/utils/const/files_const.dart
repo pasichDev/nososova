@@ -4,8 +4,13 @@ final class FilesConst {
 }
 
 enum StatusSelectedFileWallet {
-  filePkw,
+  fileByte,
   fileNotSupported,
   isFileEmpty,
   cancel
+}
+
+enum FormatWalletFile{
+  pkw,
+  nososova
 }

@@ -177,18 +177,6 @@ abstract class AppLocalizations {
   /// **'Scan QR Code'**
   String get scanQrCode;
 
-  /// No description provided for @selectFilePkw.
-  ///
-  /// In en, this message translates to:
-  /// **'Select file .pkw'**
-  String get selectFilePkw;
-
-  /// No description provided for @saveFilePkw.
-  ///
-  /// In en, this message translates to:
-  /// **'Save to file .pkw'**
-  String get saveFilePkw;
-
   /// No description provided for @historyPayments.
   ///
   /// In en, this message translates to:
@@ -338,6 +326,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @importFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from File'**
+  String get importFile;
+
+  /// No description provided for @importFileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a wallet file in .pkw or .nososova'**
+  String get importFileSubtitle;
+
+  /// No description provided for @exportFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to File'**
+  String get exportFile;
+
+  /// No description provided for @exportFileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the wallet file in .pkw or .nososova'**
+  String get exportFileSubtitle;
+
+  /// No description provided for @fileWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet file'**
+  String get fileWallet;
+
+  /// No description provided for @newFormatWalletFileDescrypt.
+  ///
+  /// In en, this message translates to:
+  /// **'Our exciting application offers you the opportunity to store your wallet in the most secure format'**
+  String get newFormatWalletFileDescrypt;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
