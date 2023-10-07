@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../../../blocs/events/wallet_events.dart';
 import '../../../../../blocs/wallet_bloc.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../../utils/noso/parse.dart';
@@ -11,37 +13,38 @@ import '../../../../theme/style/colors.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;
-  final WalletBloc walletBloc;
 
-  const AddressInfo({Key? key, required this.address, required this.walletBloc})
-      : super(key: key);
+  const AddressInfo({Key? key, required this.address}) : super(key: key);
 
   @override
-  AddressInfoState createState() =>
-      AddressInfoState(address: address, walletBloc: walletBloc);
+  AddressInfoState createState() => AddressInfoState();
 }
 
-// TODO: Реалізувати правильну передачу walletBloc
 class AddressInfoState extends State<AddressInfo> {
-  final Address address;
-  final WalletBloc walletBloc;
+  late WalletBloc walletBloc;
   int selectedOption = 1;
 
   AddressInfoState({
     Key? key,
-    required this.address,
-    required this.walletBloc,
   });
 
+  @override
+  void initState() {
+    super.initState();
+    walletBloc = BlocProvider.of<WalletBloc>(context);
+  }
+
   // TODO: Внести правльний колір QRCode бо в темні темі будуть трабли
+  // TODO: Проблема  відоюраження елемнтів, потрібно без прокрутки
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: QrImageView(
-          data:
-              selectedOption == 1 ? address.hash : NosoParse.getQrKeys(address),
+          data: selectedOption == 1
+              ? widget.address.hash
+              : NosoParse.getQrKeys(widget.address),
           version: QrVersions.auto,
           size: 200.0,
         ),
@@ -132,7 +135,7 @@ class AddressInfoState extends State<AddressInfo> {
               ),
             ),
             onPressed: () {
-              Clipboard.setData(ClipboardData(text: address.hash));
+              Clipboard.setData(ClipboardData(text: widget.address.hash));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +146,7 @@ class AddressInfoState extends State<AddressInfo> {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  address.hash,
+                  widget.address.hash,
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
@@ -157,8 +160,9 @@ class AddressInfoState extends State<AddressInfo> {
       ),
       const SizedBox(height: 5),
       Expanded(
-        child: ListView(
-          shrinkWrap: true,
+        child:SingleChildScrollView(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
           children: [
             buildListTile(Icons.confirmation_num_outlined,
                 AppLocalizations.of(context)!.certificate, () {}),
@@ -168,10 +172,11 @@ class AddressInfoState extends State<AddressInfo> {
                 Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
             buildListTile(
                 Icons.delete_outline, AppLocalizations.of(context)!.delete, () {
-              //     walletBloc.add(DeleteAddress(address));
+              walletBloc.add(DeleteAddress(widget.address));
               Navigator.pop(context);
-            }),
+            })
           ],
+        ),
         ),
       ),
     ]);

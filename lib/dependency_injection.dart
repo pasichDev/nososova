@@ -16,8 +16,7 @@ final GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   /// shared & drift(sql)
-  final sharedService = await SharedService().init();
-  locator.registerSingleton<SharedService>(sharedService);
+  locator.registerLazySingleton<SharedService>(() =>SharedService());
   locator.registerLazySingleton<MyDatabase>(() => MyDatabase());
 
   /// repo && services

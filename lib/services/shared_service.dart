@@ -6,50 +6,53 @@ class SharedService {
   static const String listNodes = "nodesList";
   static const String delaySync = "delaySync";
 
-  late SharedPreferences _prefs;
-
-  SharedService._();
-
-  Future<SharedService> init() async {
-    _prefs = await SharedPreferences.getInstance();
-    return this;
-  }
-
-  factory SharedService() {
-    final instance = SharedService._();
-    instance.init();
-    return instance;
-  }
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> saveLastSeed(String value) async {
-    await _prefs.setString(lastSeed, value);
+    _prefs.then((SharedPreferences prefs) {
+      return prefs.setString(lastSeed, value);
+    });
   }
 
   Future<String?> loadLastSeed() async {
-    return _prefs.getString(lastSeed);
+    return _prefs.then((SharedPreferences prefs) {
+      return prefs.getString(lastSeed);
+    });
   }
 
   Future<void> saveLastBlock(int value) async {
-    await _prefs.setInt(lastBlock, value);
+    _prefs.then((SharedPreferences prefs) {
+      return prefs.setInt(lastBlock, value);
+    });
   }
 
   Future<int?> loadLastBlock() async {
-    return _prefs.getInt(lastBlock);
+    return _prefs.then((SharedPreferences prefs) {
+      return prefs.getInt(lastBlock);
+    });
   }
 
   Future<void> saveListNodes(String value) async {
-    await _prefs.setString(listNodes, value);
+    _prefs.then((SharedPreferences prefs) {
+      return prefs.setString(listNodes, value);
+    });
   }
 
   Future<String?> loadNodesList() async {
-    return _prefs.getString(listNodes);
+    return _prefs.then((SharedPreferences prefs) {
+      return prefs.getString(listNodes);
+    });
   }
 
   Future<void> saveDelaySync(int value) async {
-    await _prefs.setInt(delaySync, value);
+    _prefs.then((SharedPreferences prefs) {
+      return prefs.setInt(delaySync, value);
+    });
   }
 
   Future<int?> loadDelaySync() async {
-    return _prefs.getInt(delaySync);
+    return _prefs.then((SharedPreferences prefs) {
+      return prefs.getInt(delaySync);
+    });
   }
 }

@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 
-import 'dialogs/dialog_address_info.dart';
 import '../../../tiles/tile_wallet_address.dart';
+import 'dialogs/dialog_address_info.dart';
 
-class ListWallets extends StatelessWidget {
-  const ListWallets({super.key});
+class ListAddresses extends StatelessWidget {
+  const ListAddresses({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var walletBloc = BlocProvider.of<WalletBloc>(context);
     return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
         final wallets = state.wallet.address;
@@ -33,13 +32,11 @@ class ListWallets extends StatelessWidget {
                                 top: Radius.circular(20.0)),
                           ),
                           context: context,
-                          builder: (BuildContext context) =>
-                              //   BlocProvider.value(value: BlocProvider.of<WalletBloc>(context), child:
-                              AddressInfo(
+                          builder: (_) => BlocProvider.value(
+                              value: BlocProvider.of<WalletBloc>(context),
+                              child: AddressInfo(
                                 address: address,
-                                walletBloc: walletBloc,
-                              ));
-                      //) ,) ;
+                              )));
                     },
                   );
                 }));

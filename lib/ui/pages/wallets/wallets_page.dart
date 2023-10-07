@@ -4,7 +4,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/dialogs/dialog_wallet_actions.dart';
 import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
-import 'package:nososova/ui/pages/wallets/screens/list_wallets.dart';
+import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../utils/const/files_const.dart';
@@ -43,7 +43,7 @@ class WalletsPageState extends State<WalletsPage> {
             ),
             child: const HeaderMyWallets(),
           ),
-          const ListWallets(),
+          const ListAddresses(),
         ],
       ),
     );

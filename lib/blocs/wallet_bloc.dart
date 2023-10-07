@@ -84,6 +84,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+  /// TODO Додати верифікацію ключів в метод _importWalletFile, саме під час доавання адрес в список який ми отримаємо тут
   void _addAddresses(event, emit) async {
    /* await _repositories.localRepository.addWallet(event.address);
     final addressStream = _repositories.localRepository.fetchAddress();
