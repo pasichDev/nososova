@@ -362,6 +362,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our exciting application offers you the opportunity to store your wallet in the most secure format'**
   String get newFormatWalletFileDescrypt;
+
+  /// No description provided for @errorEmptyListWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'This file does not contain an address'**
+  String get errorEmptyListWallet;
+
+  /// No description provided for @errorNotSupportedWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not supported'**
+  String get errorNotSupportedWallet;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get unknownError;
+
+  /// No description provided for @searchAddressResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Address found'**
+  String get searchAddressResult;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

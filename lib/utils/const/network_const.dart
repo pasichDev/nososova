@@ -46,3 +46,6 @@ final class CheckConnect {
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 
 enum StatusConnectNodes { statusConnected, statusError, statusLoading }
+
+enum ConsensusStatus { sync, error }
+

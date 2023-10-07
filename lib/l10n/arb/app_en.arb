@@ -43,7 +43,10 @@
   "exportFile": "Export to File",
   "exportFileSubtitle": "Save the wallet file in .pkw or .nososova",
   "fileWallet": "Wallet file",
-  "newFormatWalletFileDescrypt" : "Our exciting application offers you the opportunity to store your wallet in the most secure format"
-
+  "newFormatWalletFileDescrypt" : "Our exciting application offers you the opportunity to store your wallet in the most secure format",
+  "errorEmptyListWallet": "This file does not contain an address",
+  "errorNotSupportedWallet": "This file is not supported",
+  "unknownError": "An error occurred",
+  "searchAddressResult": "Address found"
 
 }

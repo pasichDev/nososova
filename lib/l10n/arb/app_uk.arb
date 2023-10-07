@@ -43,5 +43,9 @@
   "exportFile": "Експортувати в файл",
   "exportFileSubtitle": "Зебережіть файл гаманця .pkw або .nososova",
   "fileWallet": "Файл гаманця",
-  "newFormatWalletFileDescrypt" : "Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі"
+  "newFormatWalletFileDescrypt" : "Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі",
+  "errorEmptyListWallet": "Це файл не містить адрес",
+  "errorNotSupportedWallet": "Цей файл не підтримується",
+  "unknownError": "Виникла помилка",
+  "searchAddressResult": "Знайдено адрес"
 }

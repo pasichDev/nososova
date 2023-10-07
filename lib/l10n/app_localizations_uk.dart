@@ -138,4 +138,16 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get newFormatWalletFileDescrypt => 'Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі';
+
+  @override
+  String get errorEmptyListWallet => 'Це файл не містить адрес';
+
+  @override
+  String get errorNotSupportedWallet => 'Цей файл не підтримується';
+
+  @override
+  String get unknownError => 'Виникла помилка';
+
+  @override
+  String get searchAddressResult => 'Знайдено адрес';
 }

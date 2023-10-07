@@ -12,7 +12,7 @@ import '../../models/address_object.dart';
 import '../../utils/noso/crypto.dart';
 import '../../utils/const/status_qr.dart';
 import '../theme/style/colors.dart';
-import 'dialog_search_address.dart';
+import 'dialog_import_address.dart';
 import 'dialog_send_address.dart';
 
 class DialogScanQr {
@@ -140,10 +140,10 @@ class ScannerWidgetState extends State<ScannerWidget> {
               publicKey: address.publicKey.toString(),
               privateKey: address.privateKey.toString(),
               hash: address.hash.toString());
-          showModalBottomSheet(
+       /*   showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return DialogSearchAddress(
+              return DialogImportAddress(
                 addressObject: addressDB,
                 onCancelButtonPressed: () {
                   controller.resumeCamera();
@@ -155,6 +155,8 @@ class ScannerWidgetState extends State<ScannerWidget> {
               );
             },
           );
+
+        */
         } else {
           controller.resumeCamera();
         }

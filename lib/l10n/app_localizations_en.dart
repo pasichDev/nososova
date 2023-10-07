@@ -138,4 +138,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newFormatWalletFileDescrypt => 'Our exciting application offers you the opportunity to store your wallet in the most secure format';
+
+  @override
+  String get errorEmptyListWallet => 'This file does not contain an address';
+
+  @override
+  String get errorNotSupportedWallet => 'This file is not supported';
+
+  @override
+  String get unknownError => 'An error occurred';
+
+  @override
+  String get searchAddressResult => 'Address found';
 }

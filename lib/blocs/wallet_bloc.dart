@@ -6,6 +6,7 @@ import 'package:nososova/repositories/repositories.dart';
 
 import '../database/database.dart';
 import '../models/address_object.dart';
+import '../models/app/import_wallet_response.dart';
 import '../models/app/wallet.dart';
 import '../utils/const/files_const.dart';
 import '../utils/noso/parse.dart';
@@ -27,10 +28,10 @@ class WalletState {
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final Repositories _repositories;
-  final StreamController<ActionsFileWallet> _actionsFileWallet =
-      StreamController<ActionsFileWallet>.broadcast();
+  final StreamController<ImportWResponse> _actionsFileWallet =
+      StreamController<ImportWResponse>.broadcast();
 
-  Stream<ActionsFileWallet> get actionsFileWallet => _actionsFileWallet.stream;
+  Stream<ImportWResponse> get actionsFileWallet => _actionsFileWallet.stream;
 
   WalletBloc({
     required Repositories repositories,
@@ -42,6 +43,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<SyncBalance>(_syncBalance);
     on<CreateNewAddress>(_createNewAddress);
     on<ImportWalletFile>(_importWalletFile);
+    on<AddAddresses>(_addAddresses);
   }
 
   /// TODO Тут дуже крива реалізація, порібно переглянути
@@ -82,6 +84,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+  void _addAddresses(event, emit) async {
+   /* await _repositories.localRepository.addWallet(event.address);
+    final addressStream = _repositories.localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
+    }
+
+    */
+  }
+
   void _syncBalance(event, emit) async {}
 
   void _importWalletFile(event, emit) async {
@@ -89,17 +101,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (result != null) {
       var file = result.files.first;
       if (file.extension?.toLowerCase() == FilesConst.pkwExtensions) {
-        var bytes =
-            await _repositories.fileRepository.readBytesFromPlatformFile(file);
+        var bytes = await _repositories.fileRepository.readBytesFromPlatformFile(file);
         var listAddress = NosoParse.parseExternalWallet(bytes);
 
         if (listAddress.isNotEmpty) {
-          _actionsFileWallet.sink.add(ActionsFileWallet.walletOpen);
+          _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.walletOpen, address: listAddress));
         } else {
-          _actionsFileWallet.sink.add(ActionsFileWallet.isFileEmpty);
+          _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.isFileEmpty));
         }
       } else {
-        _actionsFileWallet.sink.add(ActionsFileWallet.fileNotSupported);
+        _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.fileNotSupported));
       }
     }
   }

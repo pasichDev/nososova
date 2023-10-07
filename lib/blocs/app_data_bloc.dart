@@ -133,27 +133,39 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
   }
 
+
+
   Future<void> _syncDataToNode(Seed seed) async {
     ResponseNode<List<int>> responseNodeInfo =
         await _fetchNode(NetworkRequest.nodeStatus, seed);
     ResponseNode<List<int>> responsePendings =
         await _fetchNode(NetworkRequest.pendingsList, seed);
 
+
+
     List<PendingTransaction> pendingsOutput = [];
     final Node nodeOutput = NosoParse.parseResponseNode(
         responseNodeInfo.value, responseNodeInfo.seed);
 
-    if (state.node.lastblock != nodeOutput.lastblock) {
+    if (responseNodeInfo.value != null) {
+      emit(state.copyWith(
+          node: nodeOutput,
+          statusConnected: StatusConnectNodes.statusConnected));
+      return;
+    }
+
+    if (state.node.lastblock != nodeOutput.lastblock || appBlocConfig.isOneStartup) {
       //Оновлення іншої інфи якщо пербудувався блок
-      ResponseNode<List<int>> responseNodeList =
-          await _fetchNode(NetworkRequest.nodeList, seed);
+      ResponseNode<List<int>> responseNodeList = await _fetchNode(NetworkRequest.nodeList, seed);
       if (responseNodeList.value != null) {
         _repositories.sharedRepository
             .saveNodesList(NosoParse.parseMNString(responseNodeList.value));
       }
 
+      var consensus = await _checkConsensus(responseNodeInfo.value as Node);
+
       // TODO: Ось тут має бути оновленя zipsummary
-      // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, антажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
+      // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, вантажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
     } else {
       //Оновлення статусу ноди якщо немає зміни блоку
       if (responsePendings.errors == null) {
@@ -163,12 +175,16 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       }
     }
 
-    if (responseNodeInfo.value != null) {
-      emit(state.copyWith(
-          node: nodeOutput,
-          statusConnected: StatusConnectNodes.statusConnected));
-    }
+
   }
+
+  Future<ConsensusStatus> _checkConsensus(Node node) async {
+
+
+    return ConsensusStatus.error;
+  }
+
+
 
   /// The base method for referencing a request to a node
   Future<ResponseNode<List<int>>> _fetchNode(String command, Seed? seed) async {
