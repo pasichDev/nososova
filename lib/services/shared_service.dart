@@ -10,8 +10,9 @@ class SharedService {
 
   SharedService._();
 
-  Future<void> init() async {
+  Future<SharedService> init() async {
     _prefs = await SharedPreferences.getInstance();
+    return this;
   }
 
   factory SharedService() {

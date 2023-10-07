@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
+import '../../blocs/events/app_data_events.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
 import '../pages/debug/debug_info_page.dart';

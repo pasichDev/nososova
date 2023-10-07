@@ -30,3 +30,9 @@ class CreateNewAddress extends WalletEvent {
 
   CreateNewAddress();
 }
+
+class ImportWalletFile extends WalletEvent {
+  final String message;
+
+  ImportWalletFile(this.message);
+}

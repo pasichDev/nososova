@@ -6,26 +6,12 @@ import 'package:nososova/models/app/app_bloc_config.dart';
 import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
-import 'package:nososova/repositories/local_repository.dart';
-import 'package:nososova/repositories/server_repository.dart';
-import 'package:nososova/repositories/shared_repository.dart';
-import 'package:nososova/services/shared_service.dart';
 
 import '../models/pending_transaction.dart';
+import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
 import '../utils/noso/parse.dart';
-
-abstract class AppDataEvent {}
-
-class InitialConnect extends AppDataEvent {}
-
-class FetchNodesList extends AppDataEvent {
-  FetchNodesList();
-}
-
-class ReconnectSeed extends AppDataEvent {
-  ReconnectSeed();
-}
+import 'events/app_data_events.dart';
 
 class AppDataState {
   final Node node;
@@ -62,17 +48,12 @@ class AppDataState {
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
   late Timer? _timerDelaySync;
-
-  final ServerRepository _serverRepository;
-  final LocalRepository _localRepository;
-  late SharedRepository _sharedRepository;
+  final Repositories _repositories;
 
   // TODO: Реалізація та виправлення моніторнингу мережі. Якщо мережі немає то блокувати запити та морозити всі стани
   AppDataBloc({
-    required ServerRepository serverRepository,
-    required LocalRepository localRepository,
-  })  : _serverRepository = serverRepository,
-        _localRepository = localRepository,
+    required Repositories repositories,
+  })  : _repositories = repositories,
         super(AppDataState()) {
     Connectivity().onConnectivityChanged.listen((result) {
       if (result == ConnectivityResult.none) {}
@@ -83,11 +64,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   // TODO: Додати пропис останього блоку в node
   Future<void> _init(AppDataEvent e, Emitter emit) async {
-    final sharedService = SharedService();
-    await sharedService.init();
-    _sharedRepository = SharedRepository(sharedService);
     await loadConfig();
-
     if (appBlocConfig.lastSeed != null) {
       _selectNode(InitialNodeAlgh.connectLastNode);
     } else if (appBlocConfig.nodesList != null) {
@@ -109,7 +86,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     switch (initNodeAlgh) {
       case InitialNodeAlgh.connectLastNode:
         {
-          response = await _serverRepository
+          response = await _repositories.serverRepository
               .testNode(Seed().tokenizer(appBlocConfig.lastSeed));
           if (response.errors != null) {
             await _selectNode(InitialNodeAlgh.listenDefaultNodes);
@@ -121,18 +98,20 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         {
           var seed = Seed()
               .tokenizer(NosoParse.getRandomNode(appBlocConfig.nodesList));
-          response = await _serverRepository.testNode(seed);
+          response = await _repositories.serverRepository.testNode(seed);
           if (response.errors == null) {
-            _sharedRepository.saveLastSeed(response.seed.toTokenizer());
+            _repositories.sharedRepository
+                .saveLastSeed(response.seed.toTokenizer());
           }
         }
 
         break;
       default:
         {
-          response = await _serverRepository.listenNodes();
+          response = await _repositories.serverRepository.listenNodes();
           if (response.errors == null) {
-            _sharedRepository.saveLastSeed(response.seed.toTokenizer());
+            _repositories.sharedRepository
+                .saveLastSeed(response.seed.toTokenizer());
           } else {
             await _selectNode(InitialNodeAlgh.listenUserNodes);
             return;
@@ -149,11 +128,10 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       _syncDataToNode(response.seed);
       _timerDelaySync =
           Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
-            _syncDataToNode(response.seed);
+        _syncDataToNode(response.seed);
       });
     }
   }
-
 
   Future<void> _syncDataToNode(Seed seed) async {
     ResponseNode<List<int>> responseNodeInfo =
@@ -170,12 +148,12 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       ResponseNode<List<int>> responseNodeList =
           await _fetchNode(NetworkRequest.nodeList, seed);
       if (responseNodeList.value != null) {
-        _sharedRepository.saveNodesList(
-            NosoParse.parseMNString(responseNodeList.value));
+        _repositories.sharedRepository
+            .saveNodesList(NosoParse.parseMNString(responseNodeList.value));
       }
 
       // TODO: Ось тут має бути оновленя zipsummary
-      // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, фантажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
+      // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, антажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
     } else {
       //Оновлення статусу ноди якщо немає зміни блоку
       if (responsePendings.errors == null) {
@@ -198,16 +176,15 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (state.statusConnected == StatusConnectNodes.statusError) {
       return ResponseNode(errors: "You are not connected to nodes.");
     }
-    return await _serverRepository.fetchNode(command, seed);
+    return await _repositories.serverRepository.fetchNode(command, seed);
   }
-
 
   /// Request data from sharedPrefs
   Future<void> loadConfig() async {
-    var lastSeed = await _sharedRepository.loadLastSeed();
-    var nodesList = await _sharedRepository.loadNodesList();
-    var lastBlock = await _sharedRepository.loadLastBlock();
-    var delaySync = await _sharedRepository.loadDelaySync();
+    var lastSeed = await _repositories.sharedRepository.loadLastSeed();
+    var nodesList = await _repositories.sharedRepository.loadNodesList();
+    var lastBlock = await _repositories.sharedRepository.loadLastBlock();
+    var delaySync = await _repositories.sharedRepository.loadDelaySync();
 
     appBlocConfig = appBlocConfig.copyWith(
         lastSeed: lastSeed,

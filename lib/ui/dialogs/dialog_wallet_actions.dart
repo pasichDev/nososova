@@ -77,7 +77,7 @@ class DialogWalletActions extends StatelessWidget {
               leading: const Icon(Icons.file_copy_outlined),
               title: Text(AppLocalizations.of(context)!.importFile),
               subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle),
-              onTap: () => _importWalletFile(context)),
+              onTap: () => {}),
 
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
@@ -121,7 +121,7 @@ class DialogWalletActions extends StatelessWidget {
       BuildContext context, FormatWalletFile formatFile) async {}
 
   // TODO Перенести деякі операції при роботі з файлом інший класс (наприклад перевірка розширення)
-  void _importWalletFile(BuildContext context) async {
+ /* void _importWalletFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (!context.mounted) return;
@@ -156,4 +156,6 @@ class DialogWalletActions extends StatelessWidget {
     if (!context.mounted) return;
     Navigator.pop(context);
   }
+
+  */
 }
