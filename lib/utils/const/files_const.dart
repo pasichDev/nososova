@@ -1,13 +1,13 @@
 
 final class FilesConst {
   static const String pkwExtensions = "pkw";
+  static const String nososovaExtensions = "nososova";
 }
 
-enum StatusSelectedFileWallet {
-  fileByte,
+enum ActionsFileWallet {
+  walletOpen,
   fileNotSupported,
-  isFileEmpty,
-  cancel
+  isFileEmpty
 }
 
 enum FormatWalletFile{

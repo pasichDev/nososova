@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:nososova/repositories/repositories.dart';
@@ -9,11 +11,6 @@ import '../utils/const/files_const.dart';
 import '../utils/noso/parse.dart';
 import 'events/wallet_events.dart';
 
-class SnackbarShownState extends WalletState {
-  final String message;
-
-  SnackbarShownState(this.message);
-}
 class WalletState {
   final Wallet wallet;
 
@@ -30,23 +27,28 @@ class WalletState {
 
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final Repositories _repositories;
+  final StreamController<ActionsFileWallet> _actionsFileWallet =
+      StreamController<ActionsFileWallet>.broadcast();
+
+  Stream<ActionsFileWallet> get actionsFileWallet => _actionsFileWallet.stream;
+
   WalletBloc({
     required Repositories repositories,
-  })   : _repositories = repositories,
+  })  : _repositories = repositories,
         super(WalletState()) {
     on<FetchAddress>(_fetchAddresses);
     on<DeleteAddress>(_deleteAddress);
     on<AddAddress>(_addAddress);
     on<SyncBalance>(_syncBalance);
     on<CreateNewAddress>(_createNewAddress);
+    on<ImportWalletFile>(_importWalletFile);
   }
-
 
   /// TODO Тут дуже крива реалізація, порібно переглянути
   void _createNewAddress(event, emit) async {
-     AddressObject addressObject = _repositories.nosoCrypto.createNewAddress();
+    AddressObject addressObject = _repositories.nosoCrypto.createNewAddress();
     var address = Address(
-         publicKey: addressObject.publicKey.toString(),
+        publicKey: addressObject.publicKey.toString(),
         privateKey: addressObject.privateKey.toString(),
         hash: addressObject.hash.toString());
 
@@ -59,7 +61,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   void _addAddress(event, emit) async {
     await _repositories.localRepository.addWallet(event.address);
-    final addressStream =_repositories.localRepository.fetchAddress();
+    final addressStream = _repositories.localRepository.fetchAddress();
     await for (final addressList in addressStream) {
       emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
     }
@@ -82,25 +84,29 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   void _syncBalance(event, emit) async {}
 
-
-  void _importWalletFile(FilePickerResult result) async {
-
+  void _importWalletFile(event, emit) async {
+    final FilePickerResult? result = event.filePickerResult;
     if (result != null) {
       var file = result.files.first;
       if (file.extension?.toLowerCase() == FilesConst.pkwExtensions) {
-        var bytes = await _repositories.fileRepository.readBytesFromPlatformFile(file);
+        var bytes =
+            await _repositories.fileRepository.readBytesFromPlatformFile(file);
         var listAddress = NosoParse.parseExternalWallet(bytes);
 
         if (listAddress.isNotEmpty) {
-          // Виконайте дії, які стосуються успішного імпорту
+          _actionsFileWallet.sink.add(ActionsFileWallet.walletOpen);
         } else {
-          // Відправте подію в BLoC, щоб відобразити Snackbar з відповідним повідомленням
-      //    MyBlocEvent.showErrorSnackbar('Це файл не має записаних адрес');
+          _actionsFileWallet.sink.add(ActionsFileWallet.isFileEmpty);
         }
       } else {
-        // Відправте подію в BLoC, щоб відобразити Snackbar з повідомленням про непідтримуване розширення
-     //   MyBlocEvent.showErrorSnackbar('Цей файл не підтримується');
+        _actionsFileWallet.sink.add(ActionsFileWallet.fileNotSupported);
       }
     }
+  }
+
+  @override
+  Future<void> close() {
+    _actionsFileWallet.close();
+    return super.close();
   }
 }

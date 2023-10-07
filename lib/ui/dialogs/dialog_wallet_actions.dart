@@ -8,8 +8,6 @@ import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
 import '../../utils/const/files_const.dart';
-import '../../utils/file_utils.dart';
-import '../../utils/noso/parse.dart';
 import '../theme/style/text_style.dart';
 
 class DialogWalletActions extends StatelessWidget {
@@ -59,26 +57,19 @@ class DialogWalletActions extends StatelessWidget {
               ),
             ),
           ),
-
           buildListTile(Icons.add, AppLocalizations.of(context)!.genNewKeyPair,
               () => _createNewAddress(context)),
-          //  ListTile(
-          //        title: Text(AppLocalizations.of(context)!.import,
-          //            style: AppTextStyles.dialogTitle)),
           if (Platform.isAndroid || Platform.isIOS)
             buildListTile(Icons.qr_code,
                 AppLocalizations.of(context)!.scanQrCode, () => {}),
-
           ListTile(
               title: Text(AppLocalizations.of(context)!.fileWallet,
                   style: AppTextStyles.dialogTitle)),
-
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
               title: Text(AppLocalizations.of(context)!.importFile),
               subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle),
-              onTap: () => {}),
-
+              onTap: () => _importWalletFile(context)),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
               title: Text(AppLocalizations.of(context)!.exportFile),
@@ -117,45 +108,15 @@ class DialogWalletActions extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  void _exportWalletFile(
-      BuildContext context, FormatWalletFile formatFile) async {}
-
-  // TODO Перенести деякі операції при роботі з файлом інший класс (наприклад перевірка розширення)
- /* void _importWalletFile(BuildContext context) async {
+  void _importWalletFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (!context.mounted) return;
     if (result != null) {
-      var file = result.files.first;
-      if (file.extension?.toLowerCase() == FilesConst.pkwExtensions) {
-        var bytes = await FileUtils.readBytesFromPlatformFile(file);
-        var listAddress = NosoParse.parseExternalWallet(bytes);
-
-        if (listAddress.isNotEmpty) {
-        } else {
-          if (!context.mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Це файл не має записаних адрес'),
-              elevation: 6.0,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Цей файл не підтримується",
-              style: TextStyle(fontSize: 16.0, color: Colors.white)),
-          backgroundColor: Colors.red,
-          elevation: 6.0,
-          behavior: SnackBarBehavior.floating,
-        ));
-      }
+      walletBloc.add(ImportWalletFile(result));
+      if (!context.mounted) return;
+      Navigator.pop(context);
     }
-
-    if (!context.mounted) return;
-    Navigator.pop(context);
   }
 
-  */
+  void _exportWalletFile(
+      BuildContext context, FormatWalletFile formatFile) async {}
 }

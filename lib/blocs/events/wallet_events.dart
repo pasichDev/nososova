@@ -1,4 +1,6 @@
 
+import 'package:file_picker/file_picker.dart';
+
 import '../../database/database.dart';
 import '../../models/pending_transaction.dart';
 import '../wallet_bloc.dart';
@@ -32,7 +34,7 @@ class CreateNewAddress extends WalletEvent {
 }
 
 class ImportWalletFile extends WalletEvent {
-  final String message;
+  final FilePickerResult? filePickerResult;
 
-  ImportWalletFile(this.message);
+  ImportWalletFile(this.filePickerResult);
 }
