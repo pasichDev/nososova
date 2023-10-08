@@ -49,7 +49,7 @@ final class NosoCore extends NosoCrypto {
 
   List<Address> parseExternalWallet(Uint8List? fileBytes) {
     final List<Address> address = [];
-    if (fileBytes == null) {
+    if (fileBytes == null || fileBytes.isEmpty) {
       return address;
     }
     Uint8List current = fileBytes.sublist(0, 625);

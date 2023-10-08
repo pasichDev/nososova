@@ -53,6 +53,9 @@ class WalletsPageState extends State<WalletsPage> {
     walletBloc.actionsFileWallet.listen((message) {
       if (message.actionsFileWallet == ActionsFileWallet.walletOpen) {
         showModalBottomSheet(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+            ),
             context: context,
             builder: (_) => BlocProvider.value(
                 value: walletBloc,
@@ -78,6 +81,7 @@ class WalletsPageState extends State<WalletsPage> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             textError,
+
             style: const TextStyle(fontSize: 16.0, color: Colors.white),
           ),
           backgroundColor: snackBarBackgroundColor,
