@@ -153,4 +153,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get billAction => 'Bill to this address';
+
+  @override
+  String get addressesAdded => 'Added address:';
 }

@@ -74,6 +74,9 @@ class WalletsPageState extends State<WalletsPage> {
           case ActionsFileWallet.fileNotSupported:
             textError = AppLocalizations.of(context)!.errorNotSupportedWallet;
             break;
+          case ActionsFileWallet.addressAdded:
+            textError = "${AppLocalizations.of(context)!.addressesAdded} ${message.value}";
+            break;
           default:
             textError = AppLocalizations.of(context)!.unknownError;
         }

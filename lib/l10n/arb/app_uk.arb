@@ -48,5 +48,6 @@
   "errorNotSupportedWallet": "Цей файл не підтримується",
   "unknownError": "Виникла помилка",
   "searchAddressResult": "Знайдено адрес",
-  "billAction": "Виставити рахунок на цю адресу"
+  "billAction": "Виставити рахунок на цю адресу",
+  "addressesAdded": "Додано адрес"
 }

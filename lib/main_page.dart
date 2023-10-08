@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
@@ -21,7 +22,6 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const WalletsPage(),
@@ -37,22 +37,12 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appDataBloc = BlocProvider.of<AppDataBloc>(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        title:  NetworkInfo(nodeStatusDialog: () {
-          showModalBottomSheet(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-              ),
-              context: context,
-              builder: (_) => BlocProvider.value(
-                    value: appDataBloc,
-                    child: const DialogInfoNetwork(),
-                  ));
-        }),
+        title: NetworkInfo(
+            nodeStatusDialog: () => _showDialogInfoNetwork(context)),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -61,15 +51,11 @@ class MainPageState extends State<MainPage> {
                 if (Platform.isAndroid || Platform.isIOS)
                   IconButton(
                     icon: const Icon(Icons.qr_code_scanner_outlined),
-                    onPressed: () {
-                      DialogScanQr().loadDialog(context: context,  appDataBloc: appDataBloc);
-                    },
+                    onPressed: () => _showDialogScanQr(context),
                   ),
                 IconButton(
                   icon: const Icon(Icons.settings),
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                 )
               ],
             ),
@@ -98,5 +84,22 @@ class MainPageState extends State<MainPage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  void _showDialogScanQr(BuildContext context) {
+    DialogScannerQr()
+        .showDialogScanQr(context, BlocProvider.of<WalletBloc>(context));
+  }
+
+  void _showDialogInfoNetwork(BuildContext context) {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        ),
+        context: context,
+        builder: (_) => BlocProvider.value(
+              value: BlocProvider.of<AppDataBloc>(context),
+              child: const DialogInfoNetwork(),
+            ));
   }
 }

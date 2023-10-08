@@ -153,4 +153,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get billAction => 'Виставити рахунок на цю адресу';
+
+  @override
+  String get addressesAdded => 'Додано адрес:';
 }

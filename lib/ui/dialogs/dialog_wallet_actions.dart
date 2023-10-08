@@ -9,6 +9,7 @@ import 'package:nososova/ui/tiles/dialog_tile.dart';
 import '../../blocs/events/wallet_events.dart';
 import '../../utils/const/files_const.dart';
 import '../theme/style/text_style.dart';
+import 'dialog_scanner_qr.dart';
 
 class DialogWalletActions extends StatelessWidget {
   final WalletBloc walletBloc;
@@ -60,8 +61,10 @@ class DialogWalletActions extends StatelessWidget {
           buildListTile(Icons.add, AppLocalizations.of(context)!.genNewKeyPair,
               () => _createNewAddress(context)),
           if (Platform.isAndroid || Platform.isIOS)
-            buildListTile(Icons.qr_code,
-                AppLocalizations.of(context)!.scanQrCode, () => {}),
+            buildListTile(
+                Icons.qr_code,
+                AppLocalizations.of(context)!.scanQrCode,
+                () => _showDialogScanQr(context)),
           ListTile(
               title: Text(AppLocalizations.of(context)!.fileWallet,
                   style: AppTextStyles.dialogTitle)),
@@ -119,4 +122,9 @@ class DialogWalletActions extends StatelessWidget {
 
   void _exportWalletFile(
       BuildContext context, FormatWalletFile formatFile) async {}
+
+  void _showDialogScanQr(BuildContext context) {
+    Navigator.pop(context);
+    DialogScannerQr().showDialogScanQr(context, walletBloc);
+  }
 }

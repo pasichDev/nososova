@@ -31,6 +31,7 @@ class DialogImportAddressState extends State<DialogImportAddress> {
     walletBloc = BlocProvider.of<WalletBloc>(context);
   }
 
+  /// TODO Баг: Якщо один елемент в списку то список максимально ростягнути багато пустого місця
   @override
   Widget build(BuildContext context) {
     var addresses = widget.address;

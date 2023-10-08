@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bill to this address'**
   String get billAction;
+
+  /// No description provided for @addressesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added address:'**
+  String get addressesAdded;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

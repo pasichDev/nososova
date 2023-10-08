@@ -7,7 +7,8 @@ final class FilesConst {
 enum ActionsFileWallet {
   walletOpen,
   fileNotSupported,
-  isFileEmpty
+  isFileEmpty,
+  addressAdded
 }
 
 enum FormatWalletFile{

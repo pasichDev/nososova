@@ -28,8 +28,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final Repositories _repositories;
   final StreamController<ImportWResponse> _actionsFileWallet =
       StreamController<ImportWResponse>.broadcast();
-  Stream<ImportWResponse> get actionsFileWallet => _actionsFileWallet.stream;
 
+  Stream<ImportWResponse> get actionsFileWallet => _actionsFileWallet.stream;
 
   WalletBloc({
     required Repositories repositories,
@@ -41,20 +41,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<SyncBalance>(_syncBalance);
     on<CreateNewAddress>(_createNewAddress);
     on<ImportWalletFile>(_importWalletFile);
+    on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
   }
 
   void _createNewAddress(event, emit) async {
     Address address = _repositories.nosoCore.createNewAddress();
-    await _repositories.localRepository.addWallet(address);
+    await _repositories.localRepository.addAddress(address);
   }
 
   void _addAddress(event, emit) async {
-    await _repositories.localRepository.addWallet(event.address);
+    await _repositories.localRepository.addAddress(event.address);
   }
 
   void _deleteAddress(event, emit) async {
-    await _repositories.localRepository.deleteWallet(event.address);
+    await _repositories.localRepository.deleteAddress(event.address);
   }
 
   void _fetchAddresses(event, emit) async {
@@ -64,10 +65,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
-
-  /// TODO Додати верифікацію ключів в метод _importWalletFile, саме під час доавання адрес в список який ми отримаємо тут
   void _addAddresses(event, emit) async {
-
+    List<Address> listAddresses = event.addresses;
+    await _repositories.localRepository.addAddresses(listAddresses);
+    _actionsFileWallet.sink.add(ImportWResponse(
+        actionsFileWallet: ActionsFileWallet.addressAdded,
+        value: listAddresses.length.toString()));
   }
 
   void _syncBalance(event, emit) async {}
@@ -77,17 +80,32 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (result != null) {
       var file = result.files.first;
       if (file.extension?.toLowerCase() == FilesConst.pkwExtensions) {
-        var bytes = await _repositories.fileRepository.readBytesFromPlatformFile(file);
+        var bytes =
+            await _repositories.fileRepository.readBytesFromPlatformFile(file);
         var listAddress = _repositories.nosoCore.parseExternalWallet(bytes);
 
         if (listAddress.isNotEmpty) {
-          _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.walletOpen, address: listAddress));
+          _actionsFileWallet.sink.add(ImportWResponse(
+              actionsFileWallet: ActionsFileWallet.walletOpen,
+              address: listAddress));
         } else {
-          _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.isFileEmpty));
+          _actionsFileWallet.sink.add(ImportWResponse(
+              actionsFileWallet: ActionsFileWallet.isFileEmpty));
         }
       } else {
-        _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.fileNotSupported));
+        _actionsFileWallet.sink.add(ImportWResponse(
+            actionsFileWallet: ActionsFileWallet.fileNotSupported));
       }
+    }
+  }
+
+  void _importWalletQr(event, emit) async {
+    var address =
+        _repositories.nosoCore.importAddressForKeysPair(event.addressKeys);
+
+    if (address != null) {
+      _actionsFileWallet.sink.add(ImportWResponse(
+          actionsFileWallet: ActionsFileWallet.walletOpen, address: [address]));
     }
   }
 

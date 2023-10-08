@@ -23,8 +23,23 @@ class MyDatabase extends _$MyDatabase {
       hash: Value(value.hash),
     );
 
-    await into(addresses).insert(insertable);
+    await into(addresses).insertOnConflictUpdate(insertable);
   }
+
+  Future<void> addAddresses(List<Address> value) async {
+    var insertable = value.map((address) {
+      return AddressesCompanion(
+        publicKey: Value(address.publicKey),
+        privateKey: Value(address.privateKey),
+        hash: Value(address.hash),
+      );
+    }).toList();
+    await batch((batch) {
+      batch.insertAll(addresses, insertable);
+    });
+  }
+
+
 
   Future<void> deleteWallet(Address value) async {
     final insertable = AddressesCompanion(
@@ -34,6 +49,8 @@ class MyDatabase extends _$MyDatabase {
     );
     await delete(addresses).delete(insertable);
   }
+
+
 
   @override
   int get schemaVersion => 1;

@@ -47,3 +47,9 @@ class ImportWalletFile extends WalletEvent {
 
   ImportWalletFile(this.filePickerResult);
 }
+
+class ImportWalletQr extends WalletEvent {
+  final String? addressKeys;
+
+  ImportWalletQr(this.addressKeys);
+}

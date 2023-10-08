@@ -3,23 +3,21 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../blocs/events/wallet_events.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/const/status_qr.dart';
-import '../../utils/noso/src/address_object.dart';
 import '../theme/style/colors.dart';
 import 'dialog_send_address.dart';
 
-class DialogScanQr {
-  void loadDialog({BuildContext? context, required AppDataBloc appDataBloc}) {
-    assert(context != null);
-
+class DialogScannerQr {
+  void showDialogScanQr(BuildContext context, WalletBloc walletBloc) {
     showDialog(
-        context: context!,
-        builder: (context) => BlocProvider.value(
-              value: appDataBloc,
+        context: context,
+        builder: (_) => BlocProvider.value(
+              value: walletBloc,
               child: Container(
                 alignment: Alignment.center,
                 child: Container(
@@ -49,6 +47,7 @@ class ScannerWidgetState extends State<ScannerWidget> {
   QRViewController? controller;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QrNoso');
   bool isScanned = false;
+  late WalletBloc walletBloc;
 
   @override
   void reassemble() {
@@ -67,29 +66,33 @@ class ScannerWidgetState extends State<ScannerWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    walletBloc = BlocProvider.of<WalletBloc>(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: _buildQrView(context),
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: _buildQrView(context),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              primary: CustomColors.primaryColor,
-            ),
-            child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: CustomColors.primaryColor,
           ),
-        ],
-      );
-    });
+          child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+      ],
+    );
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -115,44 +118,16 @@ class ScannerWidgetState extends State<ScannerWidget> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((Barcode scanData) async {
-      ///це все потрібно перенести в логіку блок
-      ///в діалог передавати рядок з кодом
-      ///а в тих діалогах вже працювати з блоком
-
       String data = scanData.code.toString();
       final TypeQrCode qrStatus = CheckQrCode.checkQrScan(data);
 
       if (qrStatus == TypeQrCode.qrKeys) {
         controller.pauseCamera();
-        const Address? address = null;
-        // NosoCripto().importWalletForKeys(scanData.code.toString());
-
-        if (address != null) {
-          /*   AddressObject addressDB = Address(
-              publicKey: address.publicKey.toString(),
-              privateKey: address.privateKey.toString(),
-              hash: address.hash.toString());
-        showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return DialogImportAddress(
-                addressObject: addressDB,
-                onCancelButtonPressed: () {
-                  controller.resumeCamera();
-                },
-                onAddToWalletButtonPressed: () {
-                  // _addAddress(addressDB);
-                  Navigator.pop(context);
-                },
-              );
-            },
-          );
-
-        */
-        } else {
-          controller.resumeCamera();
-        }
+        walletBloc.add(ImportWalletQr(data));
+        Navigator.pop(context);
       } else if (qrStatus == TypeQrCode.qrAddress) {
+        controller.pauseCamera();
+        Navigator.pop(context);
         controller.pauseCamera();
         showModalBottomSheet(
             context: context,

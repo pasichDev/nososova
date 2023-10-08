@@ -8,11 +8,15 @@ class LocalRepository {
 
   Stream<List<Address>> fetchAddress() => _database.fetchAddresses();
 
-  Future<void> deleteWallet(Address adr) async {
-    await _database.deleteWallet(adr);
+  Future<void> deleteAddress(Address value) async {
+    await _database.deleteWallet(value);
   }
 
-  Future<void> addWallet(Address adr) async {
-    await _database.addAddress(adr);
+  Future<void> addAddress(Address value) async {
+    await _database.addAddress(value);
+  }
+
+  Future<void> addAddresses(List<Address> value) async {
+    await _database.addAddresses(value);
   }
 }
