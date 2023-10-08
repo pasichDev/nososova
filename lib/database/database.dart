@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:nososova/models/address.dart';
+import 'package:nososova/database/address.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+
+import '../utils/noso/src/address_object.dart';
 
 part 'database.g.dart';
 
@@ -12,19 +14,25 @@ part 'database.g.dart';
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
-  Future<List<Address>> getWalletList() async {
-    return await select(addresses).get();
-  }
+  Stream<List<Address>> fetchAddresses() => select(addresses).watch();
 
-  Future<void> addWallet(Address addr) async {
-    await into(addresses).insert(addr);
-  }
-
-  Future<int> deleteWallet(Address addr) async {
-    return await customUpdate(
-      'DELETE FROM addresses WHERE hash = :hash',
-      variables: [Variable.withString(addr.hash)],
+  Future<void> addAddress(Address value) async {
+    final insertable = AddressesCompanion(
+      publicKey: Value(value.publicKey),
+      privateKey: Value(value.privateKey),
+      hash: Value(value.hash),
     );
+
+    await into(addresses).insert(insertable);
+  }
+
+  Future<void> deleteWallet(Address value) async {
+    final insertable = AddressesCompanion(
+      publicKey: Value(value.publicKey),
+      privateKey: Value(value.privateKey),
+      hash: Value(value.hash),
+    );
+    await delete(addresses).delete(insertable);
   }
 
   @override

@@ -1,4 +1,4 @@
-import '../../database/database.dart';
+import '../../utils/noso/src/address_object.dart';
 import '../pending_transaction.dart';
 
 class Wallet {
@@ -20,4 +20,3 @@ class Wallet {
     );
   }
 }
-

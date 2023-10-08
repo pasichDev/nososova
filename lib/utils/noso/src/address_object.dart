@@ -1,6 +1,9 @@
-class AddressObject {
+import 'package:drift/drift.dart';
+
+@DataClassName('Address')
+class Address {
   String hash;
-  String custom;
+  String? custom;
   String publicKey;
   String privateKey;
   int balance;
@@ -11,9 +14,9 @@ class AddressObject {
   int incoming;
   int outgoing;
 
-  AddressObject({
+  Address({
     required this.hash,
-    this.custom = "",
+    this.custom,
     required this.publicKey,
     required this.privateKey,
     this.balance = 0,
@@ -25,9 +28,9 @@ class AddressObject {
     this.outgoing = 0,
   });
 
-  AddressObject copyWith({
+  Address copyWith({
     required String hash,
-    String custom = "",
+    String? custom,
     required String publicKey,
     required String privateKey,
     int? balance,
@@ -38,9 +41,9 @@ class AddressObject {
     int? incoming,
     int? outgoing,
   }) {
-    return AddressObject(
+    return Address(
       hash: hash,
-      custom: custom,
+      custom: custom ?? this.custom,
       publicKey: publicKey,
       privateKey: privateKey,
       balance: balance ?? this.balance,

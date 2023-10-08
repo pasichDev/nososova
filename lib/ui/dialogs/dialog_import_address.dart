@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../blocs/events/wallet_events.dart';
 import '../../blocs/wallet_bloc.dart';
+import '../../utils/noso/src/address_object.dart';
 import '../theme/style/text_style.dart';
 
 typedef OnCancelButtonPressed = void Function();

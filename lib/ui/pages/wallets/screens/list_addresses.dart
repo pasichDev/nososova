@@ -10,6 +10,47 @@ class ListAddresses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
+    var  walletBloc = BlocProvider.of<WalletBloc>(context);
+    return StreamBuilder<List<AddressObject>>(
+      stream: walletBloc.dataStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<AddressObject> data = snapshot.data!;
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: data.length,
+            padding:
+            const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+            itemBuilder: (context, index) {
+             return AddressListTile(
+                address: data[index],
+                onButtonClick: () {
+                  showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20.0)),
+                      ),
+                      context: context,
+                      builder: (_) => BlocProvider.value(
+                          value: BlocProvider.of<WalletBloc>(context),
+                          child: AddressInfo(
+                            address: data[index],
+                          )));
+                },
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('Помилка: ${snapshot.error}');
+        }
+        return CircularProgressIndicator(); // Показувати прогрес, якщо дані ще завантажуються
+      },
+    );
+
+
+     */
+
     return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
         final wallets = state.wallet.address;

@@ -1,6 +1,5 @@
-import '../../database/database.dart';
 import '../../utils/const/files_const.dart';
-import '../pending_transaction.dart';
+import '../../utils/noso/src/address_object.dart';
 
 class ImportWResponse {
   ActionsFileWallet actionsFileWallet;
@@ -10,7 +9,4 @@ class ImportWResponse {
     required this.actionsFileWallet,
     this.address = const [],
   });
-
-
 }
-

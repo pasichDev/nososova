@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../database/database.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/const/status_qr.dart';
 import '../../utils/noso/src/address_object.dart';
@@ -123,22 +122,17 @@ class ScannerWidgetState extends State<ScannerWidget> {
       String data = scanData.code.toString();
       final TypeQrCode qrStatus = CheckQrCode.checkQrScan(data);
 
-
-
-
-
-
       if (qrStatus == TypeQrCode.qrKeys) {
         controller.pauseCamera();
-        final AddressObject? address = null;
-           // NosoCripto().importWalletForKeys(scanData.code.toString());
+        const Address? address = null;
+        // NosoCripto().importWalletForKeys(scanData.code.toString());
 
         if (address != null) {
-          Address addressDB = Address(
+          /*   AddressObject addressDB = Address(
               publicKey: address.publicKey.toString(),
               privateKey: address.privateKey.toString(),
               hash: address.hash.toString());
-       /*   showModalBottomSheet(
+        showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
               return DialogImportAddress(

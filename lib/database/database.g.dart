@@ -35,8 +35,16 @@ class $AddressesTable extends Addresses
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
+  static const VerificationMeta _customMeta = const VerificationMeta('custom');
   @override
-  List<GeneratedColumn> get $columns => [publicKey, privateKey, hash];
+  late final GeneratedColumn<String> custom = GeneratedColumn<String>(
+      'custom', aliasedName, true,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [publicKey, privateKey, hash, custom];
   @override
   String get aliasedName => _alias ?? 'addresses';
   @override
@@ -66,21 +74,27 @@ class $AddressesTable extends Addresses
     } else if (isInserting) {
       context.missing(_hashMeta);
     }
+    if (data.containsKey('custom')) {
+      context.handle(_customMeta,
+          custom.isAcceptableOrUnknown(data['custom']!, _customMeta));
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {hash};
   @override
   Address map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Address(
+      hash: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}hash'])!,
+      custom: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}custom']),
       publicKey: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}public_key'])!,
       privateKey: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}private_key'])!,
-      hash: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}hash'])!,
     );
   }
 
@@ -90,104 +104,40 @@ class $AddressesTable extends Addresses
   }
 }
 
-class Address extends DataClass implements Insertable<Address> {
-  final String publicKey;
-  final String privateKey;
-  final String hash;
-  const Address(
-      {required this.publicKey, required this.privateKey, required this.hash});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['public_key'] = Variable<String>(publicKey);
-    map['private_key'] = Variable<String>(privateKey);
-    map['hash'] = Variable<String>(hash);
-    return map;
-  }
-
-  AddressesCompanion toCompanion(bool nullToAbsent) {
-    return AddressesCompanion(
-      publicKey: Value(publicKey),
-      privateKey: Value(privateKey),
-      hash: Value(hash),
-    );
-  }
-
-  factory Address.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Address(
-      publicKey: serializer.fromJson<String>(json['publicKey']),
-      privateKey: serializer.fromJson<String>(json['privateKey']),
-      hash: serializer.fromJson<String>(json['hash']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'publicKey': serializer.toJson<String>(publicKey),
-      'privateKey': serializer.toJson<String>(privateKey),
-      'hash': serializer.toJson<String>(hash),
-    };
-  }
-
-  Address copyWith({String? publicKey, String? privateKey, String? hash}) =>
-      Address(
-        publicKey: publicKey ?? this.publicKey,
-        privateKey: privateKey ?? this.privateKey,
-        hash: hash ?? this.hash,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('Address(')
-          ..write('publicKey: $publicKey, ')
-          ..write('privateKey: $privateKey, ')
-          ..write('hash: $hash')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(publicKey, privateKey, hash);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Address &&
-          other.publicKey == this.publicKey &&
-          other.privateKey == this.privateKey &&
-          other.hash == this.hash);
-}
-
 class AddressesCompanion extends UpdateCompanion<Address> {
   final Value<String> publicKey;
   final Value<String> privateKey;
   final Value<String> hash;
+  final Value<String?> custom;
   final Value<int> rowid;
   const AddressesCompanion({
     this.publicKey = const Value.absent(),
     this.privateKey = const Value.absent(),
     this.hash = const Value.absent(),
+    this.custom = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AddressesCompanion.insert({
     required String publicKey,
     required String privateKey,
     required String hash,
+    this.custom = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : publicKey = Value(publicKey),
         privateKey = Value(privateKey),
         hash = Value(hash);
-  static Insertable<Address> custom({
+  static Insertable<Address> createCustom({
     Expression<String>? publicKey,
     Expression<String>? privateKey,
     Expression<String>? hash,
+    Expression<String>? custom,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (publicKey != null) 'public_key': publicKey,
       if (privateKey != null) 'private_key': privateKey,
       if (hash != null) 'hash': hash,
+      if (custom != null) 'custom': custom,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -196,11 +146,13 @@ class AddressesCompanion extends UpdateCompanion<Address> {
       {Value<String>? publicKey,
       Value<String>? privateKey,
       Value<String>? hash,
+      Value<String?>? custom,
       Value<int>? rowid}) {
     return AddressesCompanion(
       publicKey: publicKey ?? this.publicKey,
       privateKey: privateKey ?? this.privateKey,
       hash: hash ?? this.hash,
+      custom: custom ?? this.custom,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -217,6 +169,9 @@ class AddressesCompanion extends UpdateCompanion<Address> {
     if (hash.present) {
       map['hash'] = Variable<String>(hash.value);
     }
+    if (custom.present) {
+      map['custom'] = Variable<String>(custom.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -229,6 +184,7 @@ class AddressesCompanion extends UpdateCompanion<Address> {
           ..write('publicKey: $publicKey, ')
           ..write('privateKey: $privateKey, ')
           ..write('hash: $hash, ')
+          ..write('custom: $custom, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+
+import '../../utils/noso/src/address_object.dart';
 
 class AddressListTile extends StatelessWidget {
   final VoidCallback onButtonClick;

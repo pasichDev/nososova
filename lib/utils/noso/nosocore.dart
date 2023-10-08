@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:nososova/utils/noso/src/crypto.dart';
 
-import '../../database/database.dart';
 import '../../models/node.dart';
 import '../../models/pending_transaction.dart';
 import '../../models/seed.dart';
@@ -12,16 +11,16 @@ import 'src/address_object.dart';
 
 final class NosoCore extends NosoCrypto {
   /// Generate new address
-  AddressObject createNewAddress() {
+  Address createNewAddress() {
     KeyPair keysPair = generateKeyPair;
-    return AddressObject(
+    return Address(
         publicKey: keysPair.publicKey,
         privateKey: keysPair.privateKey,
         hash: getAddressFromPublicKey(keysPair.publicKey));
   }
 
   /// Import Address from KeysPair
-  AddressObject? importAddressForKeysPair(String keys) {
+  Address? importAddressForKeysPair(String keys) {
     List<String> keyParts = keys.split(' ');
 
     if (keyParts.length == 2) {
@@ -33,7 +32,7 @@ final class NosoCore extends NosoCrypto {
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {
-        return AddressObject(
+        return Address(
             hash: getAddressFromPublicKey(publicKeyPart),
             privateKey: privateKeyPart,
             publicKey: publicKeyPart);
@@ -58,7 +57,7 @@ final class NosoCore extends NosoCrypto {
     while (current.isNotEmpty) {
       Address addressObject = Address(
           hash: String.fromCharCodes(current.sublist(1, current[0] + 1)),
-          // custom: String.fromCharCodes(current.sublist(42, 42 + current[41])),
+          custom: String.fromCharCodes(current.sublist(42, 42 + current[41])),
           publicKey:
               String.fromCharCodes(current.sublist(83, 83 + current[82])),
           privateKey:

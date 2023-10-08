@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 
-import '../../database/database.dart';
 import '../../models/pending_transaction.dart';
+import '../../utils/noso/src/address_object.dart';
 
 abstract class WalletEvent {}
 

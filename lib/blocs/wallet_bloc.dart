@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:nososova/repositories/repositories.dart';
 
-import '../database/database.dart';
 import '../models/app/import_wallet_response.dart';
 import '../models/app/wallet.dart';
 import '../utils/const/files_const.dart';
@@ -29,8 +28,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final Repositories _repositories;
   final StreamController<ImportWResponse> _actionsFileWallet =
       StreamController<ImportWResponse>.broadcast();
-
   Stream<ImportWResponse> get actionsFileWallet => _actionsFileWallet.stream;
+
 
   WalletBloc({
     required Repositories repositories,
@@ -45,35 +44,17 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<AddAddresses>(_addAddresses);
   }
 
-  /// TODO Тут дуже крива реалізація, порібно переглянути
   void _createNewAddress(event, emit) async {
-    AddressObject addressObject = _repositories.nosoCore.createNewAddress();
-    var address = Address(
-        publicKey: addressObject.publicKey.toString(),
-        privateKey: addressObject.privateKey.toString(),
-        hash: addressObject.hash.toString());
-
+    Address address = _repositories.nosoCore.createNewAddress();
     await _repositories.localRepository.addWallet(address);
-    final addressStream = _repositories.localRepository.fetchAddress();
-    await for (final addressList in addressStream) {
-      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
-    }
   }
 
   void _addAddress(event, emit) async {
     await _repositories.localRepository.addWallet(event.address);
-    final addressStream = _repositories.localRepository.fetchAddress();
-    await for (final addressList in addressStream) {
-      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
-    }
   }
 
   void _deleteAddress(event, emit) async {
     await _repositories.localRepository.deleteWallet(event.address);
-    final addressStream = _repositories.localRepository.fetchAddress();
-    await for (final addressList in addressStream) {
-      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
-    }
   }
 
   void _fetchAddresses(event, emit) async {
@@ -83,15 +64,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+
   /// TODO Додати верифікацію ключів в метод _importWalletFile, саме під час доавання адрес в список який ми отримаємо тут
   void _addAddresses(event, emit) async {
-   /* await _repositories.localRepository.addWallet(event.address);
-    final addressStream = _repositories.localRepository.fetchAddress();
-    await for (final addressList in addressStream) {
-      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
-    }
 
-    */
   }
 
   void _syncBalance(event, emit) async {}

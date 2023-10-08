@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/database/database.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../blocs/events/wallet_events.dart';
 import '../../../../../blocs/wallet_bloc.dart';
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../../utils/noso/src/address_object.dart';
 import '../../../../theme/style/colors.dart';
 
 class AddressInfo extends StatefulWidget {
@@ -43,7 +43,7 @@ class AddressInfoState extends State<AddressInfo> {
         child: QrImageView(
           data: selectedOption == 1
               ? widget.address.hash
-              :  "${widget.address.publicKey} ${widget.address.privateKey}",
+              : "${widget.address.publicKey} ${widget.address.privateKey}",
           version: QrVersions.auto,
           size: 200.0,
         ),
@@ -159,23 +159,24 @@ class AddressInfoState extends State<AddressInfo> {
       ),
       const SizedBox(height: 5),
       Expanded(
-        child:SingleChildScrollView(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-          children: [
-            buildListTile(Icons.confirmation_num_outlined,
-                AppLocalizations.of(context)!.certificate, () {}),
-            buildListTile(Icons.send_outlined,
-                AppLocalizations.of(context)!.sendFromAddress, () {}),
-            buildListTile(
-                Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
-            buildListTile(
-                Icons.delete_outline, AppLocalizations.of(context)!.delete, () {
-              walletBloc.add(DeleteAddress(widget.address));
-              Navigator.pop(context);
-            })
-          ],
-        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              buildListTile(Icons.confirmation_num_outlined,
+                  AppLocalizations.of(context)!.certificate, () {}),
+              buildListTile(Icons.send_outlined,
+                  AppLocalizations.of(context)!.sendFromAddress, () {}),
+              buildListTile(Icons.lock_outline,
+                  AppLocalizations.of(context)!.lock, () {}),
+              buildListTile(
+                  Icons.delete_outline, AppLocalizations.of(context)!.delete,
+                  () {
+                walletBloc.add(DeleteAddress(widget.address));
+                Navigator.pop(context);
+              })
+            ],
+          ),
         ),
       ),
     ]);
