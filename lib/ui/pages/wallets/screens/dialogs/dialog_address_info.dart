@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../blocs/events/wallet_events.dart';
 import '../../../../../blocs/wallet_bloc.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../../utils/noso/src/address_object.dart';
-import '../../../../theme/style/colors.dart';
+import '../../../../dialogs/dialog_view_qr.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;
@@ -33,97 +32,10 @@ class AddressInfoState extends State<AddressInfo> {
     walletBloc = BlocProvider.of<WalletBloc>(context);
   }
 
-  // TODO: Внести правльний колір QRCode бо в темні темі будуть трабли
-  // TODO: Проблема  відоюраження елемнтів, потрібно без прокрутки
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: QrImageView(
-          data: selectedOption == 1
-              ? widget.address.hash
-              : "${widget.address.publicKey} ${widget.address.privateKey}",
-          version: QrVersions.auto,
-          size: 200.0,
-        ),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedOption = 1;
-              });
-            },
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: selectedOption == 1
-                    ? CustomColors.primaryColor
-                    : Colors.transparent,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    bottomLeft: Radius.circular(10.0),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  selectedOption = 1;
-                });
-              },
-              child: Text(
-                AppLocalizations.of(context)!.address,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: selectedOption == 1
-                      ? Colors.white
-                      : CustomColors.primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedOption = 2;
-              });
-            },
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: selectedOption == 2
-                    ? CustomColors.primaryColor
-                    : Colors.transparent,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  selectedOption = 2;
-                });
-              },
-              child: Text(
-                AppLocalizations.of(context)!.keys,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: selectedOption == 2
-                      ? Colors.white
-                      : CustomColors.primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -155,30 +67,37 @@ class AddressInfoState extends State<AddressInfo> {
               ],
             ),
           ),
+          const SizedBox(width: 10),
+          IconButton(
+              onPressed: () => _viewQr(context),
+              icon: const Icon(Icons.qr_code))
         ],
       ),
-      const SizedBox(height: 5),
-      Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              buildListTile(Icons.confirmation_num_outlined,
-                  AppLocalizations.of(context)!.certificate, () {}),
-              buildListTile(Icons.send_outlined,
-                  AppLocalizations.of(context)!.sendFromAddress, () {}),
-              buildListTile(Icons.lock_outline,
-                  AppLocalizations.of(context)!.lock, () {}),
-              buildListTile(
-                  Icons.delete_outline, AppLocalizations.of(context)!.delete,
-                  () {
-                walletBloc.add(DeleteAddress(widget.address));
-                Navigator.pop(context);
-              })
-            ],
-          ),
-        ),
+      const SizedBox(height: 10),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildListTile(Icons.confirmation_num_outlined,
+              AppLocalizations.of(context)!.certificate, () {}),
+          buildListTile(Icons.account_balance_wallet_outlined,
+              AppLocalizations.of(context)!.billAction, () {}),
+          buildListTile(Icons.send_outlined,
+              AppLocalizations.of(context)!.sendFromAddress, () {}),
+          buildListTile(
+              Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
+          buildListTile(
+              Icons.delete_outline, AppLocalizations.of(context)!.delete, () {
+            walletBloc.add(DeleteAddress(widget.address));
+            Navigator.pop(context);
+          })
+        ],
       ),
     ]);
+  }
+
+  void _viewQr(BuildContext context) {
+    Navigator.pop(context);
+
+    DialogViewQr().loadDialog(context: context, address: widget.address);
   }
 }

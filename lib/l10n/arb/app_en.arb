@@ -47,6 +47,7 @@
   "errorEmptyListWallet": "This file does not contain an address",
   "errorNotSupportedWallet": "This file is not supported",
   "unknownError": "An error occurred",
-  "searchAddressResult": "Address found"
+  "searchAddressResult": "Address found",
+  "billAction": "Bill to this address"
 
 }

@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address found'**
   String get searchAddressResult;
+
+  /// No description provided for @billAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill to this address'**
+  String get billAction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

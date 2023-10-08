@@ -150,4 +150,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get searchAddressResult => 'Знайдено адрес';
+
+  @override
+  String get billAction => 'Виставити рахунок на цю адресу';
 }

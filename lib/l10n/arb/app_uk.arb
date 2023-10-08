@@ -47,5 +47,6 @@
   "errorEmptyListWallet": "Це файл не містить адрес",
   "errorNotSupportedWallet": "Цей файл не підтримується",
   "unknownError": "Виникла помилка",
-  "searchAddressResult": "Знайдено адрес"
+  "searchAddressResult": "Знайдено адрес",
+  "billAction": "Виставити рахунок на цю адресу"
 }

@@ -150,4 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchAddressResult => 'Address found';
+
+  @override
+  String get billAction => 'Bill to this address';
 }
