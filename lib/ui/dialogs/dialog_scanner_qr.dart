@@ -8,11 +8,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../database/database.dart';
 import '../../l10n/app_localizations.dart';
-import '../../models/address_object.dart';
-import '../../utils/noso/crypto.dart';
 import '../../utils/const/status_qr.dart';
+import '../../utils/noso/src/address_object.dart';
 import '../theme/style/colors.dart';
-import 'dialog_import_address.dart';
 import 'dialog_send_address.dart';
 
 class DialogScanQr {

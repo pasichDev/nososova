@@ -1,13 +1,53 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:nososova/database/database.dart';
-import 'package:nososova/models/node.dart';
-import 'package:nososova/models/pending_transaction.dart';
-import 'package:nososova/models/seed.dart';
+import 'package:nososova/utils/noso/src/crypto.dart';
 
-class NosoParse {
-  static List<Address> parseExternalWallet(Uint8List? fileBytes) {
+import '../../database/database.dart';
+import '../../models/node.dart';
+import '../../models/pending_transaction.dart';
+import '../../models/seed.dart';
+import '../const/const.dart';
+import 'src/address_object.dart';
+
+final class NosoCore extends NosoCrypto {
+  /// Generate new address
+  AddressObject createNewAddress() {
+    KeyPair keysPair = generateKeyPair;
+    return AddressObject(
+        publicKey: keysPair.publicKey,
+        privateKey: keysPair.privateKey,
+        hash: getAddressFromPublicKey(keysPair.publicKey));
+  }
+
+  /// Import Address from KeysPair
+  AddressObject? importAddressForKeysPair(String keys) {
+    List<String> keyParts = keys.split(' ');
+
+    if (keyParts.length == 2) {
+      String publicKeyPart = keyParts[0];
+      String privateKeyPart = keyParts[1];
+
+      bool verification =
+          verifyKeysPair(Const.verifyMessage, publicKeyPart, privateKeyPart);
+      if (verification &&
+          privateKeyPart.length == 44 &&
+          publicKeyPart.length == 88) {
+        return AddressObject(
+            hash: getAddressFromPublicKey(publicKeyPart),
+            privateKey: privateKeyPart,
+            publicKey: publicKeyPart);
+      }
+    }
+    return null;
+  }
+
+  bool verifyKeysPair(String message, String publicKey, String privateKey) {
+    var signerMessage = signMessage(message, privateKey);
+    return verifySignedString(message, signerMessage, publicKey);
+  }
+
+  List<Address> parseExternalWallet(Uint8List? fileBytes) {
     final List<Address> address = [];
     if (fileBytes == null) {
       return address;
@@ -18,7 +58,7 @@ class NosoParse {
     while (current.isNotEmpty) {
       Address addressObject = Address(
           hash: String.fromCharCodes(current.sublist(1, current[0] + 1)),
-         // custom: String.fromCharCodes(current.sublist(42, 42 + current[41])),
+          // custom: String.fromCharCodes(current.sublist(42, 42 + current[41])),
           publicKey:
               String.fromCharCodes(current.sublist(83, 83 + current[82])),
           privateKey:
@@ -31,7 +71,10 @@ class NosoParse {
         current = Uint8List(0);
       }
 
-      if (addressObject.privateKey.length == 44 &&
+      bool verification = verifyKeysPair(Const.verifyMessage,
+          addressObject.publicKey, addressObject.privateKey);
+      if (verification &&
+          addressObject.privateKey.length == 44 &&
           addressObject.publicKey.length == 88) {
         address.add(addressObject);
       }
@@ -39,7 +82,7 @@ class NosoParse {
     return address;
   }
 
-  static String parseMNString(List<int>? response) {
+  String parseMNString(List<int>? response) {
     final resultMNList = <Seed>[];
     final StringBuffer parsedData = StringBuffer();
 
@@ -69,7 +112,7 @@ class NosoParse {
     return parsedData.toString();
   }
 
-  static Node parseResponseNode(List<int>? response, Seed seedActive) {
+  Node parseResponseNode(List<int>? response, Seed seedActive) {
     if (response == null) {
       return Node(seed: seedActive);
     }
@@ -87,7 +130,7 @@ class NosoParse {
     );
   }
 
-  static List<PendingTransaction> parsePendings(List<int>? response) {
+  List<PendingTransaction> parsePendings(List<int>? response) {
     if (response == null) {
       return [];
     }
@@ -105,7 +148,7 @@ class NosoParse {
     return pendingList;
   }
 
-  static String getRandomNode(String? inputString) {
+  String getRandomNode(String? inputString) {
     if (inputString == null) {
       return "127.0.0.1:8080";
     }
@@ -120,9 +163,5 @@ class NosoParse {
     } else {
       return "127.0.0.1:8080";
     }
-  }
-
-  static String getQrKeys(Address address) {
-    return "${address.publicKey} ${address.privateKey}";
   }
 }

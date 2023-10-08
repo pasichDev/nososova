@@ -10,7 +10,7 @@ import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/services/file_service.dart';
 import 'package:nososova/services/server_service.dart';
 import 'package:nososova/services/shared_service.dart';
-import 'package:nososova/utils/noso/crypto.dart';
+import 'package:nososova/utils/noso/nosocore.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -35,10 +35,10 @@ Future<void> setupLocator() async {
       serverRepository: locator<ServerRepository>(),
       sharedRepository: locator<SharedRepository>(),
       fileRepository: locator<FileRepository>(),
-      nosoCrypto: locator<NosoCrypto>()));
+      nosoCore: locator<NosoCore>()));
 
   ///Other utils
-  locator.registerLazySingleton<NosoCrypto>(() => NosoCrypto());
+  locator.registerLazySingleton<NosoCore>(() => NosoCore());
 
   /// Blocs
   locator.registerLazySingleton<WalletBloc>(() => WalletBloc(

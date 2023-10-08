@@ -4,6 +4,7 @@ class Const {
   static const String b64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   static const String coinChar = "N";
   static const String coinName= "NOSO";
+  static const String verifyMessage= "VERIFICATION";
 
 }
 

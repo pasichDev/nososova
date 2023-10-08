@@ -5,11 +5,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:nososova/repositories/repositories.dart';
 
 import '../database/database.dart';
-import '../models/address_object.dart';
 import '../models/app/import_wallet_response.dart';
 import '../models/app/wallet.dart';
 import '../utils/const/files_const.dart';
-import '../utils/noso/parse.dart';
+import '../utils/noso/src/address_object.dart';
 import 'events/wallet_events.dart';
 
 class WalletState {
@@ -48,7 +47,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   /// TODO Тут дуже крива реалізація, порібно переглянути
   void _createNewAddress(event, emit) async {
-    AddressObject addressObject = _repositories.nosoCrypto.createNewAddress();
+    AddressObject addressObject = _repositories.nosoCore.createNewAddress();
     var address = Address(
         publicKey: addressObject.publicKey.toString(),
         privateKey: addressObject.privateKey.toString(),
@@ -103,7 +102,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       var file = result.files.first;
       if (file.extension?.toLowerCase() == FilesConst.pkwExtensions) {
         var bytes = await _repositories.fileRepository.readBytesFromPlatformFile(file);
-        var listAddress = NosoParse.parseExternalWallet(bytes);
+        var listAddress = _repositories.nosoCore.parseExternalWallet(bytes);
 
         if (listAddress.isNotEmpty) {
           _actionsFileWallet.sink.add(ImportWResponse(actionsFileWallet:ActionsFileWallet.walletOpen, address: listAddress));

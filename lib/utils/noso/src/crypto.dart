@@ -4,8 +4,6 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:nososova/utils/const/const.dart';
-import 'package:nososova/models/address_object.dart';
-import 'package:nososova/utils/noso/noso_objects.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
 import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/ecc/curves/secp256k1.dart';
@@ -13,93 +11,85 @@ import 'package:pointycastle/key_generators/ec_key_generator.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:pointycastle/random/fortuna_random.dart';
 
+class KeyPair {
+  late String publicKey;
+  late String privateKey;
+}
 
-/// TODO Виправлення орфографії змінних, а також упорядкування класу
-/// TODO Додати методи верифікації підпису повідомлення
-final class NosoCrypto {
+class DivResult {
+  BigInt coefficient = BigInt.zero;
+  BigInt remainder = BigInt.zero;
+}
 
-  AddressObject createNewAddress() {
-    KeyPair keysPair = _generateKeysPair();
-    return AddressObject(
-        publicKey: keysPair.publicKey,
-        privateKey: keysPair.privateKey,
-        hash: _getAddressWalletFromPublicKey(keysPair.publicKey));
+class NosoCrypto {
+  /// Public Methods
+  KeyPair get generateKeyPair => _generateKeyPair();
+
+  String getAddressFromPublicKey(String publicKey) {
+    return _getAddressFromPublicKey(publicKey);
   }
 
-  AddressObject? importWalletForKeys(String keys) {
-    List<String> keyParts = keys.split(' ');
+  String signMessage(String message, String privateKeyBase64) {
+    var messages = _nosoBase64Decode(message);
+    var decodedPrivateKey = base64.decode(privateKeyBase64);
 
-    if (keyParts.length == 2) {
-      String publicKeyPart = keyParts[0];
-      String privateKeyPart = keyParts[1];
-
-      bool verification = true;
-
-      if (verification &&
-          privateKeyPart.length == 44 &&
-          publicKeyPart.length == 88) {
-        return AddressObject(
-            hash: _getAddressWalletFromPublicKey(publicKeyPart),
-            privateKey: privateKeyPart,
-            publicKey: publicKeyPart);
-      }
-    }
-    return null;
+    return "";
   }
 
-  String _getAddressWalletFromPublicKey(String publicKey) {
-    final pubSHAHashed = _getHashSha256ToString(publicKey);
-    final hash1 = _getHashMD160ToString(pubSHAHashed);
-    final hash1Encoded = _bmHexTo58(hash1, BigInt.from(58));
-    final sumatoria = _bmB58Resumen(hash1Encoded);
-    final clave = _bmDecTo58(sumatoria.toString());
-    final hash2 = hash1Encoded + clave;
+  bool verifySignedString(
+      String message, String signatureBase64, String publicKey) {
+    return true;
+  }
+
+  String _getAddressFromPublicKey(String publicKey) {
+    final pubSHAHashed = _getSha256HashToString(publicKey);
+    final hash1 = _getMd160HashToString(pubSHAHashed);
+    final hash1Encoded = _base58Encode(hash1, BigInt.from(58));
+    final sum = _base58Checksum(hash1Encoded);
+    final key = _base58DecimalTo58(sum.toString());
+    final hash2 = hash1Encoded + key;
     return Const.coinChar + hash2;
   }
 
-  String _getHashSha256ToString(String publicKey) {
+  String _getSha256HashToString(String publicKey) {
     final sha256 = SHA256Digest();
     final bytes = utf8.encode(publicKey);
     final digest = sha256.process(Uint8List.fromList(bytes));
-
     final result = hex.encode(digest);
-
     return result.replaceAll('-', '').toUpperCase();
   }
 
-  String _getHashMD160ToString(String hash256) {
+  String _getMd160HashToString(String hash256) {
     final hash = RIPEMD160Digest();
     final bytes = Uint8List.fromList(hash256.codeUnits);
     final hashResult = hash.process(bytes);
-
     final hashHex = hex.encode(hashResult);
-
     return hashHex.toUpperCase();
   }
 
-  String _bmHexTo58(String numerohex, BigInt alphabetnumber) {
-    BigInt decimalValue = _bmHexToDec(numerohex);
+  String _base58Encode(String hexNumber, BigInt alphabetNumber) {
+    BigInt decimalValue = _hexToDecimal(hexNumber);
     String result = '';
     String alphabetUsed;
 
-    if (alphabetnumber == BigInt.from(36)) {
+    if (alphabetNumber == BigInt.from(36)) {
       alphabetUsed = Const.b36Alphabet;
     } else {
       alphabetUsed = Const.b58Alphabet;
     }
 
     while (decimalValue.bitLength >= 2) {
-      DivResult resultadoDiv = _divideBigInt(decimalValue, alphabetnumber);
-      decimalValue = resultadoDiv.coefficient;
-      int restante = resultadoDiv.remainder.toInt();
-      result = alphabetUsed[restante] + result;
+      DivResult divResult = _divideBigInt(decimalValue, alphabetNumber);
+      decimalValue = divResult.coefficient;
+      int remainder = divResult.remainder.toInt();
+      result = alphabetUsed[remainder] + result;
     }
 
-    if (decimalValue >= alphabetnumber) {
-      DivResult resultadoDiv = _divideBigInt(decimalValue, alphabetnumber);
-      decimalValue = resultadoDiv.coefficient;
-      int restante = resultadoDiv.remainder.toInt();
-      result = alphabetUsed[restante] + result;
+    if (decimalValue >= alphabetNumber) {
+      DivResult divResult = _divideBigInt(decimalValue, alphabetNumber);
+      decimalValue = divResult.coefficient;
+      int remainder = divResult.remainder.toInt();
+      result = alphabetUsed[remainder] + result;
     }
 
     if (decimalValue > BigInt.zero) {
@@ -110,39 +100,36 @@ final class NosoCrypto {
     return result;
   }
 
-  int _bmB58Resumen(String input) {
+  int _base58Checksum(String input) {
     int total = 0;
-
     for (var i = 0; i < input.length; i++) {
       var currentChar = input[i];
       var foundIndex = Const.b58Alphabet.indexOf(currentChar);
-
       if (foundIndex != -1) {
         total += foundIndex;
       }
     }
-
     return total;
   }
 
-  String _bmDecTo58(String number) {
+  String _base58DecimalTo58(String number) {
     var decimalValue = BigInt.parse(number);
     DivResult resultDiv;
-    String remaining;
+    String remainder;
     String result = '';
 
     while (decimalValue.bitLength >= 2) {
       resultDiv = _divideBigInt(decimalValue, BigInt.from(58));
       decimalValue = resultDiv.coefficient;
-      remaining = resultDiv.remainder.toInt().toString();
-      result = Const.b58Alphabet[int.parse(remaining)] + result;
+      remainder = resultDiv.remainder.toInt().toString();
+      result = Const.b58Alphabet[int.parse(remainder)] + result;
     }
 
     if (decimalValue >= BigInt.from(58)) {
       resultDiv = _divideBigInt(decimalValue, BigInt.from(58));
       decimalValue = resultDiv.coefficient;
-      remaining = resultDiv.remainder.toInt().toString();
-      result = Const.b58Alphabet[int.parse(remaining)] + result;
+      remainder = resultDiv.remainder.toInt().toString();
+      result = Const.b58Alphabet[int.parse(remainder)] + result;
     }
 
     if (decimalValue > BigInt.zero) {
@@ -152,10 +139,10 @@ final class NosoCrypto {
     return result;
   }
 
-  BigInt _bmHexToDec(String numerohex) {
+  BigInt _hexToDecimal(String hexNumber) {
     final bytes = <int>[];
-    for (var i = 0; i < numerohex.length; i += 2) {
-      final byteString = numerohex.substring(i, i + 2);
+    for (var i = 0; i < hexNumber.length; i += 2) {
+      final byteString = hexNumber.substring(i, i + 2);
       final byte = int.parse(byteString, radix: 16);
       bytes.add(byte);
     }
@@ -164,7 +151,7 @@ final class NosoCrypto {
     return BigInt.parse(hexString, radix: 16);
   }
 
-  KeyPair _generateKeysPair() {
+  KeyPair _generateKeyPair() {
     final secureRandom = FortunaRandom()
       ..seed(KeyParameter(Uint8List.fromList(
           List.generate(32, (_) => Random.secure().nextInt(256)))));
@@ -196,5 +183,30 @@ final class NosoCrypto {
     result.coefficient = numerator ~/ denominator;
     result.remainder = numerator % denominator;
     return result;
+  }
+
+  List<int> _nosoBase64Decode(String input) {
+    final indexList = <int>[];
+    for (var c in input.codeUnits) {
+      final it = Const.b64Alphabet.indexOf(String.fromCharCode(c));
+      if (it != -1) {
+        indexList.add(it);
+      }
+    }
+
+    final binaryString =
+        indexList.map((i) => i.toRadixString(2).padLeft(6, '0')).join();
+
+    var strAux = binaryString;
+    final tempByteArray = <int>[];
+
+    while (strAux.length >= 8) {
+      final currentGroup = strAux.substring(0, 8);
+      final intVal = int.parse(currentGroup, radix: 2);
+      tempByteArray.add(intVal);
+      strAux = strAux.substring(8);
+    }
+
+    return tempByteArray;
   }
 }

@@ -10,7 +10,6 @@ import 'package:nososova/models/seed.dart';
 import '../models/pending_transaction.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
-import '../utils/noso/parse.dart';
 import 'events/app_data_events.dart';
 
 class AppDataState {
@@ -97,7 +96,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       case InitialNodeAlgh.listenUserNodes:
         {
           var seed = Seed()
-              .tokenizer(NosoParse.getRandomNode(appBlocConfig.nodesList));
+              .tokenizer(_repositories.nosoCore.getRandomNode(appBlocConfig.nodesList));
           response = await _repositories.serverRepository.testNode(seed);
           if (response.errors == null) {
             _repositories.sharedRepository
@@ -144,7 +143,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
 
     List<PendingTransaction> pendingsOutput = [];
-    final Node nodeOutput = NosoParse.parseResponseNode(
+    final Node nodeOutput = _repositories.nosoCore.parseResponseNode(
         responseNodeInfo.value, responseNodeInfo.seed);
 
     if (responseNodeInfo.value != null) {
@@ -159,7 +158,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       ResponseNode<List<int>> responseNodeList = await _fetchNode(NetworkRequest.nodeList, seed);
       if (responseNodeList.value != null) {
         _repositories.sharedRepository
-            .saveNodesList(NosoParse.parseMNString(responseNodeList.value));
+            .saveNodesList(_repositories.nosoCore.parseMNString(responseNodeList.value));
       }
 
       var consensus = await _checkConsensus(responseNodeInfo.value as Node);

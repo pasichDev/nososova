@@ -1,7 +1,7 @@
 
 import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
-import 'package:nososova/utils/noso/crypto.dart';
+import 'package:nososova/utils/noso/nosocore.dart';
 
 import 'file_repository.dart';
 import 'local_repository.dart';
@@ -11,13 +11,13 @@ class Repositories {
   final ServerRepository serverRepository;
   final SharedRepository sharedRepository;
   final FileRepository fileRepository;
-  final NosoCrypto nosoCrypto;
+  final NosoCore nosoCore;
 
   Repositories({
     required this.localRepository,
     required this.serverRepository,
     required this.sharedRepository,
     required this.fileRepository,
-    required this.nosoCrypto,
+    required this.nosoCore,
   });
 }

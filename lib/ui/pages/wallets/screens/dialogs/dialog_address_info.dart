@@ -8,7 +8,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../../blocs/events/wallet_events.dart';
 import '../../../../../blocs/wallet_bloc.dart';
 import '../../../../../l10n/app_localizations.dart';
-import '../../../../../utils/noso/parse.dart';
 import '../../../../theme/style/colors.dart';
 
 class AddressInfo extends StatefulWidget {
@@ -44,7 +43,7 @@ class AddressInfoState extends State<AddressInfo> {
         child: QrImageView(
           data: selectedOption == 1
               ? widget.address.hash
-              : NosoParse.getQrKeys(widget.address),
+              :  "${widget.address.publicKey} ${widget.address.privateKey}",
           version: QrVersions.auto,
           size: 200.0,
         ),
