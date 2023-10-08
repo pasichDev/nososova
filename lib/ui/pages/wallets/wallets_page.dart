@@ -9,6 +9,7 @@ import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../utils/const/files_const.dart';
 import '../../dialogs/dialog_import_address.dart';
+import '../../theme/style/dialog_style.dart';
 
 class WalletsPage extends StatefulWidget {
   const WalletsPage({super.key});
@@ -53,9 +54,7 @@ class WalletsPageState extends State<WalletsPage> {
     walletBloc.actionsFileWallet.listen((message) {
       if (message.actionsFileWallet == ActionsFileWallet.walletOpen) {
         showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-            ),
+            shape: DialogStyle.borderShape,
             context: context,
             builder: (_) => BlocProvider.value(
                 value: walletBloc,
@@ -75,7 +74,8 @@ class WalletsPageState extends State<WalletsPage> {
             textError = AppLocalizations.of(context)!.errorNotSupportedWallet;
             break;
           case ActionsFileWallet.addressAdded:
-            textError = "${AppLocalizations.of(context)!.addressesAdded} ${message.value}";
+            textError =
+                "${AppLocalizations.of(context)!.addressesAdded} ${message.value}";
             break;
           default:
             textError = AppLocalizations.of(context)!.unknownError;
@@ -84,7 +84,6 @@ class WalletsPageState extends State<WalletsPage> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             textError,
-
             style: const TextStyle(fontSize: 16.0, color: Colors.white),
           ),
           backgroundColor: snackBarBackgroundColor,
@@ -135,9 +134,7 @@ class HeaderMyWallets extends StatelessWidget {
 
 void _showBottomSheetAddMyWallets(BuildContext context, WalletBloc walletBloc) {
   showModalBottomSheet(
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-    ),
+    shape: DialogStyle.borderShape,
     context: context,
     builder: (BuildContext context) {
       return DialogWalletActions(walletBloc: walletBloc);

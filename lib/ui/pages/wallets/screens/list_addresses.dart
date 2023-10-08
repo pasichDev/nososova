@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 
+import '../../../theme/style/dialog_style.dart';
 import '../../../tiles/tile_wallet_address.dart';
 import 'dialogs/dialog_address_info.dart';
 
@@ -27,10 +28,7 @@ class ListAddresses extends StatelessWidget {
                   address: address,
                   onButtonClick: () {
                     showModalBottomSheet(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20.0)),
-                        ),
+                        shape: DialogStyle.borderShape,
                         context: context,
                         builder: (_) => BlocProvider.value(
                             value: BlocProvider.of<WalletBloc>(context),

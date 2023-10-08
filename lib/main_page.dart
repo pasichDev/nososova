@@ -11,6 +11,7 @@ import 'package:nososova/ui/pages/node/node_page.dart';
 import 'package:nososova/ui/pages/payments/payments_page.dart';
 import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
+import 'package:nososova/ui/theme/style/dialog_style.dart';
 
 import 'blocs/app_data_bloc.dart';
 
@@ -93,9 +94,7 @@ class MainPageState extends State<MainPage> {
 
   void _showDialogInfoNetwork(BuildContext context) {
     showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-        ),
+        shape: DialogStyle.borderShape,
         context: context,
         builder: (_) => BlocProvider.value(
               value: BlocProvider.of<AppDataBloc>(context),

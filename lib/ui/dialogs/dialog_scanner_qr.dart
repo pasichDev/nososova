@@ -10,6 +10,7 @@ import '../../blocs/events/wallet_events.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/const/status_qr.dart';
 import '../theme/style/colors.dart';
+import '../theme/style/dialog_style.dart';
 import 'dialog_send_address.dart';
 
 class DialogScannerQr {
@@ -131,6 +132,7 @@ class ScannerWidgetState extends State<ScannerWidget> {
         controller.pauseCamera();
         showModalBottomSheet(
             context: context,
+            shape: DialogStyle.borderShape,
             builder: (BuildContext context) {
               return DialogSendAddress(
                 addressTo: data,

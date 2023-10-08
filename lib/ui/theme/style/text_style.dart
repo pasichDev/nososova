@@ -11,5 +11,4 @@ class AppTextStyles {
     color: Colors.grey,
   );
 
-// Додайте інші стилі за потреби
 }
