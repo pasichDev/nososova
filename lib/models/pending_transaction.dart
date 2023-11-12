@@ -2,25 +2,23 @@ class PendingTransaction {
   String orderType;
   String address;
   String receiver;
-  String amountTransfer;
-  String amountFee;
-  // : TRFR,N3KN552Qbp7gjA7tpdnh1L4Wq96pkCg,N3Jr5iRk7ugsWfUzVjotHUoRW7vHjGb,100025000,1000000
+  double amountTransfer;
+  double amountFee;
 
   PendingTransaction({
-    required this.orderType,
-    required this.address,
-    required this.receiver,
-    required this.amountTransfer,
-    required this.amountFee,
+     this.orderType = "",
+     this.address = "",
+     this.receiver = "",
+     this.amountTransfer = 0,
+     this.amountFee = 0,
   });
 
-  // Метод copyWith для оновлення об'єкта
   PendingTransaction copyWith({
     String? orderType,
     String? address,
     String? receiver,
-    String? amountTransfer,
-    String? amountFee,
+    double? amountTransfer,
+    double? amountFee,
     int? timeStamp,
   }) {
     return PendingTransaction(

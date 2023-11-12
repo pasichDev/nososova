@@ -6,7 +6,9 @@ class OtherGradientDecoration extends BoxDecoration {
           gradient: const LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            colors: [Color(0xFF621359), Color(0xFF192052), Color(0xFF135385)],
+            colors: [
+              Color(0xff1a1106),
+              Color(0xffab6016)],
           ),
         );
 }

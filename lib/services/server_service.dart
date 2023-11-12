@@ -33,7 +33,9 @@ class ServerService {
         seed.online = true;
         return ResponseNode(value: responseBytes, seed: seed);
       } else {
-        return ResponseNode(errors: "Empty response");
+        return command == NetworkRequest.pendingsList
+            ? ResponseNode(value: [])
+            : ResponseNode(errors: "Empty response");
       }
     } on TimeoutException catch (_) {
       if (kDebugMode) {

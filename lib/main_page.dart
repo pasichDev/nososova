@@ -7,6 +7,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
 import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
+import 'package:nososova/ui/pages/info/info_page.dart';
 import 'package:nososova/ui/pages/node/node_page.dart';
 import 'package:nososova/ui/pages/payments/payments_page.dart';
 import 'package:nososova/ui/pages/wallets/wallets_page.dart';
@@ -28,6 +29,7 @@ class MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const WalletsPage(),
     const PaymentsPage(),
+    const InfoPage(),
     const NodePage()
   ];
 

@@ -7,17 +7,13 @@ final class NetworkConst {
   static const int delaySync = 60;
 
   static List<Seed> defaultSeed = [
-    Seed(ip: "47.87.181.190"),
-    Seed(ip: "47.87.178.205"),
-    Seed(ip: "66.151.117.247"),
-    Seed(ip: "47.87.180.219"),
-    Seed(ip: "47.87.137.96"),
-    Seed(ip: "192.3.85.196"),
-    Seed(ip: "192.3.254.186"),
-    Seed(ip: "198.46.218.125"),
+    Seed(ip: "4.233.61.8"),
+    Seed(ip: "5.230.55.203"),
+    Seed(ip: "141.11.192.215"),
+    Seed(ip: "104.234.60.55"),
+    Seed(ip: "107.172.214.53"),
+    Seed(ip: "198.23.134.105"),
     Seed(ip: "20.199.50.27"),
-    Seed(ip: "63.227.69.162"),
-    Seed(ip: "81.22.38.101"),
   ];
 }
 

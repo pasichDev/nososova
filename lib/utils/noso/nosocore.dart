@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/utils/noso/src/crypto.dart';
 
 import '../../models/node.dart';
@@ -130,22 +131,72 @@ final class NosoCore extends NosoCrypto {
   }
 
   List<PendingTransaction> parsePendings(List<int>? response) {
-    if (response == null) {
+    if (response == null || response.isEmpty) {
       return [];
     }
-    List<String> array = String.fromCharCodes(response).split("\n");
+    List<String> array = String.fromCharCodes(response).split(" ");
     List<PendingTransaction> pendingList = [];
+
+    print(array);
     for (String value in array) {
       var pending = value.split(",");
-      pendingList.add(PendingTransaction(
+      if (pending.length >= 5) {
+        pendingList.add(PendingTransaction(
           orderType: pending[0],
           address: pending[1],
           receiver: pending[2],
-          amountTransfer: pending[3],
-          amountFee: pending[4]));
+          amountTransfer: int.parse(pending[3]) / 100000000,
+          amountFee: int.parse(pending[4]) / 100000000,
+        ));
+      }
     }
     return pendingList;
   }
+
+  List<SumaryData> parseSumary(Uint8List bytes) {
+    if (bytes.isEmpty) {
+      return [];
+    }
+    final List<SumaryData> addressSummary = [];
+    int index = 0;
+
+    while (index + 106 <= bytes.length) {
+      final sumData = SumaryData();
+
+      sumData.hash = String.fromCharCodes(
+          bytes.sublist(index + 1, index + bytes[index] + 1));
+      sumData.custom = String.fromCharCodes(
+          bytes.sublist(index + 42, index + 42 + bytes[index + 41]));
+      sumData.balance =
+          _bigEndianToDouble(bytes.sublist(index + 82, index + 90));
+
+      final scoreArray = bytes.sublist(index + 91, index + 98);
+      if (!scoreArray.every((element) => element == 0)) {
+        sumData.score = _bigEndianToInt(scoreArray);
+      }
+
+      // final lastopArray = bytes.sublist(index + 99, index + 106);
+      //   print(lastopArray);
+      addressSummary.add(sumData);
+      index += 106;
+    }
+    return addressSummary;
+  }
+
+
+  double _bigEndianToDouble(List<int> bytes) {
+    var byteBuffer = Uint8List.fromList(bytes).buffer;
+    var dataView = ByteData.view(byteBuffer);
+    var intValue = dataView.getInt64(0, Endian.little);
+    return intValue / 100000000;
+  }
+
+  int _bigEndianToInt(List<int> bytes) {
+    var byteBuffer = Uint8List.fromList(bytes).buffer;
+    var dataView = ByteData.view(byteBuffer);
+    return dataView.getInt64(0, Endian.little);
+  }
+
 
   String getRandomNode(String? inputString) {
     if (inputString == null) {

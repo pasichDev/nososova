@@ -30,6 +30,7 @@ dependencies:
   connectivity_plus: ^4.0.2
   archive: ^3.4.9
   flutter_svg: ^2.0.9
+  flutter_carousel_widget: ^2.1.2
 
 
 dev_dependencies:

@@ -2,8 +2,8 @@ class SumaryData {
   String hash;
   String custom;
   double  balance;
-  double score;
-  double lastOP;
+  int score;
+  int lastOP;
 
   SumaryData({
     this.hash = "",

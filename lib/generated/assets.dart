@@ -9,8 +9,11 @@ class Assets {
   static const String iconsCard = 'assets/icons/card.svg';
   static const String iconsHistory = 'assets/icons/history.svg';
   static const String iconsInfo = 'assets/icons/info.svg';
+  static const String iconsInput = 'assets/icons/input.svg';
   static const String iconsMenu = 'assets/icons/menu.svg';
   static const String iconsMore = 'assets/icons/more.svg';
+  static const String iconsNode = 'assets/icons/node.svg';
+  static const String iconsOutput = 'assets/icons/output.svg';
   static const String iconsWallet = 'assets/icons/wallet.svg';
 
 }

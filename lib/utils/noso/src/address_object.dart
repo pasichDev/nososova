@@ -8,11 +8,12 @@ class Address {
   String privateKey;
   double  balance;
   double pending;
-  double score;
-  double lastOP;
+  int score;
+  int lastOP;
   bool isLocked;
   double incoming;
   double outgoing;
+  bool nodeOn;
 
   Address({
     required this.hash,
@@ -26,6 +27,7 @@ class Address {
     this.isLocked = false,
     this.incoming = 0,
     this.outgoing = 0,
+    this.nodeOn = false,
   });
 
   Address copyWith({
@@ -35,11 +37,12 @@ class Address {
     required String privateKey,
     double? balance,
     double? pending,
-    double? score,
-    double? lastOP,
+    int? score,
+    int? lastOP,
     bool? isLocked,
     double? incoming,
     double? outgoing,
+    bool? nodeOn,
   }) {
     return Address(
       hash: hash,
@@ -53,6 +56,7 @@ class Address {
       isLocked: isLocked ?? this.isLocked,
       incoming: incoming ?? this.incoming,
       outgoing: outgoing ?? this.outgoing,
+      nodeOn: nodeOn ?? this.nodeOn,
     );
   }
 }

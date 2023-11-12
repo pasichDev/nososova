@@ -15,19 +15,18 @@ class CardHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: const HomeGradientDecorationRound(),
-      child: SafeArea(
+      child: const SafeArea(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: CardBody(0)),
+            padding: EdgeInsets.symmetric(horizontal: 30.0),
+            child: CardBody()),
       ),
     );
   }
 }
 
 class CardBody extends StatelessWidget {
-  int totalBalance = 0;
 
-  CardBody(int totalBalance, {super.key});
+  const CardBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,66 +53,18 @@ class CardBody extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '${AppLocalizations.of(context)!.incoming}: 0.000000',
-            style: AppTextStyles.titleMin.copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
+            '${AppLocalizations.of(context)!.incoming}: ${state.wallet.totalIncoming}',
+            style: AppTextStyles.titleMin
+                .copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
           ),
           Text(
-            '${AppLocalizations.of(context)!.outgoing}: 0.000000',
-            style: AppTextStyles.titleMin.copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
+            '${AppLocalizations.of(context)!.outgoing}: ${state.wallet.totalOutgoing}',
+            style: AppTextStyles.titleMin
+                .copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
           ),
-       /*    Row(
-                children: [
-                  const ItemHeaderInfo(title: "USDT", value: "0"),
-                  ItemHeaderInfo(
-                      title: AppLocalizations.of(context)!.incoming,
-                      value: "0"),
-                  ItemHeaderInfo(
-                      title: AppLocalizations.of(context)!.outgoing,
-                      value: "0"),
-                ],
-              ),
-
-        */
           const SizedBox(height: 30),
         ],
       );
     });
   }
 }
-
-class ItemHeaderInfo extends StatelessWidget {
-  final String title, value;
-
-  const ItemHeaderInfo({super.key, required this.title, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-      child: TextButton(
-        onPressed: () => {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.grey.withOpacity(0.2),
-          padding: const EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 5),
-            Text(
-              '$title: $value',
-              style: AppTextStyles.titleMin.copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.8)),
-            ),
-            const SizedBox(width: 5)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-

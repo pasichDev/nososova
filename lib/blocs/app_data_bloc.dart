@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -52,13 +53,21 @@ class AppDataState {
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
-  late Timer? _timerDelaySync;
+  Timer? _timerDelaySync;
   final Repositories _repositories;
+
   final _dataSumary = StreamController<List<SumaryData>>.broadcast();
   Stream<List<SumaryData>> get dataSumaryStream => _dataSumary.stream;
 
+  final _pendingsSumary = StreamController<List<PendingTransaction>>.broadcast();
+  Stream<List<PendingTransaction>> get pendingsStream => _pendingsSumary.stream;
+
+  final _status = StreamController<StatusConnectNodes>.broadcast();
+  Stream<StatusConnectNodes> get statusConnected => _status.stream;
 
   // TODO: Реалізація та виправлення моніторнингу мережі. Якщо мережі немає то блокувати запити та морозити всі стани
+  // TODO: Окремо вести таймер перебудуваня блоку, та коли плок перебудовується потрібно ресетнути системний таймер
+  // TODO:
   AppDataBloc({
     required Repositories repositories,
   })  : _repositories = repositories,
@@ -70,7 +79,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     on<InitialConnect>(_init);
   }
 
-  // TODO: Додати пропис останього блоку в node
   Future<void> _init(AppDataEvent e, Emitter emit) async {
     await loadConfig();
     if (appBlocConfig.lastSeed != null) {
@@ -134,38 +142,36 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
           statusConnected: StatusConnectNodes.statusError));
     } else {
       _syncDataToNode(response.seed);
+      if (_timerDelaySync != null) {
+        _timerDelaySync?.cancel();
+      }
       _timerDelaySync =
           Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
+        emit(state.copyWith(statusConnected: StatusConnectNodes.statusLoading));
         _syncDataToNode(response.seed);
       });
     }
   }
 
   Future<void> _syncDataToNode(Seed seed) async {
-    ResponseNode<List<int>> responseNodeInfo =
+    final ResponseNode<List<int>> responseNodeInfo =
         await _fetchNode(NetworkRequest.nodeStatus, seed);
-    ResponseNode<List<int>> responsePendings =
+    final ResponseNode<List<int>> responsePendings =
         await _fetchNode(NetworkRequest.pendingsList, seed);
-
-    List<PendingTransaction> pendingsOutput = [];
     final Node nodeOutput = _repositories.nosoCore
         .parseResponseNode(responseNodeInfo.value, responseNodeInfo.seed);
-
-    if (responseNodeInfo.errors != null) {
+    final List<PendingTransaction> pendingsOutput =
+        _repositories.nosoCore.parsePendings(responsePendings.value);
+    if (responseNodeInfo.errors != null || responsePendings.errors != null) {
       errorInit();
       return;
     } else {
-
       List<SumaryData> sumaryBlock = [];
+
+      /// Оновлення інформації коли перебудовується блок, або перщий запуск
       if (state.node.lastblock != nodeOutput.lastblock ||
           appBlocConfig.isOneStartup) {
-        //Оновлення іншої інфи якщо пербудувався блок
-        ResponseNode<List<int>> responseNodeList =
-            await _fetchNode(NetworkRequest.nodeList, seed);
-        if (responseNodeList.value != null) {
-          _repositories.sharedRepository.saveNodesList(
-              _repositories.nosoCore.parseMNString(responseNodeList.value));
-        }
+        if (nodeOutput.pendings != 0) loadPeopleNodes(seed);
 
         //Отриманя summary.zip
         ResponseNode<List<int>> responseSummary =
@@ -175,37 +181,51 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         if (responseSummary.errors != null) {
           errorInit();
           return;
-        }
-        if (isSavedSummary) {
-          sumaryBlock = await _repositories.fileRepository.loadSummary() ?? [];
-        }
-
-        // TODO: Ось тут має бути оновленя zipsummary
-        // TODO: Потрібно окремо створити сервіс який працює з файлами, тоді ми будемо отримувати байти файла, вантажитемо його в спец директову розпаковуватимемо, і будемо юзавти в walletBloc
-      } else {
-        //Оновлення статусу ноди якщо немає зміни блоку
-        if (responsePendings.errors == null) {
-          //pendingsOutput = NosoParse.parsePendings(responsePendings.value);
-
-          // TODO: Ось тут потрібно отримати список як вище і відправити його через подію в walletBloc (SyncBalance)
+        } else if (isSavedSummary) {
+          sumaryBlock = _repositories.nosoCore.parseSumary(
+              await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
+          _dataSumary.add(sumaryBlock);
+          if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
+            emit(state.copyWith(
+                node: nodeOutput,
+                pendings: pendingsOutput,
+                summaryBlock: sumaryBlock,
+                statusConnected: StatusConnectNodes.statusConnected));
+            return;
+          } else {
+            return _selectNode(InitialNodeAlgh.listenUserNodes);
+          }
         }
       }
 
       emit(state.copyWith(
           node: nodeOutput,
+          pendings: pendingsOutput,
           statusConnected: StatusConnectNodes.statusConnected));
-      _dataSumary.add(sumaryBlock);
+      _pendingsSumary.add(pendingsOutput);
     }
   }
 
   Future<ConsensusStatus> _checkConsensus(Node node) async {
-    return ConsensusStatus.error;
+    return ConsensusStatus.sync;
   }
 
   errorInit() {
     emit(state.copyWith(
         node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
         statusConnected: StatusConnectNodes.statusError));
+  }
+
+  loadPeopleNodes(Seed seed) async {
+    ResponseNode<List<int>> responseNodeList =
+        await _fetchNode(NetworkRequest.nodeList, seed);
+    if (responseNodeList.value != null) {
+      var nodesPeople =
+          _repositories.nosoCore.parseMNString(responseNodeList.value);
+      _repositories.sharedRepository.saveNodesList(
+          _repositories.nosoCore.parseMNString(responseNodeList.value));
+      appBlocConfig = appBlocConfig.copyWith(lastSeed: nodesPeople);
+    }
   }
 
   /// The base method for referencing a request to a node
@@ -233,6 +253,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   @override
   Future<void> close() {
+    _pendingsSumary.close();
+    _dataSumary.close();
     _stopTimer();
     return super.close();
   }

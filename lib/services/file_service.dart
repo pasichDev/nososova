@@ -6,8 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../models/summary_data.dart';
-
 class FileService {
   String nameFileSummary = "sumary.psk";
 
@@ -49,41 +47,12 @@ class FileService {
     }
   }
 
-  Future<List<SumaryData>?> loadSummary() async {
+  Future<Uint8List?> loadSummary() async {
     try {
       final directory = await getApplicationSupportDirectory();
       final filePsk = File("${directory.path}/data/$nameFileSummary");
       if (filePsk.existsSync()) {
-        final List<SumaryData> addressSummary = [];
-        final Uint8List bytes = await filePsk.readAsBytes();
-
-        int count = 0;
-        int index = 0;
-
-        while (index + 106 <= bytes.length) {
-          final sumData = SumaryData();
-
-          sumData.hash = String.fromCharCodes(
-              bytes.sublist(index + 1, index + bytes[index] + 1));
-          sumData.custom = String.fromCharCodes(
-              bytes.sublist(index + 42, index + 42 + bytes[index + 41]));
-
-          sumData.balance = _bigEndianToInt(bytes.sublist(index + 82, index + 90));
-
-         // print(bytes.sublist(index + 99, index + 106));
-       /*   final scoreArray = bytes.sublist(index + 91, index + 98);
-          sumData.score = _bigEndianToInt(scoreArray);
-
-          final lastopArray = bytes.sublist(index + 99, index + 106);
-          sumData.lastOP = _bigEndianToInt(lastopArray);
-
-        */
-
-          addressSummary.add(sumData);
-          count++;
-          index += 106;
-        }
-        return addressSummary;
+        return await filePsk.readAsBytes();
       } else {
         if (kDebugMode) {
           print('File not found');
@@ -96,13 +65,6 @@ class FileService {
       }
       return null;
     }
-  }
-
-  double _bigEndianToInt(List<int> bytes) {
-    var byteBuffer = Uint8List.fromList(bytes).buffer;
-    var dataView = ByteData.view(byteBuffer);
-    var intValue = dataView.getInt64(0, Endian.little);
-    return intValue / 100000000;
   }
 
   void cleanSummary() {}
