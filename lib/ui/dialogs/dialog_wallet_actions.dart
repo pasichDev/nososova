@@ -42,14 +42,11 @@ class DialogWalletActions extends StatelessWidget {
                         TextSpan(
                           text: AppLocalizations.of(context)!
                               .newFormatWalletFileDescrypt,
-                          style: const TextStyle(fontSize: 14.0),
+                          style:AppTextStyles.itemStyle.copyWith(fontSize: 16)
                         ),
-                        const TextSpan(
+                         TextSpan(
                           text: " .nososova",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.walletAddress.copyWith(fontSize: 16)
                         ),
                       ],
                     ),
@@ -70,13 +67,13 @@ class DialogWalletActions extends StatelessWidget {
                   style: AppTextStyles.dialogTitle)),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
-              title: Text(AppLocalizations.of(context)!.importFile),
-              subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle),
+              title: Text(AppLocalizations.of(context)!.importFile, style: AppTextStyles.itemStyle.copyWith(fontFamily: "GilroySemiBold")),
+              subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               onTap: () => _importWalletFile(context)),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
-              title: Text(AppLocalizations.of(context)!.exportFile),
-              subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle),
+              title: Text(AppLocalizations.of(context)!.exportFile, style: AppTextStyles.itemStyle.copyWith(fontFamily: "GilroySemiBold")),
+              subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               trailing: PopupMenuButton<String>(
                 onSelected: (String choice) {
                   if (choice == '.pkw') {

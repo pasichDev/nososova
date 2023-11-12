@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../models/seed.dart';
@@ -23,7 +24,7 @@ class SeedListItem extends StatelessWidget {
     if (statusConnected == StatusConnectNodes.statusLoading) {
       return Text(
         AppLocalizations.of(context)!.connection,
-        style: _smallTextSize,
+        style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
       );
     } else {
       if (seed.online) {
@@ -32,12 +33,12 @@ class SeedListItem extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.activeConnect,
-              style: _smallTextSize,
+              style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
             ),
             const SizedBox(width: 5),
             Text(
               "(${seed.ping.toString()} ${AppLocalizations.of(context)!.pingMs})",
-              style: _smallTextSize,
+              style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
             )
           ],
         );
@@ -79,14 +80,11 @@ class SeedListItem extends StatelessWidget {
                   children: [
                     Text(
                       seed.toTokenizer(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.0,
-                      ),
+                      style: AppTextStyles.walletAddress.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 5),
               _descriptions(context),
             ],
           ),

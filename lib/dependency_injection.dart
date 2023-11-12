@@ -16,7 +16,7 @@ final GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   /// shared & drift(sql)
-  locator.registerLazySingleton<SharedService>(() =>SharedService());
+  locator.registerLazySingleton<SharedService>(() => SharedService());
   locator.registerLazySingleton<MyDatabase>(() => MyDatabase());
 
   /// repo && services
@@ -41,10 +41,10 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NosoCore>(() => NosoCore());
 
   /// Blocs
-  locator.registerLazySingleton<WalletBloc>(() => WalletBloc(
-        repositories: locator<Repositories>(),
-      ));
   locator.registerLazySingleton<AppDataBloc>(() => AppDataBloc(
         repositories: locator<Repositories>(),
       ));
+  locator.registerLazySingleton<WalletBloc>(() => WalletBloc(
+      repositories: locator<Repositories>(),
+      appDataBloc: locator<AppDataBloc>()));
 }

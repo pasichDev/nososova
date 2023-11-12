@@ -22,6 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    FontLoader("GilroyHeavy").addFont(rootBundle.load("assets/fonts/Gilroy-Heavy.ttf"));
+    FontLoader("GilroyBold").addFont(rootBundle.load("assets/fonts/Gilroy-Bold.ttf"));
+    FontLoader("GilroyRegular").addFont(rootBundle.load("assets/fonts/Gilroy-Regular.ttf"));
+    FontLoader("GilroySemiBold").addFont(rootBundle.load("assets/fonts/Gilroy-SemiBold.ttf"));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -4,7 +4,7 @@ import '../../models/seed.dart';
 
 final class NetworkConst {
   static const int durationTimeOut = 5;
-  static const int delaySync = 15;
+  static const int delaySync = 60;
 
   static List<Seed> defaultSeed = [
     Seed(ip: "47.87.181.190"),
@@ -25,6 +25,7 @@ final class NetworkRequest {
   static const String nodeStatus = "NODESTATUS\n";
   static const String nodeList = "NSLMNS\n";
   static const String pendingsList = "NSLPEND\n";
+  static const String summary = "GETZIPSUMARY\n";
 }
 
 final class CheckConnect {

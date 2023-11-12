@@ -7,9 +7,6 @@ import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/const/network_const.dart';
 
 class ServerService {
-
-
-
   Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) async {
     final responseBytes = <int>[];
     try {
@@ -21,12 +18,14 @@ class ServerService {
       }
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
-     // print(responseBytes);
 
-    //  print("${command} : ${ String.fromCharCodes(responseBytes)}");
-   //   if(responseBytes.isNotEmpty){
-    //    print("${command} :not respons");
-   //   }
+      /*
+      print("${command} : ${ String.fromCharCodes(responseBytes)}");
+     if(responseBytes.isNotEmpty){
+       print("${command} :not respons");
+     }
+
+       */
 
       socket.close();
       if (responseBytes.isNotEmpty) {
@@ -49,9 +48,9 @@ class ServerService {
       return ResponseNode(errors: "SocketException: ${e.message}");
     } catch (e) {
       if (kDebugMode) {
-        print("Unhandled Exception: $e");
+        print("ServerService Exception: $e");
       }
-      return ResponseNode(errors: "Unhandled Exception: $e");
+      return ResponseNode(errors: "ServerService Exception: $e");
     }
   }
 
@@ -77,7 +76,8 @@ class ServerService {
         seed.online = false;
       }
     }
-    final onlineSeeds = NetworkConst.defaultSeed.where((seed) => seed.online).toList();
+    final onlineSeeds =
+        NetworkConst.defaultSeed.where((seed) => seed.online).toList();
     if (onlineSeeds.isNotEmpty) {
       ResponseNode responseNode = ResponseNode(
           seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b));

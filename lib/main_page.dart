@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
-import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
 import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
@@ -14,6 +14,7 @@ import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/dialog_style.dart';
 
 import 'blocs/app_data_bloc.dart';
+import 'generated/assets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -54,10 +55,6 @@ class MainPageState extends State<MainPage> {
                     icon: const Icon(Icons.qr_code_scanner_outlined),
                     onPressed: () => _showDialogScanQr(context),
                   ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {},
-                )
               ],
             ),
           ),
@@ -66,24 +63,33 @@ class MainPageState extends State<MainPage> {
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        elevation: 5,
         selectedItemColor: CustomColors.primaryColor,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.wallet),
-            label: AppLocalizations.of(context)!.wallets,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.import_export_outlined),
-            label: AppLocalizations.of(context)!.payments,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.computer),
-            label: AppLocalizations.of(context)!.node,
-          ),
+          bottomItem(Assets.iconsWallet, 0),
+          bottomItem(Assets.iconsHistory,1),
+          bottomItem(Assets.iconsInfo,2),
+          bottomItem(Assets.iconsMore,3),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  bottomItem(String icon, int index) {
+    return BottomNavigationBarItem(
+      icon: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: SvgPicture.asset(
+            icon,
+            width: 32,
+            height: 32,
+            color:
+                _selectedIndex == index ? CustomColors.primaryColor : Colors.grey,
+          )),
+      label: "",
     );
   }
 

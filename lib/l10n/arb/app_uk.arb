@@ -49,5 +49,6 @@
   "unknownError": "Виникла помилка",
   "searchAddressResult": "Знайдено адрес",
   "billAction": "Виставити рахунок на цю адресу",
-  "addressesAdded": "Додано адрес"
+  "addressesAdded": "Додано адрес",
+  "settings": "Налаштування"
 }

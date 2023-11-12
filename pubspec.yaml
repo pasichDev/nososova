@@ -28,6 +28,8 @@ dependencies:
     sdk: flutter
   intl: ^0.18.0
   connectivity_plus: ^4.0.2
+  archive: ^3.4.9
+  flutter_svg: ^2.0.9
 
 
 dev_dependencies:
@@ -40,6 +42,25 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 flutter:
+  fonts:
+    - family: GilroyHeavy
+      fonts:
+        - asset: assets/fonts/Gilroy-Heavy.ttf
+    - family: GilroyBold
+      fonts:
+        - asset: assets/fonts/Gilroy-Bold.ttf
+    - family: GilroyRegular
+      fonts:
+        - asset: assets/fonts/Gilroy-Regular.ttf
+    - family: GilroySemiBold
+      fonts:
+        - asset: assets/fonts/Gilroy-SemiBold.ttf
+
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/icons/
+
   generate: true
   uses-material-design: true
 

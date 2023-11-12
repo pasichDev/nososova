@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/dialogs/dialog_wallet_actions.dart';
@@ -7,9 +8,11 @@ import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
 import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
+import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
 import '../../dialogs/dialog_import_address.dart';
 import '../../theme/style/dialog_style.dart';
+import '../../theme/style/text_style.dart';
 
 class WalletsPage extends StatefulWidget {
   const WalletsPage({super.key});
@@ -105,26 +108,20 @@ class HeaderMyWallets extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.myAddresses,
-          style: const TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: AppTextStyles.categoryStyle
         ),
         Row(
           children: [
             IconButton(
-                icon:
-                    const Icon(Icons.wallet, color: CustomColors.primaryColor),
+                icon:SvgPicture.asset(Assets.iconsMenu,width: 24,
+    height: 24,
+    color:CustomColors.primaryColor ,
+    ),
                 onPressed: () {
                   _showBottomSheetAddMyWallets(
                       context, BlocProvider.of<WalletBloc>(context));
                 }),
-            IconButton(
-                icon: const Icon(Icons.more_horiz,
-                    color: CustomColors.primaryColor),
-                onPressed: () {
-                  // _showBottomSheetMoreMyWallets(context);
-                }),
+
           ],
         ),
       ],

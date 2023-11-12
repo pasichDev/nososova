@@ -70,6 +70,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.debugInfo,
+                      style: AppTextStyles.itemStyle,
                     ),
                   ],
                 ),

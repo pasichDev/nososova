@@ -155,5 +155,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billAction => 'Bill to this address';
 
   @override
-  String get addressesAdded => 'Added address:';
+  String get addressesAdded => 'Added address';
+
+  @override
+  String get settings => 'Settings';
 }

@@ -6,13 +6,13 @@ class Address {
   String? custom;
   String publicKey;
   String privateKey;
-  int balance;
-  int pending;
-  int score;
-  int lastOP;
+  double  balance;
+  double pending;
+  double score;
+  double lastOP;
   bool isLocked;
-  int incoming;
-  int outgoing;
+  double incoming;
+  double outgoing;
 
   Address({
     required this.hash,
@@ -33,13 +33,13 @@ class Address {
     String? custom,
     required String publicKey,
     required String privateKey,
-    int? balance,
-    int? pending,
-    int? score,
-    int? lastOP,
+    double? balance,
+    double? pending,
+    double? score,
+    double? lastOP,
     bool? isLocked,
-    int? incoming,
-    int? outgoing,
+    double? incoming,
+    double? outgoing,
   }) {
     return Address(
       hash: hash,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../../../../blocs/events/wallet_events.dart';
@@ -58,11 +59,7 @@ class AddressInfoState extends State<AddressInfo> {
                 const SizedBox(width: 5),
                 Text(
                   widget.address.hash,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.walletAddress.copyWith(fontSize: 16),
                 ),
               ],
             ),
@@ -97,7 +94,6 @@ class AddressInfoState extends State<AddressInfo> {
 
   void _viewQr(BuildContext context) {
     Navigator.pop(context);
-
     DialogViewQr().loadDialog(context: context, address: widget.address);
   }
 }

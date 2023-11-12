@@ -49,6 +49,7 @@
   "unknownError": "An error occurred",
   "searchAddressResult": "Address found",
   "billAction": "Bill to this address",
-  "addressesAdded": "Added address"
+  "addressesAdded": "Added address",
+  "settings": "Settings"
 
 }

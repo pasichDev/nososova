@@ -15,12 +15,11 @@ class ListAddresses extends StatelessWidget {
       builder: (context, state) {
         final wallets = state.wallet.address;
         return Expanded(
-            child: SingleChildScrollView(
-                child: Column(children: [
+            child:
           ListView.builder(
               shrinkWrap: true,
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
               itemCount: wallets.length,
               itemBuilder: (context, index) {
                 final address = wallets[index];
@@ -38,7 +37,7 @@ class ListAddresses extends StatelessWidget {
                   },
                 );
               })
-        ])));
+        );
       },
     );
   }
