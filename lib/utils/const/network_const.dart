@@ -27,14 +27,12 @@ final class NetworkRequest {
 final class CheckConnect {
   static IconData getStatusConnected(StatusConnectNodes status) {
     switch (status) {
-      case StatusConnectNodes.statusConnected:
+      case StatusConnectNodes.connected:
         return Icons.computer;
-      case StatusConnectNodes.statusError:
+      case StatusConnectNodes.error:
         return Icons.report_gmailerrorred_outlined;
-      case StatusConnectNodes.statusLoading:
-        return Icons.downloading;
       default:
-        return Icons.signal_wifi_connected_no_internet_4;
+        return Icons.downloading;
     }
   }
 }
@@ -42,7 +40,12 @@ final class CheckConnect {
 
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 
-enum StatusConnectNodes { statusConnected, statusError, statusLoading }
+enum StatusConnectNodes { connected, error, searchNode, sync}
+
+/// Connected - підключено
+/// error - помилка
+/// searchNode - пошук вузла
+/// sync - синхронізація
 
 enum ConsensusStatus { sync, error }
 

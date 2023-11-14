@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -24,7 +25,7 @@ class AppDataState {
   final List<SumaryData> summaryBlock;
 
   AppDataState({
-    this.statusConnected = StatusConnectNodes.statusLoading,
+    this.statusConnected = StatusConnectNodes.searchNode,
     this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
     Seed? seedActive,
@@ -57,17 +58,20 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   final Repositories _repositories;
 
   final _dataSumary = StreamController<List<SumaryData>>.broadcast();
+
   Stream<List<SumaryData>> get dataSumaryStream => _dataSumary.stream;
 
-  final _pendingsSumary = StreamController<List<PendingTransaction>>.broadcast();
+  final _pendingsSumary =
+      StreamController<List<PendingTransaction>>.broadcast();
+
   Stream<List<PendingTransaction>> get pendingsStream => _pendingsSumary.stream;
 
   final _status = StreamController<StatusConnectNodes>.broadcast();
+
   Stream<StatusConnectNodes> get statusConnected => _status.stream;
 
   // TODO: Реалізація та виправлення моніторнингу мережі. Якщо мережі немає то блокувати запити та морозити всі стани
   // TODO: Окремо вести таймер перебудуваня блоку, та коли плок перебудовується потрібно ресетнути системний таймер
-  // TODO:
   AppDataBloc({
     required Repositories repositories,
   })  : _repositories = repositories,
@@ -90,13 +94,21 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
   }
 
-  Future<void> _reconnectNode(AppDataEvent e, Emitter emit) async {
-    emit(state.copyWith(statusConnected: StatusConnectNodes.statusLoading));
-    await _selectNode(InitialNodeAlgh.connectLastNode);
+  Future<void> _reconnectNode(event, emit) async {
+    emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
+
+    if (event.lastNodeRun) {
+      _syncDataToNode(state.node.seed);
+    } else {
+      await _selectNode(Random().nextInt(2) == 0
+          ? InitialNodeAlgh.listenDefaultNodes
+          : InitialNodeAlgh.listenUserNodes);
+    }
   }
 
   /// Підключення та вибір ноди
   Future<void> _selectNode(InitialNodeAlgh initNodeAlgh) async {
+    emit(state.copyWith(statusConnected: StatusConnectNodes.searchNode));
     ResponseNode response;
 
     switch (initNodeAlgh) {
@@ -116,8 +128,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
               _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList));
           response = await _repositories.serverRepository.testNode(seed);
           if (response.errors == null) {
-            _repositories.sharedRepository
-                .saveLastSeed(response.seed.toTokenizer());
+            var lastSeed = response.seed.toTokenizer();
+            appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
+            _repositories.sharedRepository.saveLastSeed(lastSeed);
           }
         }
 
@@ -126,8 +139,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         {
           response = await _repositories.serverRepository.listenNodes();
           if (response.errors == null) {
-            _repositories.sharedRepository
-                .saveLastSeed(response.seed.toTokenizer());
+            var lastSeed = response.seed.toTokenizer();
+            appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
+            _repositories.sharedRepository.saveLastSeed(lastSeed);
           } else {
             await _selectNode(InitialNodeAlgh.listenUserNodes);
             return;
@@ -139,7 +153,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (response.errors != null) {
       emit(state.copyWith(
           node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
-          statusConnected: StatusConnectNodes.statusError));
+          statusConnected: StatusConnectNodes.error));
     } else {
       _syncDataToNode(response.seed);
       if (_timerDelaySync != null) {
@@ -147,13 +161,13 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       }
       _timerDelaySync =
           Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
-        emit(state.copyWith(statusConnected: StatusConnectNodes.statusLoading));
         _syncDataToNode(response.seed);
       });
     }
   }
 
   Future<void> _syncDataToNode(Seed seed) async {
+    emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
     final ResponseNode<List<int>> responseNodeInfo =
         await _fetchNode(NetworkRequest.nodeStatus, seed);
     final ResponseNode<List<int>> responsePendings =
@@ -190,7 +204,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
                 node: nodeOutput,
                 pendings: pendingsOutput,
                 summaryBlock: sumaryBlock,
-                statusConnected: StatusConnectNodes.statusConnected));
+                statusConnected: StatusConnectNodes.connected));
             return;
           } else {
             return _selectNode(InitialNodeAlgh.listenUserNodes);
@@ -201,7 +215,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       emit(state.copyWith(
           node: nodeOutput,
           pendings: pendingsOutput,
-          statusConnected: StatusConnectNodes.statusConnected));
+          statusConnected: StatusConnectNodes.connected));
       _pendingsSumary.add(pendingsOutput);
     }
   }
@@ -213,7 +227,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   errorInit() {
     emit(state.copyWith(
         node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
-        statusConnected: StatusConnectNodes.statusError));
+        statusConnected: StatusConnectNodes.error));
   }
 
   loadPeopleNodes(Seed seed) async {
@@ -231,7 +245,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   /// The base method for referencing a request to a node
   Future<ResponseNode<List<int>>> _fetchNode(String command, Seed? seed) async {
     seed ??= state.node.seed;
-    if (state.statusConnected == StatusConnectNodes.statusError) {
+    if (state.statusConnected == StatusConnectNodes.error) {
       return ResponseNode(errors: "You are not connected to nodes.");
     }
     return await _repositories.serverRepository.fetchNode(command, seed);

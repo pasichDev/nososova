@@ -8,6 +8,7 @@ import 'package:nososova/l10n/app_localizations.dart';
 
 import 'blocs/events/app_data_events.dart';
 import 'blocs/events/wallet_events.dart';
+import 'generated/assets.dart';
 import 'main_page.dart';
 
 void main() {
@@ -22,10 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    FontLoader("GilroyHeavy").addFont(rootBundle.load("assets/fonts/Gilroy-Heavy.ttf"));
-    FontLoader("GilroyBold").addFont(rootBundle.load("assets/fonts/Gilroy-Bold.ttf"));
-    FontLoader("GilroyRegular").addFont(rootBundle.load("assets/fonts/Gilroy-Regular.ttf"));
-    FontLoader("GilroySemiBold").addFont(rootBundle.load("assets/fonts/Gilroy-SemiBold.ttf"));
+    FontLoader("GilroyHeavy").addFont(rootBundle.load(Assets.fontsGilroyHeavy));
+    FontLoader("GilroyBold").addFont(rootBundle.load(Assets.fontsGilroyBold));
+    FontLoader("GilroyRegular")
+        .addFont(rootBundle.load(Assets.fontsGilroyRegular));
+    FontLoader("GilroySemiBold")
+        .addFont(rootBundle.load(Assets.fontsGilroyRegular));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

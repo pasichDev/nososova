@@ -404,6 +404,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// No description provided for @sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Synchronization'**
+  String get sync;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

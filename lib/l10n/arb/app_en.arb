@@ -50,6 +50,7 @@
   "searchAddressResult": "Address found",
   "billAction": "Bill to this address",
   "addressesAdded": "Added address",
-  "settings": "Settings"
+  "settings": "Settings",
+  "sync": "Synchronization"
 
 }

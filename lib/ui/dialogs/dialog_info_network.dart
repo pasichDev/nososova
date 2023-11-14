@@ -47,7 +47,13 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                     icon: const Icon(Icons.restart_alt_outlined),
                     onPressed: () {
                       _isNodeListVisible = false;
-                      return context.read<AppDataBloc>().add(ReconnectSeed());
+                      return context.read<AppDataBloc>().add(ReconnectSeed(true));
+                    }),
+                IconButton(
+                    icon: const Icon(Icons.navigate_next),
+                    onPressed: () {
+                      _isNodeListVisible = false;
+                      return context.read<AppDataBloc>().add(ReconnectSeed(false));
                     }),
                 IconButton(
                   icon: _isNodeListVisible

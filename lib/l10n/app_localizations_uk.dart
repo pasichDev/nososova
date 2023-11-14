@@ -159,4 +159,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get settings => 'Налаштування';
+
+  @override
+  String get sync => 'Синхронізація';
 }

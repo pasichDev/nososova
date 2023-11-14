@@ -50,5 +50,6 @@
   "searchAddressResult": "Знайдено адрес",
   "billAction": "Виставити рахунок на цю адресу",
   "addressesAdded": "Додано адрес",
-  "settings": "Налаштування"
+  "settings": "Налаштування",
+  "sync": "Синхронізація"
 }
