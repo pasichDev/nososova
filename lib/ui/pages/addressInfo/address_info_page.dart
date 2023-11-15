@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:nososova/utils/noso/src/address_object.dart';
 
@@ -48,10 +47,10 @@ class AddressInfoPage extends StatelessWidget {
                            height: MediaQuery.of(context).size.height * 0.6,
                           width: double.infinity,
                           color: Colors.white,
-                          child: Center(
+                          child: const Center(
                             child: Text(
-                              AppLocalizations.of(context)!.notImplemented,
-                              style: const TextStyle(
+                              "Empty History",
+                              style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -73,15 +72,27 @@ class AddressInfoPage extends StatelessWidget {
               right: 20,
               child: Container(
                 height: 230,
+
                 decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Color(0xFF070F46),
+                      Color(0xFF0C1034),
+                      Color(0xFF070E4B),
+                      Color(0xFF621359),
+                      Color(0xFF560D4E),
+                    ],
+                  ),
                   color: CustomColors.primaryNoso,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
-                      color:  const Color(0xff3f270a).withOpacity(0.5), // Shadow color
+                      color:   Color(0xFF1C203F), // Shadow color
                       spreadRadius: 2, // Spread radius
-                      blurRadius: 7, // Blur radius
-                      offset: const Offset(-0, 8), // Shadow position, you can adjust X and Y
+                      blurRadius: 10, // Blur radius
+                      offset: Offset(6, 6), // Shadow position, you can adjust X and Y
                     ),
                   ],
                 ),
@@ -93,7 +104,7 @@ class AddressInfoPage extends StatelessWidget {
                       child: Text(
                         "NOSO",
                         style: AppTextStyles.titleMax
-                            .copyWith(color: CustomColors.secondaryNoso),
+                            .copyWith(color: Colors.white.withOpacity(0.4)),
                       ),
                     ),
                     Positioned(
@@ -104,17 +115,17 @@ class AddressInfoPage extends StatelessWidget {
                           children: [
                             Text(
                               address.balance.toString(),
-                              style: AppTextStyles.titleMax.copyWith(fontSize: 36, color: Colors.white.withOpacity(0.8)),
+                              style: AppTextStyles.titleMax.copyWith(fontSize: 36, color: CustomColors.primaryNoso),
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 15),
                             Text(
                               address.hash,
                               style: AppTextStyles.titleMax.copyWith(
                                   fontSize: 24,
-                                  color: CustomColors.secondaryNoso),
+                                  color: Colors.white.withOpacity(0.9)),
                             ),
 
-                            const SizedBox(height: 10),
+                            //const SizedBox(height: 10),
 
                           ],
                         )),

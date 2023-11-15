@@ -8,7 +8,9 @@ class OtherGradientDecoration extends BoxDecoration {
             end: Alignment.topRight,
             colors: [
               Color(0xff1a1106),
-              Color(0xffab6016)],
+              Color(0xFF2B2F4F),
+              Color(0xFF343756),
+              Color(0xFF7177AF)],
           ),
         );
 }

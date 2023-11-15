@@ -31,7 +31,7 @@ dependencies:
   archive: ^3.4.9
   flutter_svg: ^2.0.9
   flutter_carousel_widget: ^2.1.2
-
+  path_provider_windows: ^2.0.2
 
 dev_dependencies:
   drift_dev: ^2.11.1
