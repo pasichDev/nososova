@@ -116,7 +116,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     double totalOutgoing = 0;
     double totalIncoming = 0;
 
-    print("calibr");
     for (var address in state.wallet.address) {
       PendingTransaction? foundOutgoing = summary.firstWhere(
               (other) => other.receiver == address.hash,

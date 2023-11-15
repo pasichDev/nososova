@@ -59,4 +59,11 @@ class Address {
       nodeOn: nodeOn ?? this.nodeOn,
     );
   }
+
+  Map<String, dynamic> toJsonExport() {
+    return {
+      'publicKey': publicKey,
+      'privateKey': privateKey,
+    };
+  }
 }

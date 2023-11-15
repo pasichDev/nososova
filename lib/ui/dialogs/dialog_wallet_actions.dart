@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_saver_dev/flutter_file_saver_dev.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
@@ -40,14 +42,14 @@ class DialogWalletActions extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: AppLocalizations.of(context)!
-                              .newFormatWalletFileDescrypt,
-                          style:AppTextStyles.itemStyle.copyWith(fontSize: 16)
-                        ),
-                         TextSpan(
-                          text: " .nososova",
-                          style: AppTextStyles.walletAddress.copyWith(fontSize: 16)
-                        ),
+                            text: AppLocalizations.of(context)!
+                                .newFormatWalletFileDescrypt,
+                            style:
+                                AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+                        TextSpan(
+                            text: " .nososova",
+                            style: AppTextStyles.walletAddress
+                                .copyWith(fontSize: 16)),
                       ],
                     ),
                   ),
@@ -67,20 +69,27 @@ class DialogWalletActions extends StatelessWidget {
                   style: AppTextStyles.dialogTitle)),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
-              title: Text(AppLocalizations.of(context)!.importFile, style: AppTextStyles.itemStyle.copyWith(fontFamily: "GilroySemiBold")),
-              subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+              title: Text(AppLocalizations.of(context)!.importFile,
+                  style: AppTextStyles.itemStyle
+                      .copyWith(fontFamily: "GilroySemiBold")),
+              subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle,
+                  style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               onTap: () => _importWalletFile(context)),
           ListTile(
               leading: const Icon(Icons.file_copy_outlined),
-              title: Text(AppLocalizations.of(context)!.exportFile, style: AppTextStyles.itemStyle.copyWith(fontFamily: "GilroySemiBold")),
-              subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+              title: Text(AppLocalizations.of(context)!.exportFile,
+                  style: AppTextStyles.itemStyle
+                      .copyWith(fontFamily: "GilroySemiBold")),
+              subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle,
+                  style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               trailing: PopupMenuButton<String>(
                 onSelected: (String choice) {
                   if (choice == '.pkw') {
                     _exportWalletFile(context, FormatWalletFile.pkw);
-                  } else if (choice == '.nososova') {
+                  } /*else if (choice == '.nososova') {
                     _exportWalletFile(context, FormatWalletFile.nososova);
                   }
+                  */
                 },
                 itemBuilder: (BuildContext context) {
                   return <PopupMenuEntry<String>>[
@@ -88,10 +97,14 @@ class DialogWalletActions extends StatelessWidget {
                       value: 'pkw',
                       child: Text('.pkw'),
                     ),
-                    const PopupMenuItem<String>(
+                    /*
+                   const PopupMenuItem<String>(
+
                       value: '.nososova',
                       child: Text('.nososova'),
-                    ),
+
+
+                    ),*/
                   ];
                 },
               ),
@@ -118,7 +131,31 @@ class DialogWalletActions extends StatelessWidget {
   }
 
   void _exportWalletFile(
-      BuildContext context, FormatWalletFile formatFile) async {}
+      BuildContext context, FormatWalletFile formatFile) async {
+    var nameWallet = '';
+    List<String> jsonList = walletBloc.state.wallet.address
+        .map((wallet) => jsonEncode(wallet.toJsonExport()))
+        .toList();
+
+    if (formatFile == FormatWalletFile.pkw) {
+      nameWallet = 'wallet.pkw';
+    } else if (formatFile == FormatWalletFile.nososova) {
+      if (Platform.isIOS || Platform.isAndroid || Platform.isMacOS) {
+        FlutterFileSaverDev().writeFileAsString(
+          fileName: 'wallet.nososova',
+          data: "llol",
+        );
+      } else if (Platform.isLinux || Platform.isWindows) {
+        String? outputFile = await FilePicker.platform.saveFile(
+          dialogTitle: 'Please select an output file:',
+          fileName: 'output-file.pdf',
+        );
+        if (outputFile == null) {
+          // User canceled the picker
+        }
+      }
+    }
+  }
 
   void _showDialogScanQr(BuildContext context) {
     Navigator.pop(context);

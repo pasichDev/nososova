@@ -5,7 +5,6 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:path_provider_windows/path_provider_windows.dart';
 
 import 'blocs/events/app_data_events.dart';
 import 'blocs/events/wallet_events.dart';
@@ -13,7 +12,6 @@ import 'generated/assets.dart';
 import 'main_page.dart';
 
 void main() {
-  PathProviderWindows.registerWith();
   setupLocator();
   runApp(const MyApp());
 }

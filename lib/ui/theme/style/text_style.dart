@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppTextStyles {
   static const TextStyle dialogTitle = TextStyle(
-    fontSize: 22.0,
-    fontWeight: FontWeight.bold,
-      fontFamily: "GilroyBold"
-  );
+      fontSize: 22.0,
+      color: Colors.black,
+      fontFamily: "GilroyBold");
 
   static const TextStyle bodyText = TextStyle(
     fontSize: 16.0,
@@ -27,14 +26,8 @@ class AppTextStyles {
       fontSize: 16.0, color: Colors.white, fontFamily: "GilroyBold");
 
   static TextStyle walletAddress = const TextStyle(
-      fontSize: 18.0,
-      color: Colors.black,
-      fontFamily: "GilroySemiBold");
+      fontSize: 18.0, color: Colors.black, fontFamily: "GilroySemiBold");
 
   static TextStyle itemStyle = const TextStyle(
-      fontSize: 18.0,
-      color: Colors.black,
-      fontFamily: "GilroyRegular");
-
-
+      fontSize: 18.0, color: Colors.black, fontFamily: "GilroyRegular");
 }
