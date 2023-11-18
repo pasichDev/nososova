@@ -18,12 +18,11 @@ class NetworkInfo extends StatelessWidget {
       return OutlinedButton(
           onPressed: () => nodeStatusDialog(),
           style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            backgroundColor: Colors.white.withOpacity(0.1),
-            elevation: 0
-          ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              backgroundColor: Colors.white.withOpacity(0.1),
+              elevation: 0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -33,10 +32,12 @@ class NetworkInfo extends StatelessWidget {
                 CheckConnect.getStatusConnected(state.statusConnected),
                 color: Colors.white,
               ),
-              const SizedBox(width: 10),
-              if (state.statusConnected == StatusConnectNodes.connected || state.statusConnected == StatusConnectNodes.sync)
+              if (state.statusConnected == StatusConnectNodes.connected ||
+                  state.statusConnected == StatusConnectNodes.sync) ...[
+                const SizedBox(width: 10),
                 Text(state.node.lastblock.toString(),
                     style: AppTextStyles.blockStyle)
+              ]
             ],
           ));
     });

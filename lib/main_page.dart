@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/components/network_info.dart';
+import 'package:nososova/ui/components/widget_internet_connection.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
 import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
 import 'package:nososova/ui/pages/info/info_page.dart';
@@ -16,7 +17,6 @@ import 'package:nososova/ui/theme/style/dialog_style.dart';
 
 import 'blocs/app_data_bloc.dart';
 import 'generated/assets.dart';
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -63,16 +63,23 @@ class MainPageState extends State<MainPage> {
         ],
         backgroundColor: Colors.transparent,
       ),
-      body: _pages[_selectedIndex],
+      body: Column(
+        children: [
+          Expanded(
+            child: _pages[_selectedIndex],
+          ),
+         const StatusNetworkConnection(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         elevation: 5,
         selectedItemColor: CustomColors.primaryColor,
         items: <BottomNavigationBarItem>[
           bottomItem(Assets.iconsWallet, 0),
-          bottomItem(Assets.iconsHistory,1),
-          bottomItem(Assets.iconsInfo,2),
-          bottomItem(Assets.iconsMore,3),
+          bottomItem(Assets.iconsHistory, 1),
+          bottomItem(Assets.iconsInfo, 2),
+          bottomItem(Assets.iconsMore, 3),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -89,7 +96,7 @@ class MainPageState extends State<MainPage> {
             width: 32,
             height: 32,
             color:
-                _selectedIndex == index ? CustomColors.primaryColor : Colors.grey,
+            _selectedIndex == index ? CustomColors.primaryColor : Colors.grey,
           )),
       label: "",
     );
@@ -105,8 +112,8 @@ class MainPageState extends State<MainPage> {
         shape: DialogStyle.borderShape,
         context: context,
         builder: (_) => BlocProvider.value(
-              value: BlocProvider.of<AppDataBloc>(context),
-              child: const DialogInfoNetwork(),
-            ));
+          value: BlocProvider.of<AppDataBloc>(context),
+          child: const DialogInfoNetwork(),
+        ));
   }
 }

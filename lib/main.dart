@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
@@ -11,7 +12,8 @@ import 'blocs/events/wallet_events.dart';
 import 'generated/assets.dart';
 import 'main_page.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: Assets.nososova);
   setupLocator();
   runApp(const MyApp());
 }

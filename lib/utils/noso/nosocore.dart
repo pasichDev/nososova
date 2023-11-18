@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/utils/noso/src/crypto.dart';
 
+import '../../models/app/parse_mn_info.dart';
 import '../../models/node.dart';
 import '../../models/pending_transaction.dart';
 import '../../models/seed.dart';
@@ -82,12 +83,12 @@ final class NosoCore extends NosoCrypto {
     return address;
   }
 
-  String parseMNString(List<int>? response) {
+  ParseMNInfo parseMNString(List<int>? response) {
     final resultMNList = <Seed>[];
     final StringBuffer parsedData = StringBuffer();
 
     if (response == null) {
-      return "";
+      return ParseMNInfo();
     }
     final tokens = String.fromCharCodes(response).split(' ');
     if (tokens.length > 1) {
@@ -109,7 +110,7 @@ final class NosoCore extends NosoCrypto {
       }
     }
 
-    return parsedData.toString();
+    return ParseMNInfo(count: tokens.length, nodes: parsedData.toString());
   }
 
   Node parseResponseNode(List<int>? response, Seed seedActive) {
@@ -183,7 +184,6 @@ final class NosoCore extends NosoCrypto {
     return addressSummary;
   }
 
-
   double _bigEndianToDouble(List<int> bytes) {
     var byteBuffer = Uint8List.fromList(bytes).buffer;
     var dataView = ByteData.view(byteBuffer);
@@ -196,7 +196,6 @@ final class NosoCore extends NosoCrypto {
     var dataView = ByteData.view(byteBuffer);
     return dataView.getInt64(0, Endian.little);
   }
-
 
   String getRandomNode(String? inputString) {
     if (inputString == null) {

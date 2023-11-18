@@ -1,4 +1,4 @@
-
+import 'package:nososova/repositories/livecoinwatch_repository.dart';
 import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
 import 'package:nososova/utils/noso/nosocore.dart';
@@ -12,6 +12,7 @@ class Repositories {
   final SharedRepository sharedRepository;
   final FileRepository fileRepository;
   final NosoCore nosoCore;
+  final LiveCoinWatchRepository liveCoinWatchRepository;
 
   Repositories({
     required this.localRepository,
@@ -19,5 +20,6 @@ class Repositories {
     required this.sharedRepository,
     required this.fileRepository,
     required this.nosoCore,
+    required this.liveCoinWatchRepository,
   });
 }
