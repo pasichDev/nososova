@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'currency_model.g.dart';
+part 'full_info_coin.g.dart';
 
 @JsonSerializable()
-class CurrencyModel {
+class FullInfoCoin {
   @JsonKey(defaultValue: "")
   String code;
 
@@ -69,7 +69,7 @@ class CurrencyModel {
     }
   }
 
-  CurrencyModel({
+  FullInfoCoin({
     this.code = "",
     this.name = "",
     this.symbol = "",
@@ -91,10 +91,10 @@ class CurrencyModel {
     this.history = const [],
   });
 
-  factory CurrencyModel.fromJson(Map<String, dynamic> json) =>
-      _$CurrencyModelFromJson(json);
+  factory FullInfoCoin.fromJson(Map<String, dynamic> json) =>
+      _$FullInfoCoinFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CurrencyModelToJson(this);
+  Map<String, dynamic> toJson() => _$FullInfoCoinToJson(this);
 }
 
 @JsonSerializable()

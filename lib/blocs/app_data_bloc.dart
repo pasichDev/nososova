@@ -5,13 +5,13 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
-import 'package:nososova/models/app/halving.dart';
 import 'package:nososova/models/app/info_coin.dart';
 import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/models/summary_data.dart';
 
+import '../models/app/stats.dart';
 import '../models/pending_transaction.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
@@ -19,9 +19,9 @@ import 'events/app_data_events.dart';
 
 class AppDataState {
   final Node node;
-  final InfoCoin infoCoin;
   final StatusConnectNodes statusConnected;
   final ConnectivityResult deviceConnectedNetworkStatus;
+  final StatsInfoCoin statsInfoCoin;
 
   //wallet
   final List<PendingTransaction> pendings;
@@ -31,25 +31,26 @@ class AppDataState {
     this.statusConnected = StatusConnectNodes.searchNode,
     this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
+    StatsInfoCoin? statsInfoCoin,
     InfoCoin? infoCoin,
     Seed? seedActive,
     List<PendingTransaction>? pendings,
     List<SumaryData>? summaryBlock,
   })  : node = node ?? Node(seed: Seed()),
-        infoCoin = infoCoin ?? InfoCoin(),
+        statsInfoCoin = statsInfoCoin ?? StatsInfoCoin(),
         pendings = pendings ?? [],
         summaryBlock = summaryBlock ?? [];
 
   AppDataState copyWith(
       {Node? node,
-      InfoCoin? infoCoin,
+      StatsInfoCoin? statsInfoCoin,
       StatusConnectNodes? statusConnected,
       ConnectivityResult? deviceConnectedNetworkStatus,
       List<PendingTransaction>? pendings,
       List<SumaryData>? summaryBlock}) {
     return AppDataState(
       node: node ?? this.node,
-      infoCoin: infoCoin ?? this.infoCoin,
+      statsInfoCoin: statsInfoCoin ?? this.statsInfoCoin,
       statusConnected: statusConnected ?? this.statusConnected,
       deviceConnectedNetworkStatus:
           deviceConnectedNetworkStatus ?? this.deviceConnectedNetworkStatus,
@@ -62,7 +63,6 @@ class AppDataState {
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
   Timer? _timerDelaySync;
-  Timer? _timerLiveCoinWatch;
   final Repositories _repositories;
 
   final _dataSumary = StreamController<List<SumaryData>>.broadcast();
@@ -92,14 +92,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   Future<void> _init(AppDataEvent e, Emitter emit) async {
     await loadConfig();
-    if (_timerLiveCoinWatch != null) {
-      _timerLiveCoinWatch?.cancel();
-    }
-    fetchApiLiveCoinWatch();
-    _timerLiveCoinWatch =
-        Timer.periodic(const Duration(seconds: 10), (timer) {
-      fetchApiLiveCoinWatch();
-    });
     if (appBlocConfig.lastSeed != null) {
       _selectNode(InitialNodeAlgh.connectLastNode);
     } else if (appBlocConfig.nodesList != null) {
@@ -107,12 +99,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     } else {
       _selectNode(InitialNodeAlgh.listenDefaultNodes);
     }
-  }
-
-  fetchApiLiveCoinWatch() async {
-    var currency = await _repositories.liveCoinWatchRepository.fetchMarket();
-    emit(state.copyWith(
-        infoCoin: state.infoCoin.copyWith(currencyModel: currency)));
   }
 
   Future<void> _reconnectNode(event, emit) async {
@@ -129,6 +115,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   /// Підключення та вибір ноди
   Future<void> _selectNode(InitialNodeAlgh initNodeAlgh) async {
+
     emit(state.copyWith(statusConnected: StatusConnectNodes.searchNode));
     ResponseNode response;
 
@@ -223,20 +210,17 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
               await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
           _dataSumary.add(sumaryBlock);
           if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
-            var halving = getHalvingTimer(nodeOutput.lastblock);
             double totalCoins = sumaryBlock.fold(
                 0, (double sum, SumaryData data) => sum + data.balance);
 
             emit(state.copyWith(
-                node: nodeOutput,
-                pendings: pendingsOutput,
-                summaryBlock: sumaryBlock,
-                statusConnected: StatusConnectNodes.connected,
-                infoCoin: state.infoCoin.copyWith(
-                    blockRemaining: halving.blocks,
-                    nextHalvingDays: halving.days,
-                    cSupply: totalCoins.toInt(),
-                    coinLock: countNodes * 10500)));
+              node: nodeOutput,
+              pendings: pendingsOutput,
+              summaryBlock: sumaryBlock,
+              statusConnected: StatusConnectNodes.connected,
+              statsInfoCoin: state.statsInfoCoin.copyWith(
+                  totalCoin: totalCoins.toInt(), totalNodesPeople: countNodes),
+            ));
             return;
           } else {
             return _selectNode(InitialNodeAlgh.listenUserNodes);
@@ -302,42 +286,10 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   Future<void> close() {
     _pendingsSumary.close();
     _dataSumary.close();
-    _timerLiveCoinWatch?.cancel();
     _stopTimer();
     return super.close();
   }
 
-  Halving getHalvingTimer(int lastBlock) {
-    int halvingTimer;
-    if (lastBlock < 210000) {
-      halvingTimer = 210000 - lastBlock;
-    } else if (lastBlock < 420000) {
-      halvingTimer = 420000 - lastBlock;
-    } else if (lastBlock < 630000) {
-      halvingTimer = 630000 - lastBlock;
-    } else if (lastBlock < 840000) {
-      halvingTimer = 840000 - lastBlock;
-    } else if (lastBlock < 1050000) {
-      halvingTimer = 1050000 - lastBlock;
-    } else if (lastBlock < 1260000) {
-      halvingTimer = 1260000 - lastBlock;
-    } else if (lastBlock < 1470000) {
-      halvingTimer = 1470000 - lastBlock;
-    } else if (lastBlock < 1680000) {
-      halvingTimer = 1680000 - lastBlock;
-    } else if (lastBlock < 1890000) {
-      halvingTimer = 1890000 - lastBlock;
-    } else if (lastBlock < 2100000) {
-      halvingTimer = 2100000 - lastBlock;
-    } else {
-      halvingTimer = 0;
-    }
-
-    int timeRemaining = halvingTimer * 600;
-    int timeRemainingDays = ((timeRemaining / (60 * 60 * 24))).ceil();
-
-    return Halving(blocks: halvingTimer, days: timeRemainingDays);
-  }
 
   void _stopTimer() {
     _timerDelaySync?.cancel();

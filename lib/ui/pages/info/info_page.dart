@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/models/app/info_coin.dart';
+import 'package:nososova/ui/theme/style/colors.dart';
+import 'package:nososova/utils/status_api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../blocs/app_data_bloc.dart';
-import '../../../models/currency_model.dart';
+import '../../../blocs/coin_info_bloc.dart';
+import '../../../models/apiLiveCoinWatch/full_info_coin.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
 import '../../theme/style/text_style.dart';
 
@@ -20,6 +22,7 @@ class InfoPageState extends State<InfoPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ZoomPanBehavior _zoomPanBehavior;
+
   @override
   void initState() {
     super.initState();
@@ -33,12 +36,7 @@ class InfoPageState extends State<InfoPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
-      var infoCoin = state.infoCoin;
-      var lastHistory =
-          infoCoin.currencyModel?.getLastHistoryItem().rate ?? 0.0000000;
-      var firstHistory =
-          infoCoin.currencyModel?.history.first.rate ?? 0.0000000;
+    return BlocBuilder<CoinInfoBloc, CoinInfoState>(builder: (context, state) {
       return Scaffold(
           appBar: null,
           body: Container(
@@ -57,118 +55,120 @@ class InfoPageState extends State<InfoPage>
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.8,
                         color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        "Noso Price",
-                                        style: AppTextStyles.itemStyle
-                                            .copyWith(fontSize: 20),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            infoCoin.currencyModel
-                                                    ?.getLastHistoryItem()
-                                                    .rate
-                                                    .toStringAsFixed(7) ??
-                                                "0.0000000",
-                                            style: AppTextStyles.titleMin
-                                                .copyWith(
-                                                    fontSize: 36,
-                                                    color: Colors.black),
-                                          ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            "USDT",
-                                            style: AppTextStyles.titleMin
-                                                .copyWith(color: Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                      difference(lastHistory, firstHistory),
-                                      const SizedBox(height: 20),
-                                      SfCartesianChart(
-                                          zoomPanBehavior: _zoomPanBehavior,
-                                          primaryXAxis: CategoryAxis(
-                                            labelRotation: 45,
-                                          desiredIntervals: 5),
-                                          primaryYAxis: NumericAxis(
-                                            desiredIntervals: 5,
-                                          ),
-                                          series: <LineSeries<HistoryItem,
-                                              String>>[
-                                            LineSeries<HistoryItem, String>(
-                                              dataSource: infoCoin
-                                                      .currencyModel?.history ??
-                                                  [],
-                                              xValueMapper:
-                                                  (HistoryItem hist, _) => DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(hist.date).toLocal()),
-                                              yValueMapper:
-                                                  (HistoryItem hist, _) =>
-                                                      hist.rate,
-                                            )
-                                          ]),
-                                      const SizedBox(height: 20),
-                                    ])),
-                            TabBar(
-                              controller: _tabController,
-                              isScrollable: true,
-                              indicatorColor:
-                                  const Color(0xFF2B2F4F).withOpacity(0.4),
-                              indicatorPadding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              tabs: [
-                                Tab(
-                                  child: Text(
-                                    "Information",
-                                    style: AppTextStyles.itemStyle.copyWith(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    "Marketplace",
-                                    style: AppTextStyles.itemStyle.copyWith(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Expanded(
-                                child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                information(infoCoin),
-                                Container(
-                                  color: Colors.green,
-                                  child: const Text('Page 2'),
-                                ),
-                              ],
-                            )),
-                          ],
-                        )),
+                        child: body(state)),
                   ),
                 ),
               ],
             ),
           ));
     });
+  }
+
+  body(CoinInfoState state) {
+    var infoCoin = state.infoCoin;
+    var firstHistory = infoCoin.historyCoin?.history.first.rate ?? 0.0000000;
+
+    if (state.apiStatus == ApiStatus.loading) {
+      return loadingInfo();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 5),
+              Text(
+                "Noso Price",
+                style: AppTextStyles.itemStyle.copyWith(fontSize: 20),
+              ),
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    infoCoin.minimalInfo?.rate.toStringAsFixed(8) ??
+                        "0.0000000",
+                    style: AppTextStyles.titleMin
+                        .copyWith(fontSize: 36, color: Colors.black),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "USDT",
+                    style: AppTextStyles.titleMin.copyWith(color: Colors.black),
+                  ),
+                ],
+              ),
+              difference(infoCoin.minimalInfo?.rate ?? 0, firstHistory),
+              const SizedBox(height: 20),
+              SfCartesianChart(
+                  zoomPanBehavior: _zoomPanBehavior,
+                  primaryXAxis:
+                      CategoryAxis(labelRotation: 45, desiredIntervals: 5),
+                  primaryYAxis: NumericAxis(
+                    desiredIntervals: 8,
+                  ),
+                  series: <LineSeries<HistoryItem, String>>[
+                    LineSeries<HistoryItem, String>(
+                      dataSource: infoCoin.historyCoin?.history ?? [],
+                      xValueMapper: (HistoryItem hist, _) => DateFormat('HH:mm')
+                          .format(DateTime.fromMillisecondsSinceEpoch(hist.date)
+                              .toLocal()),
+                      yValueMapper: (HistoryItem hist, _) => hist.rate,
+                    )
+                  ]),
+              const SizedBox(height: 20),
+            ])),
+        TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          indicatorColor: const Color(0xFF2B2F4F).withOpacity(0.4),
+          indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
+          tabs: [
+            Tab(
+              child: Text(
+                "Information",
+                style: AppTextStyles.itemStyle
+                    .copyWith(color: Colors.black, fontSize: 20),
+              ),
+            ),
+            Tab(
+              child: Text(
+                "Masternodes",
+                style: AppTextStyles.itemStyle
+                    .copyWith(color: Colors.black, fontSize: 20),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+            child: TabBarView(
+          controller: _tabController,
+          children: [
+            information(infoCoin),
+            masterNodes(infoCoin, 0),
+          ],
+        )),
+      ],
+    );
+  }
+
+  loadingInfo() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            color: CustomColors.primaryColor,
+          )
+        ],
+      ),
+    );
   }
 
   difference(double first, double last) {
@@ -178,7 +178,7 @@ class InfoPageState extends State<InfoPage>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "${diff < 0 ? "" : "+"}${diff.toStringAsFixed(2)}",
+          "${diff < 0 ? "" : "+"}${diff.toStringAsFixed(2)}%",
           style: AppTextStyles.titleMin.copyWith(
               color: diff == 0
                   ? Colors.black
@@ -192,7 +192,6 @@ class InfoPageState extends State<InfoPage>
   }
 
   information(InfoCoin infoCoin) {
-    var coinLocked = infoCoin.coinLock;
     return SingleChildScrollView(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,18 +203,35 @@ class InfoPageState extends State<InfoPage>
         itemInfo("Number of mined coins",
             NumberFormat.compact().format(infoCoin.cSupply),
             twoValue: "21M"),
-        itemInfo("Coins Locked", NumberFormat.compact().format(coinLocked)),
         itemInfo(
-            "Noso Marketcap",
-            NumberFormat.compact().format(infoCoin.cSupply *
-                infoCoin.currencyModel!.getLastHistoryItem().rate)),
+            "Coins Locked", NumberFormat.compact().format(infoCoin.coinLock)),
+        itemInfo("Noso Marketcap",
+            "\$${NumberFormat.compact().format(infoCoin.marketcap)}"),
+        itemInfo("Total Value Locked",
+            "\$${NumberFormat.compact().format(infoCoin.tvl)}"),
+        itemInfo("Maximum price per story",
+            "${infoCoin.minimalInfo?.allTimeHighUSD.toStringAsFixed(8) ?? "0.0000000"} NOSO")
+      ],
+    ));
+  }
+
+  masterNodes(InfoCoin infoCoin, int blockHeight) {
+    return SingleChildScrollView(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        itemInfo("Block Height", infoCoin.blockHeight.toString()),
+        itemInfo("Total MasterNode Reward",
+            "${infoCoin.tvr.toStringAsFixed(5)} NOSO"),
         itemInfo(
-            "Total Value Locked",
-            NumberFormat.compact().format(infoCoin.coinLock *
-                infoCoin.currencyModel!.getLastHistoryItem().rate)),
-        Divider(
-          color: Colors.grey.withOpacity(0.5),
-        )
+            "Node Block Reward", "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
+        itemInfo(
+            "Node 24hr Reward", "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
+        itemInfo(
+            "Node 7 day Reward", "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
+        itemInfo(
+            "Node 30 day Reward", "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
       ],
     ));
   }
@@ -250,11 +266,4 @@ class InfoPageState extends State<InfoPage>
       ),
     );
   }
-}
-
-class SalesData {
-  final String month;
-  final double sales;
-
-  SalesData(this.month, this.sales);
 }

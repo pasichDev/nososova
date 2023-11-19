@@ -41,6 +41,7 @@ dependencies:
   http: ^1.1.0
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
+  url_launcher: ^6.2.1
 
 
 dev_dependencies:

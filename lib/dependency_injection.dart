@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/file_repository.dart';
@@ -26,8 +27,10 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<FileRepository>(
       () => FileRepository(locator<FileService>()));
   locator.registerLazySingleton<ServerService>(() => ServerService());
-  locator.registerLazySingleton<LiveCoinWatchService>(() => LiveCoinWatchService());
-  locator.registerLazySingleton<LiveCoinWatchRepository>(() => LiveCoinWatchRepository(locator<LiveCoinWatchService>()));
+  locator.registerLazySingleton<LiveCoinWatchService>(
+      () => LiveCoinWatchService());
+  locator.registerLazySingleton<LiveCoinWatchRepository>(
+      () => LiveCoinWatchRepository(locator<LiveCoinWatchService>()));
   locator.registerLazySingleton<ServerRepository>(
       () => ServerRepository(locator<ServerService>()));
   locator.registerLazySingleton<LocalRepository>(
@@ -50,6 +53,9 @@ Future<void> setupLocator() async {
         repositories: locator<Repositories>(),
       ));
   locator.registerLazySingleton<WalletBloc>(() => WalletBloc(
+      repositories: locator<Repositories>(),
+      appDataBloc: locator<AppDataBloc>()));
+  locator.registerLazySingleton<CoinInfoBloc>(() => CoinInfoBloc(
       repositories: locator<Repositories>(),
       appDataBloc: locator<AppDataBloc>()));
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
@@ -45,10 +46,16 @@ class MyApp extends StatelessWidget {
               return dataBloc;
             },
           ),
+
           BlocProvider<AppDataBloc>(create: (context) {
             final appDataBloc = locator<AppDataBloc>();
             appDataBloc.add(InitialConnect());
             return appDataBloc;
+          }),
+          BlocProvider<CoinInfoBloc>(create: (context) {
+            final coinInfo = locator<CoinInfoBloc>();
+       //   coinInfo.add(InitFetchCoinApi());
+            return coinInfo;
           }),
         ],
         child: const MainPage(),

@@ -54,8 +54,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       _syncBalance(data);
     });
     _pendingsSubscriptions = appDataBloc.pendingsStream.listen((data) {
-      print("syncPend");
-      print(data.length);
       _syncPendings(data);
     });
   }

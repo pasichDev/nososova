@@ -17,9 +17,9 @@ class AppTextStyles {
   static const TextStyle titleMax =
       TextStyle(fontSize: 40.0, color: Colors.white, fontFamily: "GilroyBold");
 
-  static TextStyle titleMin = TextStyle(
+  static TextStyle titleMin = const TextStyle(
       fontSize: 26.0,
-      color: Colors.white.withOpacity(0.7),
+      color: Colors.white,
       fontFamily: "GilroyBold");
 
   static TextStyle blockStyle = const TextStyle(

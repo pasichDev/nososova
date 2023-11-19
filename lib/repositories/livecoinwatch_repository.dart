@@ -1,13 +1,18 @@
 import 'package:nososova/services/livecoinwatch_service.dart';
 
-import '../models/currency_model.dart';
+import '../models/app/responses/response_api.dart';
 
 class LiveCoinWatchRepository {
   final LiveCoinWatchService _liveCoinWatchService;
 
   LiveCoinWatchRepository(this._liveCoinWatchService);
 
-  Future<CurrencyModel?> fetchMarket() {
-    return _liveCoinWatchService.fetchMarketInfo();
+  Future<ResponseApi> fetchHistoryCoin() {
+    return _liveCoinWatchService.fetchHistory();
+  }
+
+
+  Future<ResponseApi> fetchMinimalInfo() {
+    return _liveCoinWatchService.fetchMinimalInfo();
   }
 }
