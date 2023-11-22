@@ -68,12 +68,10 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   final _dataSumary = StreamController<List<SumaryData>>.broadcast();
 
   Stream<List<SumaryData>> get dataSumaryStream => _dataSumary.stream;
-
   final _pendingsSumary =
       StreamController<List<PendingTransaction>>.broadcast();
 
   Stream<List<PendingTransaction>> get pendingsStream => _pendingsSumary.stream;
-
   final _status = StreamController<StatusConnectNodes>.broadcast();
 
   Stream<StatusConnectNodes> get statusConnected => _status.stream;
@@ -93,11 +91,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   Future<void> _init(AppDataEvent e, Emitter emit) async {
     await loadConfig();
     if (appBlocConfig.lastSeed != null) {
-      _selectNode(InitialNodeAlgh.connectLastNode);
+      await _selectNode(InitialNodeAlgh.connectLastNode);
     } else if (appBlocConfig.nodesList != null) {
-      _selectNode(InitialNodeAlgh.listenUserNodes);
+      await _selectNode(InitialNodeAlgh.listenUserNodes);
     } else {
-      _selectNode(InitialNodeAlgh.listenDefaultNodes);
+      await _selectNode(InitialNodeAlgh.listenDefaultNodes);
     }
   }
 
@@ -115,7 +113,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   /// Підключення та вибір ноди
   Future<void> _selectNode(InitialNodeAlgh initNodeAlgh) async {
-
     emit(state.copyWith(statusConnected: StatusConnectNodes.searchNode));
     ResponseNode response;
 
@@ -175,65 +172,74 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   }
 
   Future<void> _syncDataToNode(Seed seed) async {
+    ///init var && send state loading
     emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
-    final ResponseNode<List<int>> responseNodeInfo =
-        await _fetchNode(NetworkRequest.nodeStatus, seed);
-    final Node nodeOutput = _repositories.nosoCore
-        .parseResponseNode(responseNodeInfo.value, responseNodeInfo.seed);
     var responsePendings = ResponseNode(errors: null);
     List<PendingTransaction> pendingsOutput = [];
+    List<SumaryData> sumaryBlock = [];
 
+    final ResponseNode<List<int>> responseNodeInfo =
+        await _fetchNode(NetworkRequest.nodeStatus, seed);
+    if (responseNodeInfo.errors != null) {
+      return errorInit();
+    }
+
+    /// Initilizate var
+    final Node nodeOutput = _repositories.nosoCore
+        .parseResponseNode(responseNodeInfo.value, responseNodeInfo.seed);
+
+    /// Loading pendings
     if (nodeOutput.pendings != 0) {
       responsePendings = await _fetchNode(NetworkRequest.pendingsList, seed);
+      if (responsePendings.errors != null) {
+        return errorInit();
+      }
       pendingsOutput =
           _repositories.nosoCore.parsePendings(responsePendings.value);
     }
 
-    if (responseNodeInfo.errors != null || responsePendings.errors != null) {
-      return errorInit();
-    } else {
-      /// Оновлення інформації коли перебудовується блок, або перщий запуск
-      List<SumaryData> sumaryBlock = [];
-      if (state.node.lastblock != nodeOutput.lastblock ||
-          appBlocConfig.isOneStartup) {
-        var countNodes = await loadPeopleNodes(seed);
-        //Отриманя summary.zip
-        ResponseNode<List<int>> responseSummary =
-            await _fetchNode(NetworkRequest.summary, seed);
-        var isSavedSummary = await _repositories.fileRepository
-            .writeSummaryZip(responseSummary.value ?? []);
-        if (responseSummary.errors != null) {
-          errorInit();
-          return;
-        } else if (isSavedSummary) {
-          sumaryBlock = _repositories.nosoCore.parseSumary(
-              await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
-          _dataSumary.add(sumaryBlock);
-          if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
-            double totalCoins = sumaryBlock.fold(
-                0, (double sum, SumaryData data) => sum + data.balance);
+    /// Оновлення інформації коли перебудовується блок, або перщий запуск
 
-            emit(state.copyWith(
-              node: nodeOutput,
-              pendings: pendingsOutput,
-              summaryBlock: sumaryBlock,
-              statusConnected: StatusConnectNodes.connected,
-              statsInfoCoin: state.statsInfoCoin.copyWith(
-                  totalCoin: totalCoins.toInt(), totalNodesPeople: countNodes),
-            ));
-            return;
-          } else {
-            return _selectNode(InitialNodeAlgh.listenUserNodes);
-          }
-        }
+    if (state.node.lastblock != nodeOutput.lastblock ||
+        appBlocConfig.isOneStartup) {
+      var countNodes = await loadPeopleNodes(seed);
+      //Отриманя summary.zip
+      ResponseNode<List<int>> responseSummary =
+          await _fetchNode(NetworkRequest.summary, seed);
+      if (responseSummary.errors != null) {
+        return errorInit();
       }
+      var isSavedSummary = await _repositories.fileRepository
+          .writeSummaryZip(responseSummary.value ?? []);
+      if (!isSavedSummary) {
+        return errorInit();
+      }
+      sumaryBlock = _repositories.nosoCore.parseSumary(
+          await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
+      _dataSumary.add(sumaryBlock);
+      if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
+        double totalCoins = sumaryBlock.fold(
+            0, (double sum, SumaryData data) => sum + data.balance);
 
-      emit(state.copyWith(
+        emit(state.copyWith(
           node: nodeOutput,
           pendings: pendingsOutput,
-          statusConnected: StatusConnectNodes.connected));
-      _pendingsSumary.add(pendingsOutput);
+          summaryBlock: sumaryBlock,
+          statusConnected: StatusConnectNodes.connected,
+          statsInfoCoin: state.statsInfoCoin.copyWith(
+              totalCoin: totalCoins.toInt(), totalNodesPeople: countNodes),
+        ));
+        return;
+      } else {
+        return _selectNode(InitialNodeAlgh.listenUserNodes);
+      }
     }
+
+    emit(state.copyWith(
+        node: nodeOutput,
+        pendings: pendingsOutput,
+        statusConnected: StatusConnectNodes.connected));
+    _pendingsSumary.add(pendingsOutput);
   }
 
   Future<ConsensusStatus> _checkConsensus(Node node) async {
@@ -289,7 +295,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     _stopTimer();
     return super.close();
   }
-
 
   void _stopTimer() {
     _timerDelaySync?.cancel();

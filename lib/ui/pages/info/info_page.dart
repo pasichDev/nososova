@@ -7,6 +7,8 @@ import 'package:nososova/utils/status_api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../blocs/coin_info_bloc.dart';
+import '../../../blocs/events/coin_info_events.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/apiLiveCoinWatch/full_info_coin.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
 import '../../theme/style/text_style.dart';
@@ -22,6 +24,7 @@ class InfoPageState extends State<InfoPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ZoomPanBehavior _zoomPanBehavior;
+  late CoinInfoBloc coinInfoBloc;
 
   @override
   void initState() {
@@ -32,8 +35,16 @@ class InfoPageState extends State<InfoPage>
       enablePanning: true,
       zoomMode: ZoomMode.x,
     );
+    coinInfoBloc = BlocProvider.of<CoinInfoBloc>(context);
+    coinInfoBloc.add(InitFetchHistory());
+  }
+  @override
+  void dispose() {
+    coinInfoBloc.add(CancelFetchHistory());
+    super.dispose();
   }
 
+  /// TODO ADD ERROR WIDGET
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CoinInfoBloc, CoinInfoState>(builder: (context, state) {
@@ -82,7 +93,7 @@ class InfoPageState extends State<InfoPage>
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 5),
               Text(
-                "Noso Price",
+                AppLocalizations.of(context)!.nosoPrice,
                 style: AppTextStyles.itemStyle.copyWith(fontSize: 20),
               ),
               const SizedBox(height: 5),
@@ -107,10 +118,14 @@ class InfoPageState extends State<InfoPage>
               const SizedBox(height: 20),
               SfCartesianChart(
                   zoomPanBehavior: _zoomPanBehavior,
-                  primaryXAxis:
-                      CategoryAxis(labelRotation: 45, desiredIntervals: 5),
+                  primaryXAxis: CategoryAxis(
+                      labelRotation: 45,
+                      desiredIntervals: 5,
+                      majorGridLines: const MajorGridLines(width: 0)),
                   primaryYAxis: NumericAxis(
-                    desiredIntervals: 8,
+                    majorGridLines: const MajorGridLines(width: 0),
+                    visibleMinimum:
+                        infoCoin.historyCoin!.history.first.rate / 1.4,
                   ),
                   series: <LineSeries<HistoryItem, String>>[
                     LineSeries<HistoryItem, String>(
@@ -121,7 +136,7 @@ class InfoPageState extends State<InfoPage>
                       yValueMapper: (HistoryItem hist, _) => hist.rate,
                     )
                   ]),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
             ])),
         TabBar(
           controller: _tabController,
@@ -131,14 +146,14 @@ class InfoPageState extends State<InfoPage>
           tabs: [
             Tab(
               child: Text(
-                "Information",
+                AppLocalizations.of(context)!.information,
                 style: AppTextStyles.itemStyle
                     .copyWith(color: Colors.black, fontSize: 20),
               ),
             ),
             Tab(
               child: Text(
-                "Masternodes",
+                AppLocalizations.of(context)!.masternodes,
                 style: AppTextStyles.itemStyle
                     .copyWith(color: Colors.black, fontSize: 20),
               ),
@@ -197,19 +212,19 @@ class InfoPageState extends State<InfoPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        itemInfo("Blocks Remaining", infoCoin.blockRemaining.toString()),
+        itemInfo( AppLocalizations.of(context)!.blocksRemaining, infoCoin.blockRemaining.toString()),
         itemInfo(
-            "Days until Next Halving", infoCoin.nextHalvingDays.toString()),
-        itemInfo("Number of mined coins",
+            AppLocalizations.of(context)!.daysUntilNextHalving, infoCoin.nextHalvingDays.toString()),
+        itemInfo( AppLocalizations.of(context)!.numberOfMinedCoins,
             NumberFormat.compact().format(infoCoin.cSupply),
             twoValue: "21M"),
         itemInfo(
-            "Coins Locked", NumberFormat.compact().format(infoCoin.coinLock)),
-        itemInfo("Noso Marketcap",
+            AppLocalizations.of(context)!.coinsLocked, NumberFormat.compact().format(infoCoin.coinLock)),
+        itemInfo(AppLocalizations.of(context)!.marketcap,
             "\$${NumberFormat.compact().format(infoCoin.marketcap)}"),
-        itemInfo("Total Value Locked",
+        itemInfo( AppLocalizations.of(context)!.tvl,
             "\$${NumberFormat.compact().format(infoCoin.tvl)}"),
-        itemInfo("Maximum price per story",
+        itemInfo(AppLocalizations.of(context)!.maxPriceStory,
             "${infoCoin.minimalInfo?.allTimeHighUSD.toStringAsFixed(8) ?? "0.0000000"} NOSO")
       ],
     ));
@@ -221,17 +236,17 @@ class InfoPageState extends State<InfoPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        itemInfo("Block Height", infoCoin.blockHeight.toString()),
-        itemInfo("Total MasterNode Reward",
+        itemInfo(AppLocalizations.of(context)!.activeNodes, infoCoin.activeNode.toString()),
+        itemInfo(AppLocalizations.of(context)!.tmr,
             "${infoCoin.tvr.toStringAsFixed(5)} NOSO"),
         itemInfo(
-            "Node Block Reward", "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
+            AppLocalizations.of(context)!.nbr, "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
         itemInfo(
-            "Node 24hr Reward", "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
+            AppLocalizations.of(context)!.nr7, "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
         itemInfo(
-            "Node 7 day Reward", "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
+            AppLocalizations.of(context)!.nr24, "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
         itemInfo(
-            "Node 30 day Reward", "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
+            AppLocalizations.of(context)!.nr30, "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
       ],
     ));
   }

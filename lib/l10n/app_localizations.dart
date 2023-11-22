@@ -410,6 +410,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Synchronization'**
   String get sync;
+
+  /// No description provided for @information.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get information;
+
+  /// No description provided for @masternodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Masternodes'**
+  String get masternodes;
+
+  /// No description provided for @blocksRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocks Remaining'**
+  String get blocksRemaining;
+
+  /// No description provided for @daysUntilNextHalving.
+  ///
+  /// In en, this message translates to:
+  /// **'Days until Next Halving'**
+  String get daysUntilNextHalving;
+
+  /// No description provided for @numberOfMinedCoins.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of mined coins'**
+  String get numberOfMinedCoins;
+
+  /// No description provided for @coinsLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Coins Locked'**
+  String get coinsLocked;
+
+  /// No description provided for @marketcap.
+  ///
+  /// In en, this message translates to:
+  /// **'Noso Marketcap'**
+  String get marketcap;
+
+  /// No description provided for @tvl.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Value Locked'**
+  String get tvl;
+
+  /// No description provided for @maxPriceStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum price per story'**
+  String get maxPriceStory;
+
+  /// No description provided for @activeNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Active nodes'**
+  String get activeNodes;
+
+  /// No description provided for @tmr.
+  ///
+  /// In en, this message translates to:
+  /// **'Total MasterNode Reward'**
+  String get tmr;
+
+  /// No description provided for @nbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Node Block Reward'**
+  String get nbr;
+
+  /// No description provided for @nr24.
+  ///
+  /// In en, this message translates to:
+  /// **'Node 24hr Reward'**
+  String get nr24;
+
+  /// No description provided for @nr7.
+  ///
+  /// In en, this message translates to:
+  /// **'Node 7 day Reward'**
+  String get nr7;
+
+  /// No description provided for @nr30.
+  ///
+  /// In en, this message translates to:
+  /// **'Node 30 day Reward'**
+  String get nr30;
+
+  /// No description provided for @nosoPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Noso Price'**
+  String get nosoPrice;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

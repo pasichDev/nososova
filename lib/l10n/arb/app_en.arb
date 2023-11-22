@@ -51,6 +51,23 @@
   "billAction": "Bill to this address",
   "addressesAdded": "Added address",
   "settings": "Settings",
-  "sync": "Synchronization"
+  "sync": "Synchronization",
+  "information": "Information",
+  "masternodes": "Masternodes",
+  "blocksRemaining": "Blocks Remaining",
+  "daysUntilNextHalving": "Days until Next Halving",
+  "numberOfMinedCoins": "Number of mined coins",
+  "coinsLocked": "Coins Locked",
+  "marketcap": "Noso Marketcap",
+  "tvl": "Total Value Locked",
+  "maxPriceStory": "Maximum price per story",
+  "activeNodes": "Active nodes",
+  "tmr": "Total MasterNode Reward",
+  "nbr": "Node Block Reward",
+  "nr24": "Node 24hr Reward",
+  "nr7": "Node 7 day Reward",
+  "nr30": "Node 30 day Reward",
+  "nosoPrice": "Noso Price"
+
 
 }

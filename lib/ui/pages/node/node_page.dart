@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../theme/decoration/other_gradient_decoration.dart';
 
@@ -23,6 +23,23 @@ class NodeBody extends StatelessWidget {
       decoration: const OtherGradientDecoration(),
       child: Stack(
         children: [
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SafeArea(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                            ],
+                          ),
+                        )))
+              ]),
           Positioned(
             bottom: 0,
             left: 0,
@@ -35,16 +52,11 @@ class NodeBody extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 20.0),
-                height: MediaQuery.of(context).size.height * 0.8,
+                height: MediaQuery.of(context).size.height * 0.5,
                 color: Colors.white,
-                child:  Center(
-                  child: Text(
-                    AppLocalizations.of(context)!.notImplemented,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                child: const Text(
+                 "Nodes",
+                  style: AppTextStyles.categoryStyle
                 ),
               ),
             ),

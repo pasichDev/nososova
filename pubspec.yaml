@@ -42,6 +42,7 @@ dependencies:
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
   url_launcher: ^6.2.1
+  loading_animation_widget: ^1.2.0+4
 
 
 dev_dependencies:
@@ -73,6 +74,7 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/icons/
+    - lib/generated/
 
   generate: true
   uses-material-design: true

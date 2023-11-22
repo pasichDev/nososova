@@ -91,7 +91,7 @@ final class NosoCore extends NosoCrypto {
       return ParseMNInfo();
     }
     final tokens = String.fromCharCodes(response).split(' ');
-    print(tokens);
+
     if (tokens.length > 1) {
       tokens.skip(1);
 

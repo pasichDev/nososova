@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/utils/const/const.dart';
+import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -52,6 +54,7 @@ class CardBody extends StatelessWidget {
               ),
             ],
           ),
+
           ItemTotalPrice(totalPrice:  state.wallet.balanceTotal),
           const SizedBox(height: 10),
           Text(
@@ -72,20 +75,27 @@ class CardBody extends StatelessWidget {
 }
 
 
+
 class ItemTotalPrice extends StatelessWidget {
   final double totalPrice;
   const ItemTotalPrice({super.key, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
-    
+
     return BlocBuilder<CoinInfoBloc, CoinInfoState>(builder: (context, state) {
       var priceMoney = state.infoCoin.minimalInfo?.rate ?? 0;
       var price = totalPrice * priceMoney;
-      return Text(
-        "${price.toStringAsFixed(2)} USDT",
-      style: AppTextStyles.titleMin
-          .copyWith(color: Colors.white.withOpacity(0.5)),
-    );});
+      return Row(children : [
+        if(state.apiPriceStatus == ApiStatus.connected)    Text(
+          "${price.toStringAsFixed(2)} USDT",
+          style: AppTextStyles.titleMin
+              .copyWith(color: Colors.white.withOpacity(0.5)),
+        ),
+        const SizedBox(width: 10),
+      if(state.apiPriceStatus == ApiStatus.loading)  LoadingAnimationWidget.prograssiveDots(
+         color: Colors.white.withOpacity(0.5), size: 26,
+        ),
+      ]);});
   }
 }

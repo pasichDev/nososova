@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:nososova/utils/const/network_const.dart';
@@ -28,10 +29,19 @@ class NetworkInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                CheckConnect.getStatusConnected(state.statusConnected),
-                color: Colors.white,
-              ),
+              if (state.statusConnected == StatusConnectNodes.sync ||
+                  state.statusConnected == StatusConnectNodes.searchNode) ...[
+                LoadingAnimationWidget.flickr(
+                  size: 28,
+                  leftDotColor: Colors.white.withOpacity(0.5),
+                  rightDotColor: Colors.white,
+                )
+              ] else ...[
+                Icon(
+                  CheckConnect.getStatusConnected(state.statusConnected),
+                  color: Colors.white,
+                )
+              ],
               if (state.statusConnected == StatusConnectNodes.connected ||
                   state.statusConnected == StatusConnectNodes.sync) ...[
                 const SizedBox(width: 10),

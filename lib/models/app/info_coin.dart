@@ -11,7 +11,7 @@ class InfoCoin {
   MinimalInfoCoin? minimalInfo;
   double marketcap = 0;
   double tvl = 0;
-  int blockHeight = 0;
+  int activeNode = 0;
   double tvr = 0;
   double nbr = 0;
   double nr24 = 0;
@@ -27,7 +27,7 @@ class InfoCoin {
     this.coinLock = 0,
     this.marketcap = 0,
     this.tvl = 0,
-    this.blockHeight = 0,
+    this.activeNode = 0,
     this.tvr = 0,
     this.nbr = 0,
     this.nr24 = 0,
@@ -44,7 +44,7 @@ class InfoCoin {
     int? coinLock,
     double? marketcap,
     double? tvl,
-    int? blockHeight,
+    int? activeNode,
     double? tvr,
     double? nbr,
     double? nr24,
@@ -60,7 +60,7 @@ class InfoCoin {
       coinLock: coinLock ?? this.coinLock,
       marketcap: marketcap ?? this.marketcap,
       tvl: tvl ?? this.tvl,
-      blockHeight: blockHeight ?? this.blockHeight,
+      activeNode: activeNode ?? this.activeNode,
       tvr: tvr ?? this.tvr,
       nbr: nbr ?? this.nbr,
       nr24: nr24 ?? this.nr24,

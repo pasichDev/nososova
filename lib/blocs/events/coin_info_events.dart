@@ -2,5 +2,5 @@
 
 abstract class CoinInfoEvent {}
 
-class InitFetchCoinApi extends CoinInfoEvent {}
+class InitFetchHistory extends CoinInfoEvent {}
 class CancelFetchHistory extends CoinInfoEvent {}

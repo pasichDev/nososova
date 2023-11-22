@@ -162,4 +162,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sync => 'Synchronization';
+
+  @override
+  String get information => 'Information';
+
+  @override
+  String get masternodes => 'Masternodes';
+
+  @override
+  String get blocksRemaining => 'Blocks Remaining';
+
+  @override
+  String get daysUntilNextHalving => 'Days until Next Halving';
+
+  @override
+  String get numberOfMinedCoins => 'Number of mined coins';
+
+  @override
+  String get coinsLocked => 'Coins Locked';
+
+  @override
+  String get marketcap => 'Noso Marketcap';
+
+  @override
+  String get tvl => 'Total Value Locked';
+
+  @override
+  String get maxPriceStory => 'Maximum price per story';
+
+  @override
+  String get activeNodes => 'Active nodes';
+
+  @override
+  String get tmr => 'Total MasterNode Reward';
+
+  @override
+  String get nbr => 'Node Block Reward';
+
+  @override
+  String get nr24 => 'Node 24hr Reward';
+
+  @override
+  String get nr7 => 'Node 7 day Reward';
+
+  @override
+  String get nr30 => 'Node 30 day Reward';
+
+  @override
+  String get nosoPrice => 'Noso Price';
 }

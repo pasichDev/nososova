@@ -4,6 +4,7 @@ part 'full_info_coin.g.dart';
 
 @JsonSerializable()
 class FullInfoCoin {
+
   @JsonKey(defaultValue: "")
   String code;
 

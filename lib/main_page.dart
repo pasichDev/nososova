@@ -28,9 +28,9 @@ class MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const WalletsPage(),
-    const PaymentsPage(),
     const InfoPage(),
-    const NodePage()
+    const NodePage(),
+    const PaymentsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -54,7 +54,7 @@ class MainPageState extends State<MainPage> {
               children: [
                 if (Platform.isAndroid || Platform.isIOS)
                   IconButton(
-                    icon: const Icon(Icons.qr_code_scanner_outlined),
+                    icon:  SvgPicture.asset(Assets.iconsScan, height: 28, width: 28, color: Colors.white,),
                     onPressed: () => _showDialogScanQr(context),
                   ),
               ],
@@ -77,8 +77,8 @@ class MainPageState extends State<MainPage> {
         selectedItemColor: CustomColors.primaryColor,
         items: <BottomNavigationBarItem>[
           bottomItem(Assets.iconsWallet, 0),
-          bottomItem(Assets.iconsHistory, 1),
-          bottomItem(Assets.iconsInfo, 2),
+          bottomItem(Assets.iconsInfo, 1),
+          bottomItem(Assets.iconsHistory, 2),
           bottomItem(Assets.iconsMore, 3),
         ],
         currentIndex: _selectedIndex,

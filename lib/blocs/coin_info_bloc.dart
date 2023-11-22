@@ -13,20 +13,25 @@ import 'events/coin_info_events.dart';
 class CoinInfoState {
   final InfoCoin infoCoin;
   final ApiStatus apiStatus;
+  final ApiStatus apiPriceStatus;
 
   CoinInfoState({
     InfoCoin? infoCoin,
     ApiStatus? apiStatus,
+    ApiStatus? apiPriceStatus,
   })  : infoCoin = infoCoin ?? InfoCoin(),
-        apiStatus = apiStatus ?? ApiStatus.loading;
+        apiStatus = apiStatus ?? ApiStatus.loading,
+        apiPriceStatus = apiPriceStatus ?? ApiStatus.loading;
 
   CoinInfoState copyWith({
     InfoCoin? infoCoin,
     ApiStatus? apiStatus,
+    ApiStatus? apiPriceStatus,
   }) {
     return CoinInfoState(
       infoCoin: infoCoin ?? this.infoCoin,
       apiStatus: apiStatus ?? this.apiStatus,
+      apiPriceStatus: apiPriceStatus ?? this.apiPriceStatus,
     );
   }
 }
@@ -34,7 +39,7 @@ class CoinInfoState {
 class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
   final AppDataBloc appDataBloc;
   final Repositories _repositories;
-  Timer? _timerFullInfo;
+  Timer? _timerHistory;
   Timer? _timerMinimalInfo;
 
   CoinInfoBloc({
@@ -43,27 +48,34 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
   })  : _repositories = repositories,
         super(CoinInfoState()) {
     init();
+    on<InitFetchHistory>(_initHistoryPrice);
+    on<CancelFetchHistory>(_cancelHistory);
   }
 
   init() async {
     await initMinimalInfo();
-    await initHistoryPrice();
+
   }
 
-  initHistoryPrice() {
+  _cancelHistory(event, emit){
+    _timerHistory?.cancel();
+    emit(state.copyWith(apiStatus: ApiStatus.loading));
+  }
+
+  _initHistoryPrice(event, emit) {
     fetchHistory();
-    _timerFullInfo = Timer.periodic(const Duration(minutes: 5), (timer) {
+    _timerHistory = Timer.periodic(const Duration(minutes: 5), (timer) {
       fetchHistory();
     });
   }
 
   initMinimalInfo() {
-    fetchMinimalInfo();
-    _timerMinimalInfo = Timer.periodic(const Duration(seconds: 10), (timer) {
+    _timerMinimalInfo = Timer.periodic(const Duration(seconds: 5), (timer) {
       fetchMinimalInfo();
     });
   }
 
+  /// TODO Метод для справжньої кількості монет
   fetchMinimalInfo() async {
     var response =
         await _repositories.liveCoinWatchRepository.fetchMinimalInfo();
@@ -71,19 +83,21 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
 
     if (response.errors == null) {
       MinimalInfoCoin value = response.value;
-      var coinLock = appDataBloc.state.statsInfoCoin.totalNodesPeople * 10500;
+      var activeNode = appDataBloc.state.statsInfoCoin.totalNodesPeople;
+      var coinLock = activeNode * 10500;
       var cSupply = appDataBloc.state.statsInfoCoin.totalCoin;
-      double blockReward = 50;
-      var nodeReward = blockReward / appDataBloc.state.statsInfoCoin.totalNodesPeople;
+      double blockReward = 45;
+      var nodeReward = blockReward / activeNode;
       emit(state.copyWith(
+        apiPriceStatus: ApiStatus.connected,
           infoCoin: state.infoCoin.copyWith(
               blockRemaining: halving.blocks,
               nextHalvingDays: halving.days,
               cSupply: cSupply,
+              activeNode: activeNode,
               coinLock: coinLock,
               minimalInfo: response.value,
               marketcap: cSupply * value.rate,
-              blockHeight: appDataBloc.state.node.lastblock,
               tvr: blockReward,
               nbr: nodeReward,
               nr7: nodeReward * 144,
@@ -91,7 +105,7 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
               nr30: nodeReward * 4320,
               tvl: coinLock * value.rate)));
     } else {
-      emit(state.copyWith(apiStatus: ApiStatus.error));
+      emit(state.copyWith(apiPriceStatus: ApiStatus.error));
     }
   }
 
@@ -142,7 +156,7 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
 
   @override
   Future<void> close() {
-    _timerFullInfo?.cancel();
+    _timerHistory?.cancel();
     _timerMinimalInfo?.cancel();
     return super.close();
   }

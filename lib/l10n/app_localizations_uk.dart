@@ -162,4 +162,52 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get sync => 'Синхронізація';
+
+  @override
+  String get information => 'Інформація';
+
+  @override
+  String get masternodes => 'Мастерноди';
+
+  @override
+  String get blocksRemaining => 'Залишилося блоків';
+
+  @override
+  String get daysUntilNextHalving => 'Днів до наступного халвінгу';
+
+  @override
+  String get numberOfMinedCoins => 'Кількість видобутих монет';
+
+  @override
+  String get coinsLocked => 'Заблоковані монети';
+
+  @override
+  String get marketcap => 'Ринкова капіталізація Noso';
+
+  @override
+  String get tvl => 'Загальна вартість заблокованих активів';
+
+  @override
+  String get maxPriceStory => 'Максимальна ціна в історії';
+
+  @override
+  String get activeNodes => 'Активні вузли';
+
+  @override
+  String get tmr => 'Загальна винагорода за блок';
+
+  @override
+  String get nbr => 'Винагорода для одного вузла';
+
+  @override
+  String get nr24 => 'Винагорода за 24 години вузла';
+
+  @override
+  String get nr7 => 'Винагорода за 7 днів вузла';
+
+  @override
+  String get nr30 => 'Винагорода за 30 днів вузла';
+
+  @override
+  String get nosoPrice => 'Вартість Noso';
 }
