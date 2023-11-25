@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:nososova/generated/assets.dart';
 
 import '../../models/seed.dart';
 
@@ -25,14 +25,14 @@ final class NetworkRequest {
 }
 
 final class CheckConnect {
-  static IconData getStatusConnected(StatusConnectNodes status) {
+  static String getStatusConnected(StatusConnectNodes status) {
     switch (status) {
       case StatusConnectNodes.connected:
-        return Icons.computer;
+        return Assets.iconsNodeI;
       case StatusConnectNodes.error:
-        return Icons.report_gmailerrorred_outlined;
+        return Assets.iconsClose;
       default:
-        return Icons.downloading;
+        return "";
     }
   }
 }

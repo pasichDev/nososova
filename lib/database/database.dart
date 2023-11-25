@@ -17,13 +17,16 @@ class MyDatabase extends _$MyDatabase {
   Stream<List<Address>> fetchAddresses() => select(addresses).watch();
 
   Future<void> addAddress(Address value) async {
-    final insertable = AddressesCompanion(
-      publicKey: Value(value.publicKey),
-      privateKey: Value(value.privateKey),
-      hash: Value(value.hash),
-    );
 
-    await into(addresses).insertOnConflictUpdate(insertable);
+
+    await batch((batch) {
+      batch.insert(addresses, AddressesCompanion(
+        publicKey: Value(value.publicKey),
+        privateKey: Value(value.privateKey),
+        hash: Value(value.hash),
+      ));
+    });
+   // await into(addresses).insertOnConflictUpdate(insertable);
   }
 
   Future<void> addAddresses(List<Address> value) async {

@@ -11,6 +11,7 @@ import '../models/app/import_wallet_response.dart';
 import '../models/app/wallet.dart';
 import '../utils/const/files_const.dart';
 import '../utils/noso/src/address_object.dart';
+import '../utils/noso/utils.dart';
 import 'events/wallet_events.dart';
 
 class WalletState {
@@ -37,6 +38,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   late StreamSubscription _summarySubscriptions;
   late StreamSubscription _pendingsSubscriptions;
 
+
+
+  final _walletUpdate = StreamController<bool>.broadcast();
+  Stream<bool> get walletUpdate => _walletUpdate.stream;
+
   WalletBloc({
     required Repositories repositories,
     required this.appDataBloc,
@@ -59,8 +65,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   void _createNewAddress(event, emit) async {
-    Address address = _repositories.nosoCore.createNewAddress();
-    await _repositories.localRepository.addAddress(address);
+    await _repositories.localRepository
+        .addAddress(_repositories.nosoCore.createNewAddress());
   }
 
   void _addAddress(event, emit) async {
@@ -74,7 +80,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   void _fetchAddresses(event, emit) async {
     final addressStream = _repositories.localRepository.fetchAddress();
     await for (final addressList in addressStream) {
-      emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
+     // emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
+      if (state.wallet.address.isEmpty) {
+        emit(state.copyWith(
+            wallet: state.wallet.copyWith(address: addressList)));
+      } else {
+        _syncBalance(appDataBloc.state.summaryBlock, address: addressList);
+      }
     }
   }
 
@@ -86,27 +98,31 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         value: listAddresses.length.toString()));
   }
 
-
   /// TODO Додати підтримку перевірки чи запущена нода на цю адресу
-  void _syncBalance(List<SumaryData> summary) async {
+  Future<void> _syncBalance(List<SumaryData> summary,
+      {List<Address>? address}) async {
+    var listAddress = address ?? state.wallet.address;
     double totalBalance = 0;
-    for (var address in state.wallet.address) {
+    for (var address in listAddress) {
       SumaryData found = summary.firstWhere(
           (other) => other.hash == address.hash,
           orElse: () => SumaryData());
-
 
       if (found.hash.isNotEmpty) {
         totalBalance += found.balance;
         address.balance = found.balance;
         address.lastOP = found.lastOP;
         address.score = found.score;
+        address.nodeAvailable =
+            found.balance >= UtilsDataNoso.getCountMonetToRunNode();
       }
     }
 
-    if(totalBalance != 0) {
+    if (totalBalance != 0) {
+      _walletUpdate.add(true);
       emit(state.copyWith(
-        wallet: state.wallet.copyWith(address: state.wallet.address, balanceTotal: totalBalance)));
+          wallet: state.wallet.copyWith(
+              address: state.wallet.address, balanceTotal: totalBalance)));
     }
   }
 
@@ -116,28 +132,30 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
     for (var address in state.wallet.address) {
       PendingTransaction? foundOutgoing = summary.firstWhere(
-              (other) => other.receiver == address.hash,
+          (other) => other.receiver == address.hash,
           orElse: () => PendingTransaction());
-      PendingTransaction? foundIncoming  = summary.firstWhere(
-              (other) => other.address == address.hash,
+      PendingTransaction? foundIncoming = summary.firstWhere(
+          (other) => other.address == address.hash,
           orElse: () => PendingTransaction());
 
       if (foundIncoming.receiver.isNotEmpty) {
-        var cell =  foundIncoming.amountTransfer + foundIncoming.amountFee;
+        var cell = foundIncoming.amountTransfer + foundIncoming.amountFee;
         totalIncoming += cell;
-        address.incoming =  cell;
-      }else  if (foundOutgoing.receiver.isNotEmpty) {
+        address.incoming = cell;
+      } else if (foundOutgoing.receiver.isNotEmpty) {
         totalOutgoing += foundOutgoing.amountTransfer;
         address.outgoing = foundOutgoing.amountTransfer;
-      }else {
+      } else {
         address.incoming = 0;
         address.outgoing = 0;
       }
     }
-      emit(state.copyWith(
-          wallet: state.wallet.copyWith(address:  state.wallet.address, totalIncoming:  totalIncoming, totalOutgoing: totalOutgoing)));
+    emit(state.copyWith(
+        wallet: state.wallet.copyWith(
+            address: state.wallet.address,
+            totalIncoming: totalIncoming,
+            totalOutgoing: totalOutgoing)));
   }
-
 
   void _importWalletFile(event, emit) async {
     final FilePickerResult? result = event.filePickerResult;
@@ -176,7 +194,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   @override
   Future<void> close() {
     _summarySubscriptions.cancel();
+    _pendingsSubscriptions.cancel();
     _actionsFileWallet.close();
+    _walletUpdate.close();
     return super.close();
   }
 }

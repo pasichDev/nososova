@@ -3,12 +3,13 @@ class Seed {
   int port;
   int ping;
   bool online;
-
+  String address;
   Seed({
     this.ip = "127.0.0.1",
     this.port = 8080,
     this.ping = 0,
     this.online = false,
+    this.address = "",
   });
 
   Seed tokenizer(String? string){
@@ -30,12 +31,14 @@ class Seed {
     int? port,
     int? ping,
     bool? online,
+    String? address,
   }) {
     return Seed(
       ip: ip ?? this.ip,
       port: port ?? this.port,
       ping: ping ?? this.ping,
       online: online ?? this.online,
+      address: address ?? this.address,
     );
   }
 }

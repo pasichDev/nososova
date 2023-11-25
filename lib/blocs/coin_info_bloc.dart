@@ -86,8 +86,8 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
       var activeNode = appDataBloc.state.statsInfoCoin.totalNodesPeople;
       var coinLock = activeNode * 10500;
       var cSupply = appDataBloc.state.statsInfoCoin.totalCoin;
-      double blockReward = 45;
-      var nodeReward = blockReward / activeNode;
+      double blockReward = appDataBloc.state.statsInfoCoin.blockInfo.total;
+      var nodeReward = appDataBloc.state.statsInfoCoin.blockInfo.reward;
       emit(state.copyWith(
         apiPriceStatus: ApiStatus.connected,
           infoCoin: state.infoCoin.copyWith(
@@ -100,8 +100,8 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
               marketcap: cSupply * value.rate,
               tvr: blockReward,
               nbr: nodeReward,
-              nr7: nodeReward * 144,
-              nr24: nodeReward * 1008,
+              nr7: nodeReward * 1008,
+              nr24: nodeReward * 144,
               nr30: nodeReward * 4320,
               tvl: coinLock * value.rate)));
     } else {

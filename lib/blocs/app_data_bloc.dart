@@ -6,12 +6,15 @@ import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
 import 'package:nososova/models/app/info_coin.dart';
+import 'package:nososova/models/app/responses/response_api.dart';
 import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/models/summary_data.dart';
 
+import '../models/app/parse_mn_info.dart';
 import '../models/app/stats.dart';
+import '../models/block_mns.dart';
 import '../models/pending_transaction.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
@@ -26,6 +29,7 @@ class AppDataState {
   //wallet
   final List<PendingTransaction> pendings;
   final List<SumaryData> summaryBlock;
+  final List<Seed> listPeopleNodes;
 
   AppDataState({
     this.statusConnected = StatusConnectNodes.searchNode,
@@ -36,10 +40,14 @@ class AppDataState {
     Seed? seedActive,
     List<PendingTransaction>? pendings,
     List<SumaryData>? summaryBlock,
+    List<Seed>? listPeopleNodes,
   })  : node = node ?? Node(seed: Seed()),
-        statsInfoCoin = statsInfoCoin ?? StatsInfoCoin(),
+        statsInfoCoin = statsInfoCoin ??
+            StatsInfoCoin(
+                blockInfo: BlockMNS_RPC(total: 0, reward: 0, block: 0)),
         pendings = pendings ?? [],
-        summaryBlock = summaryBlock ?? [];
+        summaryBlock = summaryBlock ?? [],
+        listPeopleNodes = listPeopleNodes ?? [];
 
   AppDataState copyWith(
       {Node? node,
@@ -47,6 +55,7 @@ class AppDataState {
       StatusConnectNodes? statusConnected,
       ConnectivityResult? deviceConnectedNetworkStatus,
       List<PendingTransaction>? pendings,
+      List<Seed>? listPeopleNodes,
       List<SumaryData>? summaryBlock}) {
     return AppDataState(
       node: node ?? this.node,
@@ -56,6 +65,7 @@ class AppDataState {
           deviceConnectedNetworkStatus ?? this.deviceConnectedNetworkStatus,
       pendings: pendings ?? this.pendings,
       summaryBlock: summaryBlock ?? this.summaryBlock,
+      listPeopleNodes: listPeopleNodes ?? this.listPeopleNodes,
     );
   }
 }
@@ -68,10 +78,12 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   final _dataSumary = StreamController<List<SumaryData>>.broadcast();
 
   Stream<List<SumaryData>> get dataSumaryStream => _dataSumary.stream;
+
   final _pendingsSumary =
       StreamController<List<PendingTransaction>>.broadcast();
 
   Stream<List<PendingTransaction>> get pendingsStream => _pendingsSumary.stream;
+
   final _status = StreamController<StatusConnectNodes>.broadcast();
 
   Stream<StatusConnectNodes> get statusConnected => _status.stream;
@@ -202,7 +214,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (state.node.lastblock != nodeOutput.lastblock ||
         appBlocConfig.isOneStartup) {
-      var countNodes = await loadPeopleNodes(seed);
+      var parseMn = await loadPeopleNodes(seed);
+      ResponseApi blockInfo = await _repositories.liveCoinWatchRepository
+          .fetchBlockInfo(nodeOutput.lastblock);
       //Отриманя summary.zip
       ResponseNode<List<int>> responseSummary =
           await _fetchNode(NetworkRequest.summary, seed);
@@ -216,7 +230,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       }
       sumaryBlock = _repositories.nosoCore.parseSumary(
           await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
-      _dataSumary.add(sumaryBlock);
+
       if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
         double totalCoins = sumaryBlock.fold(
             0, (double sum, SumaryData data) => sum + data.balance);
@@ -226,9 +240,13 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
           pendings: pendingsOutput,
           summaryBlock: sumaryBlock,
           statusConnected: StatusConnectNodes.connected,
+          listPeopleNodes: parseMn.listNodes,
           statsInfoCoin: state.statsInfoCoin.copyWith(
-              totalCoin: totalCoins.toInt(), totalNodesPeople: countNodes),
+              blockInfo: blockInfo.value,
+              totalCoin: totalCoins.toInt(),
+              totalNodesPeople: parseMn.count),
         ));
+        _dataSumary.add(sumaryBlock);
         return;
       } else {
         return _selectNode(InitialNodeAlgh.listenUserNodes);
@@ -252,17 +270,17 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         statusConnected: StatusConnectNodes.error));
   }
 
-  Future<int> loadPeopleNodes(Seed seed) async {
+  Future<ParseMNInfo> loadPeopleNodes(Seed seed) async {
     ResponseNode<List<int>> responseNodeList =
         await _fetchNode(NetworkRequest.nodeList, seed);
     if (responseNodeList.value != null) {
       var nodesPeople =
           _repositories.nosoCore.parseMNString(responseNodeList.value);
       _repositories.sharedRepository.saveNodesList(nodesPeople.nodes);
-      appBlocConfig = appBlocConfig.copyWith(lastSeed: nodesPeople.nodes);
-      return nodesPeople.count;
+      appBlocConfig = appBlocConfig.copyWith(nodesList: nodesPeople.nodes);
+      return nodesPeople;
     }
-    return 0;
+    return ParseMNInfo();
   }
 
   /// The base method for referencing a request to a node

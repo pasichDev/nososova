@@ -13,7 +13,8 @@ class Address {
   bool isLocked;
   double incoming;
   double outgoing;
-  bool nodeOn;
+  bool nodeAvailable;
+  bool nodeStatusOn;
 
   Address({
     required this.hash,
@@ -27,7 +28,8 @@ class Address {
     this.isLocked = false,
     this.incoming = 0,
     this.outgoing = 0,
-    this.nodeOn = false,
+    this.nodeAvailable = false,
+    this.nodeStatusOn = false,
   });
 
   Address copyWith({
@@ -43,6 +45,7 @@ class Address {
     double? incoming,
     double? outgoing,
     bool? nodeOn,
+    bool? nodeStatusOn,
   }) {
     return Address(
       hash: hash,
@@ -56,7 +59,8 @@ class Address {
       isLocked: isLocked ?? this.isLocked,
       incoming: incoming ?? this.incoming,
       outgoing: outgoing ?? this.outgoing,
-      nodeOn: nodeOn ?? this.nodeOn,
+      nodeAvailable: nodeAvailable ?? this.nodeAvailable,
+      nodeStatusOn: nodeStatusOn ?? this.nodeStatusOn,
     );
   }
 

@@ -8,6 +8,7 @@ import 'package:nososova/models/app/responses/response_api.dart';
 import 'package:nososova/utils/const/const.dart';
 
 import '../models/apiLiveCoinWatch/full_info_coin.dart';
+import '../models/block_mns.dart';
 
 class LiveCoinWatchService {
   Map<String, String> apiHeaders = {
@@ -17,6 +18,7 @@ class LiveCoinWatchService {
   String apiHttp = "https://api.livecoinwatch.com/";
 
   Future<ResponseApi> fetchHistory() async {
+    fetchBlockMNS(137857);
     DateTime now = DateTime.now();
 
     int currentTimestamp = now.millisecondsSinceEpoch;
@@ -50,6 +52,36 @@ class LiveCoinWatchService {
     }
   }
 
+  Future<ResponseApi> fetchBlockMNS(int blockHeight) async {
+    var response = await http.post(
+      Uri.parse('https://api.nosostats.com:8078'),
+      headers: {'Origin': 'https://api.nosostats.com'},
+      body: jsonEncode({
+        "jsonrpc": "2.0",
+        "method": "getblockmns",
+        "params": [blockHeight],
+        "id": 20
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+
+      List<dynamic> resultList = jsonData['result'];
+      return ResponseApi(
+          value: BlockMNS_RPC(
+              block: resultList[0]['block'],
+              reward: resultList[0]['reward'] * 0.00000001,
+              total: resultList[0]['total'] * 0.00000001));
+    } else {
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}');
+      }
+      return ResponseApi(
+          errors: 'Request failed with status: ${response.statusCode}');
+    }
+  }
+
   Future<ResponseApi> fetchMinimalInfo() async {
     Map<String, dynamic> requestData = {
       "currency": "USD",
@@ -66,7 +98,6 @@ class LiveCoinWatchService {
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       return ResponseApi(value: MinimalInfoCoin.fromJson(jsonData));
-
     } else {
       if (kDebugMode) {
         print('Request failed with status: ${response.statusCode}');

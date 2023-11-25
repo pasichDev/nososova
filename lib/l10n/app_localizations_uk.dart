@@ -197,17 +197,35 @@ class AppLocalizationsUk extends AppLocalizations {
   String get tmr => 'Загальна винагорода за блок';
 
   @override
-  String get nbr => 'Винагорода для одного вузла';
+  String get nbr => 'Винагорода для одного вузла за блок';
 
   @override
-  String get nr24 => 'Винагорода за 24 години вузла';
+  String get nr24 => 'Винагорода за 24 години';
 
   @override
-  String get nr7 => 'Винагорода за 7 днів вузла';
+  String get nr7 => 'Винагорода за 7 днів';
 
   @override
-  String get nr30 => 'Винагорода за 30 днів вузла';
+  String get nr30 => 'Винагорода за 30 днів';
 
   @override
   String get nosoPrice => 'Вартість Noso';
+
+  @override
+  String get rewardNodeLaunched => 'Винагорода за один блок для ваших вузлів';
+
+  @override
+  String get launched => 'Запущені';
+
+  @override
+  String get available => 'Доступні';
+
+  @override
+  String get masternode => 'Мастерноди';
+
+  @override
+  String get empty => 'Порожньо';
+
+  @override
+  String get emptyNodesError => 'У вас немає доступних адрес для запуску мастерноди';
 }

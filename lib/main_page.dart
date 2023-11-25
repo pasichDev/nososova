@@ -78,7 +78,7 @@ class MainPageState extends State<MainPage> {
         items: <BottomNavigationBarItem>[
           bottomItem(Assets.iconsWallet, 0),
           bottomItem(Assets.iconsInfo, 1),
-          bottomItem(Assets.iconsHistory, 2),
+          bottomItem(Assets.iconsNodeI, 2),
           bottomItem(Assets.iconsMore, 3),
         ],
         currentIndex: _selectedIndex,

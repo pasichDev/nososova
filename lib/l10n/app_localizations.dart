@@ -486,19 +486,19 @@ abstract class AppLocalizations {
   /// No description provided for @nr24.
   ///
   /// In en, this message translates to:
-  /// **'Node 24hr Reward'**
+  /// **'24hr Reward'**
   String get nr24;
 
   /// No description provided for @nr7.
   ///
   /// In en, this message translates to:
-  /// **'Node 7 day Reward'**
+  /// **'7 day Reward'**
   String get nr7;
 
   /// No description provided for @nr30.
   ///
   /// In en, this message translates to:
-  /// **'Node 30 day Reward'**
+  /// **'30 day Reward'**
   String get nr30;
 
   /// No description provided for @nosoPrice.
@@ -506,6 +506,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Noso Price'**
   String get nosoPrice;
+
+  /// No description provided for @rewardNodeLaunched.
+  ///
+  /// In en, this message translates to:
+  /// **'One block reward for your nodes'**
+  String get rewardNodeLaunched;
+
+  /// No description provided for @launched.
+  ///
+  /// In en, this message translates to:
+  /// **'Launched'**
+  String get launched;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @masternode.
+  ///
+  /// In en, this message translates to:
+  /// **'Masternode'**
+  String get masternode;
+
+  /// No description provided for @empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get empty;
+
+  /// No description provided for @emptyNodesError.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have ready addresses to launch the masternode..'**
+  String get emptyNodesError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

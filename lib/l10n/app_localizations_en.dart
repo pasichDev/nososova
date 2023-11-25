@@ -200,14 +200,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nbr => 'Node Block Reward';
 
   @override
-  String get nr24 => 'Node 24hr Reward';
+  String get nr24 => '24hr Reward';
 
   @override
-  String get nr7 => 'Node 7 day Reward';
+  String get nr7 => '7 day Reward';
 
   @override
-  String get nr30 => 'Node 30 day Reward';
+  String get nr30 => '30 day Reward';
 
   @override
   String get nosoPrice => 'Noso Price';
+
+  @override
+  String get rewardNodeLaunched => 'One block reward for your nodes';
+
+  @override
+  String get launched => 'Launched';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get masternode => 'Masternode';
+
+  @override
+  String get empty => 'Empty';
+
+  @override
+  String get emptyNodesError => 'You don\'t have ready addresses to launch the masternode..';
 }

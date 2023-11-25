@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -60,8 +61,11 @@ class SeedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        CheckConnect.getStatusConnected(statusConnected),
+      leading:    SvgPicture.asset(
+          CheckConnect.getStatusConnected(statusConnected),
+          width: 24,
+          height: 24,
+          color: Colors.grey
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

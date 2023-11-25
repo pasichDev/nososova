@@ -74,7 +74,6 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/icons/
-    - lib/generated/
 
   generate: true
   uses-material-design: true

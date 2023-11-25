@@ -106,22 +106,21 @@ class HeaderMyWallets extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          AppLocalizations.of(context)!.myAddresses,
-          style: AppTextStyles.categoryStyle
-        ),
+        Text(AppLocalizations.of(context)!.myAddresses,
+            style: AppTextStyles.categoryStyle),
         Row(
           children: [
             IconButton(
-                icon:SvgPicture.asset(Assets.iconsMenu,width: 24,
-    height: 24,
-    color:CustomColors.primaryColor ,
-    ),
+                icon: SvgPicture.asset(
+                  Assets.iconsMenu,
+                  width: 24,
+                  height: 24,
+                  color: CustomColors.primaryColor,
+                ),
                 onPressed: () {
                   _showBottomSheetAddMyWallets(
                       context, BlocProvider.of<WalletBloc>(context));
                 }),
-
           ],
         ),
       ],

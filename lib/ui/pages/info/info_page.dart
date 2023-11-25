@@ -242,9 +242,9 @@ class InfoPageState extends State<InfoPage>
         itemInfo(
             AppLocalizations.of(context)!.nbr, "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
         itemInfo(
-            AppLocalizations.of(context)!.nr7, "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
-        itemInfo(
             AppLocalizations.of(context)!.nr24, "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
+        itemInfo(
+            AppLocalizations.of(context)!.nr7, "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
         itemInfo(
             AppLocalizations.of(context)!.nr30, "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
       ],

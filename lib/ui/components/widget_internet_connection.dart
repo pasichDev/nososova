@@ -23,7 +23,7 @@ class StatusNetworkConnection extends StatelessWidget {
           return Container();
         }
         statusOld = status;
-        if (status == ConnectivityResult.none) {
+        if (status == ConnectivityResult.none && !oneStart) {
           return message("No internet connection", Colors.red);
         }
 

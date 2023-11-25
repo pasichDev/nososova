@@ -70,20 +70,26 @@ class AddressInfoState extends State<AddressInfo> {
           const SizedBox(width: 10),
           IconButton(
               onPressed: () => _viewQr(context),
-              icon: SvgPicture.asset(Assets.iconsScan, height: 28, width: 28,))
+              icon: SvgPicture.asset(
+                Assets.iconsScan,
+                height: 28,
+                width: 28,
+              ))
         ],
       ),
       const SizedBox(height: 10),
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-       //   buildListTile(Icons.confirmation_num_outlined,
-         //     AppLocalizations.of(context)!.certificate, () {}),
-         // buildListTile(Icons.account_balance_wallet_outlined,
-           //   AppLocalizations.of(context)!.billAction, () {}),
-          buildListTileSvg(Assets.iconsOutput,
-              AppLocalizations.of(context)!.sendFromAddress, () => _paymentPage(context)),
-         // buildListTile(
+          //   buildListTile(Icons.confirmation_num_outlined,
+          //     AppLocalizations.of(context)!.certificate, () {}),
+          // buildListTile(Icons.account_balance_wallet_outlined,
+          //   AppLocalizations.of(context)!.billAction, () {}),
+          buildListTileSvg(
+              Assets.iconsOutput,
+              AppLocalizations.of(context)!.sendFromAddress,
+              () => _paymentPage(context)),
+          // buildListTile(
           //    Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
           buildListTileSvg(
               Assets.iconsDelete, AppLocalizations.of(context)!.delete, () {
@@ -99,6 +105,7 @@ class AddressInfoState extends State<AddressInfo> {
     Navigator.pop(context);
     DialogViewQr().loadDialog(context: context, address: widget.address);
   }
+
   void _paymentPage(BuildContext context) {
     Navigator.pop(context);
     Navigator.push(

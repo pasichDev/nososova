@@ -11,7 +11,9 @@ class LiveCoinWatchRepository {
     return _liveCoinWatchService.fetchHistory();
   }
 
-
+  Future<ResponseApi> fetchBlockInfo(int blockHeight) {
+    return _liveCoinWatchService.fetchBlockMNS(blockHeight);
+  }
   Future<ResponseApi> fetchMinimalInfo() {
     return _liveCoinWatchService.fetchMinimalInfo();
   }

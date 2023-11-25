@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
@@ -37,10 +38,13 @@ class NetworkInfo extends StatelessWidget {
                   rightDotColor: Colors.white,
                 )
               ] else ...[
-                Icon(
+                SvgPicture.asset(
                   CheckConnect.getStatusConnected(state.statusConnected),
-                  color: Colors.white,
+                  width: 24,
+                  height: 24,
+                  color: Colors.white
                 )
+
               ],
               if (state.statusConnected == StatusConnectNodes.connected ||
                   state.statusConnected == StatusConnectNodes.sync) ...[

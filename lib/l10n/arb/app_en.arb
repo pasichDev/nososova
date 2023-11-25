@@ -64,10 +64,15 @@
   "activeNodes": "Active nodes",
   "tmr": "Total MasterNode Reward",
   "nbr": "Node Block Reward",
-  "nr24": "Node 24hr Reward",
-  "nr7": "Node 7 day Reward",
-  "nr30": "Node 30 day Reward",
-  "nosoPrice": "Noso Price"
-
+  "nr24": "24hr Reward",
+  "nr7": "7 day Reward",
+  "nr30": "30 day Reward",
+  "nosoPrice": "Noso Price",
+  "rewardNodeLaunched": "One block reward for your nodes",
+  "launched": "Launched",
+  "available": "Available",
+  "masternode": "Masternode",
+  "empty": "Empty",
+  "emptyNodesError": "You don't have ready addresses to launch the masternode.."
 
 }

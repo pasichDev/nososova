@@ -103,7 +103,8 @@ final class NosoCore extends NosoCrypto {
         if (nodeValues.length >= 4) {
           final nodeInfo = Seed()
             ..ip = nodeValues[0]
-            ..port = int.tryParse(nodeValues[1])!;
+            ..port = int.tryParse(nodeValues[1])!
+            ..address = nodeValues[2];
 
           resultMNList.add(nodeInfo);
           parsedData.write('${nodeInfo.ip}:${nodeInfo.port}|');
@@ -111,7 +112,10 @@ final class NosoCore extends NosoCrypto {
       }
     }
 
-    return ParseMNInfo(count: tokens.length, nodes: parsedData.toString());
+    return ParseMNInfo(
+        count: resultMNList.length,
+        nodes: parsedData.toString(),
+        listNodes: resultMNList);
   }
 
   Node parseResponseNode(List<int>? response, Seed seedActive) {
