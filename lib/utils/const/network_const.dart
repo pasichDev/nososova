@@ -4,7 +4,7 @@ import '../../models/seed.dart';
 
 final class NetworkConst {
   static const int durationTimeOut = 5;
-  static const int delaySync = 60;
+  static const int delaySync = 30;
 
   static List<Seed> defaultSeed = [
     Seed(ip: "4.233.61.8"),

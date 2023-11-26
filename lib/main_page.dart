@@ -10,13 +10,14 @@ import 'package:nososova/ui/dialogs/dialog_info_network.dart';
 import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
 import 'package:nososova/ui/pages/info/info_page.dart';
 import 'package:nososova/ui/pages/node/node_page.dart';
-import 'package:nososova/ui/pages/payments/payments_page.dart';
+import 'package:nososova/ui/pages/settings/settings_page.dart';
 import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/dialog_style.dart';
 
 import 'blocs/app_data_bloc.dart';
 import 'generated/assets.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -30,7 +31,7 @@ class MainPageState extends State<MainPage> {
     const WalletsPage(),
     const InfoPage(),
     const NodePage(),
-    const PaymentsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -54,7 +55,12 @@ class MainPageState extends State<MainPage> {
               children: [
                 if (Platform.isAndroid || Platform.isIOS)
                   IconButton(
-                    icon:  SvgPicture.asset(Assets.iconsScan, height: 28, width: 28, color: Colors.white,),
+                    icon: SvgPicture.asset(
+                      Assets.iconsScan,
+                      height: 28,
+                      width: 28,
+                      color: Colors.white,
+                    ),
                     onPressed: () => _showDialogScanQr(context),
                   ),
               ],
@@ -68,7 +74,7 @@ class MainPageState extends State<MainPage> {
           Expanded(
             child: _pages[_selectedIndex],
           ),
-         const StatusNetworkConnection(),
+          const StatusNetworkConnection(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -95,8 +101,9 @@ class MainPageState extends State<MainPage> {
             icon,
             width: 32,
             height: 32,
-            color:
-            _selectedIndex == index ? CustomColors.primaryColor : Colors.grey,
+            color: _selectedIndex == index
+                ? CustomColors.primaryColor
+                : Colors.grey,
           )),
       label: "",
     );
@@ -112,8 +119,8 @@ class MainPageState extends State<MainPage> {
         shape: DialogStyle.borderShape,
         context: context,
         builder: (_) => BlocProvider.value(
-          value: BlocProvider.of<AppDataBloc>(context),
-          child: const DialogInfoNetwork(),
-        ));
+              value: BlocProvider.of<AppDataBloc>(context),
+              child: const DialogInfoNetwork(),
+            ));
   }
 }

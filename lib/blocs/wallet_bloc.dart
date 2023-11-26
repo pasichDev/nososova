@@ -38,9 +38,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   late StreamSubscription _summarySubscriptions;
   late StreamSubscription _pendingsSubscriptions;
 
-
-
   final _walletUpdate = StreamController<bool>.broadcast();
+
   Stream<bool> get walletUpdate => _walletUpdate.stream;
 
   WalletBloc({
@@ -55,13 +54,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletFile>(_importWalletFile);
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
+    initBloc();
+  }
 
+  initBloc() async {
     _summarySubscriptions = appDataBloc.dataSumaryStream.listen((data) {
       _syncBalance(data);
     });
     _pendingsSubscriptions = appDataBloc.pendingsStream.listen((data) {
       _syncPendings(data);
     });
+
+    final addressStream = _repositories.localRepository.fetchAddress();
+    await for (final addressList in addressStream) {
+      if (state.wallet.address.isEmpty) {
+        emit(state.copyWith(
+            wallet: state.wallet.copyWith(address: addressList)));
+      } else {
+        _syncBalance(appDataBloc.state.summaryBlock, address: addressList);
+      }
+    }
   }
 
   void _createNewAddress(event, emit) async {
@@ -77,18 +89,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     await _repositories.localRepository.deleteAddress(event.address);
   }
 
-  void _fetchAddresses(event, emit) async {
-    final addressStream = _repositories.localRepository.fetchAddress();
-    await for (final addressList in addressStream) {
-     // emit(state.copyWith(wallet: state.wallet.copyWith(address: addressList)));
-      if (state.wallet.address.isEmpty) {
-        emit(state.copyWith(
-            wallet: state.wallet.copyWith(address: addressList)));
-      } else {
-        _syncBalance(appDataBloc.state.summaryBlock, address: addressList);
-      }
-    }
-  }
+  void _fetchAddresses(event, emit) async {}
 
   void _addAddresses(event, emit) async {
     List<Address> listAddresses = event.addresses;
@@ -98,10 +99,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         value: listAddresses.length.toString()));
   }
 
-  /// TODO Додати підтримку перевірки чи запущена нода на цю адресу
   Future<void> _syncBalance(List<SumaryData> summary,
       {List<Address>? address}) async {
     var listAddress = address ?? state.wallet.address;
+
     double totalBalance = 0;
     for (var address in listAddress) {
       SumaryData found = summary.firstWhere(
@@ -119,10 +120,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
 
     if (totalBalance != 0) {
-      _walletUpdate.add(true);
       emit(state.copyWith(
-          wallet: state.wallet.copyWith(
-              address: state.wallet.address, balanceTotal: totalBalance)));
+          wallet: state.wallet
+              .copyWith(address: listAddress, balanceTotal: totalBalance)));
+
+      _walletUpdate.add(true);
     }
   }
 
