@@ -63,8 +63,8 @@ class SeedListItem extends StatelessWidget {
     return ListTile(
       leading:    SvgPicture.asset(
           CheckConnect.getStatusConnected(statusConnected),
-          width: 24,
-          height: 24,
+          width: 32,
+          height: 32,
           color: Colors.grey
       ),
       title: Row(

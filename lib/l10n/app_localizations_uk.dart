@@ -228,4 +228,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get emptyNodesError => 'У вас немає доступних адрес для запуску мастерноди';
+
+  @override
+  String get importKeysPair => 'Імпортувати з пари ключів';
 }

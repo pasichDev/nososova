@@ -228,4 +228,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyNodesError => 'You don\'t have ready addresses to launch the masternode..';
+
+  @override
+  String get importKeysPair => 'Import from key pair';
 }

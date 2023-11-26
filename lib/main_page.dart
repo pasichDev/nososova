@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/components/widget_internet_connection.dart';
@@ -118,8 +119,15 @@ class MainPageState extends State<MainPage> {
     showModalBottomSheet(
         shape: DialogStyle.borderShape,
         context: context,
-        builder: (_) => BlocProvider.value(
-              value: BlocProvider.of<AppDataBloc>(context),
+        builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: BlocProvider.of<AppDataBloc>(context),
+                ),
+                BlocProvider.value(
+                  value: BlocProvider.of<DebugBloc>(context),
+                ),
+              ],
               child: const DialogInfoNetwork(),
             ));
   }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/coin_info_bloc.dart';
+import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       home: MultiBlocProvider(
         providers: [
+          BlocProvider<DebugBloc>(create: (context) => locator<DebugBloc>()),
           BlocProvider<WalletBloc>(
             create: (context) {
               final dataBloc = locator<WalletBloc>();

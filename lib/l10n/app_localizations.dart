@@ -542,6 +542,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You don\'t have ready addresses to launch the masternode..'**
   String get emptyNodesError;
+
+  /// No description provided for @importKeysPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from key pair'**
+  String get importKeysPair;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

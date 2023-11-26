@@ -8,7 +8,6 @@ import 'package:nososova/repositories/repositories.dart';
 import 'package:nososova/utils/noso/src/address_object.dart';
 
 import '../utils/noso/utils.dart';
-import '../utils/status_api.dart';
 import 'events/node_events.dart';
 
 class NodeState {
@@ -20,8 +19,6 @@ class NodeState {
 
   NodeState copyWith({
     StateNode? stateNode,
-    ApiStatus? apiStatus,
-    ApiStatus? apiPriceStatus,
   }) {
     return NodeState(
       stateNode: stateNode ?? this.stateNode,

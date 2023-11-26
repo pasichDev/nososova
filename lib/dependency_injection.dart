@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/coin_info_bloc.dart';
+import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
@@ -50,9 +51,9 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<NosoCore>(() => NosoCore());
 
   /// Blocs
+  locator.registerLazySingleton<DebugBloc>(() => DebugBloc());
   locator.registerLazySingleton<AppDataBloc>(() => AppDataBloc(
-        repositories: locator<Repositories>(),
-      ));
+      repositories: locator<Repositories>(), debugBloc: locator<DebugBloc>()));
   locator.registerLazySingleton<WalletBloc>(() => WalletBloc(
       repositories: locator<Repositories>(),
       appDataBloc: locator<AppDataBloc>()));

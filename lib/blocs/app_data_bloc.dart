@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
 import 'package:nososova/models/app/info_coin.dart';
 import 'package:nososova/models/app/responses/response_api.dart';
@@ -19,6 +20,7 @@ import '../models/pending_transaction.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
 import 'events/app_data_events.dart';
+import 'events/debug_events.dart';
 
 class AppDataState {
   final Node node;
@@ -72,6 +74,7 @@ class AppDataState {
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
+  DebugBloc _debugBloc;
   Timer? _timerDelaySync;
   final Repositories _repositories;
 
@@ -91,7 +94,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   // TODO: Окремо вести таймер перебудуваня блоку, та коли плок перебудовується потрібно ресетнути системний таймер
   AppDataBloc({
     required Repositories repositories,
+    required DebugBloc debugBloc,
   })  : _repositories = repositories,
+        _debugBloc = debugBloc,
         super(AppDataState()) {
     Connectivity().onConnectivityChanged.listen((result) {
       emit(state.copyWith(deviceConnectedNetworkStatus: result));
@@ -101,6 +106,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   }
 
   Future<void> _init(AppDataEvent e, Emitter emit) async {
+    _debugBloc.add(AddStringDebug("Network initialization"));
     await loadConfig();
     if (appBlocConfig.lastSeed != null) {
       await _selectNode(InitialNodeAlgh.connectLastNode);
@@ -111,12 +117,16 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
   }
 
+  ///Коли робимо рестарт потрібно, зупинити таймер оновення та запустити новий
   Future<void> _reconnectNode(event, emit) async {
     emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
 
     if (event.lastNodeRun) {
+      _debugBloc.add(AddStringDebug("Manual update of information"));
       _syncDataToNode(state.node.seed);
     } else {
+
+      _debugBloc.add(AddStringDebug("Attempting to modify a node"));
       await _selectNode(Random().nextInt(2) == 0
           ? InitialNodeAlgh.listenDefaultNodes
           : InitialNodeAlgh.listenUserNodes);
@@ -178,6 +188,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       }
       _timerDelaySync =
           Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
+        _debugBloc.add(AddStringDebug("----------------------"));
+        _debugBloc.add(AddStringDebug("Updating data"));
         _syncDataToNode(response.seed);
       });
     }
@@ -190,20 +202,23 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     List<PendingTransaction> pendingsOutput = [];
     List<SumaryData> sumaryBlock = [];
 
+    _debugBloc.add(AddStringDebug("We connect to the node ${seed.ip}"));
     final ResponseNode<List<int>> responseNodeInfo =
         await _fetchNode(NetworkRequest.nodeStatus, seed);
     if (responseNodeInfo.errors != null) {
+      _debugBloc.add(AddStringDebug(responseNodeInfo.errors ?? ""));
       return errorInit();
     }
 
-    /// Initilizate var
     final Node nodeOutput = _repositories.nosoCore
         .parseResponseNode(responseNodeInfo.value, responseNodeInfo.seed);
 
     /// Loading pendings
     if (nodeOutput.pendings != 0) {
+      _debugBloc.add(AddStringDebug("Request pending"));
       responsePendings = await _fetchNode(NetworkRequest.pendingsList, seed);
       if (responsePendings.errors != null) {
+        _debugBloc.add(AddStringDebug(responsePendings.errors ?? ""));
         return errorInit();
       }
       pendingsOutput =
@@ -214,6 +229,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (state.node.lastblock != nodeOutput.lastblock ||
         appBlocConfig.isOneStartup) {
+      _debugBloc.add(AddStringDebug(
+          "Loading information for block ${nodeOutput.lastblock}"));
       var parseMn = await loadPeopleNodes(seed);
       ResponseApi blockInfo = await _repositories.liveCoinWatchRepository
           .fetchBlockInfo(nodeOutput.lastblock);
@@ -247,8 +264,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
               totalNodesPeople: parseMn.count),
         ));
         _dataSumary.add(sumaryBlock);
+        _debugBloc.add(AddStringDebug("Synchronization is successful"));
         return;
       } else {
+        _debugBloc.add(
+            AddStringDebug("Reconnecting because the consensus is incorrect"));
         return _selectNode(InitialNodeAlgh.listenUserNodes);
       }
     }
@@ -258,9 +278,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         pendings: pendingsOutput,
         statusConnected: StatusConnectNodes.connected));
     _pendingsSumary.add(pendingsOutput);
+    _debugBloc.add(AddStringDebug("Data update successful"));
   }
 
   Future<ConsensusStatus> _checkConsensus(Node node) async {
+    _debugBloc.add(AddStringDebug("Consensus check"));
     return ConsensusStatus.sync;
   }
 

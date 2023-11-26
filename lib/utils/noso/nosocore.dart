@@ -143,7 +143,6 @@ final class NosoCore extends NosoCrypto {
     List<String> array = String.fromCharCodes(response).split(" ");
     List<PendingTransaction> pendingList = [];
 
-    print(array);
     for (String value in array) {
       var pending = value.split(",");
       if (pending.length >= 5) {
@@ -181,8 +180,6 @@ final class NosoCore extends NosoCrypto {
         sumData.score = _bigEndianToInt(scoreArray);
       }
 
-      // final lastopArray = bytes.sublist(index + 99, index + 106);
-      //   print(lastopArray);
       addressSummary.add(sumData);
       index += 106;
     }

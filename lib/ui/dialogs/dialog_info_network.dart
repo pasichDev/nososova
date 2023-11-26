@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/ui/dialogs/dialog_debug.dart';
 
 import '../../blocs/events/app_data_events.dart';
+import '../../generated/assets.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
-import '../pages/debug/debug_info_page.dart';
+import '../theme/style/dialog_style.dart';
 import '../theme/style/text_style.dart';
-
 
 class DialogInfoNetwork extends StatefulWidget {
   const DialogInfoNetwork({Key? key}) : super(key: key);
@@ -47,13 +50,17 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                     icon: const Icon(Icons.restart_alt_outlined),
                     onPressed: () {
                       _isNodeListVisible = false;
-                      return context.read<AppDataBloc>().add(ReconnectSeed(true));
+                      return context
+                          .read<AppDataBloc>()
+                          .add(ReconnectSeed(true));
                     }),
                 IconButton(
                     icon: const Icon(Icons.navigate_next),
                     onPressed: () {
                       _isNodeListVisible = false;
-                      return context.read<AppDataBloc>().add(ReconnectSeed(false));
+                      return context
+                          .read<AppDataBloc>()
+                          .add(ReconnectSeed(false));
                     }),
                 IconButton(
                   icon: _isNodeListVisible
@@ -70,29 +77,33 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
             if (_isNodeListVisible) ...[SeedInfoTile(nodeInfo: state.node)],
             if (!_isNodeListVisible) ...[
               ListTile(
-                leading: const Icon(Icons.bug_report_outlined),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.debugInfo,
-                      style: AppTextStyles.itemStyle,
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<DebugInfoPage>(
-                      builder: (context) => const DebugInfoPage(),
-                    ),
-                  );
-                },
-              ),
+                  leading: SvgPicture.asset(Assets.iconsDebug,
+                      width: 32, height: 32, color: Colors.grey),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.debugInfo,
+                        style: AppTextStyles.itemStyle,
+                      ),
+                    ],
+                  ),
+                  onTap: () => _showDialogDebug(context)),
             ],
           ],
         ),
       );
     });
+  }
+
+  void _showDialogDebug(BuildContext context) {
+    Navigator.of(context).pop();
+    showModalBottomSheet(
+        shape: DialogStyle.borderShape,
+        context: context,
+        builder: (_) => BlocProvider.value(
+              value: BlocProvider.of<DebugBloc>(context),
+              child: const DialogDebug(),
+            ));
   }
 }

@@ -8,7 +8,10 @@ class Assets {
   static const String fontsGilroySemiBold = 'assets/fonts/Gilroy-SemiBold.ttf';
   static const String iconsCard = 'assets/icons/card.svg';
   static const String iconsClose = 'assets/icons/close.svg';
+  static const String iconsDebug = 'assets/icons/debug.svg';
   static const String iconsDelete = 'assets/icons/delete.svg';
+  static const String iconsExport = 'assets/icons/export.svg';
+  static const String iconsImport = 'assets/icons/import.svg';
   static const String iconsInfo = 'assets/icons/info.svg';
   static const String iconsInput = 'assets/icons/input.svg';
   static const String iconsMenu = 'assets/icons/menu.svg';
@@ -17,6 +20,7 @@ class Assets {
   static const String iconsNodeI = 'assets/icons/node_i.svg';
   static const String iconsOutput = 'assets/icons/output.svg';
   static const String iconsScan = 'assets/icons/scan.svg';
+  static const String iconsText = 'assets/icons/text.svg';
   static const String iconsWallet = 'assets/icons/wallet.svg';
   static const String nososova = '.env';
 

@@ -73,6 +73,6 @@
   "available": "Available",
   "masternode": "Masternode",
   "empty": "Empty",
-  "emptyNodesError": "You don't have ready addresses to launch the masternode.."
-
+  "emptyNodesError": "You don't have ready addresses to launch the masternode..",
+  "importKeysPair": "Import from key pair"
 }
