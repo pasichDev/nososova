@@ -54,6 +54,8 @@ class AddressListTileState extends State<AddressListTile> {
 
   @override
   Widget build(BuildContext context) {
+    var nameAddress = widget.address.custom ??
+        hashObfuscation(widget.address.hash.toString());
     return ListTile(
       leading: _iconAddress(),
       title: Row(
@@ -61,7 +63,7 @@ class AddressListTileState extends State<AddressListTile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            hashObfuscation(widget.address.hash.toString()),
+            nameAddress,
             style: AppTextStyles.walletAddress
                 .copyWith(fontSize: 20, fontFamily: "GilroyRegular"),
           ),

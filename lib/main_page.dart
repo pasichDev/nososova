@@ -8,7 +8,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/components/widget_internet_connection.dart';
 import 'package:nososova/ui/dialogs/dialog_info_network.dart';
-import 'package:nososova/ui/dialogs/dialog_scanner_qr.dart';
+import 'package:nososova/ui/dialogs/import_export/dialog_scanner_qr.dart';
 import 'package:nososova/ui/pages/info/info_page.dart';
 import 'package:nososova/ui/pages/node/node_page.dart';
 import 'package:nososova/ui/pages/settings/settings_page.dart';

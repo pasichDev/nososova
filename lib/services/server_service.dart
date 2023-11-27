@@ -7,6 +7,12 @@ import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/const/network_const.dart';
 
 class ServerService {
+  List<Seed> seedsDefault = [];
+
+  ServerService() {
+    seedsDefault = NetworkConst.getSeedList();
+  }
+
   Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) async {
     final responseBytes = <int>[];
     try {
@@ -18,14 +24,9 @@ class ServerService {
       }
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
-
-      /*
-      print("${command} : ${ String.fromCharCodes(responseBytes)}");
-     if(responseBytes.isNotEmpty){
-       print("${command} :not respons");
-     }
-
-       */
+      if (kDebugMode) {
+        print("${command} : ${String.fromCharCodes(responseBytes)}");
+      }
 
       socket.close();
       if (responseBytes.isNotEmpty) {
@@ -58,7 +59,7 @@ class ServerService {
 
   /// Метод який перебирає дефолтні сіди, і поаертає активний сід
   Future<ResponseNode> testsListDefaultSeeds() async {
-    for (var seed in NetworkConst.defaultSeed) {
+    for (var seed in seedsDefault) {
       try {
         seed = await _testPingNode(seed);
       } on TimeoutException catch (_) {
@@ -78,8 +79,7 @@ class ServerService {
         seed.online = false;
       }
     }
-    final onlineSeeds =
-        NetworkConst.defaultSeed.where((seed) => seed.online).toList();
+    final onlineSeeds = seedsDefault.where((seed) => seed.online).toList();
     if (onlineSeeds.isNotEmpty) {
       ResponseNode responseNode = ResponseNode(
           seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b));

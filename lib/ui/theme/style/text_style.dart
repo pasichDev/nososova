@@ -30,4 +30,18 @@ class AppTextStyles {
 
   static TextStyle itemStyle = const TextStyle(
       fontSize: 18.0, color: Colors.black, fontFamily: "GilroyRegular");
+
+  static TextStyle textFieldStyle =  const TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+    fontSize: 18,
+    fontFamily: "GilroyBold",
+  );
+  static TextStyle textFieldHiddenStyle =  const TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+    fontSize: 18,
+    fontFamily: "GilroyBold",
+  );
+
 }

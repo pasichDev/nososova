@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/generated/assets.dart';
 
 import '../../models/seed.dart';
@@ -6,15 +7,14 @@ final class NetworkConst {
   static const int durationTimeOut = 5;
   static const int delaySync = 30;
 
-  static List<Seed> defaultSeed = [
-    Seed(ip: "4.233.61.8"),
-    Seed(ip: "5.230.55.203"),
-    Seed(ip: "141.11.192.215"),
-    Seed(ip: "104.234.60.55"),
-    Seed(ip: "107.172.214.53"),
-    Seed(ip: "198.23.134.105"),
-    Seed(ip: "20.199.50.27"),
-  ];
+  static List<Seed> getSeedList() {
+    var string = dotenv.env['seeds_default'] ?? "";
+    List<Seed> defSeed = [];
+    for (String seed in string.split(" ")) {
+      defSeed.add(Seed(ip: seed));
+    }
+    return defSeed;
+  }
 }
 
 final class NetworkRequest {
@@ -37,10 +37,9 @@ final class CheckConnect {
   }
 }
 
-
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 
-enum StatusConnectNodes { connected, error, searchNode, sync}
+enum StatusConnectNodes { connected, error, searchNode, sync }
 
 /// Connected - підключено
 /// error - помилка
@@ -48,4 +47,3 @@ enum StatusConnectNodes { connected, error, searchNode, sync}
 /// sync - синхронізація
 
 enum ConsensusStatus { sync, error }
-

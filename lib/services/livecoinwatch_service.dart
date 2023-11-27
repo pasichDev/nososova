@@ -52,6 +52,7 @@ class LiveCoinWatchService {
     }
   }
 
+  /// TODO Для запитів на RPC створити окремий класс
   Future<ResponseApi> fetchBlockMNS(int blockHeight) async {
     var response = await http.post(
       Uri.parse('https://api.nosostats.com:8078'),

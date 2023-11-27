@@ -28,6 +28,7 @@ class WalletState {
   }
 }
 
+/// TODO actionsFileWallet - цей потік розширити щоб він відображав не лише інфу про імпорти, ай іншу інформацію з блоку.
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final AppDataBloc appDataBloc;
   final Repositories _repositories;
@@ -114,6 +115,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         address.balance = found.balance;
         address.lastOP = found.lastOP;
         address.score = found.score;
+        address.custom = found.custom.isEmpty ? null : found.custom;
         address.nodeAvailable =
             found.balance >= UtilsDataNoso.getCountMonetToRunNode();
       }

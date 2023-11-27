@@ -3,17 +3,19 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_file_saver_dev/flutter_file_saver_dev.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/generated/assets.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/ui/dialogs/import_export/dialog_import_keys_pair.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
 import '../../utils/const/files_const.dart';
 import '../theme/style/text_style.dart';
-import 'dialog_scanner_qr.dart';
+import 'import_export/dialog_scanner_qr.dart';
 
 class DialogWalletActions extends StatelessWidget {
   final WalletBloc walletBloc;
@@ -128,8 +130,21 @@ class DialogWalletActions extends StatelessWidget {
   }
 
   void _importToKeysPair(BuildContext context) async {
-    walletBloc.add(CreateNewAddress());
+
     Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        child: Material(
+          child: BlocProvider.value(
+            value: walletBloc,
+            child: const DialogImportKeysPair(),
+          ),
+        ),
+      ),
+    );
+
+
   }
 
   void _importWalletFile(BuildContext context) async {

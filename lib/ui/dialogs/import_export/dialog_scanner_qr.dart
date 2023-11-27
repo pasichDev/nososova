@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../blocs/events/wallet_events.dart';
-import '../../l10n/app_localizations.dart';
-import '../../utils/const/status_qr.dart';
-import '../theme/style/colors.dart';
-import '../theme/style/dialog_style.dart';
-import 'dialog_send_address.dart';
+import '../../../blocs/events/wallet_events.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/const/status_qr.dart';
+import '../../theme/style/colors.dart';
+import '../../theme/style/dialog_style.dart';
+import '../dialog_send_address.dart';
 
 class DialogScannerQr {
   void showDialogScanQr(BuildContext context, WalletBloc walletBloc) {

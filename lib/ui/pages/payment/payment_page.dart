@@ -10,6 +10,7 @@ import '../../theme/style/text_style.dart';
 
 
 
+/// TODO Модифікувати textfield як в діалозі імпорту ключів
 
 class PaymentPage extends StatefulWidget {
   final Address address;
