@@ -74,5 +74,13 @@
   "masternode": "Masternode",
   "empty": "Empty",
   "emptyNodesError": "You don't have ready addresses to launch the masternode..",
-  "importKeysPair": "Import from key pair"
+  "importKeysPair": "Import from key pair",
+  "catHistoryTransaction": "Transaction history",
+  "transactionInfo": "Transaction information",
+  "block": "Block",
+  "orderId": "Order ID",
+  "receiver": "Receiver",
+  "commission": "Comission",
+  "openToExplorer": "Open to Noso Explorer",
+  "shareTransaction": "Share Transaction"
 }

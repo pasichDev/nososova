@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/models/app/info_coin.dart';
-import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/utils/status_api.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -10,6 +9,8 @@ import '../../../blocs/coin_info_bloc.dart';
 import '../../../blocs/events/coin_info_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/apiLiveCoinWatch/full_info_coin.dart';
+import '../../components/info_item.dart';
+import '../../components/loading.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
 import '../../theme/style/text_style.dart';
 
@@ -38,6 +39,7 @@ class InfoPageState extends State<InfoPage>
     coinInfoBloc = BlocProvider.of<CoinInfoBloc>(context);
     coinInfoBloc.add(InitFetchHistory());
   }
+
   @override
   void dispose() {
     coinInfoBloc.add(CancelFetchHistory());
@@ -80,7 +82,7 @@ class InfoPageState extends State<InfoPage>
     var firstHistory = infoCoin.historyCoin?.history.first.rate ?? 0.0000000;
 
     if (state.apiStatus == ApiStatus.loading) {
-      return loadingInfo();
+      return LoadingWidget();
     }
 
     return Column(
@@ -173,19 +175,6 @@ class InfoPageState extends State<InfoPage>
     );
   }
 
-  loadingInfo() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            color: CustomColors.primaryColor,
-          )
-        ],
-      ),
-    );
-  }
-
   difference(double first, double last) {
     var diff = (((first - last) / last) * 100);
     return Row(
@@ -212,19 +201,20 @@ class InfoPageState extends State<InfoPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        itemInfo( AppLocalizations.of(context)!.blocksRemaining, infoCoin.blockRemaining.toString()),
-        itemInfo(
-            AppLocalizations.of(context)!.daysUntilNextHalving, infoCoin.nextHalvingDays.toString()),
-        itemInfo( AppLocalizations.of(context)!.numberOfMinedCoins,
+        InfoItem().itemInfo(AppLocalizations.of(context)!.blocksRemaining,
+            infoCoin.blockRemaining.toString()),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.daysUntilNextHalving,
+            infoCoin.nextHalvingDays.toString()),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.numberOfMinedCoins,
             NumberFormat.compact().format(infoCoin.cSupply),
             twoValue: "21M"),
-        itemInfo(
-            AppLocalizations.of(context)!.coinsLocked, NumberFormat.compact().format(infoCoin.coinLock)),
-        itemInfo(AppLocalizations.of(context)!.marketcap,
+        InfoItem().itemInfo(AppLocalizations.of(context)!.coinsLocked,
+            NumberFormat.compact().format(infoCoin.coinLock)),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.marketcap,
             "\$${NumberFormat.compact().format(infoCoin.marketcap)}"),
-        itemInfo( AppLocalizations.of(context)!.tvl,
+        InfoItem().itemInfo(AppLocalizations.of(context)!.tvl,
             "\$${NumberFormat.compact().format(infoCoin.tvl)}"),
-        itemInfo(AppLocalizations.of(context)!.maxPriceStory,
+        InfoItem().itemInfo(AppLocalizations.of(context)!.maxPriceStory,
             "${infoCoin.minimalInfo?.allTimeHighUSD.toStringAsFixed(8) ?? "0.0000000"} NOSO")
       ],
     ));
@@ -236,49 +226,19 @@ class InfoPageState extends State<InfoPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        itemInfo(AppLocalizations.of(context)!.activeNodes, infoCoin.activeNode.toString()),
-        itemInfo(AppLocalizations.of(context)!.tmr,
+        InfoItem().itemInfo(AppLocalizations.of(context)!.activeNodes,
+            infoCoin.activeNode.toString()),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.tmr,
             "${infoCoin.tvr.toStringAsFixed(5)} NOSO"),
-        itemInfo(
-            AppLocalizations.of(context)!.nbr, "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
-        itemInfo(
-            AppLocalizations.of(context)!.nr24, "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
-        itemInfo(
-            AppLocalizations.of(context)!.nr7, "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
-        itemInfo(
-            AppLocalizations.of(context)!.nr30, "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
+        InfoItem().itemInfo(AppLocalizations.of(context)!.nbr,
+            "${infoCoin.nbr.toStringAsFixed(8)} NOSO"),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.nr24,
+            "${infoCoin.nr24.toStringAsFixed(8)} NOSO"),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.nr7,
+            "${infoCoin.nr7.toStringAsFixed(8)} NOSO"),
+        InfoItem().itemInfo(AppLocalizations.of(context)!.nr30,
+            "${infoCoin.nr30.toStringAsFixed(8)} NOSO")
       ],
     ));
-  }
-
-  itemInfo(String nameItem, String value, {String twoValue = ""}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            nameItem,
-            style: AppTextStyles.itemStyle
-                .copyWith(color: Colors.black.withOpacity(0.5), fontSize: 18),
-          ),
-          const SizedBox(height: 5),
-          Row(children: [
-            Text(
-              value,
-              style: AppTextStyles.walletAddress
-                  .copyWith(color: Colors.black, fontSize: 18),
-            ),
-            if (twoValue.isNotEmpty)
-              Text(
-                " / $twoValue",
-                style: AppTextStyles.walletAddress
-                    .copyWith(color: Colors.black, fontSize: 18),
-              )
-          ])
-        ],
-      ),
-    );
   }
 }

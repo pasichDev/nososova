@@ -74,6 +74,14 @@
   "masternode": "Мастерноди",
   "empty": "Порожньо",
   "emptyNodesError": "У вас немає доступних адрес для запуску мастерноди",
-  "importKeysPair": "Імпортувати з пари ключів"
+  "importKeysPair": "Імпортувати з пари ключів",
+  "catHistoryTransaction": "Історія транзакцій",
+  "transactionInfo": "Інформація про транзакцію",
+  "block": "Блок",
+  "orderId": "ID Замовлення",
+  "receiver": "Одержувач",
+  "commission": "Комісія",
+  "openToExplorer": "Відкрити в Noso Explorer",
+  "shareTransaction": "Поділитися транзакцією"
 
 }

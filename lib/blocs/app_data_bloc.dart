@@ -141,7 +141,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     switch (initNodeAlgh) {
       case InitialNodeAlgh.connectLastNode:
         {
-          response = await _repositories.serverRepository
+          response = await _repositories.networkRepository
               .testNode(Seed().tokenizer(appBlocConfig.lastSeed));
           if (response.errors != null) {
             await _selectNode(InitialNodeAlgh.listenDefaultNodes);
@@ -153,7 +153,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         {
           var seed = Seed().tokenizer(
               _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList));
-          response = await _repositories.serverRepository.testNode(seed);
+          response = await _repositories.networkRepository.testNode(seed);
           if (response.errors == null) {
             var lastSeed = response.seed.toTokenizer();
             appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
@@ -164,7 +164,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         break;
       default:
         {
-          response = await _repositories.serverRepository.listenNodes();
+          response = await _repositories.networkRepository.listenNodes();
           if (response.errors == null) {
             var lastSeed = response.seed.toTokenizer();
             appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
@@ -232,7 +232,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       _debugBloc.add(AddStringDebug(
           "Loading information for block ${nodeOutput.lastblock}"));
       var parseMn = await loadPeopleNodes(seed);
-      ResponseApi blockInfo = await _repositories.liveCoinWatchRepository
+      ResponseApi blockInfo = await _repositories.networkRepository
           .fetchBlockInfo(nodeOutput.lastblock);
       //Отриманя summary.zip
       ResponseNode<List<int>> responseSummary =
@@ -311,7 +311,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (state.statusConnected == StatusConnectNodes.error) {
       return ResponseNode(errors: "You are not connected to nodes.");
     }
-    return await _repositories.serverRepository.fetchNode(command, seed);
+    return await _repositories.networkRepository.fetchNode(command, seed);
   }
 
   /// Request data from sharedPrefs

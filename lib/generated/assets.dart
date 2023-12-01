@@ -6,10 +6,12 @@ class Assets {
   static const String fontsGilroyHeavy = 'assets/fonts/Gilroy-Heavy.ttf';
   static const String fontsGilroyRegular = 'assets/fonts/Gilroy-Regular.ttf';
   static const String fontsGilroySemiBold = 'assets/fonts/Gilroy-SemiBold.ttf';
+  static const String iconsBlockchain = 'assets/icons/blockchain.svg';
   static const String iconsCard = 'assets/icons/card.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsDebug = 'assets/icons/debug.svg';
   static const String iconsDelete = 'assets/icons/delete.svg';
+  static const String iconsEmpty = 'assets/icons/empty.svg';
   static const String iconsExport = 'assets/icons/export.svg';
   static const String iconsImport = 'assets/icons/import.svg';
   static const String iconsInfo = 'assets/icons/info.svg';

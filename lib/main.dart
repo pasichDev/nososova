@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
+import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
@@ -13,7 +14,7 @@ import 'package:nososova/l10n/app_localizations.dart';
 import 'blocs/events/app_data_events.dart';
 import 'blocs/events/wallet_events.dart';
 import 'generated/assets.dart';
-import 'main_page.dart';
+import 'ui/pages/main_page.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: Assets.nososova);
@@ -60,6 +61,8 @@ class MyApp extends StatelessWidget {
             final nodeBlock = locator<NodeBloc>();
             return nodeBlock;
           }),
+          BlocProvider<HistoryTransactionsBloc>(create: (context) => locator<HistoryTransactionsBloc>()),
+
         ],
         child: const MainPage(),
       ),

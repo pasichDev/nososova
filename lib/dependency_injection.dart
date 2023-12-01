@@ -2,18 +2,19 @@ import 'package:get_it/get_it.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
+import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/file_repository.dart';
-import 'package:nososova/repositories/livecoinwatch_repository.dart';
 import 'package:nososova/repositories/local_repository.dart';
+import 'package:nososova/repositories/network_repository.dart';
 import 'package:nososova/repositories/repositories.dart';
-import 'package:nososova/repositories/server_repository.dart';
 import 'package:nososova/repositories/shared_repository.dart';
+import 'package:nososova/services/explorer_stats_service.dart';
 import 'package:nososova/services/file_service.dart';
 import 'package:nososova/services/livecoinwatch_service.dart';
-import 'package:nososova/services/server_service.dart';
+import 'package:nososova/services/node_service.dart';
 import 'package:nososova/services/shared_service.dart';
 import 'package:nososova/utils/noso/nosocore.dart';
 
@@ -26,25 +27,26 @@ Future<void> setupLocator() async {
 
   /// repo && services
   locator.registerLazySingleton<FileService>(() => FileService());
+  locator.registerLazySingleton<ExplorerStatsService>(
+      () => ExplorerStatsService());
   locator.registerLazySingleton<FileRepository>(
       () => FileRepository(locator<FileService>()));
-  locator.registerLazySingleton<ServerService>(() => ServerService());
+  locator.registerLazySingleton<NodeService>(() => NodeService());
   locator.registerLazySingleton<LiveCoinWatchService>(
       () => LiveCoinWatchService());
-  locator.registerLazySingleton<LiveCoinWatchRepository>(
-      () => LiveCoinWatchRepository(locator<LiveCoinWatchService>()));
-  locator.registerLazySingleton<ServerRepository>(
-      () => ServerRepository(locator<ServerService>()));
+  locator.registerLazySingleton<NetworkRepository>(() => NetworkRepository(
+      locator<NodeService>(),
+      locator<LiveCoinWatchService>(),
+      locator<ExplorerStatsService>()));
   locator.registerLazySingleton<LocalRepository>(
       () => LocalRepository(locator<MyDatabase>()));
   locator.registerLazySingleton<SharedRepository>(
       () => SharedRepository(locator<SharedService>()));
   locator.registerLazySingleton(() => Repositories(
       localRepository: locator<LocalRepository>(),
-      serverRepository: locator<ServerRepository>(),
+      networkRepository: locator<NetworkRepository>(),
       sharedRepository: locator<SharedRepository>(),
       fileRepository: locator<FileRepository>(),
-      liveCoinWatchRepository: locator<LiveCoinWatchRepository>(),
       nosoCore: locator<NosoCore>()));
 
   ///Other utils
@@ -61,6 +63,12 @@ Future<void> setupLocator() async {
     NodeBloc(
       repositories: locator<Repositories>(),
       appDataBloc: locator<AppDataBloc>(),
+      walletBloc: locator<WalletBloc>(),
+    ),
+  );
+  locator.registerSingleton<HistoryTransactionsBloc>(
+    HistoryTransactionsBloc(
+      repositories: locator<Repositories>(),
       walletBloc: locator<WalletBloc>(),
     ),
   );

@@ -548,6 +548,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import from key pair'**
   String get importKeysPair;
+
+  /// No description provided for @catHistoryTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction history'**
+  String get catHistoryTransaction;
+
+  /// No description provided for @transactionInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction information'**
+  String get transactionInfo;
+
+  /// No description provided for @block.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get block;
+
+  /// No description provided for @orderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Order ID'**
+  String get orderId;
+
+  /// No description provided for @receiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Receiver'**
+  String get receiver;
+
+  /// No description provided for @commission.
+  ///
+  /// In en, this message translates to:
+  /// **'Comission'**
+  String get commission;
+
+  /// No description provided for @openToExplorer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open to Noso Explorer'**
+  String get openToExplorer;
+
+  /// No description provided for @shareTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Transaction'**
+  String get shareTransaction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

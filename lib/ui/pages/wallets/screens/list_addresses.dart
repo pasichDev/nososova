@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
+import 'package:nososova/dependency_injection.dart';
 
 import '../../../theme/style/dialog_style.dart';
 import '../../../tiles/tile_wallet_address.dart';
-import 'dialogs/dialog_address_info.dart';
+import '../../addressInfo/address_info_page.dart';
+import '../dialogs/dialog_address_info.dart';
 
 class ListAddresses extends StatelessWidget {
   const ListAddresses({super.key});
@@ -25,7 +28,16 @@ class ListAddresses extends StatelessWidget {
                 final address = wallets[index];
                 return AddressListTile(
                   address: address,
-                  onButtonClick: () {
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  BlocProvider.value(
+                        value: locator<HistoryTransactionsBloc>(),
+                        child: AddressInfoPage(address: address),
+                      ),
+                    ),
+                  ),
+                  onLong: () {
                     showModalBottomSheet(
                         shape: DialogStyle.borderShape,
                         context: context,

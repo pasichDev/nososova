@@ -231,4 +231,28 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get importKeysPair => 'Імпортувати з пари ключів';
+
+  @override
+  String get catHistoryTransaction => 'Історія транзакцій';
+
+  @override
+  String get transactionInfo => 'Інформація про транзакцію';
+
+  @override
+  String get block => 'Блок';
+
+  @override
+  String get orderId => 'ID Замовлення';
+
+  @override
+  String get receiver => 'Одержувач';
+
+  @override
+  String get commission => 'Комісія';
+
+  @override
+  String get openToExplorer => 'Відкрити в Noso Explorer';
+
+  @override
+  String get shareTransaction => 'Поділитися транзакцією';
 }

@@ -78,7 +78,7 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
   /// TODO Метод для справжньої кількості монет
   fetchMinimalInfo() async {
     var response =
-        await _repositories.liveCoinWatchRepository.fetchMinimalInfo();
+        await _repositories.networkRepository.fetchMinimalInfo();
     var halving = getHalvingTimer(appDataBloc.state.node.lastblock);
 
     if (response.errors == null) {
@@ -111,7 +111,7 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
 
   fetchHistory() async {
     var response =
-        await _repositories.liveCoinWatchRepository.fetchHistoryCoin();
+        await _repositories.networkRepository.fetchHistoryCoin();
 
     if (response.errors == null) {
       emit(state.copyWith(

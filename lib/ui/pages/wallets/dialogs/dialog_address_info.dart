@@ -11,7 +11,7 @@ import '../../../../../blocs/wallet_bloc.dart';
 import '../../../../../generated/assets.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../../utils/noso/src/address_object.dart';
-import '../../../../dialogs/dialog_view_qr.dart';
+import '../../../dialogs/dialog_view_qr.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;

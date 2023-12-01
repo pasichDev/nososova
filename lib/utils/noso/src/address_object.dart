@@ -1,12 +1,14 @@
 import 'package:drift/drift.dart';
 
+import '../../other_utils.dart';
+
 @DataClassName('Address')
 class Address {
   String hash;
   String? custom;
   String publicKey;
   String privateKey;
-  double  balance;
+  double balance;
   double pending;
   int score;
   int lastOP;
@@ -15,6 +17,11 @@ class Address {
   double outgoing;
   bool nodeAvailable;
   bool nodeStatusOn;
+
+  /// Returns the wallet address displayed to the user, either truncated or custom
+  get nameAddressPublic => custom ?? OtherUtils.hashObfuscation(hash);
+
+  get nameAddressFull => custom ?? hash;
 
   Address({
     required this.hash,
@@ -59,7 +66,7 @@ class Address {
       isLocked: isLocked ?? this.isLocked,
       incoming: incoming ?? this.incoming,
       outgoing: outgoing ?? this.outgoing,
-      nodeAvailable: nodeAvailable ?? this.nodeAvailable,
+      nodeAvailable: nodeAvailable,
       nodeStatusOn: nodeStatusOn ?? this.nodeStatusOn,
     );
   }

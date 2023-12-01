@@ -6,10 +6,10 @@ import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/const/network_const.dart';
 
-class ServerService {
+class NodeService {
   List<Seed> seedsDefault = [];
 
-  ServerService() {
+  NodeService() {
     seedsDefault = NetworkConst.getSeedList();
   }
 

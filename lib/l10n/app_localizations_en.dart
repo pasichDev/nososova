@@ -231,4 +231,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get importKeysPair => 'Import from key pair';
+
+  @override
+  String get catHistoryTransaction => 'Transaction history';
+
+  @override
+  String get transactionInfo => 'Transaction information';
+
+  @override
+  String get block => 'Block';
+
+  @override
+  String get orderId => 'Order ID';
+
+  @override
+  String get receiver => 'Receiver';
+
+  @override
+  String get commission => 'Comission';
+
+  @override
+  String get openToExplorer => 'Open to Noso Explorer';
+
+  @override
+  String get shareTransaction => 'Share Transaction';
 }

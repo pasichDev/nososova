@@ -16,8 +16,8 @@ import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/dialog_style.dart';
 
-import 'blocs/app_data_bloc.dart';
-import 'generated/assets.dart';
+import '../../blocs/app_data_bloc.dart';
+import '../../generated/assets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
