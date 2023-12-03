@@ -29,8 +29,7 @@ final class NosoCore extends NosoCrypto {
       String publicKeyPart = keyParts[0];
       String privateKeyPart = keyParts[1];
 
-      bool verification =
-          verifyKeysPair(Const.verifyMessage, publicKeyPart, privateKeyPart);
+      bool verification = verifyKeysPair(publicKeyPart, privateKeyPart);
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {
@@ -43,9 +42,9 @@ final class NosoCore extends NosoCrypto {
     return null;
   }
 
-  bool verifyKeysPair(String message, String publicKey, String privateKey) {
-    var signerMessage = signMessage(message, privateKey);
-    return verifySignedString(message, signerMessage, publicKey);
+  bool verifyKeysPair(String publicKey, String privateKey) {
+    var signature = signMessage(Const.verifyMessage, privateKey);
+    return verifySignedString(Const.verifyMessage, signature, publicKey);
   }
 
   List<Address> parseExternalWallet(Uint8List? fileBytes) {
@@ -72,8 +71,8 @@ final class NosoCore extends NosoCrypto {
         current = Uint8List(0);
       }
 
-      bool verification = verifyKeysPair(Const.verifyMessage,
-          addressObject.publicKey, addressObject.privateKey);
+      bool verification =
+          verifyKeysPair(addressObject.publicKey, addressObject.privateKey);
       if (verification &&
           addressObject.privateKey.length == 44 &&
           addressObject.publicKey.length == 88) {

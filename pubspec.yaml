@@ -43,6 +43,7 @@ dependencies:
   json_serializable: ^6.7.1
   url_launcher: ^6.2.1
   loading_animation_widget: ^1.2.0+4
+  nanodart: ^2.0.0
 
 
 dev_dependencies:

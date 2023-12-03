@@ -4,12 +4,8 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:nososova/utils/const/const.dart';
-import 'package:pointycastle/digests/ripemd160.dart';
-import 'package:pointycastle/digests/sha256.dart';
-import 'package:pointycastle/ecc/curves/secp256k1.dart';
-import 'package:pointycastle/key_generators/ec_key_generator.dart';
+import 'package:pointycastle/export.dart';
 import 'package:pointycastle/pointycastle.dart';
-import 'package:pointycastle/random/fortuna_random.dart';
 
 class KeyPair {
   late String publicKey;
@@ -22,6 +18,8 @@ class DivResult {
 }
 
 class NosoCrypto {
+  final algorithmName = Mac("SHA-1/HMAC");
+
   /// Public Methods
   KeyPair get generateKeyPair => _generateKeyPair();
 
@@ -29,16 +27,51 @@ class NosoCrypto {
     return _getAddressFromPublicKey(publicKey);
   }
 
-  String signMessage(String message, String privateKeyBase64) {
-    var messages = _nosoBase64Decode(message);
-    var decodedPrivateKey = base64.decode(privateKeyBase64);
+  ///https://stackoverflow.com/questions/72641616/how-to-convert-asymmetrickeypair-to-base64-encoding-string-in-dart
+  ECSignature signMessage(String message, String privateKeyBase64) {
+    Uint8List messageBytes = Uint8List.fromList(_nosoBase64Decode(message));
+    BigInt privateKeyDecode =
+        bytesToBigInt(Uint8List.fromList(base64.decode(privateKeyBase64)));
+    ECPrivateKey privateKey =
+        ECPrivateKey(privateKeyDecode, ECCurve_secp256k1());
 
-    return "";
+    var signer = ECDSASigner(null, algorithmName)
+      ..init(true, PrivateKeyParameter<ECPrivateKey>(privateKey));
+    ECSignature ecSignature =
+        signer.generateSignature(messageBytes) as ECSignature;
+
+    return ecSignature;
+  }
+
+  String _encodeSignatureToBase64(ECSignature ecSignature) {
+    final encoded = ASN1Sequence(elements: [
+      ASN1Integer(ecSignature.r),
+      ASN1Integer(ecSignature.s),
+    ]).encode();
+    return base64Encode(encoded);
   }
 
   bool verifySignedString(
-      String message, String signatureBase64, String publicKey) {
-    return true;
+      String message, ECSignature signature, String publicKey) {
+    final Uint8List messageBytes =
+        Uint8List.fromList(_nosoBase64Decode(message));
+    final ECDomainParameters domain = ECCurve_secp256k1();
+    ECPoint? publicKeyPoint =
+        domain.curve.decodePoint(base64.decode(publicKey));
+    ECPublicKey publicKeys = ECPublicKey(publicKeyPoint, domain);
+
+    var verifier = ECDSASigner(null, algorithmName)
+      ..init(false, PublicKeyParameter<ECPublicKey>(publicKeys));
+
+    return verifier.verifySignature(messageBytes, signature);
+  }
+
+  BigInt bytesToBigInt(Uint8List bytes) {
+    BigInt result = BigInt.zero;
+    for (int i = 0; i < bytes.length; i++) {
+      result = (result << 8) + BigInt.from(bytes[i]);
+    }
+    return result;
   }
 
   String _getAddressFromPublicKey(String publicKey) {
