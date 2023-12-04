@@ -18,14 +18,12 @@ class AddressInfoPage extends StatelessWidget {
 
   }
 
-  /// TODO Додати ділогове вікно про інформацію про ордер
-  /// Також Додати дургу вклдаку з операціями
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-      body: Container(
+      body:  Container(
         decoration: const OtherGradientDecoration(),
         child: Stack(
           children: [

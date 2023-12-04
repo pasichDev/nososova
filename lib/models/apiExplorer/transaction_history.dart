@@ -3,10 +3,9 @@ class TransactionHistory {
   String orderId;
   String timestamp;
   String sender;
-  String transferId;
-  double orderAmount;
-  double orderFee;
-  String orderSignature;
+  String orderAmount;
+  String orderFee;
+  String orderType;
   String receiver;
 
   TransactionHistory({
@@ -14,10 +13,9 @@ class TransactionHistory {
     required this.orderId,
     required this.timestamp,
     required this.sender,
-    required this.transferId,
     required this.orderAmount,
     required this.orderFee,
-    required this.orderSignature,
+    required this.orderType,
     required this.receiver,
   });
 
@@ -36,10 +34,9 @@ class TransactionHistory {
       orderId: json['order_id'],
       timestamp: json['timestamp'],
       sender: json['sender'],
-      transferId: json['transfer_id'],
-      orderAmount: json['order_amount'].toDouble(),
-      orderFee: json['order_fee'].toDouble(),
-      orderSignature: json['order_signature'],
+      orderAmount: json['amount'],
+      orderFee: json['fee'],
+      orderType: json['order_type'],
       receiver: json['receiver'],
     );
   }

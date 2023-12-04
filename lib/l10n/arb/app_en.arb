@@ -37,7 +37,7 @@
   "certificate": "Certificate",
   "sendFromAddress": "Send from this address",
   "lock": "Lock",
-  "delete": "Delete",
+  "removeAddress": "Remove address from wallet",
   "importFile": "Import from File",
   "importFileSubtitle": "Choose a wallet file in .pkw or .nososova",
   "exportFile": "Export to File",
@@ -82,5 +82,7 @@
   "receiver": "Receiver",
   "commission": "Comission",
   "openToExplorer": "Open to Noso Explorer",
-  "shareTransaction": "Share Transaction"
+  "shareTransaction": "Share Transaction",
+  "message": "Message",
+  "editCustom": "Changing name"
 }

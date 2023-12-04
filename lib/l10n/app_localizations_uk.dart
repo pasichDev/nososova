@@ -119,7 +119,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get lock => 'Заблокувати';
 
   @override
-  String get delete => 'Видалити';
+  String get removeAddress => 'Видалити адресу з гаманця';
 
   @override
   String get importFile => 'Імпортувати з файлу';
@@ -255,4 +255,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get shareTransaction => 'Поділитися транзакцією';
+
+  @override
+  String get message => 'Повідомлення';
+
+  @override
+  String get editCustom => 'Зміна назви';
 }

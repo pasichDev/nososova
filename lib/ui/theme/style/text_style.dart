@@ -33,7 +33,7 @@ class AppTextStyles {
 
   static TextStyle textFieldStyle =  const TextStyle(
     fontWeight: FontWeight.bold,
-    color: Colors.grey,
+    color: Colors.black,
     fontSize: 18,
     fontFamily: "GilroyBold",
   );

@@ -24,7 +24,18 @@ class TransactionTile extends StatefulWidget {
 }
 
 class TransactionTileState extends State<TransactionTile> {
+
+  bool isCustom = false;
+  @override
+  void initState() {
+    super.initState();
+    isCustom = widget.transactionHistory.orderType == "CUSTOM";
+  }
+
   Widget _iconAddress() {
+    if(isCustom){
+      return AppIconsStyle.icon3x2(Assets.iconsRename);
+    }
     if (widget.receiver) {
       return AppIconsStyle.icon3x2(Assets.iconsInput);
     }
@@ -40,8 +51,11 @@ class TransactionTileState extends State<TransactionTile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Text(
-              OtherUtils.hashObfuscation(widget.receiver
+            child:
+
+            Text(
+              OtherUtils.hashObfuscation(
+                  widget.receiver
                   ? widget.transactionHistory.sender
                   : widget.transactionHistory.receiver),
               style: AppTextStyles.walletAddress.copyWith(
@@ -50,7 +64,7 @@ class TransactionTileState extends State<TransactionTile> {
             ),
           ),
           Text(
-            "${widget.receiver ? "+" : ""} ${(widget.transactionHistory.orderAmount + widget.transactionHistory.orderFee).toStringAsFixed(4)}",
+            "${widget.receiver ? "+" : "-"} ${(double.parse(widget.transactionHistory.orderAmount) + double.parse(widget.transactionHistory.orderFee)).toStringAsFixed(8)}",
             style: AppTextStyles.walletAddress.copyWith(
               color: widget.receiver
                   ? CustomColors.positiveBalance

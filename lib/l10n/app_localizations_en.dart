@@ -119,7 +119,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lock => 'Lock';
 
   @override
-  String get delete => 'Delete';
+  String get removeAddress => 'Remove address from wallet';
 
   @override
   String get importFile => 'Import from File';
@@ -255,4 +255,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareTransaction => 'Share Transaction';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get editCustom => 'Changing name';
 }

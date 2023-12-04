@@ -25,6 +25,12 @@ class TransactionPage extends StatefulWidget {
 }
 
 class PaymentPageState extends State<TransactionPage> {
+  bool isCustom = false;
+  @override
+  void initState() {
+    super.initState();
+    isCustom = widget.transaction.orderType == "CUSTOM";
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +60,7 @@ class PaymentPageState extends State<TransactionPage> {
           const Divider(
             color: Colors.grey,
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Card(
@@ -71,25 +77,27 @@ class PaymentPageState extends State<TransactionPage> {
                           margin: const EdgeInsets.all(10.0),
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: widget.isReceiver
+                            color: isCustom ? Colors.grey.withOpacity(0.2) : widget.isReceiver
                                 ? const Color(0xffd6faeb)
                                 : const Color(0xfff2d3ce),
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: SvgPicture.asset(
+                            isCustom ? Assets.iconsRename :
                             widget.isReceiver
                                 ? Assets.iconsExport
                                 : Assets.iconsImport,
                             width: 80,
                             height: 80,
-                            color: widget.isReceiver
+                            color:  isCustom ? Colors.black : widget.isReceiver
                                 ? CustomColors.positiveBalance
                                 : CustomColors.negativeBalance,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Text(
-                            "${widget.isReceiver ? "+": ""}${widget.transaction.orderAmount.toStringAsFixed(8)} ${Const.coinName}",
+                          isCustom ? AppLocalizations.of(context)!.editCustom :
+                            "${widget.isReceiver ? "+": ""}${widget.transaction.orderAmount} ${Const.coinName}",
                             style: AppTextStyles.titleMax
                                 .copyWith(color: Colors.black, fontSize: 36)),
                         const SizedBox(height: 20),
@@ -115,7 +123,11 @@ class PaymentPageState extends State<TransactionPage> {
                                 widget.transaction.receiver)),
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.commission,
-                            "${widget.transaction.orderFee.toStringAsFixed(8)} ${Const.coinName}"),
+                            "${widget.transaction.orderFee} ${Const.coinName}"),
+                        if(isCustom)
+                        InfoItem().itemInfo(
+                            AppLocalizations.of(context)!.message,
+                            "CUSTOM"),
                       ],
                     )),
               )),

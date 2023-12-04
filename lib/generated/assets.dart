@@ -21,6 +21,7 @@ class Assets {
   static const String iconsNode = 'assets/icons/node.svg';
   static const String iconsNodeI = 'assets/icons/node_i.svg';
   static const String iconsOutput = 'assets/icons/output.svg';
+  static const String iconsRename = 'assets/icons/rename.svg';
   static const String iconsScan = 'assets/icons/scan.svg';
   static const String iconsText = 'assets/icons/text.svg';
   static const String iconsWallet = 'assets/icons/wallet.svg';

@@ -321,11 +321,11 @@ abstract class AppLocalizations {
   /// **'Lock'**
   String get lock;
 
-  /// No description provided for @delete.
+  /// No description provided for @removeAddress.
   ///
   /// In en, this message translates to:
-  /// **'Delete'**
-  String get delete;
+  /// **'Remove address from wallet'**
+  String get removeAddress;
 
   /// No description provided for @importFile.
   ///
@@ -596,6 +596,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share Transaction'**
   String get shareTransaction;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// No description provided for @editCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing name'**
+  String get editCustom;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

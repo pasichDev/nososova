@@ -92,7 +92,7 @@ class AddressInfoState extends State<AddressInfo> {
           // buildListTile(
           //    Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
           buildListTileSvg(
-              Assets.iconsDelete, AppLocalizations.of(context)!.delete, () {
+              Assets.iconsDelete, AppLocalizations.of(context)!.removeAddress, () {
             walletBloc.add(DeleteAddress(widget.address));
             Navigator.pop(context);
           })
