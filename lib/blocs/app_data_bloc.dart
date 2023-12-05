@@ -103,7 +103,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     });
     on<ReconnectSeed>(_reconnectNode);
     on<InitialConnect>(_init);
+
   }
+
 
   Future<void> _init(AppDataEvent e, Emitter emit) async {
     _debugBloc.add(AddStringDebug("Network initialization"));

@@ -53,3 +53,9 @@ class ImportWalletQr extends WalletEvent {
 
   ImportWalletQr(this.addressKeys);
 }
+
+//TERM DELRTE
+class SendOrder extends WalletEvent {
+  final String value;
+  SendOrder(this.value);
+}

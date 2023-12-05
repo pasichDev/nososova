@@ -35,7 +35,7 @@ class NosoCrypto {
     ECPrivateKey privateKey =
         ECPrivateKey(privateKeyDecode, ECCurve_secp256k1());
 
-    var signer = ECDSASigner(null, algorithmName)
+    var signer = ECDSASigner(SHA1Digest(), algorithmName)
       ..init(true, PrivateKeyParameter<ECPrivateKey>(privateKey));
     ECSignature ecSignature =
         signer.generateSignature(messageBytes) as ECSignature;
@@ -43,13 +43,40 @@ class NosoCrypto {
     return ecSignature;
   }
 
-  String _encodeSignatureToBase64(ECSignature ecSignature) {
+  String encodeSignatureToBase64(ECSignature ecSignature) {
     final encoded = ASN1Sequence(elements: [
       ASN1Integer(ecSignature.r),
       ASN1Integer(ecSignature.s),
     ]).encode();
     return base64Encode(encoded);
   }
+
+
+  String getTransferHash(String value) {
+
+    var resultado = _getSha256HashToString(value);
+    resultado = _base58Encode(resultado, BigInt.from(58));
+    var sumatoria = _base58Checksum(resultado);
+    final dect = _base58DecimalTo58(sumatoria.toString());
+
+    return "tr$resultado$dect";
+
+  }
+
+  String getOrderHash(String value) {
+
+    var resultado = _getSha256HashToString(value);
+    resultado = _base58Encode(resultado, BigInt.from(36));
+    return "OR${resultado}";
+
+  }
+/*
+  fun getOrderHash(textLine:String):String {
+  var Result = mpCripto.HashSha256String(textLine)
+  return "OR"+ mpCripto.BMHexto58(Result, BigInteger("36"))
+  }
+
+ */
 
   bool verifySignedString(
       String message, ECSignature signature, String publicKey) {

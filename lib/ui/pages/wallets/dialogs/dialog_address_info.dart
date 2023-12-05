@@ -111,7 +111,10 @@ class AddressInfoState extends State<AddressInfo> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PaymentPage(address: widget.address),
+        builder: (context) =>  BlocProvider.value(
+          value: walletBloc,
+          child: PaymentPage(address: widget.address),
+        ) ,
       ),
     );
   }

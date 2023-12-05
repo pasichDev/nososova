@@ -29,7 +29,7 @@ class TransactionTileState extends State<TransactionTile> {
   @override
   void initState() {
     super.initState();
-    isCustom = widget.transactionHistory.orderType == "CUSTOM";
+    isCustom = widget.transactionHistory.type == "CUSTOM";
   }
 
   Widget _iconAddress() {
@@ -64,7 +64,7 @@ class TransactionTileState extends State<TransactionTile> {
             ),
           ),
           Text(
-            "${widget.receiver ? "+" : "-"} ${(double.parse(widget.transactionHistory.orderAmount) + double.parse(widget.transactionHistory.orderFee)).toStringAsFixed(8)}",
+            "${widget.receiver ? "+" : "-"} ${(double.parse(widget.transactionHistory.amount) + double.parse(widget.transactionHistory.fee)).toStringAsFixed(8)}",
             style: AppTextStyles.walletAddress.copyWith(
               color: widget.receiver
                   ? CustomColors.positiveBalance

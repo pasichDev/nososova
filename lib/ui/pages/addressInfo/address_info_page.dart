@@ -18,6 +18,7 @@ class AddressInfoPage extends StatelessWidget {
 
   }
 
+  ///Відоражати надходження
   @override
   Widget build(BuildContext context) {
     return Scaffold(

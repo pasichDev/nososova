@@ -13,7 +13,3 @@ class ReconnectSeed extends AppDataEvent {
   ReconnectSeed(this.lastNodeRun);
 }
 
-class SendOrder extends AppDataEvent {
-  final bool lastNodeRun;
-  SendOrder(this.lastNodeRun);
-}

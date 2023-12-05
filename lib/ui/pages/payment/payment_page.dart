@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nososova/ui/theme/decoration/textfield_decoration.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
+import '../../../blocs/events/wallet_events.dart';
+import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../models/order_create.dart';
 import '../../../utils/noso/src/address_object.dart';
+import '../../../utils/noso/src/crypto.dart';
 import '../../../utils/noso/utils.dart';
 import '../../theme/style/text_style.dart';
 
@@ -22,9 +27,17 @@ class PaymentPage extends StatefulWidget {
 
 class PaymentPageState extends State<PaymentPage> {
   bool isFinished = false;
-
+  bool isActiveButtonSend = false;
   TextEditingController amountController = TextEditingController();
+  TextEditingController receiverController =
+      TextEditingController(text: "N3Nc3rvmQG7Gx9ov9Yy2fW46chJLyEC");
   double comission = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +82,7 @@ class PaymentPageState extends State<PaymentPage> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      widget.address.hash,
+                      widget.address.nameAddressFull,
                       style: AppTextStyles.dialogTitle.copyWith(
                         fontSize: 20,
                         color: Colors.black,
@@ -81,12 +94,13 @@ class PaymentPageState extends State<PaymentPage> {
             ),
             const SizedBox(height: 30),
             TextField(
+                controller: receiverController,
                 style: AppTextStyles.textFieldStyle,
                 decoration:
                     AppTextFiledDecoration.defaultDecoration("Recipient")),
             const SizedBox(height: 30),
             TextField(
-              controller: amountController,
+                controller: amountController,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
                 ],
@@ -113,26 +127,40 @@ class PaymentPageState extends State<PaymentPage> {
                 decoration:
                     AppTextFiledDecoration.defaultDecoration("Reference")),
             const SizedBox(height: 20),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.commission,
-              style: AppTextStyles.walletAddress
-                  .copyWith(color: Colors.black.withOpacity(1), fontSize: 18),
-            ),
-            const SizedBox(height: 5),
-              Text(
-                comission.toStringAsFixed(8),
-                style: AppTextStyles.walletAddress
-                    .copyWith(color: Colors.black, fontSize: 18),
-              ),
-             ]),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.commission,
+                    style: AppTextStyles.walletAddress.copyWith(
+                        color: Colors.black.withOpacity(1), fontSize: 18),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    comission.toStringAsFixed(8),
+                    style: AppTextStyles.walletAddress
+                        .copyWith(color: Colors.black, fontSize: 18),
+                  ),
+                ]),
             const SizedBox(height: 30),
-
+            Container(
+              width: double.infinity,
+              child: OutlinedButton(
+                  onPressed: () => sendOrder(),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.grey),
+                  ),
+                  child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text("Test Order",
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.black)))),
+            ),
+            SizedBox(height: 10),
             Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               SwipeableButtonView(
+                isActive: isActiveButtonSend,
                 buttonText: 'SLIDE TO PAYMENT',
                 buttonWidget: const Icon(
                   Icons.arrow_forward_ios_rounded,
@@ -164,6 +192,95 @@ class PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  //ErrorCode := 6
+  /// Додати зміінну в адрес про реальний бланс з урахуванням очікувань та імпортити її вbalanceAdress
+  sendOrder() {
+    var block = BlocProvider.of<WalletBloc>(context);
+    int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    var amount = 70000000;
+    var fre = 1000000;
+    var trxLine = 1;
+    var prbl = " ";
+
+    var sender = widget.address.nameAddressFull;
+    var reciver = receiverController.text;
+
+    var ORDERHASHSTRING = currentTimeMillis.toString();
+
+
+    var message = (currentTimeMillis.toString() +
+        widget.address.hash +
+        reciver +
+        amount.toString() +
+        fre.toString() +
+        trxLine.toString());
+
+    var signature = NosoCrypto()
+        .signMessage(
+        message,
+        widget.address.privateKey);
+
+
+    NewOrderData orderInfo = NewOrderData(
+        orderID: '',
+        orderLines: trxLine,
+        orderType: "TRFR",
+        timeStamp: currentTimeMillis,
+        reference: 'reference_',
+        trxLine: trxLine,
+        sender: widget.address.publicKey,
+        address: sender,
+        receiver: reciver,
+        amountFee: fre,
+        amountTrf: amount,
+        signature: NosoCrypto().encodeSignatureToBase64(signature),
+        trfrID: NosoCrypto().getTransferHash(currentTimeMillis.toString() +
+            widget.address.nameAddressFull +
+            reciver +
+            amount.toString() +
+            block.appDataBloc.state.node.lastblock.toString()));
+
+    ORDERHASHSTRING += orderInfo.trfrID;
+
+    orderInfo.orderID = NosoCrypto().getOrderHash("$trxLine$ORDERHASHSTRING");
+    print("new OrderID ->${orderInfo.orderID}");
+
+    var resultOrderId = NosoCrypto().getOrderHash("$trxLine$ORDERHASHSTRING");
+    print("ResultOrderID ->${resultOrderId}");
+
+    var protocol = "1";
+    var prgramVersion = "1.0";
+    var ORDERSTRINGSEND = "NSLORDER" +
+        prbl +
+        protocol +
+        prbl +
+        prgramVersion +
+        prbl +
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString() +
+        prbl +
+        "ORDER" +
+        prbl +
+        trxLine.toString() +
+        " \$";
+
+    ORDERSTRINGSEND += "${orderInfo.getStringFromOrder()} \$";
+
+    ORDERSTRINGSEND = ORDERSTRINGSEND.substring(0, ORDERSTRINGSEND.length - 2);
+
+    block.add(SendOrder(ORDERSTRINGSEND));
+
+  }
+
+  checkButtonActive() {
+    var priceCheck = widget.address.balance <=
+        double.parse(amountController.text) + comission;
+    var receiverCheck = receiverController.text.length >= 2;
+
+    setState(() {
+      isActiveButtonSend = priceCheck && receiverCheck;
+    });
+  }
+
   buttonPercent(int percent) {
     return OutlinedButton(
         onPressed: () {
@@ -181,8 +298,8 @@ class PaymentPageState extends State<PaymentPage> {
             child: Text("$percent%",
                 style: const TextStyle(fontSize: 18, color: Colors.black))));
   }
+
   double calculatePercentage(double amount, int percentage) {
     return (percentage / 100) * amount;
   }
-
 }

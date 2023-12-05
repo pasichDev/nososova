@@ -8,6 +8,7 @@ import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/repositories/repositories.dart';
 
 import '../models/app/import_wallet_response.dart';
+import '../models/app/responses/response_node.dart';
 import '../models/app/wallet.dart';
 import '../utils/const/files_const.dart';
 import '../utils/noso/src/address_object.dart';
@@ -55,7 +56,17 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletFile>(_importWalletFile);
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
+    on<SendOrder>(_sendOrder);
     initBloc();
+
+  }
+
+  Future<void> _sendOrder(e, emit) async {
+    print("sendOrder");
+    //print(e.value);
+    ResponseNode resp = await _repositories.networkRepository.fetchNode("${e.value}\n",appDataBloc.state.node.seed);
+
+    print(resp.value);
   }
 
   initBloc() async {
