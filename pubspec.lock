@@ -49,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  bip39:
-    dependency: transitive
-    description:
-      name: bip39
-      sha256: de1ee27ebe7d96b84bb3a04a4132a0a3007dcdd5ad27dd14aa87a29d97c45edc
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.6"
   bloc:
     dependency: "direct main"
     description:
@@ -314,21 +306,13 @@ packages:
     source: hosted
     version: "5.5.0"
   fixnum:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fixnum
       sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  fixnum_nanodart:
-    dependency: transitive
-    description:
-      name: fixnum_nanodart
-      sha256: "4b0132d11ecddc0d2ca64b6d7dee6726db432ed02cac1349d7532a08be5c54fc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -493,14 +477,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
-  hex:
-    dependency: transitive
-    description:
-      name: hex
-      sha256: "4e7cd54e4b59ba026432a6be2dd9d96e4c5205725194997193bf871703b82c4a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   html:
     dependency: transitive
     description:
@@ -637,14 +613,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  nanodart:
-    dependency: "direct main"
-    description:
-      name: nanodart
-      sha256: "4b2f42d60307b54e8cf384d6193a567d07f8efd773858c0d5948246153c13282"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   nested:
     dependency: transitive
     description:

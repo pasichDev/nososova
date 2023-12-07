@@ -58,13 +58,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<AddAddresses>(_addAddresses);
     on<SendOrder>(_sendOrder);
     initBloc();
-
   }
 
   Future<void> _sendOrder(e, emit) async {
     print("sendOrder");
     //print(e.value);
-    ResponseNode resp = await _repositories.networkRepository.fetchNode("${e.value}\n",appDataBloc.state.node.seed);
+    ResponseNode resp = await _repositories.networkRepository
+        .fetchNode("${e.value}\n", appDataBloc.state.node.seed);
 
     print(resp.value);
   }
@@ -146,20 +146,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     double totalIncoming = 0;
 
     for (var address in state.wallet.address) {
-      PendingTransaction? foundOutgoing = summary.firstWhere(
+      PendingTransaction? foundReceiver = summary.firstWhere(
           (other) => other.receiver == address.hash,
           orElse: () => PendingTransaction());
-      PendingTransaction? foundIncoming = summary.firstWhere(
-          (other) => other.address == address.hash,
+      PendingTransaction? foundSender = summary.firstWhere(
+          (other) => other.sender == address.hash,
           orElse: () => PendingTransaction());
 
-      if (foundIncoming.receiver.isNotEmpty) {
-        var cell = foundIncoming.amountTransfer + foundIncoming.amountFee;
-        totalIncoming += cell;
-        address.incoming = cell;
-      } else if (foundOutgoing.receiver.isNotEmpty) {
-        totalOutgoing += foundOutgoing.amountTransfer;
-        address.outgoing = foundOutgoing.amountTransfer;
+      if (foundReceiver.receiver.isNotEmpty) {
+        totalIncoming += foundReceiver.amountTransfer;
+        address.incoming = foundReceiver.amountTransfer;
+      } else if (foundSender.sender.isNotEmpty) {
+        var cell = foundSender.amountTransfer + foundSender.amountFee;
+        totalOutgoing += cell;
+        address.outgoing = cell;
       } else {
         address.incoming = 0;
         address.outgoing = 0;

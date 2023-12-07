@@ -64,13 +64,19 @@ class TransactionTileState extends State<TransactionTile> {
             ),
           ),
           Text(
-            "${widget.receiver ? "+" : "-"} ${(double.parse(widget.transactionHistory.amount) + double.parse(widget.transactionHistory.fee)).toStringAsFixed(8)}",
+            widget.receiver ?
+            "+${double.parse(widget.transactionHistory.amount).toStringAsFixed(3)}"
+                :
+            "-${(double.parse(widget.transactionHistory.amount) + double.parse(widget.transactionHistory.fee)).toStringAsFixed(3)}",
+
+
             style: AppTextStyles.walletAddress.copyWith(
               color: widget.receiver
                   ? CustomColors.positiveBalance
                   : CustomColors.negativeBalance,
             ),
           ),
+
         ],
       ),
       onTap: widget.onTap,

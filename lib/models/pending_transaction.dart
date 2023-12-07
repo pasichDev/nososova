@@ -1,13 +1,13 @@
 class PendingTransaction {
   String orderType;
-  String address;
+  String sender;
   String receiver;
   double amountTransfer;
   double amountFee;
 
   PendingTransaction({
      this.orderType = "",
-     this.address = "",
+     this.sender = "",
      this.receiver = "",
      this.amountTransfer = 0,
      this.amountFee = 0,
@@ -23,7 +23,7 @@ class PendingTransaction {
   }) {
     return PendingTransaction(
       orderType: orderType ?? this.orderType,
-      address: address ?? this.address,
+      sender: sender ?? this.sender,
       receiver: receiver ?? this.receiver,
       amountTransfer: amountTransfer ?? this.amountTransfer,
       amountFee: amountFee ?? this.amountFee,

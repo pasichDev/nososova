@@ -6,11 +6,11 @@ import 'package:nososova/ui/theme/decoration/textfield_decoration.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
-import '../../../blocs/events/wallet_events.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/order_create.dart';
+import '../../../utils/noso/nosocore.dart';
 import '../../../utils/noso/src/address_object.dart';
 import '../../../utils/noso/src/crypto.dart';
 import '../../../utils/noso/utils.dart';
@@ -30,7 +30,7 @@ class PaymentPageState extends State<PaymentPage> {
   bool isActiveButtonSend = false;
   TextEditingController amountController = TextEditingController();
   TextEditingController receiverController =
-      TextEditingController(text: "N3Nc3rvmQG7Gx9ov9Yy2fW46chJLyEC");
+      TextEditingController(text: "pasichDev");
   double comission = 0;
 
   @override
@@ -138,7 +138,7 @@ class PaymentPageState extends State<PaymentPage> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    comission.toStringAsFixed(8),
+                    (comission / 100000000).toStringAsFixed(8),
                     style: AppTextStyles.walletAddress
                         .copyWith(color: Colors.black, fontSize: 18),
                   ),
@@ -192,21 +192,26 @@ class PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  int doubleToIndianInt(double value) {
+    return (value * 100000000).round();
+  }
+
   //ErrorCode := 6
   /// Додати зміінну в адрес про реальний бланс з урахуванням очікувань та імпортити її вbalanceAdress
   sendOrder() {
     var block = BlocProvider.of<WalletBloc>(context);
     int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    var amount = 70000000;
-    var fre = 1000000;
+    var amount = doubleToIndianInt(double.parse(amountController.text));
+    var fre = NosoCore().getFee(double.parse(amountController.text));
     var trxLine = 1;
     var prbl = " ";
 
+    //  int amountBigIndian = NosoCore().doubleToBigEndian(amount);
+    //   print(doubleToIndianInt(amount));
     var sender = widget.address.nameAddressFull;
     var reciver = receiverController.text;
 
     var ORDERHASHSTRING = currentTimeMillis.toString();
-
 
     var message = (currentTimeMillis.toString() +
         widget.address.hash +
@@ -215,26 +220,23 @@ class PaymentPageState extends State<PaymentPage> {
         fre.toString() +
         trxLine.toString());
 
-    var signature = NosoCrypto()
-        .signMessage(
-        message,
-        widget.address.privateKey);
-
+    var signature =
+        NosoCrypto().signMessage(message, widget.address.privateKey);
 
     NewOrderData orderInfo = NewOrderData(
         orderID: '',
         orderLines: trxLine,
         orderType: "TRFR",
         timeStamp: currentTimeMillis,
-        reference: 'reference_',
+        reference: '',
         trxLine: trxLine,
         sender: widget.address.publicKey,
         address: sender,
         receiver: reciver,
-        amountFee: fre,
+        amountFee: doubleToIndianInt(comission),
         amountTrf: amount,
         signature: NosoCrypto().encodeSignatureToBase64(signature),
-        trfrID: NosoCrypto().getTransferHash(currentTimeMillis.toString() +
+        trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
             widget.address.nameAddressFull +
             reciver +
             amount.toString() +
@@ -242,10 +244,10 @@ class PaymentPageState extends State<PaymentPage> {
 
     ORDERHASHSTRING += orderInfo.trfrID;
 
-    orderInfo.orderID = NosoCrypto().getOrderHash("$trxLine$ORDERHASHSTRING");
+    orderInfo.orderID = NosoCore().getOrderHash("$trxLine$ORDERHASHSTRING");
     print("new OrderID ->${orderInfo.orderID}");
 
-    var resultOrderId = NosoCrypto().getOrderHash("$trxLine$ORDERHASHSTRING");
+    var resultOrderId = NosoCore().getOrderHash("$trxLine$ORDERHASHSTRING");
     print("ResultOrderID ->${resultOrderId}");
 
     var protocol = "1";
@@ -267,8 +269,7 @@ class PaymentPageState extends State<PaymentPage> {
 
     ORDERSTRINGSEND = ORDERSTRINGSEND.substring(0, ORDERSTRINGSEND.length - 2);
 
-    block.add(SendOrder(ORDERSTRINGSEND));
-
+    //block.add(SendOrder(ORDERSTRINGSEND));
   }
 
   checkButtonActive() {
@@ -287,7 +288,7 @@ class PaymentPageState extends State<PaymentPage> {
           setState(() {
             double value = calculatePercentage(widget.address.balance, percent);
             amountController.text = value.toString();
-            comission = UtilsDataNoso.getFee(value) / 100000000;
+            comission = UtilsDataNoso.getFee(value);
           });
         },
         style: OutlinedButton.styleFrom(

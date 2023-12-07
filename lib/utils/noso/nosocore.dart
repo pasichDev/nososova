@@ -12,6 +12,31 @@ import '../const/const.dart';
 import 'src/address_object.dart';
 
 final class NosoCore extends NosoCrypto {
+
+  double getFee(double amount) {
+    double result = amount / Const.Comisiontrfr;
+
+    if (result < Const.MinimunFee) {
+      return Const.MinimunFee;
+    }
+
+    return result;
+  }
+  String getTransferHash(String value) {
+    var hash256 = getSha256HashToString(value);
+    hash256 = base58Encode(hash256, BigInt.from(58));
+    var sumatoria = base58Checksum(hash256);
+    final bd58 = base58DecimalTo58(sumatoria.toString());
+
+    return "tr$hash256$bd58";
+  }
+
+  String getOrderHash(String value) {
+    var sha256 = getSha256HashToString(value);
+    sha256 = base58Encode(sha256, BigInt.from(36));
+    return "OR$sha256";
+  }
+
   /// Generate new address
   Address createNewAddress() {
     KeyPair keysPair = generateKeyPair;
@@ -147,7 +172,7 @@ final class NosoCore extends NosoCrypto {
       if (pending.length >= 5) {
         pendingList.add(PendingTransaction(
           orderType: pending[0],
-          address: pending[1],
+          sender: pending[1],
           receiver: pending[2],
           amountTransfer: int.parse(pending[3]) / 100000000,
           amountFee: int.parse(pending[4]) / 100000000,
@@ -185,10 +210,27 @@ final class NosoCore extends NosoCrypto {
     return addressSummary;
   }
 
+  int doubleToBigEndian(double value) {
+    var byteData = ByteData(8);
+    byteData.setFloat64(
+        0, value, Endian.little); // Встановлюємо значення в little-endian
+
+    //  var byteBuffer = Uint8List.fromList(Uint8List).buffer;
+    //  var dataView = ByteData.view(byteBuffer);
+    var intValue = byteData.setFloat64(0, value, Endian.little);
+
+    //  print(intValue);
+    //  print(String.fromCharCodes());
+    //  Int64 int64Value = Int64.fromBytes(result);
+    return 99;
+    //  return byteData.getInt64(0, Endian.big);
+  }
+
   double _bigEndianToDouble(List<int> bytes) {
     var byteBuffer = Uint8List.fromList(bytes).buffer;
     var dataView = ByteData.view(byteBuffer);
     var intValue = dataView.getInt64(0, Endian.little);
+    // print(intValue);
     return intValue / 100000000;
   }
 

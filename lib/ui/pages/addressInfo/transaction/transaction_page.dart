@@ -117,14 +117,16 @@ class PaymentPageState extends State<TransactionPage> {
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.orderId,
                             widget.transaction.obfuscationOrderId),
+                        if(!widget.isReceiver)
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.receiver,
                             OtherUtils.hashObfuscation(
                                 widget.transaction.receiver)),
+                        if(!widget.isReceiver)
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.commission,
                             "${widget.transaction.fee} ${Const.coinName}"),
-                        if(isCustom)
+                        if(isCustom )
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.message,
                             "CUSTOM"),

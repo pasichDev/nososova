@@ -197,6 +197,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
   }
 
+
+  /// TODO Pendigs при першому завнтажені не підтягуються тому що вону отримуються раніше symmary
   Future<void> _syncDataToNode(Seed seed) async {
     ///init var && send state loading
     emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
@@ -217,6 +219,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     /// Loading pendings
     if (nodeOutput.pendings != 0) {
+      print("pendigs");
       _debugBloc.add(AddStringDebug("Request pending"));
       responsePendings = await _fetchNode(NetworkRequest.pendingsList, seed);
       if (responsePendings.errors != null) {
@@ -228,7 +231,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
 
     /// Оновлення інформації коли перебудовується блок, або перщий запуск
-
     if (state.node.lastblock != nodeOutput.lastblock ||
         appBlocConfig.isOneStartup) {
       _debugBloc.add(AddStringDebug(

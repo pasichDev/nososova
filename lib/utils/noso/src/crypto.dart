@@ -52,32 +52,6 @@ class NosoCrypto {
   }
 
 
-  String getTransferHash(String value) {
-
-    var resultado = _getSha256HashToString(value);
-    resultado = _base58Encode(resultado, BigInt.from(58));
-    var sumatoria = _base58Checksum(resultado);
-    final dect = _base58DecimalTo58(sumatoria.toString());
-
-    return "tr$resultado$dect";
-
-  }
-
-  String getOrderHash(String value) {
-
-    var resultado = _getSha256HashToString(value);
-    resultado = _base58Encode(resultado, BigInt.from(36));
-    return "OR${resultado}";
-
-  }
-/*
-  fun getOrderHash(textLine:String):String {
-  var Result = mpCripto.HashSha256String(textLine)
-  return "OR"+ mpCripto.BMHexto58(Result, BigInteger("36"))
-  }
-
- */
-
   bool verifySignedString(
       String message, ECSignature signature, String publicKey) {
     final Uint8List messageBytes =
@@ -102,16 +76,16 @@ class NosoCrypto {
   }
 
   String _getAddressFromPublicKey(String publicKey) {
-    final pubSHAHashed = _getSha256HashToString(publicKey);
+    final pubSHAHashed = getSha256HashToString(publicKey);
     final hash1 = _getMd160HashToString(pubSHAHashed);
-    final hash1Encoded = _base58Encode(hash1, BigInt.from(58));
-    final sum = _base58Checksum(hash1Encoded);
-    final key = _base58DecimalTo58(sum.toString());
+    final hash1Encoded = base58Encode(hash1, BigInt.from(58));
+    final sum = base58Checksum(hash1Encoded);
+    final key = base58DecimalTo58(sum.toString());
     final hash2 = hash1Encoded + key;
     return Const.coinChar + hash2;
   }
 
-  String _getSha256HashToString(String publicKey) {
+  String getSha256HashToString(String publicKey) {
     final sha256 = SHA256Digest();
     final bytes = utf8.encode(publicKey);
     final digest = sha256.process(Uint8List.fromList(bytes));
@@ -127,7 +101,7 @@ class NosoCrypto {
     return hashHex.toUpperCase();
   }
 
-  String _base58Encode(String hexNumber, BigInt alphabetNumber) {
+  String base58Encode(String hexNumber, BigInt alphabetNumber) {
     BigInt decimalValue = _hexToDecimal(hexNumber);
     String result = '';
     String alphabetUsed;
@@ -160,7 +134,7 @@ class NosoCrypto {
     return result;
   }
 
-  int _base58Checksum(String input) {
+  int base58Checksum(String input) {
     int total = 0;
     for (var i = 0; i < input.length; i++) {
       var currentChar = input[i];
@@ -172,7 +146,7 @@ class NosoCrypto {
     return total;
   }
 
-  String _base58DecimalTo58(String number) {
+  String base58DecimalTo58(String number) {
     var decimalValue = BigInt.parse(number);
     DivResult resultDiv;
     String remainder;
