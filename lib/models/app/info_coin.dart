@@ -1,13 +1,13 @@
 import 'package:nososova/models/apiLiveCoinWatch/minimal_info_coin.dart';
 
-import '../apiLiveCoinWatch/full_info_coin.dart';
+import '../apiExplorer/price_dat.dart';
 
 class InfoCoin {
   int blockRemaining = 0;
   int nextHalvingDays = 0;
   int cSupply = 0;
   int coinLock = 0;
-  FullInfoCoin? historyCoin;
+  List<PriceData>? historyCoin;
   MinimalInfoCoin? minimalInfo;
   double marketcap = 0;
   double tvl = 0;
@@ -39,7 +39,7 @@ class InfoCoin {
     int? blockRemaining,
     int? nextHalvingDays,
     int? cSupply,
-    FullInfoCoin? historyCoin,
+    List<PriceData>? historyCoin,
     MinimalInfoCoin? minimalInfo,
     int? coinLock,
     double? marketcap,

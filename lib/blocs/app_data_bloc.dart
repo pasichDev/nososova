@@ -74,7 +74,7 @@ class AppDataState {
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
-  DebugBloc _debugBloc;
+  final DebugBloc _debugBloc;
   Timer? _timerDelaySync;
   final Repositories _repositories;
 

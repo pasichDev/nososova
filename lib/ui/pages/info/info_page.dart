@@ -8,7 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../blocs/coin_info_bloc.dart';
 import '../../../blocs/events/coin_info_events.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../models/apiLiveCoinWatch/full_info_coin.dart';
+import '../../../models/apiExplorer/price_dat.dart';
 import '../../components/info_item.dart';
 import '../../components/loading.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
@@ -79,10 +79,10 @@ class InfoPageState extends State<InfoPage>
 
   body(CoinInfoState state) {
     var infoCoin = state.infoCoin;
-    var firstHistory = infoCoin.historyCoin?.history.first.rate ?? 0.0000000;
+    var firstHistory = infoCoin.historyCoin?.first.price ?? 0.0000000;
 
     if (state.apiStatus == ApiStatus.loading) {
-      return LoadingWidget();
+      return const LoadingWidget();
     }
 
     return Column(
@@ -127,15 +127,15 @@ class InfoPageState extends State<InfoPage>
                   primaryYAxis: NumericAxis(
                     majorGridLines: const MajorGridLines(width: 0),
                     visibleMinimum:
-                        infoCoin.historyCoin!.history.first.rate / 1.4,
+                        infoCoin.historyCoin!.first.price / 1.1,
                   ),
-                  series: <LineSeries<HistoryItem, String>>[
-                    LineSeries<HistoryItem, String>(
-                      dataSource: infoCoin.historyCoin?.history ?? [],
-                      xValueMapper: (HistoryItem hist, _) => DateFormat('HH:mm')
-                          .format(DateTime.fromMillisecondsSinceEpoch(hist.date)
+                  series: <LineSeries<PriceData, String>>[
+                    LineSeries<PriceData, String>(
+                      dataSource: infoCoin.historyCoin ?? [],
+                      xValueMapper: (PriceData hist, _) => DateFormat('HH:mm')
+                          .format(DateTime.parse(hist.timestamp)
                               .toLocal()),
-                      yValueMapper: (HistoryItem hist, _) => hist.rate,
+                      yValueMapper: (PriceData hist, _) => hist.price,
                     )
                   ]),
               const SizedBox(height: 10),

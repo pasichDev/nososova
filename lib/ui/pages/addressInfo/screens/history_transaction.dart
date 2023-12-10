@@ -43,10 +43,46 @@ class HistoryTransactionsState extends State<HistoryTransactionsWidget> {
           var listHistory = state.transactions;
           listHistory.sort((a, b) => b.blockId.compareTo(a.blockId));
           return Container(
+              height: MediaQuery.of(context).size.height * 0.6,
               width: double.infinity,
               color: Colors.white,
               child: Column(
                 children: [
+                  Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                AppLocalizations.of(context)!
+                                    .pendings,
+                                style: AppTextStyles.categoryStyle),
+
+                          ])),
+
+                  Row(mainAxisAlignment:MainAxisAlignment.center,children: [
+                    Column(children: [
+                      Text(
+                          AppLocalizations.of(context)!
+                              .incoming,
+                          style: AppTextStyles.itemStyle),
+                      Text(
+                          widget.address.incoming.toStringAsFixed(8),
+                          style: AppTextStyles.categoryStyle.copyWith(fontSize: 20)),
+                    ],),
+                    const SizedBox(width: 60),
+                    Column(children: [
+                      Text(
+                          AppLocalizations.of(context)!
+                              .outgoing,
+                          style: AppTextStyles.itemStyle),
+                      Text(
+                          widget.address.outgoing.toStringAsFixed(8),
+                          style: AppTextStyles.categoryStyle.copyWith(fontSize: 20)),
+                    ],)
+                  ],),
+
                   Padding(
                       padding: const EdgeInsets.all(20),
                       child: Row(
@@ -60,6 +96,8 @@ class HistoryTransactionsState extends State<HistoryTransactionsWidget> {
                             AppIconsStyle.icon2x4(Assets.iconsInfo,
                                 colorCustom: CustomColors.primaryColor),
                           ])),
+
+
                   if (state.apiStatus == ApiStatus.loading) ...[
                     const SizedBox(height: 200),
                     const LoadingWidget()

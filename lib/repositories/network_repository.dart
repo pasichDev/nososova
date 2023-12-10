@@ -50,5 +50,8 @@ class NetworkRepository {
   Future<ResponseApi> fetchHistoryTransactions(String hashAddress) {
     return _explorerStatsService.fetchHistoryTransactions(hashAddress);
   }
+  Future<ResponseApi> fetchHistoryPrice() {
+    return _explorerStatsService.fetchHistoryPrice();
+  }
 
 }

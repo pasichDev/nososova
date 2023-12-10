@@ -111,7 +111,7 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
 
   fetchHistory() async {
     var response =
-        await _repositories.networkRepository.fetchHistoryCoin();
+        await _repositories.networkRepository.fetchHistoryPrice();
 
     if (response.errors == null) {
       emit(state.copyWith(
