@@ -84,6 +84,7 @@
   "openToExplorer": "Відкрити в Noso Explorer",
   "shareTransaction": "Поділитися транзакцією",
   "message": "Повідомлення",
-  "editCustom": "Зміна назви"
+  "editCustom": "Зміна назви",
+  "errorLoading": "Помилка серверу"
 
 }

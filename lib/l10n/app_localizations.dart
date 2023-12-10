@@ -608,6 +608,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Changing name'**
   String get editCustom;
+
+  /// No description provided for @errorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error'**
+  String get errorLoading;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

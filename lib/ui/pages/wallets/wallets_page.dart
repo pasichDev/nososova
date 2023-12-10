@@ -10,7 +10,6 @@ import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
-import '../../../utils/noso/src/crypto.dart';
 import '../../dialogs/import_export/dialog_import_address.dart';
 import '../../theme/style/dialog_style.dart';
 import '../../theme/style/text_style.dart';
@@ -119,8 +118,7 @@ class HeaderMyWallets extends StatelessWidget {
                   color: CustomColors.primaryColor,
                 ),
                 onPressed: () {
-                  NosoCrypto().signMessage("", "");
-                  //_showBottomSheetAddMyWallets(context, BlocProvider.of<WalletBloc>(context));
+                  _showBottomSheetAddMyWallets(context, BlocProvider.of<WalletBloc>(context));
                 }),
           ],
         ),

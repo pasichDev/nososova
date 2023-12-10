@@ -4,7 +4,8 @@ import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../generated/assets.dart';
 import '../../utils/noso/src/address_object.dart';
-import '../theme/anim/blinkin.dart';
+import '../theme/anim/blinkin_widget.dart';
+import '../theme/style/icons_style.dart';
 
 class AddressNodeTile extends StatefulWidget {
   final Address address;
@@ -18,7 +19,10 @@ class AddressNodeTile extends StatefulWidget {
 class AddressListTileState extends State<AddressNodeTile> {
   Widget _iconAddress() {
     if (widget.address.nodeStatusOn) {
-      return BlinkingIcon(icon: Assets.iconsNode);
+      return BlinkingWidget(
+          widget: AppIconsStyle.icon3x2(Assets.iconsNode),
+          startBlinking: true,
+          duration: 500);
     }
 
     return SvgPicture.asset(
@@ -49,7 +53,6 @@ class AddressListTileState extends State<AddressNodeTile> {
                 style: AppTextStyles.walletAddress
                     .copyWith(fontSize: 20, fontFamily: "GilroyRegular"),
               ),
-
             ]));
   }
 }

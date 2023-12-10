@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nososova/ui/theme/anim/blinkin_widget.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../generated/assets.dart';
 import '../../utils/noso/src/address_object.dart';
-import '../theme/anim/blinkin.dart';
+import '../theme/style/icons_style.dart';
 
 class AddressListTile extends StatefulWidget {
   final VoidCallback onLong;
@@ -32,10 +33,16 @@ class AddressListTileState extends State<AddressListTile> {
         color: Colors.grey,
       );
     } else if (widget.address.incoming > 0) {
-      return BlinkingIcon(icon: Assets.iconsInput);
+      return BlinkingWidget(
+          widget: AppIconsStyle.icon3x2(Assets.iconsInput),
+          startBlinking: true,
+          duration: 500);
     }
     if (widget.address.outgoing > 0) {
-      return BlinkingIcon(icon: Assets.iconsOutput);
+      return BlinkingWidget(
+          widget: AppIconsStyle.icon3x2(Assets.iconsOutput),
+          startBlinking: true,
+          duration: 500);
     }
 
     return SvgPicture.asset(

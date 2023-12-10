@@ -4,12 +4,12 @@ import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/pages/addressInfo/transaction/transaction_page.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
+import 'package:nososova/utils/noso/src/address_object.dart';
 import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/events/history_transactions_events.dart';
 import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../../utils/noso/src/address_object.dart';
 import '../../../components/empty_list_widget.dart';
 import '../../../components/loading.dart';
 import '../../../theme/style/colors.dart';
@@ -22,11 +22,14 @@ class HistoryTransactionsWidget extends StatefulWidget {
   const HistoryTransactionsWidget({super.key, required this.address});
 
   @override
-  HistoryTransactionsState createState() => HistoryTransactionsState();
+  HistoryTransactionWidgetsState createState() =>
+      HistoryTransactionWidgetsState();
 }
 
-class HistoryTransactionsState extends State<HistoryTransactionsWidget> {
-  final GlobalKey<HistoryTransactionsState> _historyKey = GlobalKey();
+class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
+  final GlobalKey<HistoryTransactionWidgetsState> _historyKey = GlobalKey();
+
+
 
   @override
   void initState() {
@@ -42,47 +45,13 @@ class HistoryTransactionsState extends State<HistoryTransactionsWidget> {
         builder: (context, state) {
           var listHistory = state.transactions;
           listHistory.sort((a, b) => b.blockId.compareTo(a.blockId));
+
           return Container(
-              height: MediaQuery.of(context).size.height * 0.6,
+              height: MediaQuery.of(context).size.height * 0.5,
               width: double.infinity,
               color: Colors.white,
               child: Column(
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                AppLocalizations.of(context)!
-                                    .pendings,
-                                style: AppTextStyles.categoryStyle),
-
-                          ])),
-
-                  Row(mainAxisAlignment:MainAxisAlignment.center,children: [
-                    Column(children: [
-                      Text(
-                          AppLocalizations.of(context)!
-                              .incoming,
-                          style: AppTextStyles.itemStyle),
-                      Text(
-                          widget.address.incoming.toStringAsFixed(8),
-                          style: AppTextStyles.categoryStyle.copyWith(fontSize: 20)),
-                    ],),
-                    const SizedBox(width: 60),
-                    Column(children: [
-                      Text(
-                          AppLocalizations.of(context)!
-                              .outgoing,
-                          style: AppTextStyles.itemStyle),
-                      Text(
-                          widget.address.outgoing.toStringAsFixed(8),
-                          style: AppTextStyles.categoryStyle.copyWith(fontSize: 20)),
-                    ],)
-                  ],),
-
                   Padding(
                       padding: const EdgeInsets.all(20),
                       child: Row(
@@ -96,8 +65,10 @@ class HistoryTransactionsState extends State<HistoryTransactionsWidget> {
                             AppIconsStyle.icon2x4(Assets.iconsInfo,
                                 colorCustom: CustomColors.primaryColor),
                           ])),
-
-
+                  if (state.apiStatus == ApiStatus.error) ...[
+                    const SizedBox(height: 200),
+                    EmptyWidget(title: AppLocalizations.of(context)!.errorLoading)
+                  ],
                   if (state.apiStatus == ApiStatus.loading) ...[
                     const SizedBox(height: 200),
                     const LoadingWidget()

@@ -261,4 +261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editCustom => 'Changing name';
+
+  @override
+  String get errorLoading => 'Server error';
 }

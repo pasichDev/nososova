@@ -41,6 +41,14 @@ class HistoryTransactionsBloc
     on<CleanData>(_cleanData);
   }
 
+  factory HistoryTransactionsBloc.create(
+      Repositories repositories, WalletBloc walletBloc) {
+    return HistoryTransactionsBloc(
+      repositories: repositories,
+      walletBloc: walletBloc,
+    );
+  }
+
   void _fetchHistory(event, emit) async {
     add(CleanData());
 

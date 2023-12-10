@@ -84,5 +84,6 @@
   "openToExplorer": "Open to Noso Explorer",
   "shareTransaction": "Share Transaction",
   "message": "Message",
-  "editCustom": "Changing name"
+  "editCustom": "Changing name",
+  "errorLoading": "Server error"
 }

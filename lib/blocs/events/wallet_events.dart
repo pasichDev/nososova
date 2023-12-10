@@ -59,3 +59,12 @@ class SendOrder extends WalletEvent {
   final String value;
   SendOrder(this.value);
 }
+
+class FetchHistoryAddress extends WalletEvent {
+  final String value;
+  FetchHistoryAddress(this.value);
+}
+
+class CleanDataAddress extends WalletEvent {}
+
+

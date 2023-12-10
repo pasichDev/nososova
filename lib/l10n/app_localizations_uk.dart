@@ -261,4 +261,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get editCustom => 'Зміна назви';
+
+  @override
+  String get errorLoading => 'Помилка серверу';
 }
