@@ -264,4 +264,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorLoading => 'Server error';
+
+  @override
+  String get catActionAddress => 'Address actions';
+
+  @override
+  String get customNameAdd => 'Set a custom name';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
 }

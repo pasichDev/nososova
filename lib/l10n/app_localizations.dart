@@ -614,6 +614,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Server error'**
   String get errorLoading;
+
+  /// No description provided for @catActionAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address actions'**
+  String get catActionAddress;
+
+  /// No description provided for @customNameAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a custom name'**
+  String get customNameAdd;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -29,8 +29,6 @@ class HistoryTransactionsWidget extends StatefulWidget {
 class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
   final GlobalKey<HistoryTransactionWidgetsState> _historyKey = GlobalKey();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -40,6 +38,7 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("recretedWidget");
     return BlocBuilder<HistoryTransactionsBloc, HistoryTransactionsBState>(
         key: _historyKey,
         builder: (context, state) {
@@ -53,7 +52,8 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
               child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.only(
+                          top: 20, left: 20, right: 20, bottom: 5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,8 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                           ])),
                   if (state.apiStatus == ApiStatus.error) ...[
                     const SizedBox(height: 200),
-                    EmptyWidget(title: AppLocalizations.of(context)!.errorLoading)
+                    EmptyWidget(
+                        title: AppLocalizations.of(context)!.errorLoading)
                   ],
                   if (state.apiStatus == ApiStatus.loading) ...[
                     const SizedBox(height: 200),
@@ -80,26 +81,81 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                   ],
                   if (state.apiStatus == ApiStatus.connected) ...[
                     Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0.0, vertical: 0.0),
-                            itemCount: listHistory.length,
-                            itemBuilder: (context, index) {
-                              final transaction = listHistory[index];
-                              var isReceiver =
-                                  widget.address.hash == transaction.receiver;
-                              return TransactionTile(
-                                transactionHistory: transaction,
-                                receiver: isReceiver,
-                                onTap: () => _showTransactionInfo(
-                                    context, transaction, isReceiver),
-                              );
-                            }))
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 0.0),
+                        itemCount: listHistory.length,
+                        itemBuilder: (context, index) {
+                          final transaction = listHistory[index];
+                          var isReceiver =
+                              widget.address.hash == transaction.receiver;
+
+                          // Check if it's the first item or the date is different from the previous transaction
+                          if (index == 0 ||
+                              _isDifferentDate(
+                                  listHistory[index - 1], transaction)) {
+                            return Column(
+                              children: [
+                                // Date header
+                                ListTile(
+                                  title: Text(
+                                      _getFormattedDate(transaction.timestamp),
+                                      style: AppTextStyles.itemStyle.copyWith(
+                                          color: Colors.black.withOpacity(0.7), fontSize: 18)),
+                                  // Additional styling for date header if needed
+                                ),
+                                // Transaction item
+                                TransactionTile(
+                                  transactionHistory: transaction,
+                                  receiver: isReceiver,
+                                  onTap: () => _showTransactionInfo(
+                                      context, transaction, isReceiver),
+                                ),
+                              ],
+                            );
+                          } else {
+                            // Only transaction item (no date header)
+                            return TransactionTile(
+                              transactionHistory: transaction,
+                              receiver: isReceiver,
+                              onTap: () => _showTransactionInfo(
+                                  context, transaction, isReceiver),
+                            );
+                          }
+                        },
+                      ),
+                    )
                   ]
                 ],
               ));
         });
+  }
+
+  bool _isDifferentDate(TransactionHistory prevTransaction,
+      TransactionHistory currentTransaction) {
+    final prevDate = DateTime.parse(prevTransaction.timestamp).toLocal();
+    final currentDate = DateTime.parse(currentTransaction.timestamp).toLocal();
+    return prevDate.day != currentDate.day ||
+        prevDate.month != currentDate.month ||
+        prevDate.year != currentDate.year;
+  }
+
+  String _getFormattedDate(String timestamp) {
+    final date = DateTime.parse(timestamp).toLocal();
+    final currentDate = DateTime.now().toLocal();
+
+    if (date.day == currentDate.day &&
+        date.month == currentDate.month &&
+        date.year == currentDate.year) {
+      return AppLocalizations.of(context)!.today;
+    } else if (date.day == currentDate.day - 1 &&
+        date.month == currentDate.month &&
+        date.year == currentDate.year) {
+      return AppLocalizations.of(context)!.yesterday;
+    } else {
+      return '${date.day}-${date.month}-${date.year}';
+    }
   }
 
   void _showTransactionInfo(

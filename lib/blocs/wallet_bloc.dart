@@ -7,7 +7,6 @@ import 'package:nososova/models/pending_transaction.dart';
 import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/repositories/repositories.dart';
 
-import '../models/app/history_transaction_state.dart';
 import '../models/app/import_wallet_response.dart';
 import '../models/app/responses/response_node.dart';
 import '../models/app/wallet.dart';
@@ -18,19 +17,14 @@ import 'events/wallet_events.dart';
 
 class WalletState {
   final Wallet wallet;
- // final HistoryTransactionWState historyTransactions;
 
-  WalletState({Wallet? wallet, HistoryTransactionWState? historyTransactions})
-      : wallet = wallet ?? Wallet();
-   //     historyTransactions = historyTransactions ?? HistoryTransactionWState();
+  WalletState({Wallet? wallet}) : wallet = wallet ?? Wallet();
 
   WalletState copyWith({
     Wallet? wallet,
- //  HistoryTransactionWState? historyTransactions,
   }) {
     return WalletState(
       wallet: wallet ?? this.wallet,
-   //   historyTransactions: historyTransactions ?? this.historyTransactions,
     );
   }
 }
@@ -93,7 +87,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       }
     }
   }
-
 
   void _createNewAddress(event, emit) async {
     await _repositories.localRepository

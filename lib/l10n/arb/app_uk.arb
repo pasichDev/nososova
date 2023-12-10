@@ -85,6 +85,10 @@
   "shareTransaction": "Поділитися транзакцією",
   "message": "Повідомлення",
   "editCustom": "Зміна назви",
-  "errorLoading": "Помилка серверу"
+  "errorLoading": "Помилка серверу",
+  "catActionAddress": "Дії над адресою",
+  "customNameAdd": "Встановити кастомізовану назву",
+  "today": "Сьогодні",
+  "yesterday": "Вчора"
 
 }

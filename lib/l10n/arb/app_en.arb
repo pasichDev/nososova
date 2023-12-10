@@ -85,5 +85,10 @@
   "shareTransaction": "Share Transaction",
   "message": "Message",
   "editCustom": "Changing name",
-  "errorLoading": "Server error"
+  "errorLoading": "Server error",
+  "catActionAddress": "Address actions",
+  "customNameAdd": "Set a custom name",
+  "today": "Today",
+  "yesterday": "Yesterday"
+
 }

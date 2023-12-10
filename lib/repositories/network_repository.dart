@@ -31,7 +31,7 @@ class NetworkRepository {
   /// Live Coin Watch Service
   /// https://livecoinwatch.github.io/lcw-api-docs/
 
-  Future<ResponseApi> fetchHistoryCoin() {
+  Future<ResponseApi> fetchHistoryCoins() {
     return _liveCoinWatchService.fetchHistory();
   }
 

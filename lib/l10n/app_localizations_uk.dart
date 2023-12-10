@@ -264,4 +264,16 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorLoading => 'Помилка серверу';
+
+  @override
+  String get catActionAddress => 'Дії над адресою';
+
+  @override
+  String get customNameAdd => 'Встановити кастомізовану назву';
+
+  @override
+  String get today => 'Сьогодні';
+
+  @override
+  String get yesterday => 'Вчора';
 }

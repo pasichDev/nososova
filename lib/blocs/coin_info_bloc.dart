@@ -5,6 +5,7 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/models/apiLiveCoinWatch/minimal_info_coin.dart';
 import 'package:nososova/repositories/repositories.dart';
 
+import '../models/apiExplorer/price_dat.dart';
 import '../models/app/halving.dart';
 import '../models/app/info_coin.dart';
 import '../utils/status_api.dart';
@@ -113,6 +114,9 @@ class CoinInfoBloc extends Bloc<CoinInfoEvent, CoinInfoState> {
     var response =
         await _repositories.networkRepository.fetchHistoryPrice();
 
+    List<PriceData> vv = response.value;
+    print(vv.last.timestamp);
+    print(vv.last.price);
     if (response.errors == null) {
       emit(state.copyWith(
           apiStatus: ApiStatus.connected,
