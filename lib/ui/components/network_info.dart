@@ -17,11 +17,13 @@ class NetworkInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
-      return OutlinedButton(
+      return TextButton(
           onPressed: () => nodeStatusDialog(),
           style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide.none,
+
               ),
               backgroundColor: Colors.white.withOpacity(0.1),
               elevation: 0),
