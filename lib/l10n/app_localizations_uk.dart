@@ -276,4 +276,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get yesterday => 'Вчора';
+
+  @override
+  String get sender => 'Відправник';
 }

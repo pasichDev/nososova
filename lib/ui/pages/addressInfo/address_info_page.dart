@@ -9,6 +9,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
+import '../../components/network_info.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
@@ -33,7 +34,6 @@ class AddressInfoPageState extends State<AddressInfoPage> {
 
   @override
   void initState() {
-
     super.initState();
     address = BlocProvider.of<WalletBloc>(context)
             .state
@@ -43,63 +43,49 @@ class AddressInfoPageState extends State<AddressInfoPage> {
     historyWidget = HistoryTransactionsWidget(address: address);
   }
 
-  /// TODO HistoryTransactionsWidget зробити так щоб він повторно використовувався
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        title: NetworkInfo(
+            nodeStatusDialog: () => {}),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
         return Container(
           decoration: const OtherGradientDecoration(),
-          child: Stack(
+          child: SafeArea(
+              child: Column(
             children: [
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Column(
-                  children: [
-                    ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
-                        child: Column(
-                          children: [
-                            PendingsWidget(address: address),
-                            IndexedStack(index: selectedIndexChild, children: [
-                              historyWidget,
-                              AddressActionsWidget(address: address)
-                            ])
-                          ],
-                        ))
-                  ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: TransformWidget(
+                  widget: _cardAddress(address),
+                  changer: (reverse) {},
+                  middleChanger: (middle) {
+                    if (mounted) {
+                      setState(() {
+                        selectedIndexChild = selectedIndexChild == 0 ? 1 : 0;
+                      });
+                    }
+                  },
                 ),
               ),
-              Positioned(
-                  top: 130,
-                  left: 20,
-                  right: 20,
-                  child: TransformWidget(
-                    widget: _cardAddress(
-                      address,
-                    ),
-                    changer: (reverse) {},
-                    middleChanger: (middle) {
-                      if (mounted) {
-                        setState(() {
-                          print(middle);
-                          selectedIndexChild = selectedIndexChild == 0 ? 1 : 0;
-                        });
-                      }
-                    },
-                  ))
+              PendingsWidget(address: address),
+              Expanded(
+                  child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
+                child: selectedIndexChild == 0
+                    ? historyWidget
+                    : AddressActionsWidget(address: address),
+              )),
             ],
-          ),
+          )),
         );
       }),
     );

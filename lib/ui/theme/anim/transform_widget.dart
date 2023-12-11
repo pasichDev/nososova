@@ -74,7 +74,7 @@ class TransformWidgetState extends State<TransformWidget> {
 
   _scaleChange(double rotationDec) {
     if (_rotationValue <= rotationDec) {
-      if (_scaleValue > 0.8) {
+      if (_scaleValue > 0.75) {
         _scaleValue -= 0.005;
       }
     } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
@@ -35,6 +36,9 @@ class ListAddresses extends StatelessWidget {
                           providers: [
                             BlocProvider.value(
                               value: locator<WalletBloc>(),
+                            ),
+                            BlocProvider.value(
+                              value: locator<AppDataBloc>(),
                             ),
                             BlocProvider<HistoryTransactionsBloc>(
                               create: (BuildContext context) =>

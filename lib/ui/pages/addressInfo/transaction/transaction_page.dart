@@ -97,7 +97,7 @@ class PaymentPageState extends State<TransactionPage> {
                         const SizedBox(height: 20),
                         Text(
                           isCustom ? AppLocalizations.of(context)!.editCustom :
-                            "${widget.isReceiver ? "+": ""}${widget.transaction.amount} ${Const.coinName}",
+                            "${widget.isReceiver ? "+": "-"}${widget.transaction.amount.replaceAll(' ', '')} ${Const.coinName}",
                             style: AppTextStyles.titleMax
                                 .copyWith(color: Colors.black, fontSize: 36)),
                         const SizedBox(height: 20),
@@ -122,6 +122,11 @@ class PaymentPageState extends State<TransactionPage> {
                             AppLocalizations.of(context)!.receiver,
                             OtherUtils.hashObfuscation(
                                 widget.transaction.receiver)),
+                        if(widget.isReceiver)
+                          InfoItem().itemInfo(
+                              AppLocalizations.of(context)!.sender,
+                              OtherUtils.hashObfuscation(
+                                  widget.transaction.sender)),
                         if(!widget.isReceiver)
                         InfoItem().itemInfo(
                             AppLocalizations.of(context)!.commission,

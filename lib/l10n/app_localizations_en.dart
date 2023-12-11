@@ -276,4 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yesterday => 'Yesterday';
+
+  @override
+  String get sender => 'Sender';
 }

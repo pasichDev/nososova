@@ -89,6 +89,7 @@
   "catActionAddress": "Дії над адресою",
   "customNameAdd": "Встановити кастомізовану назву",
   "today": "Сьогодні",
-  "yesterday": "Вчора"
+  "yesterday": "Вчора",
+  "sender": "Відправник"
 
 }

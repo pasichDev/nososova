@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/utils/noso/src/address_object.dart';
 
+import '../../../../blocs/events/wallet_events.dart';
+import '../../../../blocs/wallet_bloc.dart';
 import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../theme/style/text_style.dart';
@@ -13,6 +16,7 @@ class AddressActionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var walletBloc = BlocProvider.of<WalletBloc>(context);
     return Container(
         height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
@@ -27,8 +31,12 @@ class AddressActionsWidget extends StatelessWidget {
               AppLocalizations.of(context)!.sendFromAddress, () => {}),
           buildListTileSvg(Assets.iconsRename,
               AppLocalizations.of(context)!.customNameAdd, () {}),
-          buildListTileSvg(Assets.iconsDelete,
-              AppLocalizations.of(context)!.removeAddress, () {}),
+          buildListTileSvg(
+              Assets.iconsDelete, AppLocalizations.of(context)!.removeAddress,
+              () {
+            walletBloc.add(DeleteAddress(address));
+            Navigator.pop(context);
+          }),
         ]));
   }
 }

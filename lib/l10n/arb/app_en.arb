@@ -89,6 +89,7 @@
   "catActionAddress": "Address actions",
   "customNameAdd": "Set a custom name",
   "today": "Today",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "sender": "Sender"
 
 }
