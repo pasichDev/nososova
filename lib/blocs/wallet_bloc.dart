@@ -199,7 +199,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   void _importWalletQr(event, emit) async {
     var address =
         _repositories.nosoCore.importAddressForKeysPair(event.addressKeys);
-
+    print(address);
     if (address != null) {
       _actionsFileWallet.sink.add(ImportWResponse(
           actionsFileWallet: ActionsFileWallet.walletOpen, address: [address]));

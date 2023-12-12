@@ -59,7 +59,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get foundAddresses => 'Знайдені адреси';
 
   @override
-  String get cancel => 'Відмінити';
+  String get cancel => 'Скасувати';
 
   @override
   String get addToWallet => 'Додати в гаманець';

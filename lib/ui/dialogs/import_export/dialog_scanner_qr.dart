@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
+import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../blocs/events/wallet_events.dart';
@@ -15,25 +16,12 @@ import '../dialog_send_address.dart';
 
 class DialogScannerQr {
   void showDialogScanQr(BuildContext context, WalletBloc walletBloc) {
-    showDialog(
-        context: context,
-        builder: (_) => BlocProvider.value(
-              value: walletBloc,
-              child: Container(
-                alignment: Alignment.center,
-                child: Container(
-                  height: 400,
-                  width: 600,
-                  margin: const EdgeInsets.all(20),
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const ScannerWidget(),
-                ),
-              ),
-            ));
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) =>
+          BlocProvider.value(value: walletBloc, child: const ScannerWidget()),
+    );
   }
 }
 
@@ -79,19 +67,30 @@ class ScannerWidgetState extends State<ScannerWidget> {
       children: [
         Flexible(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
             child: _buildQrView(context),
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: CustomColors.primaryColor,
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: CustomColors.negativeBalance,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style:
+                      AppTextStyles.walletAddress.copyWith(color: Colors.white),
+                )),
           ),
-          child: Text(AppLocalizations.of(context)!.cancel),
-        ),
+        )
       ],
     );
   }
@@ -116,6 +115,8 @@ class ScannerWidgetState extends State<ScannerWidget> {
     );
   }
 
+
+  /// TODO Закінчит работу над сканером
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((Barcode scanData) async {

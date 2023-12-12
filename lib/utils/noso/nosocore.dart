@@ -55,6 +55,8 @@ final class NosoCore extends NosoCrypto {
       String privateKeyPart = keyParts[1];
 
       bool verification = verifyKeysPair(publicKeyPart, privateKeyPart);
+
+      print(verification);
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {

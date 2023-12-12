@@ -46,7 +46,9 @@ class DialogImportAddressState extends State<DialogImportAddress> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: ListView.builder(
+           child:
+          ListView.builder(
+             shrinkWrap: false,
               itemCount: addresses.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = addresses[index];
@@ -96,12 +98,12 @@ class DialogImportAddressState extends State<DialogImportAddress> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                  backgroundColor: CustomColors.negativeBalance,
                 ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text(AppLocalizations.of(context)!.cancel),
+                child:Padding(padding: const EdgeInsets.all(15), child: Text(AppLocalizations.of(context)!.cancel, style: AppTextStyles.walletAddress.copyWith(color: Colors.white))),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
@@ -114,9 +116,8 @@ class DialogImportAddressState extends State<DialogImportAddress> {
                   }
                   Navigator.pop(context);
                 },
-                child: Text(AppLocalizations.of(context)!.addToWallet),
+                child:Padding(padding: const EdgeInsets.all(15), child:  Text(AppLocalizations.of(context)!.addToWallet, style: AppTextStyles.walletAddress.copyWith(color: Colors.white)),),
               ),
-              // const SizedBox(width: 20),
             ],
           ),
         ],

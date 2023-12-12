@@ -61,7 +61,7 @@ class NosoCrypto {
         domain.curve.decodePoint(base64.decode(publicKey));
     ECPublicKey publicKeys = ECPublicKey(publicKeyPoint, domain);
 
-    var verifier = ECDSASigner(null, algorithmName)
+    var verifier = ECDSASigner(SHA1Digest(), algorithmName)
       ..init(false, PublicKeyParameter<ECPublicKey>(publicKeys));
 
     return verifier.verifySignature(messageBytes, signature);
