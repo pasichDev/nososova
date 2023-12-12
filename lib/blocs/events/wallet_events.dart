@@ -57,14 +57,21 @@ class ImportWalletQr extends WalletEvent {
 //TERM DELRTE
 class SendOrder extends WalletEvent {
   final String value;
+
   SendOrder(this.value);
 }
 
 class FetchHistoryAddress extends WalletEvent {
   final String value;
+
   FetchHistoryAddress(this.value);
 }
 
 class CleanDataAddress extends WalletEvent {}
 
+class SetAlias extends WalletEvent {
+  final String alias;
+  final Address address;
 
+  SetAlias(this.alias, this.address);
+}

@@ -82,16 +82,10 @@ class AddressInfoState extends State<AddressInfo> {
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //   buildListTile(Icons.confirmation_num_outlined,
-          //     AppLocalizations.of(context)!.certificate, () {}),
-          // buildListTile(Icons.account_balance_wallet_outlined,
-          //   AppLocalizations.of(context)!.billAction, () {}),
           buildListTileSvg(
               Assets.iconsOutput,
               AppLocalizations.of(context)!.sendFromAddress,
               () => _paymentPage(context)),
-          // buildListTile(
-          //    Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
           TileConfirmList(
               iconData: Assets.iconsDelete,
               title: AppLocalizations.of(context)!.removeAddress,
@@ -104,6 +98,16 @@ class AddressInfoState extends State<AddressInfo> {
       ),
     ]);
   }
+
+  /*
+   buildListTile(Icons.confirmation_num_outlined,
+             AppLocalizations.of(context)!.certificate, () {}),
+         buildListTile(Icons.account_balance_wallet_outlined,
+            AppLocalizations.of(context)!.billAction, () {}),
+
+          buildListTile(
+              Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
+   */
 
   void _viewQr(BuildContext context) {
     Navigator.pop(context);

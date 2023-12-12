@@ -624,7 +624,7 @@ abstract class AppLocalizations {
   /// No description provided for @customNameAdd.
   ///
   /// In en, this message translates to:
-  /// **'Set a custom name'**
+  /// **'Set Alias'**
   String get customNameAdd;
 
   /// No description provided for @today.
@@ -650,6 +650,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm remove address'**
   String get confirmDelete;
+
+  /// No description provided for @aliasNameAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Alias'**
+  String get aliasNameAddress;
+
+  /// No description provided for @alias.
+  ///
+  /// In en, this message translates to:
+  /// **'Alias'**
+  String get alias;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @aliasMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.'**
+  String get aliasMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

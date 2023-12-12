@@ -7,6 +7,7 @@ class Const {
   static const String coinChar = "N";
   static const String coinName = "NOSO";
   static const String verifyMessage = "VERIFICATION";
+  static const String CustomValid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@*+-_:";
 
   static const double ComisionCustom = 200000; // 0.05 % of the Initial reward
   static const double CustomizationFee = 10000000 / ComisionCustom;

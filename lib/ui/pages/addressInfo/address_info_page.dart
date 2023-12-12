@@ -112,6 +112,7 @@ class AddressInfoPageState extends State<AddressInfoPage> {
                   children: [
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
+                        side: BorderSide.none,
                         backgroundColor: selectedOption == 1
                             ? const Color(0xFF53566E).withOpacity(0.7)
                             : Colors.white.withOpacity(0.05),
@@ -136,6 +137,7 @@ class AddressInfoPageState extends State<AddressInfoPage> {
                     const SizedBox(height: 20),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
+                        side: BorderSide.none,
                         backgroundColor: selectedOption == 2
                             ? const Color(0xFF53566E).withOpacity(0.7)
                             : Colors.white.withOpacity(0.1),

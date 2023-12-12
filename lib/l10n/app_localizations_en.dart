@@ -269,7 +269,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catActionAddress => 'Address actions';
 
   @override
-  String get customNameAdd => 'Set a custom name';
+  String get customNameAdd => 'Set Alias';
 
   @override
   String get today => 'Today';
@@ -282,4 +282,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmDelete => 'Confirm remove address';
+
+  @override
+  String get aliasNameAddress => 'Change Alias';
+
+  @override
+  String get alias => 'Alias';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get aliasMessage => 'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.';
 }

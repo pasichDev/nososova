@@ -87,10 +87,14 @@
   "editCustom": "Changing name",
   "errorLoading": "Server error",
   "catActionAddress": "Address actions",
-  "customNameAdd": "Set a custom name",
+  "customNameAdd": "Set Alias",
   "today": "Today",
   "yesterday": "Yesterday",
   "sender": "Sender",
-  "confirmDelete": "Confirm remove address"
-
+  "confirmDelete": "Confirm remove address",
+  "aliasNameAddress": "Change Alias",
+  "alias": "Alias",
+  "save": "Save",
+  "confirm": "Confirm",
+  "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias."
 }

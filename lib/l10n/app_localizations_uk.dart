@@ -269,7 +269,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get catActionAddress => 'Дії над адресою';
 
   @override
-  String get customNameAdd => 'Встановити кастомізовану назву';
+  String get customNameAdd => 'Встановити псевдоніму';
 
   @override
   String get today => 'Сьогодні';
@@ -282,4 +282,19 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get confirmDelete => 'Підтвердити вилучення адреси';
+
+  @override
+  String get aliasNameAddress => 'Зміна псевдоніма';
+
+  @override
+  String get alias => 'Псевдонім';
+
+  @override
+  String get save => 'Зберегти';
+
+  @override
+  String get confirm => 'Підтвердити';
+
+  @override
+  String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за зміну псевдоніму знімається комісія за операцію.';
 }

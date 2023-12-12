@@ -1,1 +1,1 @@
-enum ApiStatus { connected, loading, error }
+enum ApiStatus { connected, loading, error, result }

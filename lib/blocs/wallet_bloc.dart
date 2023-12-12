@@ -44,6 +44,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   Stream<bool> get walletUpdate => _walletUpdate.stream;
 
+  final _setAlias = StreamController<bool>.broadcast();
+
+  Stream<bool> get getAliasResult => _setAlias.stream;
+
   WalletBloc({
     required Repositories repositories,
     required this.appDataBloc,
@@ -57,8 +61,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
     on<SendOrder>(_sendOrder);
+    on<SetAlias>(_setAliasAddress);
     initBloc();
   }
+
+
+  Future<void> _setAliasAddress(e, emit) async {
+    print("setAliasAddress");
+    //print(e.value);
+    ResponseNode resp = await _repositories.networkRepository
+        .fetchNode("${e.value}\n", appDataBloc.state.node.seed);
+
+    print(resp.value);
+
+    //if(resp.value)
+
+      _setAlias.add(true);
+  }
+
+
+
 
   Future<void> _sendOrder(e, emit) async {
     print("sendOrder");
