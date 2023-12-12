@@ -12,6 +12,7 @@ import '../../../../../generated/assets.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../../../../utils/noso/src/address_object.dart';
 import '../../../dialogs/dialog_view_qr.dart';
+import '../../../tiles/tile_сonfirm_list.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;
@@ -91,11 +92,14 @@ class AddressInfoState extends State<AddressInfo> {
               () => _paymentPage(context)),
           // buildListTile(
           //    Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
-          buildListTileSvg(
-              Assets.iconsDelete, AppLocalizations.of(context)!.removeAddress, () {
-            walletBloc.add(DeleteAddress(widget.address));
-            Navigator.pop(context);
-          })
+          TileConfirmList(
+              iconData: Assets.iconsDelete,
+              title: AppLocalizations.of(context)!.removeAddress,
+              confirm: AppLocalizations.of(context)!.confirmDelete,
+              onClick: () {
+                walletBloc.add(DeleteAddress(widget.address));
+                Navigator.pop(context);
+              })
         ],
       ),
     ]);
@@ -111,10 +115,10 @@ class AddressInfoState extends State<AddressInfo> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>  BlocProvider.value(
+        builder: (context) => BlocProvider.value(
           value: walletBloc,
           child: PaymentPage(address: widget.address),
-        ) ,
+        ),
       ),
     );
   }

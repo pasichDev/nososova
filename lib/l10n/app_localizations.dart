@@ -644,6 +644,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sender'**
   String get sender;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm remove address'**
+  String get confirmDelete;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -279,4 +279,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get sender => 'Відправник';
+
+  @override
+  String get confirmDelete => 'Підтвердити вилучення адреси';
 }

@@ -90,6 +90,7 @@
   "customNameAdd": "Set a custom name",
   "today": "Today",
   "yesterday": "Yesterday",
-  "sender": "Sender"
+  "sender": "Sender",
+  "confirmDelete": "Confirm remove address"
 
 }

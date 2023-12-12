@@ -279,4 +279,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sender => 'Sender';
+
+  @override
+  String get confirmDelete => 'Confirm remove address';
 }

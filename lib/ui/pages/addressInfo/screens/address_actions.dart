@@ -8,6 +8,7 @@ import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../theme/style/text_style.dart';
 import '../../../tiles/dialog_tile.dart';
+import '../../../tiles/tile_сonfirm_list.dart';
 
 class AddressActionsWidget extends StatelessWidget {
   final Address address;
@@ -31,12 +32,14 @@ class AddressActionsWidget extends StatelessWidget {
               AppLocalizations.of(context)!.sendFromAddress, () => {}),
           buildListTileSvg(Assets.iconsRename,
               AppLocalizations.of(context)!.customNameAdd, () {}),
-          buildListTileSvg(
-              Assets.iconsDelete, AppLocalizations.of(context)!.removeAddress,
-              () {
-            walletBloc.add(DeleteAddress(address));
-            Navigator.pop(context);
-          }),
+          TileConfirmList(
+              iconData: Assets.iconsDelete,
+              title: AppLocalizations.of(context)!.removeAddress,
+              confirm: AppLocalizations.of(context)!.confirmDelete,
+              onClick: () {
+                walletBloc.add(DeleteAddress(address));
+                Navigator.pop(context);
+              }),
         ]));
   }
 }
