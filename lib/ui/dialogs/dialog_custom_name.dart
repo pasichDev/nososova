@@ -22,7 +22,9 @@ class DialogCustomName extends StatefulWidget {
   _DialogCustomNameState createState() => _DialogCustomNameState();
 }
 
-/// TODO Встановити комісію транзакції
+/// TODO Псевдонім можна встановити лише один раз!!!
+
+************
 class _DialogCustomNameState extends State<DialogCustomName> {
   bool isFinished = false;
   bool isActiveButtonSend = false;
