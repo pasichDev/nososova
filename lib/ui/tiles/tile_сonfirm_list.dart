@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../theme/style/text_style.dart';
 
@@ -28,10 +28,10 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: SvgPicture.asset(widget.iconData,
-          height: 32,
-          width: 32,
-          color: _clicked ? CustomColors.negativeBalance : null),
+      leading: AppIconsStyle.icon3x2(widget.iconData,
+          colorFilter: ColorFilter.mode(
+              _clicked ? CustomColors.negativeBalance : Colors.grey,
+              BlendMode.srcIn)),
       title: Text(_clicked ? widget.confirm : widget.title,
           style: _clicked
               ? AppTextStyles.walletAddress

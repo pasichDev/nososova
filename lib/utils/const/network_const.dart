@@ -22,6 +22,7 @@ final class NetworkRequest {
   static const String nodeList = "NSLMNS\n";
   static const String pendingsList = "NSLPEND\n";
   static const String summary = "GETZIPSUMARY\n";
+  static const String aliasOrder = "NSLCUSTOM";
 }
 
 final class CheckConnect {

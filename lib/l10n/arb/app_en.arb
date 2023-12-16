@@ -96,5 +96,9 @@
   "alias": "Alias",
   "save": "Save",
   "confirm": "Confirm",
-  "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias."
+  "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias.",
+  "errorNoFoundCoinsTransaction": "There are not enough coins for the transaction",
+  "errorInformationIncorrect": "The shipping information is incorrect",
+  "errorDefaultErrorAlias": "Error trying to set alias",
+  "successSetAlias": "Your request is successful and has been processed"
 }

@@ -32,8 +32,12 @@ class AddressActionsWidget extends StatelessWidget {
                   style: AppTextStyles.categoryStyle)),
           buildListTileSvg(Assets.iconsOutput,
               AppLocalizations.of(context)!.sendFromAddress, () => {}),
-          buildListTileSvg(Assets.iconsRename,
-              AppLocalizations.of(context)!.customNameAdd, () => _showDialogCustomName(context)),
+          if (address.custom == null)
+            buildListTileSvg(
+                Assets.iconsRename,
+                enabled: address.custom == null,
+                AppLocalizations.of(context)!.customNameAdd,
+                () => _showDialogCustomName(context)),
           TileConfirmList(
               iconData: Assets.iconsDelete,
               title: AppLocalizations.of(context)!.removeAddress,
@@ -45,21 +49,18 @@ class AddressActionsWidget extends StatelessWidget {
         ]));
   }
 
-
   void _showDialogCustomName(BuildContext context) {
     showModalBottomSheet(
-      isScrollControlled: true,
+        isScrollControlled: true,
         shape: DialogStyle.borderShape,
         context: context,
         builder: (_) => MultiBlocProvider(
-          providers: [
-
-            BlocProvider.value(
-              value: BlocProvider.of<WalletBloc>(context),
-            ),
-          ],
-
-            child:  DialogCustomName(address: address),
-        ));
+              providers: [
+                BlocProvider.value(
+                  value: BlocProvider.of<WalletBloc>(context),
+                ),
+              ],
+              child: DialogCustomName(address: address),
+            ));
   }
 }

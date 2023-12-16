@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/models/app/response_page_listener.dart';
 import 'package:nososova/models/pending_transaction.dart';
 import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/repositories/repositories.dart';
@@ -10,9 +11,12 @@ import 'package:nososova/repositories/repositories.dart';
 import '../models/app/import_wallet_response.dart';
 import '../models/app/responses/response_node.dart';
 import '../models/app/wallet.dart';
+import '../utils/const/const.dart';
 import '../utils/const/files_const.dart';
+import '../utils/noso/model/order_create.dart';
 import '../utils/noso/src/address_object.dart';
 import '../utils/noso/utils.dart';
+import 'events/app_data_events.dart';
 import 'events/wallet_events.dart';
 
 class WalletState {
@@ -44,9 +48,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   Stream<bool> get walletUpdate => _walletUpdate.stream;
 
-  final _setAlias = StreamController<bool>.broadcast();
+  final _responseStatusStream =
+      StreamController<ResponseListenerPage>.broadcast();
 
-  Stream<bool> get getAliasResult => _setAlias.stream;
+  Stream<ResponseListenerPage> get getResponseStatusStream =>
+      _responseStatusStream.stream;
 
   WalletBloc({
     required Repositories repositories,
@@ -60,27 +66,46 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletFile>(_importWalletFile);
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
-    on<SendOrder>(_sendOrder);
     on<SetAlias>(_setAliasAddress);
     initBloc();
   }
 
-
+  /// The method used to change the alias address
   Future<void> _setAliasAddress(e, emit) async {
-    print("setAliasAddress");
-    //print(e.value);
-    ResponseNode resp = await _repositories.networkRepository
-        .fetchNode("${e.value}\n", appDataBloc.state.node.seed);
+    var isBalanceCorrect = e.address.availableBalance > Const.customizationFee;
+    if (e.address.hash == "" || e.alias == "" || isBalanceCorrect) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: e.widgetId,
+          codeMessage: !isBalanceCorrect ? 1 : 2,
+          snackBarType: SnackBarType.error));
+      return;
+    }
+    ResponseNode resp = await _repositories.networkRepository.fetchNode(
+        "${NewOrderSend().getAliasOrderString(e.address, e.alias)}\n",
+        appDataBloc.state.node.seed);
 
-    print(resp.value);
+    if (resp.errors != null) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: e.widgetId,
+          codeMessage: 3,
+          snackBarType: SnackBarType.error));
+    } else {
+      String resultCode = String.fromCharCodes(resp.value);
+      if (int.parse(resultCode) == 0) {
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: e.widgetId,
+            codeMessage: 4,
+            snackBarType: SnackBarType.success));
 
-    //if(resp.value)
-
-      _setAlias.add(true);
+        appDataBloc.add(ReconnectSeed(true));
+      } else {
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: e.widgetId,
+            codeMessage: 3,
+            snackBarType: SnackBarType.error));
+      }
+    }
   }
-
-
-
 
   Future<void> _sendOrder(e, emit) async {
     print("sendOrder");

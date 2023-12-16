@@ -46,9 +46,10 @@ class $AddressesTable extends Addresses
   @override
   List<GeneratedColumn> get $columns => [publicKey, privateKey, hash, custom];
   @override
-  String get aliasedName => _alias ?? 'addresses';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'addresses';
+  String get actualTableName => $name;
+  static const String $name = 'addresses';
   @override
   VerificationContext validateIntegrity(Insertable<Address> instance,
       {bool isInserting = false}) {

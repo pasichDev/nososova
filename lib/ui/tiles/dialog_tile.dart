@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 Widget buildListTile(IconData iconData, String title, VoidCallback onClick) {
@@ -9,9 +9,10 @@ Widget buildListTile(IconData iconData, String title, VoidCallback onClick) {
     onTap: onClick,
   );
 }
-Widget buildListTileSvg(String iconData, String title, VoidCallback onClick) {
+Widget buildListTileSvg(String iconData, String title, VoidCallback onClick, {bool enabled = true}) {
   return ListTile(
-    leading: SvgPicture.asset(iconData, height: 32, width: 32,),
+    enabled: enabled,
+    leading: AppIconsStyle.icon3x2(iconData),
     title: Text(title, style: AppTextStyles.itemStyle),
     onTap: onClick,
   );

@@ -6,10 +6,10 @@ class UtilsDataNoso {
   }
 
   static double getFee(double amount) {
-    double result = amount / Const.Comisiontrfr;
+    double result = amount / Const.comissiontrfr;
 
-    if (result < Const.MinimunFee) {
-      return Const.MinimunFee;
+    if (result < Const.minimumFee) {
+      return Const.minimumFee;
     }
 
     return result;

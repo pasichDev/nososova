@@ -297,4 +297,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aliasMessage => 'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.';
+
+  @override
+  String get errorNoFoundCoinsTransaction => 'There are not enough coins for the transaction';
+
+  @override
+  String get errorInformationIncorrect => 'The shipping information is incorrect';
+
+  @override
+  String get errorDefaultErrorAlias => 'Error trying to set alias';
+
+  @override
+  String get successSetAlias => 'Your request is successful and has been processed';
 }

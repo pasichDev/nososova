@@ -297,4 +297,16 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за зміну псевдоніму знімається комісія за операцію.';
+
+  @override
+  String get errorNoFoundCoinsTransaction => 'Недостатньо монет для проведення транзакції';
+
+  @override
+  String get errorInformationIncorrect => 'Невірна інформація для доставки';
+
+  @override
+  String get errorDefaultErrorAlias => 'Помилка при встановленні псевдоніма';
+
+  @override
+  String get successSetAlias => 'Ваш запит успішно додано в обробку';
 }

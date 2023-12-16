@@ -680,6 +680,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.'**
   String get aliasMessage;
+
+  /// No description provided for @errorNoFoundCoinsTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'There are not enough coins for the transaction'**
+  String get errorNoFoundCoinsTransaction;
+
+  /// No description provided for @errorInformationIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'The shipping information is incorrect'**
+  String get errorInformationIncorrect;
+
+  /// No description provided for @errorDefaultErrorAlias.
+  ///
+  /// In en, this message translates to:
+  /// **'Error trying to set alias'**
+  String get errorDefaultErrorAlias;
+
+  /// No description provided for @successSetAlias.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request is successful and has been processed'**
+  String get successSetAlias;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

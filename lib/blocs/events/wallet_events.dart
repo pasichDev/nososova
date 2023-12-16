@@ -54,13 +54,6 @@ class ImportWalletQr extends WalletEvent {
   ImportWalletQr(this.addressKeys);
 }
 
-//TERM DELRTE
-class SendOrder extends WalletEvent {
-  final String value;
-
-  SendOrder(this.value);
-}
-
 class FetchHistoryAddress extends WalletEvent {
   final String value;
 
@@ -72,6 +65,7 @@ class CleanDataAddress extends WalletEvent {}
 class SetAlias extends WalletEvent {
   final String alias;
   final Address address;
+  final int widgetId;
 
-  SetAlias(this.alias, this.address);
+  SetAlias(this.alias, this.address, this.widgetId);
 }

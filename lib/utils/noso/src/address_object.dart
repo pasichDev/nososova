@@ -21,7 +21,11 @@ class Address {
   /// Returns the wallet address displayed to the user, either truncated or custom
   get nameAddressPublic => custom ?? OtherUtils.hashObfuscation(hash);
 
+  /// Returns the hash or alias of the address
   get nameAddressFull => custom ?? hash;
+
+  /// Available balance to perform paid transactions
+  get availableBalance => (balance - outgoing) - incoming;
 
   Address({
     required this.hash,

@@ -9,7 +9,7 @@ import 'package:swipeable_button_view/swipeable_button_view.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../models/order_create.dart';
+import '../../../utils/noso/model/order_create.dart';
 import '../../../utils/noso/nosocore.dart';
 import '../../../utils/noso/src/address_object.dart';
 import '../../../utils/noso/src/crypto.dart';
@@ -202,7 +202,8 @@ class PaymentPageState extends State<PaymentPage> {
     var block = BlocProvider.of<WalletBloc>(context);
     int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     var amount = doubleToIndianInt(double.parse(amountController.text));
-    var fre = NosoCore().getFee(double.parse(amountController.text));
+  //  var fre = NosoCore().getFee(double.parse(amountController.text)); це вернути
+    var fre = 0;
     var trxLine = 1;
     var prbl = " ";
 
@@ -223,7 +224,7 @@ class PaymentPageState extends State<PaymentPage> {
     var signature =
         NosoCrypto().signMessage(message, widget.address.privateKey);
 
-    NewOrderData orderInfo = NewOrderData(
+    NewOrderSend orderInfo = NewOrderSend(
         orderID: '',
         orderLines: trxLine,
         orderType: "TRFR",
@@ -242,7 +243,7 @@ class PaymentPageState extends State<PaymentPage> {
             amount.toString() +
             block.appDataBloc.state.node.lastblock.toString()));
 
-    ORDERHASHSTRING += orderInfo.trfrID;
+   // ORDERHASHSTRING += orderInfo.trfrID;
 
     orderInfo.orderID = NosoCore().getOrderHash("$trxLine$ORDERHASHSTRING");
     print("new OrderID ->${orderInfo.orderID}");
@@ -251,7 +252,7 @@ class PaymentPageState extends State<PaymentPage> {
     print("ResultOrderID ->${resultOrderId}");
 
     var protocol = "1";
-    var prgramVersion = "1.0";
+    var prgramVersion = "NOSOSOVA";// "1.0";
     var ORDERSTRINGSEND = "NSLORDER" +
         prbl +
         protocol +
@@ -265,7 +266,7 @@ class PaymentPageState extends State<PaymentPage> {
         trxLine.toString() +
         " \$";
 
-    ORDERSTRINGSEND += "${orderInfo.getStringFromOrder()} \$";
+  //  ORDERSTRINGSEND += "${orderInfo.getStringFromOrder()} \$";
 
     ORDERSTRINGSEND = ORDERSTRINGSEND.substring(0, ORDERSTRINGSEND.length - 2);
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/address_actions.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/history_transaction.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/pendings_widget.dart';
+import 'package:nososova/ui/responses_util/snackbar_message.dart';
 import 'package:nososova/utils/noso/src/address_object.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -10,6 +11,7 @@ import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
 import '../../components/network_info.dart';
+import '../../responses_util/response_widget_id.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
@@ -31,16 +33,27 @@ class AddressInfoPageState extends State<AddressInfoPage> {
   int selectedOption = 1;
   late HistoryTransactionsWidget historyWidget;
   late Address address;
+  late WalletBloc walletBloc;
 
   @override
   void initState() {
     super.initState();
-    address = BlocProvider.of<WalletBloc>(context)
-            .state
-            .wallet
-            .getAddress(widget.hash) ??
+    walletBloc = BlocProvider.of<WalletBloc>(context);
+    address = walletBloc.state.wallet.getAddress(widget.hash) ??
         Address(hash: "", publicKey: "", privateKey: "");
     historyWidget = HistoryTransactionsWidget(address: address);
+
+    _responseListener();
+  }
+
+  void _responseListener() {
+    walletBloc.getResponseStatusStream.listen((response) async {
+      if (mounted ||
+          ResponseWidgetsIds.idsPageAddressInfo.contains(response.idWidget)) {
+        await Future.delayed(const Duration(milliseconds: 200));
+        SnackBarWidgetResponse(context: context, response: response).get();
+      }
+    });
   }
 
   @override
@@ -48,8 +61,7 @@ class AddressInfoPageState extends State<AddressInfoPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: NetworkInfo(
-            nodeStatusDialog: () => {}),
+        title: NetworkInfo(nodeStatusDialog: () => {}),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

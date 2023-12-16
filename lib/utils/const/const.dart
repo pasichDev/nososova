@@ -7,12 +7,14 @@ class Const {
   static const String coinChar = "N";
   static const String coinName = "NOSO";
   static const String verifyMessage = "VERIFICATION";
-  static const String CustomValid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@*+-_:";
+  static const String customValid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@*+-_:";
 
-  static const double ComisionCustom = 200000; // 0.05 % of the Initial reward
-  static const double CustomizationFee = 10000000 / ComisionCustom;
+  static const double comisionCustom = 200000;
+  static const int customizationFee = 25000;
 
-  static const double Comisiontrfr =
-      10000; // Amount/Comisiontrfr = 0.01% of the amount
-  static const double MinimunFee = 1000000;
+  static const double comissiontrfr =
+      10000;
+  static const double minimumFee = 1000000;
+  static const double protocol = 1.0;
+  static const String programVersion = "NOSOSOVA_1_0";
 }

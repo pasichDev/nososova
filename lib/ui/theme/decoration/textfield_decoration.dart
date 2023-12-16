@@ -9,6 +9,9 @@ class AppTextFiledDecoration {
       filled: true,
       hintText: textHidden,
       hintStyle: AppTextStyles.textFieldHiddenStyle,
+      disabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+      ),
       fillColor: Colors.transparent,
       enabledBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Colors.grey, width: 1.0),
