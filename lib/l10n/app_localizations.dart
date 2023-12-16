@@ -396,7 +396,7 @@ abstract class AppLocalizations {
   /// No description provided for @addressesAdded.
   ///
   /// In en, this message translates to:
-  /// **'Added address'**
+  /// **'Add new addresses to your wallet'**
   String get addressesAdded;
 
   /// No description provided for @settings.
@@ -692,6 +692,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The shipping information is incorrect'**
   String get errorInformationIncorrect;
+
+  /// No description provided for @errorImportAddresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Addresses are not added because they are duplicates'**
+  String get errorImportAddresses;
 
   /// No description provided for @errorDefaultErrorAlias.
   ///

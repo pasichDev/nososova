@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/address_actions.dart';
@@ -34,6 +36,7 @@ class AddressInfoPageState extends State<AddressInfoPage> {
   late HistoryTransactionsWidget historyWidget;
   late Address address;
   late WalletBloc walletBloc;
+  late StreamSubscription listenResponse;
 
   @override
   void initState() {
@@ -47,13 +50,20 @@ class AddressInfoPageState extends State<AddressInfoPage> {
   }
 
   void _responseListener() {
-    walletBloc.getResponseStatusStream.listen((response) async {
+    listenResponse =
+        walletBloc.getResponseStatusStream.listen((response) async {
       if (mounted ||
           ResponseWidgetsIds.idsPageAddressInfo.contains(response.idWidget)) {
         await Future.delayed(const Duration(milliseconds: 200));
         SnackBarWidgetResponse(context: context, response: response).get();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    listenResponse.cancel();
+    super.dispose();
   }
 
   @override

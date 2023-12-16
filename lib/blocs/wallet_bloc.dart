@@ -8,9 +8,9 @@ import 'package:nososova/models/pending_transaction.dart';
 import 'package:nososova/models/summary_data.dart';
 import 'package:nososova/repositories/repositories.dart';
 
-import '../models/app/import_wallet_response.dart';
 import '../models/app/responses/response_node.dart';
 import '../models/app/wallet.dart';
+import '../ui/responses_util/response_widget_id.dart';
 import '../utils/const/const.dart';
 import '../utils/const/files_const.dart';
 import '../utils/noso/model/order_create.dart';
@@ -33,14 +33,9 @@ class WalletState {
   }
 }
 
-/// TODO actionsFileWallet - цей потік розширити щоб він відображав не лише інфу про імпорти, ай іншу інформацію з блоку.
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final AppDataBloc appDataBloc;
   final Repositories _repositories;
-  final StreamController<ImportWResponse> _actionsFileWallet =
-      StreamController<ImportWResponse>.broadcast();
-
-  Stream<ImportWResponse> get actionsFileWallet => _actionsFileWallet.stream;
   late StreamSubscription _summarySubscriptions;
   late StreamSubscription _pendingsSubscriptions;
 
@@ -151,11 +146,30 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   void _fetchAddresses(event, emit) async {}
 
   void _addAddresses(event, emit) async {
-    List<Address> listAddresses = event.addresses;
-    await _repositories.localRepository.addAddresses(listAddresses);
-    _actionsFileWallet.sink.add(ImportWResponse(
-        actionsFileWallet: ActionsFileWallet.addressAdded,
-        value: listAddresses.length.toString()));
+    List<Address> listAddresses = [];
+
+    for (Address newAddress in event.addresses) {
+      Address? found = state.wallet.address.firstWhere(
+          (other) => other.hash == newAddress.hash,
+          orElse: () => Address(hash: "", publicKey: "", privateKey: ""));
+
+      if (found.hash.isEmpty) {
+        listAddresses.add(newAddress);
+      }
+    }
+
+    if (listAddresses.isEmpty) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: ResponseWidgetsIds.widgetImportAddress,
+          codeMessage: 8,
+          snackBarType: SnackBarType.error));
+    } else {
+      await _repositories.localRepository.addAddresses(listAddresses);
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: ResponseWidgetsIds.widgetImportAddress,
+          codeMessage: 7,
+          snackBarType: SnackBarType.success));
+    }
   }
 
   Future<void> _syncBalance(List<SumaryData> summary,
@@ -219,6 +233,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             totalOutgoing: totalOutgoing)));
   }
 
+  /// This method receives a file and processes its contents, and returns the contents of the file for confirmation
   void _importWalletFile(event, emit) async {
     final FilePickerResult? result = event.filePickerResult;
     if (result != null) {
@@ -229,27 +244,35 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         var listAddress = _repositories.nosoCore.parseExternalWallet(bytes);
 
         if (listAddress.isNotEmpty) {
-          _actionsFileWallet.sink.add(ImportWResponse(
-              actionsFileWallet: ActionsFileWallet.walletOpen,
-              address: listAddress));
+          _responseStatusStream.add(ResponseListenerPage(
+              idWidget: ResponseWidgetsIds.widgetImportAddress,
+              codeMessage: 0,
+              action: ActionsFileWallet.walletOpen,
+              actionValue: listAddress));
         } else {
-          _actionsFileWallet.sink.add(ImportWResponse(
-              actionsFileWallet: ActionsFileWallet.isFileEmpty));
+          _responseStatusStream.add(ResponseListenerPage(
+              idWidget: ResponseWidgetsIds.widgetImportAddress,
+              codeMessage: 5,
+              snackBarType: SnackBarType.error));
         }
       } else {
-        _actionsFileWallet.sink.add(ImportWResponse(
-            actionsFileWallet: ActionsFileWallet.fileNotSupported));
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: ResponseWidgetsIds.widgetImportAddress,
+            codeMessage: 6,
+            snackBarType: SnackBarType.error));
       }
     }
   }
 
+  /// This method is called after scanning the QR code, and passes an event to open a dialog to confirm the import
   void _importWalletQr(event, emit) async {
     var address =
         _repositories.nosoCore.importAddressForKeysPair(event.addressKeys);
-    print(address);
     if (address != null) {
-      _actionsFileWallet.sink.add(ImportWResponse(
-          actionsFileWallet: ActionsFileWallet.walletOpen, address: [address]));
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: ResponseWidgetsIds.widgetImportAddress,
+          actionValue: [address],
+          action: ActionsFileWallet.walletOpen));
     }
   }
 
@@ -257,7 +280,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   Future<void> close() {
     _summarySubscriptions.cancel();
     _pendingsSubscriptions.cancel();
-    _actionsFileWallet.close();
     _walletUpdate.close();
     return super.close();
   }

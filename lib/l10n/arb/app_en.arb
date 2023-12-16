@@ -49,7 +49,7 @@
   "unknownError": "An error occurred",
   "searchAddressResult": "Address found",
   "billAction": "Bill to this address",
-  "addressesAdded": "Added address",
+  "addressesAdded": "Add new addresses to your wallet",
   "settings": "Settings",
   "sync": "Synchronization",
   "information": "Information",
@@ -99,6 +99,7 @@
   "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias.",
   "errorNoFoundCoinsTransaction": "There are not enough coins for the transaction",
   "errorInformationIncorrect": "The shipping information is incorrect",
+  "errorImportAddresses": "Addresses are not added because they are duplicates",
   "errorDefaultErrorAlias": "Error trying to set alias",
   "successSetAlias": "Your request is successful and has been processed"
 }

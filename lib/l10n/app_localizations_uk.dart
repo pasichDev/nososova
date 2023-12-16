@@ -155,7 +155,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get billAction => 'Виставити рахунок на цю адресу';
 
   @override
-  String get addressesAdded => 'Додано адрес';
+  String get addressesAdded => 'У ваш гамнець додано нові адреси';
 
   @override
   String get settings => 'Налаштування';
@@ -303,6 +303,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorInformationIncorrect => 'Невірна інформація для доставки';
+
+  @override
+  String get errorImportAddresses => 'Адреси не додано тому що вони дублюються';
 
   @override
   String get errorDefaultErrorAlias => 'Помилка при встановленні псевдоніма';

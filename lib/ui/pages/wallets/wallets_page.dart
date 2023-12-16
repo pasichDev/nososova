@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,10 +9,13 @@ import 'package:nososova/ui/dialogs/dialog_wallet_actions.dart';
 import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
 import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
+import 'package:nososova/utils/noso/src/address_object.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
 import '../../dialogs/import_export/dialog_import_address.dart';
+import '../../responses_util/response_widget_id.dart';
+import '../../responses_util/snackbar_message.dart';
 import '../../theme/style/dialog_style.dart';
 import '../../theme/style/text_style.dart';
 
@@ -23,12 +28,84 @@ class WalletsPage extends StatefulWidget {
 
 class WalletsPageState extends State<WalletsPage> {
   late WalletBloc walletBloc;
+  late StreamSubscription listenResponse;
 
   @override
   void initState() {
     super.initState();
     walletBloc = BlocProvider.of<WalletBloc>(context);
-    _importAddressSituation();
+    _responseListener();
+  }
+
+  void _responseListener() {
+    listenResponse =
+        walletBloc.getResponseStatusStream.listen((response) async {
+      if (mounted ||
+          ResponseWidgetsIds.idsPageWallet.contains(response.idWidget)) {
+        if (response.action == ActionsFileWallet.walletOpen) {
+          List<Address> address = response.actionValue;
+          showModalBottomSheet(
+              shape: DialogStyle.borderShape,
+              context: context,
+              builder: (_) => BlocProvider.value(
+                  value: walletBloc,
+                  child: DialogImportAddress(address: address)));
+          return;
+        }
+
+        await Future.delayed(const Duration(milliseconds: 200));
+        SnackBarWidgetResponse(context: context, response: response).get();
+      }
+    });
+  }
+
+/*
+  void _importAddressSituation() {
+    walletBloc.actionsFileWallet.listen((message) {
+      if (message.actionsFileWallet == ActionsFileWallet.walletOpen) {
+
+      } else {
+        var textError = "";
+        Color snackBarBackgroundColor =
+            message.actionsFileWallet == ActionsFileWallet.fileNotSupported
+                ? Colors.red
+                : Colors.black;
+
+        switch (message.actionsFileWallet) {
+          case ActionsFileWallet.isFileEmpty:
+            textError = AppLocalizations.of(context)!.errorEmptyListWallet; //5
+            break;
+          case ActionsFileWallet.fileNotSupported:
+            textError = AppLocalizations.of(context)!.errorNotSupportedWallet; //6
+            break;
+          case ActionsFileWallet.addressAdded:
+            textError =
+                "${AppLocalizations.of(context)!.addressesAdded} ${message.value}"; //7
+            break;
+          default:
+            textError = AppLocalizations.of(context)!.unknownError;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            textError,
+            style: const TextStyle(fontSize: 16.0, color: Colors.white),
+          ),
+          backgroundColor: snackBarBackgroundColor,
+          elevation: 6.0,
+          behavior: SnackBarBehavior.floating,
+        ));
+      }
+    });
+  }
+
+
+ */
+
+  @override
+  void dispose() {
+    listenResponse.cancel();
+    super.dispose();
   }
 
   @override
@@ -52,50 +129,6 @@ class WalletsPageState extends State<WalletsPage> {
       ),
     );
   }
-
-  void _importAddressSituation() {
-    walletBloc.actionsFileWallet.listen((message) {
-      if (message.actionsFileWallet == ActionsFileWallet.walletOpen) {
-        showModalBottomSheet(
-            shape: DialogStyle.borderShape,
-            context: context,
-            builder: (_) => BlocProvider.value(
-                value: walletBloc,
-                child: DialogImportAddress(address: message.address)));
-      } else {
-        var textError = "";
-        Color snackBarBackgroundColor =
-            message.actionsFileWallet == ActionsFileWallet.fileNotSupported
-                ? Colors.red
-                : Colors.black;
-
-        switch (message.actionsFileWallet) {
-          case ActionsFileWallet.isFileEmpty:
-            textError = AppLocalizations.of(context)!.errorEmptyListWallet;
-            break;
-          case ActionsFileWallet.fileNotSupported:
-            textError = AppLocalizations.of(context)!.errorNotSupportedWallet;
-            break;
-          case ActionsFileWallet.addressAdded:
-            textError =
-                "${AppLocalizations.of(context)!.addressesAdded} ${message.value}";
-            break;
-          default:
-            textError = AppLocalizations.of(context)!.unknownError;
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            textError,
-            style: const TextStyle(fontSize: 16.0, color: Colors.white),
-          ),
-          backgroundColor: snackBarBackgroundColor,
-          elevation: 6.0,
-          behavior: SnackBarBehavior.floating,
-        ));
-      }
-    });
-  }
 }
 
 class HeaderMyWallets extends StatelessWidget {
@@ -118,7 +151,8 @@ class HeaderMyWallets extends StatelessWidget {
                   color: CustomColors.primaryColor,
                 ),
                 onPressed: () {
-                  _showBottomSheetAddMyWallets(context, BlocProvider.of<WalletBloc>(context));
+                  _showBottomSheetAddMyWallets(
+                      context, BlocProvider.of<WalletBloc>(context));
                 }),
           ],
         ),

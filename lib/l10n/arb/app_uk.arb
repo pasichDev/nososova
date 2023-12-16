@@ -49,7 +49,7 @@
   "unknownError": "Виникла помилка",
   "searchAddressResult": "Знайдено адрес",
   "billAction": "Виставити рахунок на цю адресу",
-  "addressesAdded": "Додано адрес",
+  "addressesAdded": "У ваш гамнець додано нові адреси",
   "settings": "Налаштування",
   "sync": "Синхронізація",
   "information": "Інформація",
@@ -100,5 +100,6 @@
   "errorNoFoundCoinsTransaction": "Недостатньо монет для проведення транзакції",
   "errorInformationIncorrect": "Невірна інформація для доставки",
   "errorDefaultErrorAlias": "Помилка при встановленні псевдоніма",
+  "errorImportAddresses": "Адреси не додано тому що вони дублюються",
   "successSetAlias": "Ваш запит успішно додано в обробку"
 }
