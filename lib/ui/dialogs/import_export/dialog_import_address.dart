@@ -5,7 +5,7 @@ import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../blocs/events/wallet_events.dart';
 import '../../../blocs/wallet_bloc.dart';
-import '../../../utils/noso/src/address_object.dart';
+import '../../../utils/noso/model/address_object.dart';
 import '../../theme/style/text_style.dart';
 
 typedef OnCancelButtonPressed = void Function();

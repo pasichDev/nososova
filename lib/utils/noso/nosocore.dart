@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:nososova/models/summary_data.dart';
+import 'package:nososova/utils/noso/model/summary_data.dart';
 import 'package:nososova/utils/noso/src/crypto.dart';
 
 import '../../models/app/parse_mn_info.dart';
-import '../../models/node.dart';
-import '../../models/pending_transaction.dart';
 import '../../models/seed.dart';
 import '../const/const.dart';
-import 'src/address_object.dart';
+import 'model/address_object.dart';
+import 'model/node.dart';
+import 'model/pending_transaction.dart';
 
 final class NosoCore extends NosoCrypto {
   ///delete

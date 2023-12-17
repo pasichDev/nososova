@@ -12,7 +12,7 @@ Widget buildListTile(IconData iconData, String title, VoidCallback onClick) {
 Widget buildListTileSvg(String iconData, String title, VoidCallback onClick, {bool enabled = true}) {
   return ListTile(
     enabled: enabled,
-    leading: AppIconsStyle.icon3x2(iconData),
+    leading: AppIconsStyle.icon3x2(iconData, colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn)),
     title: Text(title, style: AppTextStyles.itemStyle),
     onTap: onClick,
   );

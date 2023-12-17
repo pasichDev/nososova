@@ -1,9 +1,9 @@
-import 'package:nososova/models/app/responses/response_node.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/services/explorer_stats_service.dart';
 import 'package:nososova/services/node_service.dart';
 
-import '../models/app/responses/response_api.dart';
+import '../models/responses/response_api.dart';
+import '../models/responses/response_node.dart';
 import '../services/livecoinwatch_service.dart';
 
 class NetworkRepository {

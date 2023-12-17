@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
-import '../../blocs/events/wallet_events.dart';
-import '../../l10n/app_localizations.dart';
-import '../../utils/const/const.dart';
-import '../responses_util/response_widget_id.dart';
-import '../theme/decoration/textfield_decoration.dart';
-import '../theme/style/text_style.dart';
+import '../../../blocs/events/wallet_events.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/const/const.dart';
+import '../../responses_util/response_widget_id.dart';
+import '../../theme/decoration/textfield_decoration.dart';
+import '../../theme/style/text_style.dart';
 
 class DialogCustomName extends StatefulWidget {
   final Address address;

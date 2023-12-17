@@ -16,4 +16,12 @@ class AppIconsStyle {
         height: 32,
         colorFilter: ColorFilter.mode(colorCustom, BlendMode.srcIn));
   }
+
+  static SvgPicture icon8x0(String iconPath,
+      {Color colorCustom = Colors.grey}) {
+    return SvgPicture.asset(iconPath,
+        width: 80,
+        height: 80,
+        colorFilter: ColorFilter.mode(colorCustom, BlendMode.srcIn));
+  }
 }

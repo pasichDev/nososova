@@ -58,12 +58,12 @@ class CardBody extends StatelessWidget {
           ItemTotalPrice(totalPrice:  state.wallet.balanceTotal),
           const SizedBox(height: 10),
           Text(
-            '${AppLocalizations.of(context)!.incoming}: ${state.wallet.totalIncoming}',
+            '${AppLocalizations.of(context)!.incoming}: ${state.wallet.totalIncoming.toStringAsFixed(8)}',
             style: AppTextStyles.titleMin
                 .copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
           ),
           Text(
-            '${AppLocalizations.of(context)!.outgoing}: ${state.wallet.totalOutgoing}',
+            '${AppLocalizations.of(context)!.outgoing}: ${state.wallet.totalOutgoing.toStringAsFixed(8)}',
             style: AppTextStyles.titleMin
                 .copyWith(fontSize: 16.0, color: Colors.white),
           ),

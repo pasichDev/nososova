@@ -1,23 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:nososova/blocs/debug_bloc.dart';
-import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/components/network_info.dart';
 import 'package:nososova/ui/components/widget_internet_connection.dart';
-import 'package:nososova/ui/dialogs/dialog_info_network.dart';
-import 'package:nososova/ui/dialogs/import_export/dialog_scanner_qr.dart';
 import 'package:nososova/ui/pages/info/info_page.dart';
 import 'package:nososova/ui/pages/node/node_page.dart';
 import 'package:nososova/ui/pages/settings/settings_page.dart';
 import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
-import 'package:nososova/ui/theme/style/dialog_style.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 
-import '../../blocs/app_data_bloc.dart';
 import '../../generated/assets.dart';
+import '../route/dialog_router.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -48,7 +42,8 @@ class MainPageState extends State<MainPage> {
       appBar: AppBar(
         elevation: 0,
         title: NetworkInfo(
-            nodeStatusDialog: () => _showDialogInfoNetwork(context)),
+            nodeStatusDialog: () =>
+                DialogRouter.showDialogInfoNetwork(context)),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,13 +51,10 @@ class MainPageState extends State<MainPage> {
               children: [
                 if (Platform.isAndroid || Platform.isIOS)
                   IconButton(
-                    icon: SvgPicture.asset(
-                      Assets.iconsScan,
-                      height: 28,
-                      width: 28,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => _showDialogScanQr(context),
+                    icon: AppIconsStyle.icon3x2(Assets.iconsScan,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.white, BlendMode.srcIn)),
+                    onPressed: () => DialogRouter.showDialogScanQr(context),
                   ),
               ],
             ),
@@ -98,37 +90,13 @@ class MainPageState extends State<MainPage> {
     return BottomNavigationBarItem(
       icon: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: SvgPicture.asset(
-            icon,
-            width: 32,
-            height: 32,
-            color: _selectedIndex == index
-                ? CustomColors.primaryColor
-                : Colors.grey,
-          )),
+          child: AppIconsStyle.icon3x2(icon,
+              colorFilter: ColorFilter.mode(
+                  _selectedIndex == index
+                      ? CustomColors.primaryColor
+                      : Colors.grey,
+                  BlendMode.srcIn))),
       label: "",
     );
-  }
-
-  void _showDialogScanQr(BuildContext context) {
-    DialogScannerQr()
-        .showDialogScanQr(context, BlocProvider.of<WalletBloc>(context));
-  }
-
-  void _showDialogInfoNetwork(BuildContext context) {
-    showModalBottomSheet(
-        shape: DialogStyle.borderShape,
-        context: context,
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: BlocProvider.of<AppDataBloc>(context),
-                ),
-                BlocProvider.value(
-                  value: BlocProvider.of<DebugBloc>(context),
-                ),
-              ],
-              child: const DialogInfoNetwork(),
-            ));
   }
 }

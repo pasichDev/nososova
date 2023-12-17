@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -75,37 +75,33 @@ class PaymentPageState extends State<TransactionPage> {
                 ),
                 elevation: 0,
                 child: Container(
-                  color: Colors.white,
+                    color: Colors.white,
                     padding: const EdgeInsets.all(20),
                     width: double.infinity,
                     child: Column(
                       children: [
                         Container(
-                          margin: const EdgeInsets.all(10.0),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            color: isCustom
-                                ? Colors.grey.withOpacity(0.2)
-                                : widget.isReceiver
-                                    ? const Color(0xffd6faeb)
-                                    : const Color(0xfff2d3ce),
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: SvgPicture.asset(
-                            isCustom
-                                ? Assets.iconsRename
-                                : widget.isReceiver
-                                    ? Assets.iconsExport
-                                    : Assets.iconsImport,
-                            width: 80,
-                            height: 80,
-                            color: isCustom
-                                ? Colors.black
-                                : widget.isReceiver
-                                    ? CustomColors.positiveBalance
-                                    : CustomColors.negativeBalance,
-                          ),
-                        ),
+                            margin: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: isCustom
+                                  ? Colors.grey.withOpacity(0.2)
+                                  : widget.isReceiver
+                                      ? const Color(0xffd6faeb)
+                                      : const Color(0xfff2d3ce),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: AppIconsStyle.icon8x0(
+                                isCustom
+                                    ? Assets.iconsRename
+                                    : widget.isReceiver
+                                        ? Assets.iconsExport
+                                        : Assets.iconsImport,
+                                colorCustom: isCustom
+                                    ? Colors.black
+                                    : widget.isReceiver
+                                        ? CustomColors.positiveBalance
+                                        : CustomColors.negativeBalance)),
                         const SizedBox(height: 20),
                         Text(
                             isCustom
@@ -168,7 +164,7 @@ class PaymentPageState extends State<TransactionPage> {
         child: OutlinedButton(
           onPressed: () => onTap(),
           style: OutlinedButton.styleFrom(
-            side:  BorderSide(color: Colors.black.withOpacity(0.2)),
+            side: BorderSide(color: Colors.black.withOpacity(0.2)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),

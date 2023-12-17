@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
-import 'package:nososova/ui/pages/addressInfo/transaction/transaction_page.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/ui/route/page_router.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/events/history_transactions_events.dart';
@@ -59,7 +59,6 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                                 AppLocalizations.of(context)!
                                     .catHistoryTransaction,
                                 style: AppTextStyles.categoryStyle),
-
                           ])),
                   if (state.apiStatus == ApiStatus.error) ...[
                     const SizedBox(height: 200),
@@ -98,24 +97,22 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                                   title: Text(
                                       _getFormattedDate(transaction.timestamp),
                                       style: AppTextStyles.itemStyle.copyWith(
-                                          color: Colors.black.withOpacity(0.9), fontSize: 18)),
-                                  // Additional styling for date header if needed
+                                          color: Colors.black.withOpacity(0.9),
+                                          fontSize: 18)),
                                 ),
-                                // Transaction item
                                 TransactionTile(
                                   transactionHistory: transaction,
                                   receiver: isReceiver,
-                                  onTap: () => _showTransactionInfo(
+                                  onTap: () => PageRouter.showTransactionInfo(
                                       context, transaction, isReceiver),
                                 ),
                               ],
                             );
                           } else {
-                            // Only transaction item (no date header)
                             return TransactionTile(
                               transactionHistory: transaction,
                               receiver: isReceiver,
-                              onTap: () => _showTransactionInfo(
+                              onTap: () => PageRouter.showTransactionInfo(
                                   context, transaction, isReceiver),
                             );
                           }
@@ -142,7 +139,9 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
     final currentDate = DateTime.now().toLocal();
 
     if (date.year == currentDate.year) {
-      String dayMonth = DateFormat('d MMMM', Localizations.localeOf(context).toString()).format(date);
+      String dayMonth =
+          DateFormat('d MMMM', Localizations.localeOf(context).toString())
+              .format(date);
       if (date.day == currentDate.day &&
           date.month == currentDate.month &&
           date.year == currentDate.year) {
@@ -155,21 +154,9 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
         return dayMonth;
       }
     } else {
-      // For other years, display day, month, and year
-      return DateFormat('d MMMM yyyy', Localizations.localeOf(context).toString()).format(date);
+      return DateFormat(
+              'd MMMM yyyy', Localizations.localeOf(context).toString())
+          .format(date);
     }
-  }
-
-  void _showTransactionInfo(
-      BuildContext context, TransactionHistory transaction, bool isReceiver) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TransactionPage(
-          transaction: transaction,
-          isReceiver: isReceiver,
-        ),
-      ),
-    );
   }
 }

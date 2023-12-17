@@ -3,7 +3,7 @@ import 'package:nososova/ui/theme/anim/blinkin_widget.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../../../../utils/noso/src/address_object.dart';
+import '../../../../utils/noso/model/address_object.dart';
 import '../../../theme/style/text_style.dart';
 
 class PendingsWidget extends StatefulWidget {
@@ -12,10 +12,10 @@ class PendingsWidget extends StatefulWidget {
   const PendingsWidget({super.key, required this.address});
 
   @override
-  PendingsWidgetState createState() => PendingsWidgetState();
+  State createState() => _PendingsWidgetState();
 }
 
-class PendingsWidgetState extends State<PendingsWidget> {
+class _PendingsWidgetState extends State<PendingsWidget> {
   @override
   Widget build(BuildContext context) {
     var isOutgoing = widget.address.outgoing > 0;

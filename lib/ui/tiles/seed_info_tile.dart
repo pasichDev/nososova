@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nososova/models/node.dart';
+import 'package:nososova/utils/noso/model/node.dart';
 
 import '../../../l10n/app_localizations.dart';
 

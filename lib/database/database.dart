@@ -6,7 +6,7 @@ import 'package:nososova/database/address.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../utils/noso/src/address_object.dart';
+import '../utils/noso/model/address_object.dart';
 
 part 'database.g.dart';
 

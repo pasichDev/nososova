@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
-import 'package:nososova/models/app/responses/response_api.dart';
 import 'package:nososova/repositories/repositories.dart';
 
 import '../models/apiExplorer/transaction_history.dart';
+import '../models/responses/response_api.dart';
 import '../utils/status_api.dart';
 import 'events/history_transactions_events.dart';
 

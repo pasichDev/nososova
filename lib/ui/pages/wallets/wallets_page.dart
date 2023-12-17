@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/dialogs/dialog_wallet_actions.dart';
 import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
 import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
+import 'package:nososova/ui/route/dialog_router.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
@@ -59,49 +59,6 @@ class WalletsPageState extends State<WalletsPage> {
     });
   }
 
-/*
-  void _importAddressSituation() {
-    walletBloc.actionsFileWallet.listen((message) {
-      if (message.actionsFileWallet == ActionsFileWallet.walletOpen) {
-
-      } else {
-        var textError = "";
-        Color snackBarBackgroundColor =
-            message.actionsFileWallet == ActionsFileWallet.fileNotSupported
-                ? Colors.red
-                : Colors.black;
-
-        switch (message.actionsFileWallet) {
-          case ActionsFileWallet.isFileEmpty:
-            textError = AppLocalizations.of(context)!.errorEmptyListWallet; //5
-            break;
-          case ActionsFileWallet.fileNotSupported:
-            textError = AppLocalizations.of(context)!.errorNotSupportedWallet; //6
-            break;
-          case ActionsFileWallet.addressAdded:
-            textError =
-                "${AppLocalizations.of(context)!.addressesAdded} ${message.value}"; //7
-            break;
-          default:
-            textError = AppLocalizations.of(context)!.unknownError;
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            textError,
-            style: const TextStyle(fontSize: 16.0, color: Colors.white),
-          ),
-          backgroundColor: snackBarBackgroundColor,
-          elevation: 6.0,
-          behavior: SnackBarBehavior.floating,
-        ));
-      }
-    });
-  }
-
-
- */
-
   @override
   void dispose() {
     listenResponse.cancel();
@@ -122,51 +79,25 @@ class WalletsPageState extends State<WalletsPage> {
               horizontal: 20.0,
               vertical: 10.0,
             ),
-            child: const HeaderMyWallets(),
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.myAddresses,
+                    style: AppTextStyles.categoryStyle),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: AppIconsStyle.icon2x4(Assets.iconsMenu,
+                            colorCustom: CustomColors.primaryColor),
+                        onPressed: () => DialogRouter.showDialogActionWallet(context)),
+                  ],
+                ),
+              ],
+            ),
           ),
           const ListAddresses(),
         ],
       ),
     );
   }
-}
-
-class HeaderMyWallets extends StatelessWidget {
-  const HeaderMyWallets({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(AppLocalizations.of(context)!.myAddresses,
-            style: AppTextStyles.categoryStyle),
-        Row(
-          children: [
-            IconButton(
-                icon: SvgPicture.asset(
-                  Assets.iconsMenu,
-                  width: 24,
-                  height: 24,
-                  color: CustomColors.primaryColor,
-                ),
-                onPressed: () {
-                  _showBottomSheetAddMyWallets(
-                      context, BlocProvider.of<WalletBloc>(context));
-                }),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-void _showBottomSheetAddMyWallets(BuildContext context, WalletBloc walletBloc) {
-  showModalBottomSheet(
-    shape: DialogStyle.borderShape,
-    context: context,
-    builder: (BuildContext context) {
-      return DialogWalletActions(walletBloc: walletBloc);
-    },
-  );
 }

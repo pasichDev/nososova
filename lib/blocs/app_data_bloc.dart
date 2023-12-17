@@ -7,18 +7,18 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
 import 'package:nososova/models/app/info_coin.dart';
-import 'package:nososova/models/app/responses/response_api.dart';
-import 'package:nososova/models/app/responses/response_node.dart';
-import 'package:nososova/models/node.dart';
 import 'package:nososova/models/seed.dart';
-import 'package:nososova/models/summary_data.dart';
+import 'package:nososova/utils/noso/model/node.dart';
+import 'package:nososova/utils/noso/model/summary_data.dart';
 
 import '../models/app/parse_mn_info.dart';
 import '../models/app/stats.dart';
 import '../models/block_mns.dart';
-import '../models/pending_transaction.dart';
+import '../models/responses/response_api.dart';
+import '../models/responses/response_node.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
+import '../utils/noso/model/pending_transaction.dart';
 import 'events/app_data_events.dart';
 import 'events/debug_events.dart';
 

@@ -19,7 +19,7 @@ class TileConfirmList extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TileConfirmListStateState createState() => _TileConfirmListStateState();
+  State createState() => _TileConfirmListStateState();
 }
 
 class _TileConfirmListStateState extends State<TileConfirmList> {
@@ -30,7 +30,7 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
     return ListTile(
       leading: AppIconsStyle.icon3x2(widget.iconData,
           colorFilter: ColorFilter.mode(
-              _clicked ? CustomColors.negativeBalance : Colors.grey,
+              _clicked ? CustomColors.negativeBalance : Colors.black,
               BlendMode.srcIn)),
       title: Text(_clicked ? widget.confirm : widget.title,
           style: _clicked

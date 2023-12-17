@@ -1,7 +1,7 @@
 import '../../const/const.dart';
 import '../nosocore.dart';
-import '../src/address_object.dart';
 import '../src/crypto.dart';
+import 'address_object.dart';
 
 class NewOrderSend {
   String? orderID;

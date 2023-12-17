@@ -5,7 +5,7 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/models/app/state_node.dart';
 import 'package:nososova/repositories/repositories.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../utils/noso/utils.dart';
 import 'events/node_events.dart';

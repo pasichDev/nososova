@@ -1,5 +1,5 @@
 import 'package:nososova/database/database.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 
 class LocalRepository {
   final MyDatabase _database;

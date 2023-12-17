@@ -4,7 +4,7 @@ import 'package:nososova/ui/theme/anim/blinkin_widget.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../generated/assets.dart';
-import '../../utils/noso/src/address_object.dart';
+import '../../utils/noso/model/address_object.dart';
 import '../theme/style/icons_style.dart';
 
 class AddressListTile extends StatefulWidget {

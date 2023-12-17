@@ -1,4 +1,4 @@
-import '../../utils/noso/src/address_object.dart';
+import '../../utils/noso/model/address_object.dart';
 
 class Wallet {
   List<Address> address;

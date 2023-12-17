@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nososova/models/apiLiveCoinWatch/minimal_info_coin.dart';
-import 'package:nososova/models/app/responses/response_api.dart';
 import 'package:nososova/utils/const/const.dart';
 
 import '../models/apiLiveCoinWatch/full_info_coin.dart';
+import '../models/responses/response_api.dart';
 
 class LiveCoinWatchService {
   Map<String, String> apiHeaders = {

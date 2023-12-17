@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
-import 'package:nososova/dependency_injection.dart';
-import 'package:nososova/repositories/repositories.dart';
+import 'package:nososova/ui/route/dialog_router.dart';
+import 'package:nososova/ui/route/page_router.dart';
 
-import '../../../theme/style/dialog_style.dart';
 import '../../../tiles/tile_wallet_address.dart';
-import '../../addressInfo/address_info_page.dart';
-import '../dialogs/dialog_address_info.dart';
 
 class ListAddresses extends StatelessWidget {
   const ListAddresses({super.key});
@@ -29,39 +24,10 @@ class ListAddresses extends StatelessWidget {
                   final address = wallets[index];
                   return AddressListTile(
                     address: address,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MultiBlocProvider(
-                          providers: [
-                            BlocProvider.value(
-                              value: locator<WalletBloc>(),
-                            ),
-                            BlocProvider.value(
-                              value: locator<AppDataBloc>(),
-                            ),
-                            BlocProvider<HistoryTransactionsBloc>(
-                              create: (BuildContext context) =>
-                                  HistoryTransactionsBloc.create(
-                                locator<Repositories>(),
-                                locator<WalletBloc>(),
-                              ),
-                            ),
-                          ],
-                          child: AddressInfoPage(hash: address.hash),
-                        ),
-                      ),
-                    ),
-                    onLong: () {
-                      showModalBottomSheet(
-                          shape: DialogStyle.borderShape,
-                          context: context,
-                          builder: (_) => BlocProvider.value(
-                              value: BlocProvider.of<WalletBloc>(context),
-                              child: AddressInfo(
-                                address: address,
-                              )));
-                    },
+                    onTap: () =>
+                        PageRouter.routeAddressInfoPage(context, address),
+                    onLong: () =>
+                        DialogRouter.showDialogAddressActions(context, address),
                   );
                 }));
       },

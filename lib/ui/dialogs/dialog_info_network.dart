@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/dialogs/dialog_debug.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../../blocs/events/app_data_events.dart';
 import '../../generated/assets.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
-import '../theme/style/dialog_style.dart';
+import '../route/dialog_router.dart';
 import '../theme/style/text_style.dart';
 
 class DialogInfoNetwork extends StatefulWidget {
-  const DialogInfoNetwork({Key? key}) : super(key: key);
+  const DialogInfoNetwork({super.key});
 
   @override
   DialogInfoNetworkState createState() => DialogInfoNetworkState();
@@ -77,8 +75,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
             if (_isNodeListVisible) ...[SeedInfoTile(nodeInfo: state.node)],
             if (!_isNodeListVisible) ...[
               ListTile(
-                  leading: SvgPicture.asset(Assets.iconsDebug,
-                      width: 32, height: 32, color: Colors.grey),
+                  leading: AppIconsStyle.icon3x2(Assets.iconsDebug),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,22 +85,11 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                       ),
                     ],
                   ),
-                  onTap: () => _showDialogDebug(context)),
+                  onTap: () => DialogRouter.showDialogDebug(context)),
             ],
           ],
         ),
       );
     });
-  }
-
-  void _showDialogDebug(BuildContext context) {
-    Navigator.of(context).pop();
-    showModalBottomSheet(
-        shape: DialogStyle.borderShape,
-        context: context,
-        builder: (_) => BlocProvider.value(
-              value: BlocProvider.of<DebugBloc>(context),
-              child: const DialogDebug(),
-            ));
   }
 }

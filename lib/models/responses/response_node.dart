@@ -1,5 +1,5 @@
 
-import 'package:nososova/models/app/responses/response.dart';
+import 'package:nososova/models/responses/response.dart';
 import 'package:nososova/models/seed.dart';
 
 class ResponseNode<T> extends Response<T> {

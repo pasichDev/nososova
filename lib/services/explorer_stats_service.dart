@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
-import 'package:nososova/models/app/responses/response_api.dart';
 
 import '../models/apiExplorer/price_dat.dart';
 import '../models/block_mns.dart';
+import '../models/responses/response_api.dart';
 
 class ExplorerStatsService {
   final String _apiExplorerHttp = "https://api.nosostats.com:8078";

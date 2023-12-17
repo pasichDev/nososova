@@ -9,11 +9,12 @@ import 'package:swipeable_button_view/swipeable_button_view.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/noso/model/address_object.dart';
 import '../../../utils/noso/model/order_create.dart';
 import '../../../utils/noso/nosocore.dart';
-import '../../../utils/noso/src/address_object.dart';
 import '../../../utils/noso/src/crypto.dart';
 import '../../../utils/noso/utils.dart';
+import '../../components/app_bar_other_page.dart';
 import '../../theme/style/text_style.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -43,11 +44,7 @@ class PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+      appBar:  CustomAppBar(onNodeStatusDialog: () {  }, isWhite: true,),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(

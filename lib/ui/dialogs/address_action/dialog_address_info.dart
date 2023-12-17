@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:nososova/ui/pages/payment/payment_page.dart';
+import 'package:nososova/ui/route/dialog_router.dart';
+import 'package:nososova/ui/route/page_router.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
-import '../../../../../blocs/events/wallet_events.dart';
-import '../../../../../blocs/wallet_bloc.dart';
-import '../../../../../generated/assets.dart';
-import '../../../../../l10n/app_localizations.dart';
-import '../../../../../utils/noso/src/address_object.dart';
-import '../../../dialogs/dialog_view_qr.dart';
-import '../../../tiles/tile_сonfirm_list.dart';
+import '../../../../blocs/events/wallet_events.dart';
+import '../../../../blocs/wallet_bloc.dart';
+import '../../../../generated/assets.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../utils/noso/model/address_object.dart';
+import '../../tiles/tile_сonfirm_list.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;
@@ -25,11 +25,6 @@ class AddressInfo extends StatefulWidget {
 
 class AddressInfoState extends State<AddressInfo> {
   late WalletBloc walletBloc;
-  int selectedOption = 1;
-
-  AddressInfoState({
-    Key? key,
-  });
 
   @override
   void initState() {
@@ -62,7 +57,7 @@ class AddressInfoState extends State<AddressInfo> {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  widget.address.hash,
+                  widget.address.nameAddressFull,
                   style: AppTextStyles.walletAddress.copyWith(fontSize: 16),
                 ),
               ],
@@ -99,31 +94,13 @@ class AddressInfoState extends State<AddressInfo> {
     ]);
   }
 
-  /*
-   buildListTile(Icons.confirmation_num_outlined,
-             AppLocalizations.of(context)!.certificate, () {}),
-         buildListTile(Icons.account_balance_wallet_outlined,
-            AppLocalizations.of(context)!.billAction, () {}),
-
-          buildListTile(
-              Icons.lock_outline, AppLocalizations.of(context)!.lock, () {}),
-   */
-
   void _viewQr(BuildContext context) {
     Navigator.pop(context);
-    DialogViewQr().loadDialog(context: context, address: widget.address);
+    DialogRouter.showDialogViewQr(context, widget.address);
   }
 
   void _paymentPage(BuildContext context) {
     Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: walletBloc,
-          child: PaymentPage(address: widget.address),
-        ),
-      ),
-    );
+    PageRouter.routePaymentPage(context, widget.address);
   }
 }

@@ -9,19 +9,29 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/generated/assets.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/dialogs/import_export/dialog_import_keys_pair.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
 import '../../utils/const/files_const.dart';
+import '../route/dialog_router.dart';
 import '../theme/style/text_style.dart';
-import 'import_export/dialog_scanner_qr.dart';
 
-class DialogWalletActions extends StatelessWidget {
-  final WalletBloc walletBloc;
+class DialogWalletActions extends StatefulWidget {
+  const DialogWalletActions({Key? key}) : super(key: key);
 
-  const DialogWalletActions({required this.walletBloc, Key? key})
-      : super(key: key);
+  @override
+  State createState() => _DialogWalletActionsState();
+}
+
+class _DialogWalletActionsState extends State<DialogWalletActions> {
+  late WalletBloc walletBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    walletBloc = BlocProvider.of<WalletBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +48,18 @@ class DialogWalletActions extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(5.0),
             child: ListTile(
-              leading: SvgPicture.asset(Assets.iconsInfo, height: 32, width: 32),
+              leading: AppIconsStyle.icon3x2(Assets.iconsInfo),
               title: Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
                         text: AppLocalizations.of(context)!
                             .newFormatWalletFileDescrypt,
-                        style:
-                        AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+                        style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
                     TextSpan(
                         text: " .nososova",
-                        style: AppTextStyles.walletAddress
-                            .copyWith(fontSize: 16)),
+                        style:
+                            AppTextStyles.walletAddress.copyWith(fontSize: 16)),
                   ],
                 ),
               ),
@@ -62,21 +71,25 @@ class DialogWalletActions extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         shrinkWrap: true,
         children: [
-
-          buildListTileSvg(Assets.iconsWallet, AppLocalizations.of(context)!.genNewKeyPair,
+          buildListTileSvg(
+              Assets.iconsWallet,
+              AppLocalizations.of(context)!.genNewKeyPair,
               () => _createNewAddress(context)),
-          buildListTileSvg(Assets.iconsText, AppLocalizations.of(context)!.importKeysPair,
-                  () => _importToKeysPair(context)),
+          buildListTileSvg(
+              Assets.iconsText,
+              AppLocalizations.of(context)!.importKeysPair,
+              () => _importToKeysPair(context)),
           if (Platform.isAndroid || Platform.isIOS)
-            buildListTileSvg(Assets.iconsScan,
+            buildListTileSvg(
+                Assets.iconsScan,
                 AppLocalizations.of(context)!.scanQrCode,
-                () => _showDialogScanQr(context)),
-
+                () => DialogRouter.showDialogScanQr(context)),
           ListTile(
               title: Text(AppLocalizations.of(context)!.fileWallet,
                   style: AppTextStyles.dialogTitle)),
           ListTile(
-              leading: SvgPicture.asset(Assets.iconsImport, height: 32, width: 32),
+              leading:
+                  SvgPicture.asset(Assets.iconsImport, height: 32, width: 32),
               title: Text(AppLocalizations.of(context)!.importFile,
                   style: AppTextStyles.itemStyle
                       .copyWith(fontFamily: "GilroySemiBold")),
@@ -84,7 +97,8 @@ class DialogWalletActions extends StatelessWidget {
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               onTap: () => _importWalletFile(context)),
           ListTile(
-              leading: SvgPicture.asset(Assets.iconsExport, height: 32, width: 32),
+              leading:
+                  SvgPicture.asset(Assets.iconsExport, height: 32, width: 32),
               title: Text(AppLocalizations.of(context)!.exportFile,
                   style: AppTextStyles.itemStyle
                       .copyWith(fontFamily: "GilroySemiBold")),
@@ -130,21 +144,8 @@ class DialogWalletActions extends StatelessWidget {
   }
 
   void _importToKeysPair(BuildContext context) async {
-
     Navigator.pop(context);
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
-        child: Material(
-          child: BlocProvider.value(
-            value: walletBloc,
-            child: const DialogImportKeysPair(),
-          ),
-        ),
-      ),
-    );
-
-
+    DialogRouter.showDialogImportAddressFromKeysPair(context);
   }
 
   void _importWalletFile(BuildContext context) async {
@@ -181,10 +182,5 @@ class DialogWalletActions extends StatelessWidget {
         }
       }
     }
-  }
-
-  void _showDialogScanQr(BuildContext context) {
-    Navigator.pop(context);
-    DialogScannerQr().showDialogScanQr(context, walletBloc);
   }
 }

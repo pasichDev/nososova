@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/ui/dialogs/dialog_custom_name.dart';
-import 'package:nososova/utils/noso/src/address_object.dart';
+import 'package:nososova/ui/route/dialog_router.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../../blocs/events/wallet_events.dart';
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../theme/style/dialog_style.dart';
+import '../../../route/page_router.dart';
 import '../../../theme/style/text_style.dart';
 import '../../../tiles/dialog_tile.dart';
 import '../../../tiles/tile_сonfirm_list.dart';
@@ -30,14 +30,16 @@ class AddressActionsWidget extends StatelessWidget {
                   top: 20, left: 20, right: 20, bottom: 10),
               child: Text(AppLocalizations.of(context)!.catActionAddress,
                   style: AppTextStyles.categoryStyle)),
-          buildListTileSvg(Assets.iconsOutput,
-              AppLocalizations.of(context)!.sendFromAddress, () => {}),
+          buildListTileSvg(
+              Assets.iconsOutput,
+              AppLocalizations.of(context)!.sendFromAddress,
+              () => PageRouter.routePaymentPage(context, address)),
           if (address.custom == null)
             buildListTileSvg(
                 Assets.iconsRename,
                 enabled: address.custom == null,
                 AppLocalizations.of(context)!.customNameAdd,
-                () => _showDialogCustomName(context)),
+                () => DialogRouter.showDialogCustomName(context, address)),
           TileConfirmList(
               iconData: Assets.iconsDelete,
               title: AppLocalizations.of(context)!.removeAddress,
@@ -47,20 +49,5 @@ class AddressActionsWidget extends StatelessWidget {
                 Navigator.pop(context);
               }),
         ]));
-  }
-
-  void _showDialogCustomName(BuildContext context) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: DialogStyle.borderShape,
-        context: context,
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: BlocProvider.of<WalletBloc>(context),
-                ),
-              ],
-              child: DialogCustomName(address: address),
-            ));
   }
 }

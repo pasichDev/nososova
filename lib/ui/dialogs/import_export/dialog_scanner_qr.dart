@@ -14,25 +14,14 @@ import '../../theme/style/colors.dart';
 import '../../theme/style/dialog_style.dart';
 import '../dialog_send_address.dart';
 
-class DialogScannerQr {
-  void showDialogScanQr(BuildContext context, WalletBloc walletBloc) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) =>
-          BlocProvider.value(value: walletBloc, child: const ScannerWidget()),
-    );
-  }
-}
-
-class ScannerWidget extends StatefulWidget {
-  const ScannerWidget({super.key});
+class ScannerQrWidget extends StatefulWidget {
+  const ScannerQrWidget({super.key});
 
   @override
-  ScannerWidgetState createState() => ScannerWidgetState();
+  State createState() => _ScannerQrWidgetState();
 }
 
-class ScannerWidgetState extends State<ScannerWidget> {
+class _ScannerQrWidgetState extends State<ScannerQrWidget> {
   QRViewController? controller;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QrNoso');
   bool isScanned = false;
@@ -114,7 +103,6 @@ class ScannerWidgetState extends State<ScannerWidget> {
           cutOutSize: smallestDimension - 140),
     );
   }
-
 
   /// TODO Закінчит работу над сканером
   void _onQRViewCreated(QRViewController controller) {
