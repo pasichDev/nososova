@@ -12,9 +12,8 @@ import '../const/const.dart';
 import 'src/address_object.dart';
 
 final class NosoCore extends NosoCrypto {
-
   ///delete
- /*  String createAliasOrder(Address targetAddress, int block, String alias) {
+  /*  String createAliasOrder(Address targetAddress, int block, String alias) {
      final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
      const int amount = 0;
      const int fre = Const.customizationFee;
@@ -182,12 +181,13 @@ final class NosoCore extends NosoCrypto {
         current = Uint8List(0);
       }
 
-      bool verification =
-          verifyKeysPair(addressObject.publicKey, addressObject.privateKey);
-      if (verification &&
-          addressObject.privateKey.length == 44 &&
+      if (addressObject.privateKey.length == 44 &&
           addressObject.publicKey.length == 88) {
-        address.add(addressObject);
+        bool verification =
+            verifyKeysPair(addressObject.publicKey, addressObject.privateKey);
+        if (verification) {
+          address.add(addressObject);
+        }
       }
     }
     return address;

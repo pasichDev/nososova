@@ -68,7 +68,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   /// The method used to change the alias address
   Future<void> _setAliasAddress(e, emit) async {
     var isBalanceCorrect = e.address.availableBalance > Const.customizationFee;
-    if (e.address.hash == "" || e.alias == "" || isBalanceCorrect) {
+    if (e.address.hash == "" || e.alias == "" || !isBalanceCorrect) {
       _responseStatusStream.add(ResponseListenerPage(
           idWidget: e.widgetId,
           codeMessage: !isBalanceCorrect ? 1 : 2,
