@@ -15,7 +15,7 @@ class NetworkRepository {
 
 
   /// Node Service
-  Future<ResponseNode> listenNodes() {
+  Future<ResponseNode<List<Seed>>> listenNodes() {
     return _nodeService.testsListDefaultSeeds();
   }
 

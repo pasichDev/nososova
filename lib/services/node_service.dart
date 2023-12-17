@@ -59,7 +59,7 @@ class NodeService {
   }
 
   /// Метод який перебирає дефолтні сіди, і поаертає активний сід
-  Future<ResponseNode> testsListDefaultSeeds() async {
+  Future<ResponseNode<List<Seed>>> testsListDefaultSeeds() async {
     for (var seed in seedsDefault) {
       try {
         seed = await _testPingNode(seed);
@@ -82,8 +82,9 @@ class NodeService {
     }
     final onlineSeeds = seedsDefault.where((seed) => seed.online).toList();
     if (onlineSeeds.isNotEmpty) {
-      ResponseNode responseNode = ResponseNode(
-          seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b));
+      ResponseNode<List<Seed>> responseNode = ResponseNode(
+          seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b),
+          value: onlineSeeds);
       return responseNode;
     } else {
       return ResponseNode(errors: "No working seeds were found");

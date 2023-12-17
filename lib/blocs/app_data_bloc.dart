@@ -103,9 +103,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     });
     on<ReconnectSeed>(_reconnectNode);
     on<InitialConnect>(_init);
-
   }
-
 
   Future<void> _init(AppDataEvent e, Emitter emit) async {
     _debugBloc.add(AddStringDebug("Network initialization"));
@@ -127,7 +125,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       _debugBloc.add(AddStringDebug("Manual update of information"));
       _syncDataToNode(state.node.seed);
     } else {
-
       _debugBloc.add(AddStringDebug("Attempting to modify a node"));
       await _selectNode(Random().nextInt(2) == 0
           ? InitialNodeAlgh.listenDefaultNodes
@@ -196,7 +193,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       });
     }
   }
-
 
   /// TODO Pendigs при першому завнтажені не підтягуються тому що вону отримуються раніше symmary
   Future<void> _syncDataToNode(Seed seed) async {
@@ -285,9 +281,58 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     _debugBloc.add(AddStringDebug("Data update successful"));
   }
 
-  Future<ConsensusStatus> _checkConsensus(Node node) async {
+  //також додати первірку щоб рандомом не вибирався активний вузол
+  Future<ConsensusStatus> _checkConsensus(Node targetNode) async {
     _debugBloc.add(AddStringDebug("Consensus check"));
-    return ConsensusStatus.sync;
+
+    List<Seed> testSeeds = [];
+    List<bool> decisionNodes = [];
+
+    for (int i = 0; i < 3; i++) {
+      testSeeds.add(Seed().tokenizer(
+          _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList)));
+    }
+   //оптимізувати цей запит злб він зразу повертав nodeInfo
+    ResponseNode<List<Seed>> responseDevNodes =
+        await _repositories.networkRepository.listenNodes();
+    if (responseDevNodes.value != null) {
+    // витягує 2 активних вузла
+      testSeeds.addAll(responseDevNodes.value!
+          .where((seed) => seed.online)
+          .take(2)
+          .toList());
+    }
+    if (responseDevNodes.errors != null || testSeeds.length < 2) {
+      return ConsensusStatus.error;
+    }
+
+    // отримаємо всі дані з доступних вузлів для вирішення консенсусу
+    for (Seed testSeed in testSeeds) {
+      ResponseNode testResponse = await _repositories.networkRepository
+          .fetchNode(NetworkRequest.nodeStatus, testSeed);
+      if (testResponse.errors == null) {
+        var tNode = _repositories.nosoCore
+            .parseResponseNode(testResponse.value, testResponse.seed);
+        decisionNodes.add(isValidNode(tNode, targetNode));
+      }
+    }
+
+    if (decisionNodes.every((element) => element == true)) {
+      _debugBloc.add(AddStringDebug(
+          "Consensus is correct, node -> ${targetNode.seed.toTokenizer()}"));
+      return ConsensusStatus.sync;
+    } else {
+      // Повертаємо те що консенсус ytdshybq
+      return ConsensusStatus.error;
+    }
+  }
+
+  bool isValidNode(Node tNode, Node targetNode) {
+    if (tNode.branch == targetNode.branch ||
+        tNode.lastblock == targetNode.lastblock) {
+      return true;
+    }
+    return false;
   }
 
   errorInit() {
