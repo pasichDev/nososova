@@ -510,7 +510,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardNodeLaunched.
   ///
   /// In en, this message translates to:
-  /// **'One block reward for your nodes'**
+  /// **'One block reward'**
   String get rewardNodeLaunched;
 
   /// No description provided for @launched.
@@ -663,6 +663,12 @@ abstract class AppLocalizations {
   /// **'Alias'**
   String get alias;
 
+  /// No description provided for @consensusCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Consensus resolution'**
+  String get consensusCheck;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -674,6 +680,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @informMyNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Status of your nodes'**
+  String get informMyNodes;
 
   /// No description provided for @aliasMessage.
   ///

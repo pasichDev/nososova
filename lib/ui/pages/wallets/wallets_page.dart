@@ -13,9 +13,9 @@ import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
+import '../../common/responses_util/response_widget_id.dart';
+import '../../common/responses_util/snackbar_message.dart';
 import '../../dialogs/import_export/dialog_import_address.dart';
-import '../../responses_util/response_widget_id.dart';
-import '../../responses_util/snackbar_message.dart';
 import '../../theme/style/dialog_style.dart';
 import '../../theme/style/text_style.dart';
 

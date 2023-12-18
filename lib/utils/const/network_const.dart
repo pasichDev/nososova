@@ -40,7 +40,7 @@ final class CheckConnect {
 
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 
-enum StatusConnectNodes { connected, error, searchNode, sync }
+enum StatusConnectNodes { connected, error, searchNode, sync, consensus }
 
 /// Connected - підключено
 /// error - помилка

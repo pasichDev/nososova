@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
@@ -9,11 +8,12 @@ import '../../blocs/events/app_data_events.dart';
 import '../../generated/assets.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
+import '../common/widgets/label.dart';
+import '../common/widgets/label_time.dart';
 import '../components/extra_util.dart';
 import '../config/responsive.dart';
 import '../route/dialog_router.dart';
 import '../theme/style/text_style.dart';
-import '../widgets/label.dart';
 
 class DialogInfoNetwork extends StatefulWidget {
   const DialogInfoNetwork({super.key});
@@ -24,7 +24,6 @@ class DialogInfoNetwork extends StatefulWidget {
 
 class DialogInfoNetworkState extends State<DialogInfoNetwork> {
   bool _isNodeListVisible = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +86,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                         widget: ExtraUtil.getNodeDescription(
                             context, state.statusConnected, state.node.seed)),
                     const SizedBox(width: 10),
-                    Label(
-                        text: getNormalTime(state.node.utcTime) )
+                    TimeLabel(time: state.node.utcTime)
                   ],
                 ))
           ],
@@ -96,7 +94,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
           if (!_isNodeListVisible) ...[
             ListTile(
                 //  contentPadding: EdgeInsets.zero,
-                leading: AppIconsStyle.icon3x2(Assets.iconsDebug),
+                leading: AppIconsStyle.icon3x2(Assets.iconsDebugI),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -113,10 +111,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
       );
     });
   }
-  String getNormalTime(int unixTime) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTime * 1000);
-    return DateFormat('HH:mm:ss').format(dateTime);
-  }
+
   infoNode(String icon, String text) {
     return ListTile(
         leading: AppIconsStyle.icon3x2(icon),

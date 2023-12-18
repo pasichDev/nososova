@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/models/app/response_page_listener.dart';
-import 'package:nososova/ui/responses_util/responses_messages.dart';
+import 'package:nososova/ui/common/responses_util/responses_messages.dart';
 
-import '../theme/style/colors.dart';
-import '../theme/style/text_style.dart';
+import '../../theme/style/colors.dart';
+import '../../theme/style/text_style.dart';
 
 class SnackBarWidgetResponse {
   final BuildContext context;

@@ -10,10 +10,12 @@ import 'package:nososova/utils/noso/model/summary_data.dart';
 
 import '../models/app/wallet.dart';
 import '../models/responses/response_node.dart';
-import '../ui/responses_util/response_widget_id.dart';
+import '../ui/common/responses_util/response_widget_id.dart';
 import '../utils/const/const.dart';
 import '../utils/const/files_const.dart';
+import '../utils/const/network_const.dart';
 import '../utils/noso/model/address_object.dart';
+import '../utils/noso/model/node.dart';
 import '../utils/noso/model/order_create.dart';
 import '../utils/noso/utils.dart';
 import 'events/app_data_events.dart';
@@ -36,6 +38,10 @@ class WalletState {
 class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final AppDataBloc appDataBloc;
   final Repositories _repositories;
+
+  late StreamSubscription _walletEvents;
+
+
   late StreamSubscription _summarySubscriptions;
   late StreamSubscription _pendingsSubscriptions;
 
@@ -54,7 +60,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     required this.appDataBloc,
   })  : _repositories = repositories,
         super(WalletState()) {
-    on<FetchAddress>(_fetchAddresses);
     on<DeleteAddress>(_deleteAddress);
     on<AddAddress>(_addAddress);
     on<CreateNewAddress>(_createNewAddress);
@@ -62,7 +67,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
     on<SetAlias>(_setAliasAddress);
+    on<CalculateBalance>(_calculateBalance);
     initBloc();
+
+    _walletEvents = appDataBloc.walletEvents.listen((event) {
+      add(event);
+    });
   }
 
   /// The method used to change the alias address
@@ -143,7 +153,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     await _repositories.localRepository.deleteAddress(event.address);
   }
 
-  void _fetchAddresses(event, emit) async {}
 
   void _addAddresses(event, emit) async {
     List<Address> listAddresses = [];
@@ -172,6 +181,78 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
+
+  //
+  void _calculateBalance(event, emit) async {
+    var summary = event.summaryData;
+    var checkConsensus = event.checkConsensus;
+
+
+    // тут гонимо перевірку на консенсус
+
+
+    //тут завнтажкємо пендінг (якщо він є перевірити в appState.node)
+
+
+
+  }
+
+
+  //також додати первірку щоб рандомом не вибирався активний вузол
+  Future<ConsensusStatus> _checkConsensus(Node targetNode) async {
+    return ConsensusStatus.error;
+/*
+    List<Seed> testSeeds = [];
+    List<bool> decisionNodes = [];
+
+    for (int i = 0; i < 3; i++) {
+      testSeeds.add(Seed().tokenizer(
+          _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList)));
+    }
+    //оптимізувати цей запит злб він зразу повертав nodeInfo
+    ResponseNode<List<Seed>> responseDevNodes =
+    await _repositories.networkRepository.listenNodes();
+    if (responseDevNodes.value != null) {
+      // витягує 2 активних вузла
+      testSeeds.addAll(responseDevNodes.value!
+          .where((seed) => seed.online)
+          .take(0)
+          .toList());
+    }
+    if (responseDevNodes.errors != null || testSeeds.length < 2) {
+      return ConsensusStatus.error;
+    }
+
+    // отримаємо всі дані з доступних вузлів для вирішення консенсусу
+    for (Seed testSeed in testSeeds) {
+      ResponseNode testResponse = await _repositories.networkRepository
+          .fetchNode(NetworkRequest.nodeStatus, testSeed);
+      if (testResponse.errors == null) {
+        //    var tNode = _repositories.nosoCore
+        //       .parseResponseNode(testResponse.value, testResponse.seed);
+        //     decisionNodes.add(isValidNode(tNode, targetNode));
+      }
+    }
+
+    if (decisionNodes.every((element) => element == true)) {
+      _debugBloc.add(AddStringDebug(
+          "Consensus is correct, node -> ${targetNode.seed.toTokenizer()}"));
+      return ConsensusStatus.sync;
+    } else {
+      // Повертаємо те що консенсус ytdshybq
+      return ConsensusStatus.error;
+    }
+
+ */
+  }
+
+  bool isValidNode(Node tNode, Node targetNode) {
+    if (tNode.branch == targetNode.branch ||
+        tNode.lastblock == targetNode.lastblock) {
+      return true;
+    }
+    return false;
+  }
   Future<void> _syncBalance(List<SumaryData> summary,
       {List<Address>? address}) async {
     var listAddress = address ?? state.wallet.address;
@@ -281,6 +362,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     _summarySubscriptions.cancel();
     _pendingsSubscriptions.cancel();
     _walletUpdate.close();
+    _walletEvents.cancel();
     return super.close();
   }
 }

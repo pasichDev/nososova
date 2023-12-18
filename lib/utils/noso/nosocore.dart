@@ -228,11 +228,15 @@ final class NosoCore extends NosoCrypto {
         listNodes: resultMNList);
   }
 
-  Node parseResponseNode(List<int>? response, Seed seedActive) {
+  Node? parseResponseNode(List<int>? response, Seed seedActive) {
     if (response == null) {
-      return Node(seed: seedActive);
+      return null;
     }
     List<String> values = String.fromCharCodes(response).split(" ");
+
+    if(values.length <= 2){
+      return null;
+    }
 
     return Node(
       seed: seedActive,
@@ -331,13 +335,15 @@ final class NosoCore extends NosoCrypto {
       return "127.0.0.1:8080";
     }
 
-    List<String> elements = inputString.split('|');
+    List<String> elements = inputString.split(',');
     int elementCount = elements.length;
 
     if (elementCount > 0) {
       int randomIndex = Random().nextInt(elementCount);
 
-      return elements[randomIndex];
+      var targetSeed = elements[randomIndex].split("|")[0];
+      print(targetSeed);
+      return targetSeed;
     } else {
       return "127.0.0.1:8080";
     }

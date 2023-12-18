@@ -5,11 +5,15 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+
 class FileService {
   String nameFileSummary = "sumary.psk";
 
   /// Save summary file
   Future<bool> saveSummary(List<int> bytesValue) async {
+    if (bytesValue.isEmpty) {
+      return false;
+    }
     final Uint8List bytes = Uint8List.fromList(bytesValue);
     int breakpoint = 0;
     try {

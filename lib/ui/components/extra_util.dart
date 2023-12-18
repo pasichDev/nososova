@@ -28,6 +28,11 @@ class ExtraUtil {
         AppLocalizations.of(context)!.sync,
         style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
       );
+    } else if (statusConnected == StatusConnectNodes.consensus) {
+      return Text(
+        AppLocalizations.of(context)!.consensusCheck,
+        style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
+      );
     }
     if (statusConnected == StatusConnectNodes.connected) {
       return Row(

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 
+import '../models/apiExplorer/block_info.dart';
 import '../models/apiExplorer/price_dat.dart';
 import '../models/block_mns.dart';
 import '../models/responses/response_api.dart';
@@ -12,6 +13,7 @@ class ExplorerStatsService {
   final String _apiExplorerHttp = "https://api.nosostats.com:8078";
   final String _apiStats = "https://api.nosocoin.com/";
 
+  /// TODO DeLETE
   getResponseRpc(String method, dynamic params) async {
     return await http.post(
       Uri.parse(_apiExplorerHttp),
@@ -21,6 +23,7 @@ class ExplorerStatsService {
     );
   }
 
+  /// TODO DeLETE
   Future<ResponseApi> fetchBlockMNS(int blockHeight) async {
     var response = await getResponseRpc("getblockmns", [blockHeight]);
 
@@ -80,6 +83,17 @@ class ExplorerStatsService {
       } else {
         return ResponseApi(value: listPrice);
       }
+    }
+  }
+
+  Future<ResponseApi> fetchLastBlockInfo() async {
+    var response = await _fetchExplorerStats("${_apiStats}nodes/info");
+
+    if (response.errors != null) {
+      return response;
+    } else {
+     // Map<String, dynamic> jsonMap = json.decode(response.value);
+      return ResponseApi(value: BlockInfo.fromJson(response.value));
     }
   }
 

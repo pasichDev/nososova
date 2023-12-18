@@ -57,14 +57,14 @@ class NodeBloc extends Bloc<NodeEvent, NodeState> {
         listUserNodes.add(address);
       }
     }
-    double blockReward = appDataBloc.state.statsInfoCoin.blockInfo.reward;
+   // double blockReward = appDataBloc.state.statsInfoCoin.blockInfo.reward;
     var launched =
         listUserNodes.where((item) => item.nodeStatusOn == true).length;
-    var nodesReward = blockReward * launched;
+    var nodesReward = 0 * launched;
     emit(state.copyWith(
         stateNode: state.stateNode.copyWith(
             nodes: listUserNodes,
-            rewardDay: nodesReward,
+            rewardDay: 0,
             launchedNodes: launched)));
   }
 

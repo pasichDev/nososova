@@ -62,7 +62,7 @@ class DialogRouter {
       builder: (_) => Dialog(
         child: Material(
           child: BlocProvider.value(
-            value: BlocProvider.of<AppDataBloc>(context),
+            value: BlocProvider.of<WalletBloc>(context),
             child: const DialogImportKeysPair(),
           ),
         ),

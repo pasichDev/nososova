@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/utils/const/const.dart';
-import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../common/widgets/total_usdt_price.dart';
 import '../../../theme/decoration/standart_gradient_decoration_round.dart';
 import '../../../theme/style/text_style.dart';
 
@@ -20,15 +18,13 @@ class CardHeader extends StatelessWidget {
       decoration: const HomeGradientDecorationRound(),
       child: const SafeArea(
         child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
-            child: CardBody()),
+            padding: EdgeInsets.symmetric(horizontal: 30.0), child: CardBody()),
       ),
     );
   }
 }
 
 class CardBody extends StatelessWidget {
-
   const CardBody({super.key});
 
   @override
@@ -54,8 +50,7 @@ class CardBody extends StatelessWidget {
               ),
             ],
           ),
-
-          ItemTotalPrice(totalPrice:  state.wallet.balanceTotal),
+          ItemTotalPrice(totalPrice: state.wallet.balanceTotal),
           const SizedBox(height: 10),
           Text(
             '${AppLocalizations.of(context)!.incoming}: ${state.wallet.totalIncoming.toStringAsFixed(8)}',
@@ -71,31 +66,5 @@ class CardBody extends StatelessWidget {
         ],
       );
     });
-  }
-}
-
-
-
-class ItemTotalPrice extends StatelessWidget {
-  final double totalPrice;
-  const ItemTotalPrice({super.key, required this.totalPrice});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return BlocBuilder<CoinInfoBloc, CoinInfoState>(builder: (context, state) {
-      var priceMoney = state.infoCoin.minimalInfo?.rate ?? 0;
-      var price = totalPrice * priceMoney;
-      return Row(children : [
-        if(state.apiPriceStatus == ApiStatus.connected)    Text(
-          "${price.toStringAsFixed(2)} USDT",
-          style: AppTextStyles.titleMin
-              .copyWith(color: Colors.white.withOpacity(0.5)),
-        ),
-        const SizedBox(width: 10),
-      if(state.apiPriceStatus == ApiStatus.loading)  LoadingAnimationWidget.prograssiveDots(
-         color: Colors.white.withOpacity(0.5), size: 26,
-        ),
-      ]);});
   }
 }

@@ -4,21 +4,21 @@ import 'package:nososova/services/node_service.dart';
 
 import '../models/responses/response_api.dart';
 import '../models/responses/response_node.dart';
-import '../services/livecoinwatch_service.dart';
 
 class NetworkRepository {
   final NodeService _nodeService;
-  final LiveCoinWatchService _liveCoinWatchService;
   final ExplorerStatsService _explorerStatsService;
 
-  NetworkRepository(this._nodeService, this._liveCoinWatchService, this._explorerStatsService);
-
+  NetworkRepository(this._nodeService, this._explorerStatsService);
 
   /// Node Service
+
+  /// DELETE
   Future<ResponseNode<List<Seed>>> listenNodes() {
     return _nodeService.testsListDefaultSeeds();
   }
 
+  /// DELETE
   Future<ResponseNode> testNode(Seed seed) {
     return _nodeService.testLastSeed(seed);
   }
@@ -27,18 +27,9 @@ class NetworkRepository {
     return _nodeService.fetchNode(command, seed);
   }
 
-
-  /// Live Coin Watch Service
-  /// https://livecoinwatch.github.io/lcw-api-docs/
-
-  Future<ResponseApi> fetchHistoryCoins() {
-    return _liveCoinWatchService.fetchHistory();
+  Future<ResponseNode<List<int>>> getRandomDevNode() {
+    return _nodeService.getRandomDevNode();
   }
-
-  Future<ResponseApi> fetchMinimalInfo() {
-    return _liveCoinWatchService.fetchMinimalInfo();
-  }
-
 
   /// Api Explorer Service
   /// https://api.nosocoin.com/docs/
@@ -50,8 +41,13 @@ class NetworkRepository {
   Future<ResponseApi> fetchHistoryTransactions(String hashAddress) {
     return _explorerStatsService.fetchHistoryTransactions(hashAddress);
   }
+
+  /// TODO DeLETE
   Future<ResponseApi> fetchHistoryPrice() {
     return _explorerStatsService.fetchHistoryPrice();
   }
 
+  Future<ResponseApi> fetchLastBlockInfo() {
+    return _explorerStatsService.fetchLastBlockInfo();
+  }
 }

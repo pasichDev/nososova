@@ -212,7 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nosoPrice => 'Noso Price';
 
   @override
-  String get rewardNodeLaunched => 'One block reward for your nodes';
+  String get rewardNodeLaunched => 'One block reward';
 
   @override
   String get launched => 'Launched';
@@ -290,10 +290,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alias => 'Alias';
 
   @override
+  String get consensusCheck => 'Consensus resolution';
+
+  @override
   String get save => 'Save';
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get informMyNodes => 'Status of your nodes';
 
   @override
   String get aliasMessage => 'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.';

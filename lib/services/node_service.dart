@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:nososova/models/seed.dart';
@@ -26,7 +27,7 @@ class NodeService {
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
       if (kDebugMode) {
-        print("${command} : ${String.fromCharCodes(responseBytes)}");
+       if(command != NetworkRequest.summary) print(String.fromCharCodes(responseBytes));
       }
 
       socket.close();
@@ -57,6 +58,53 @@ class NodeService {
       return ResponseNode(errors: "ServerService Exception: $e");
     }
   }
+
+
+
+
+
+  Future<ResponseNode<List<int>>> getRandomDevNode() async {
+    final responseBytes = <int>[];
+    Random random = Random();
+    int randomIndex = random.nextInt(seedsDefault.length);
+    var targetSeed = seedsDefault[randomIndex];
+    try {
+      var socket = await _connectSocket(targetSeed);
+      final startTime = DateTime.now().millisecondsSinceEpoch;
+      socket.write(NetworkRequest.nodeStatus);
+      await for (var byteData in socket) {
+        responseBytes.addAll(byteData);
+      }
+      final endTime = DateTime.now().millisecondsSinceEpoch;
+      final responseTime = endTime - startTime;
+
+      socket.close();
+      if (responseBytes.isNotEmpty) {
+        targetSeed.ping = responseTime;
+        targetSeed.online = true;
+        return ResponseNode(value: responseBytes, seed: targetSeed);
+      } else {
+        return ResponseNode(errors: "Empty response");
+      }
+    } on TimeoutException catch (_) {
+      if (kDebugMode) {
+        print("Connection timed out. Check server availability.");
+      }
+      return ResponseNode(
+          errors: "Connection timed out. Check server availability.");
+    } on SocketException catch (e) {
+      if (kDebugMode) {
+        print("SocketException: ${e.message}");
+      }
+      return ResponseNode(errors: "SocketException: ${e.message}");
+    } catch (e) {
+      if (kDebugMode) {
+        print("ServerService Exception: $e");
+      }
+      return ResponseNode(errors: "ServerService Exception: $e");
+    }
+  }
+
 
   /// Метод який перебирає дефолтні сіди, і поаертає активний сід
   Future<ResponseNode<List<Seed>>> testsListDefaultSeeds() async {

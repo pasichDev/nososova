@@ -18,7 +18,7 @@ class Seed {
     }
     List<String> seedPart = string.split(":");
     ip = seedPart[0];
-    port = 8080; //int.parse(seedPart[1])
+    port = int.parse(seedPart[1]);
     return this;
   }
 

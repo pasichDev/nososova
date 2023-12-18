@@ -10,6 +10,7 @@ class Assets {
   static const String iconsCard = 'assets/icons/card.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsDebug = 'assets/icons/debug.svg';
+  static const String iconsDebugI = 'assets/icons/debug_i.svg';
   static const String iconsDelete = 'assets/icons/delete.svg';
   static const String iconsEmpty = 'assets/icons/empty.svg';
   static const String iconsExport = 'assets/icons/export.svg';

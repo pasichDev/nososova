@@ -5,15 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/address_actions.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/history_transaction.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/pendings_widget.dart';
-import 'package:nososova/ui/responses_util/snackbar_message.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
+import '../../common/responses_util/response_widget_id.dart';
+import '../../common/responses_util/snackbar_message.dart';
 import '../../components/app_bar_other_page.dart';
-import '../../responses_util/response_widget_id.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';

@@ -10,10 +10,10 @@ import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../../generated/assets.dart';
+import '../common/widgets/side_bar.dart';
 import '../config/responsive.dart';
 import '../config/size_config.dart';
 import '../route/dialog_router.dart';
-import '../widgets/side_bar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -40,68 +40,68 @@ class MainPageState extends State<MainPage> {
       extendBodyBehindAppBar: true,
       appBar: Responsive.isMobile(context)
           ? AppBar(
-        elevation: 0,
-        title: NetworkInfo(
-            nodeStatusDialog: () =>
-                DialogRouter.showDialogInfoNetwork(context)),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                if (Platform.isAndroid || Platform.isIOS)
-                  IconButton(
-                    icon: AppIconsStyle.icon3x2(Assets.iconsScan,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.white, BlendMode.srcIn)),
-                    onPressed: () =>
-                        DialogRouter.showDialogScanQr(context),
+              elevation: 0,
+              title: NetworkInfo(
+                  nodeStatusDialog: () =>
+                      DialogRouter.showDialogInfoNetwork(context)),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      if (Platform.isAndroid || Platform.isIOS)
+                        IconButton(
+                          icon: AppIconsStyle.icon3x2(Assets.iconsScan,
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.white, BlendMode.srcIn)),
+                          onPressed: () =>
+                              DialogRouter.showDialogScanQr(context),
+                        ),
+                    ],
                   ),
+                ),
               ],
-            ),
-          ),
-        ],
-        backgroundColor: Colors.transparent,
-      )
+              backgroundColor: Colors.transparent,
+            )
           : const PreferredSize(
-        preferredSize: Size.zero,
-        child: SizedBox(),
-      ),
-      body:
-          Row(
+              preferredSize: Size.zero,
+              child: SizedBox(),
+            ),
+      body: Row(
         children: [
-       if(!Responsive.isMobile(context))   const SideBarDesktop(),
-        Expanded(child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          children: _pages,
-        )),
+          if (!Responsive.isMobile(context)) const SideBarDesktop(),
+          Expanded(
+              child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: _pages,
+          )),
         ],
       ),
       bottomNavigationBar: Responsive.isMobile(context)
           ? BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        elevation: 5,
-        selectedItemColor: CustomColors.primaryColor,
-        items: <BottomNavigationBarItem>[
-          bottomItem(Assets.iconsWallet, 0),
-          bottomItem(Assets.iconsInfo, 1),
-          bottomItem(Assets.iconsNodeI, 2),
-          bottomItem(Assets.iconsMore, 3),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
-        },
-      )
+              type: BottomNavigationBarType.fixed,
+              elevation: 5,
+              selectedItemColor: CustomColors.primaryColor,
+              items: <BottomNavigationBarItem>[
+                bottomItem(Assets.iconsWallet, 0),
+                bottomItem(Assets.iconsInfo, 1),
+                bottomItem(Assets.iconsNodeI, 2),
+                bottomItem(Assets.iconsMore, 3),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease,
+                );
+              },
+            )
           : null,
     );
   }
