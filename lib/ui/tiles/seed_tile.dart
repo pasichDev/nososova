@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
-import '../../../l10n/app_localizations.dart';
 import '../../../models/seed.dart';
 import '../../utils/const/network_const.dart';
 import '../../utils/custom_class/shimmer.dart';
+import '../components/extra_util.dart';
+import '../config/responsive.dart';
 
 class SeedListItem extends StatelessWidget {
   final Seed seed;
@@ -20,60 +21,19 @@ class SeedListItem extends StatelessWidget {
   });
 
 
-  Widget _descriptions(BuildContext context) {
-    if (statusConnected == StatusConnectNodes.error) {
-     return Text(
-          AppLocalizations.of(context)!.errorConnection,
-          style: const TextStyle(fontSize: 12.0, color: Colors.redAccent),
-        );
-
-    }else if(statusConnected == StatusConnectNodes.searchNode){
-      return Text(
-        AppLocalizations.of(context)!.connection,
-        style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
-      );
-    }else if(statusConnected == StatusConnectNodes.sync){
-      return Text(
-        AppLocalizations.of(context)!.sync,
-        style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
-      );
-    }
-    if(statusConnected == StatusConnectNodes.connected){
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.activeConnect,
-            style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
-          ),
-          const SizedBox(width: 5),
-          Text(
-            "(${seed.ping.toString()} ${AppLocalizations.of(context)!.pingMs})",
-            style: AppTextStyles.itemStyle.copyWith(fontSize: 14),
-          )
-        ],
-      );
-    }
-
-    return Container();
-  }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:    SvgPicture.asset(
-          CheckConnect.getStatusConnected(statusConnected),
-          width: 32,
-          height: 32,
-          color: Colors.grey
-      ),
+      leading: AppIconsStyle.icon3x2(CheckConnect.getStatusConnected(statusConnected)),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (statusConnected == StatusConnectNodes.searchNode || statusConnected == StatusConnectNodes.sync)
+              if (statusConnected == StatusConnectNodes.searchNode ||
+                  statusConnected == StatusConnectNodes.sync)
                 Container(
                   margin: EdgeInsets.zero,
                   child: ShimmerPro.sized(
@@ -82,7 +42,6 @@ class SeedListItem extends StatelessWidget {
                     width: 150,
                     borderRadius: 1,
                     height: 14,
-
                   ),
                 )
               else
@@ -94,8 +53,10 @@ class SeedListItem extends StatelessWidget {
                     ),
                   ],
                 ),
-              const SizedBox(height: 5),
-              _descriptions(context),
+              if (Responsive.isMobile(context)) ...[
+                const SizedBox(height: 5),
+                ExtraUtil.getNodeDescription(context, statusConnected, seed)
+              ],
             ],
           ),
         ],

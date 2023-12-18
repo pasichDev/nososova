@@ -20,7 +20,7 @@
   "cancel": "Cancel",
   "addToWallet": "Add to Wallet",
   "titleInfoNetwork": "Node info",
-  "debugInfo": "Debug Information",
+  "debugInfo": "Debugging",
   "connections": "Connections",
   "lastBlock": "Last Block",
   "pendings": "Pendings",

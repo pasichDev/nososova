@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleInfoNetwork => 'Node info';
 
   @override
-  String get debugInfo => 'Debug Information';
+  String get debugInfo => 'Debugging';
 
   @override
   String get connections => 'Connections';

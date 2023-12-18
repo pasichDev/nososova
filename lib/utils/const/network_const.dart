@@ -33,7 +33,7 @@ final class CheckConnect {
       case StatusConnectNodes.error:
         return Assets.iconsClose;
       default:
-        return "";
+        return Assets.iconsNode;
     }
   }
 }

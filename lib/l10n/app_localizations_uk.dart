@@ -68,7 +68,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get titleInfoNetwork => 'Інформація про вузол';
 
   @override
-  String get debugInfo => 'Інформація про налагодження';
+  String get debugInfo => 'Налагодження';
 
   @override
   String get connections => 'Підключеннь';

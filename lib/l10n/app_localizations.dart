@@ -222,7 +222,7 @@ abstract class AppLocalizations {
   /// No description provided for @debugInfo.
   ///
   /// In en, this message translates to:
-  /// **'Debug Information'**
+  /// **'Debugging'**
   String get debugInfo;
 
   /// No description provided for @connections.
