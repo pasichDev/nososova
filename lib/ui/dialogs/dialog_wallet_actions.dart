@@ -18,7 +18,7 @@ import '../route/dialog_router.dart';
 import '../theme/style/text_style.dart';
 
 class DialogWalletActions extends StatefulWidget {
-  const DialogWalletActions({Key? key}) : super(key: key);
+  const DialogWalletActions({super.key});
 
   @override
   State createState() => _DialogWalletActionsState();

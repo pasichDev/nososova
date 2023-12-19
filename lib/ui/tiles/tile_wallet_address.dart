@@ -45,6 +45,7 @@ class AddressListTileState extends State<AddressListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.only(left: 10, right: 15),
         leading: _iconAddress(),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

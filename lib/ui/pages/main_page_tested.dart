@@ -91,7 +91,7 @@ class MainPageState extends State<MainPage> {
                 bottomItem(Assets.iconsWallet, 0),
                 bottomItem(Assets.iconsInfo, 1),
                 bottomItem(Assets.iconsNodeI, 2),
-                bottomItem(Assets.iconsMore, 3),
+              //  bottomItem(Assets.iconsMore, 3),
               ],
               currentIndex: _selectedIndex,
               onTap: (index) {

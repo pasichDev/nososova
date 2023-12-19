@@ -14,13 +14,14 @@ import '../pages/payment/payment_page.dart';
 
 class PageRouter {
   /// Page for sending payment
-  static void routePaymentPage(BuildContext context, Address address) {
+  static void routePaymentPage(
+      BuildContext context, Address address, { String receiver = ""}) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
           value: BlocProvider.of<WalletBloc>(context),
-          child: PaymentPage(address: address),
+          child: PaymentPage(address: address, receiver: receiver),
         ),
       ),
     );
