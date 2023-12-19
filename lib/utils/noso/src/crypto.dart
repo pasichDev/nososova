@@ -20,14 +20,16 @@ class DivResult {
 class NosoCrypto {
   final algorithmName = Mac("SHA-1/HMAC");
 
-  /// Public Methods
+  /// Generates a key pair containing a private key and a public key.
   KeyPair get generateKeyPair => _generateKeyPair();
 
+  /// Derives an address from a public key.
   String getAddressFromPublicKey(String publicKey) {
     return _getAddressFromPublicKey(publicKey);
   }
 
-  ///https://stackoverflow.com/questions/72641616/how-to-convert-asymmetrickeypair-to-base64-encoding-string-in-dart
+  /// Signs a message using a private key and returns the EC signature.
+  /// Reference: https://stackoverflow.com/questions/72641616/how-to-convert-asymmetrickeypair-to-base64-encoding-string-in-dart
   ECSignature signMessage(String message, String privateKeyBase64) {
     Uint8List messageBytes = Uint8List.fromList(_nosoBase64Decode(message));
     BigInt privateKeyDecode =
@@ -43,6 +45,7 @@ class NosoCrypto {
     return ecSignature;
   }
 
+  /// Encodes an EC signature to a Base64-encoded string.
   String encodeSignatureToBase64(ECSignature ecSignature) {
     final encoded = ASN1Sequence(elements: [
       ASN1Integer(ecSignature.r),
@@ -51,7 +54,7 @@ class NosoCrypto {
     return base64Encode(encoded);
   }
 
-
+  /// Verifies a signed string using the provided EC signature and public key.
   bool verifySignedString(
       String message, ECSignature signature, String publicKey) {
     final Uint8List messageBytes =
@@ -67,6 +70,7 @@ class NosoCrypto {
     return verifier.verifySignature(messageBytes, signature);
   }
 
+  /// Converts a byte array to a BigInt
   BigInt bytesToBigInt(Uint8List bytes) {
     BigInt result = BigInt.zero;
     for (int i = 0; i < bytes.length; i++) {
@@ -75,6 +79,7 @@ class NosoCrypto {
     return result;
   }
 
+  /// Derives an address from a public key using multiple hashing algorithms.
   String _getAddressFromPublicKey(String publicKey) {
     final pubSHAHashed = getSha256HashToString(publicKey);
     final hash1 = _getMd160HashToString(pubSHAHashed);
@@ -85,6 +90,7 @@ class NosoCrypto {
     return Const.coinChar + hash2;
   }
 
+  /// Calculates the SHA-256 hash of a given public key.
   String getSha256HashToString(String publicKey) {
     final sha256 = SHA256Digest();
     final bytes = utf8.encode(publicKey);
@@ -93,6 +99,7 @@ class NosoCrypto {
     return result.replaceAll('-', '').toUpperCase();
   }
 
+  /// Calculates the RIPEMD-160 hash of a given SHA-256 hash.
   String _getMd160HashToString(String hash256) {
     final hash = RIPEMD160Digest();
     final bytes = Uint8List.fromList(hash256.codeUnits);
@@ -101,6 +108,7 @@ class NosoCrypto {
     return hashHex.toUpperCase();
   }
 
+  /// Base58 encodes a hexadecimal number using the specified alphabet.
   String base58Encode(String hexNumber, BigInt alphabetNumber) {
     BigInt decimalValue = _hexToDecimal(hexNumber);
     String result = '';
@@ -134,6 +142,7 @@ class NosoCrypto {
     return result;
   }
 
+  /// Computes the checksum of a Base58-encoded string.
   int base58Checksum(String input) {
     int total = 0;
     for (var i = 0; i < input.length; i++) {
@@ -146,6 +155,7 @@ class NosoCrypto {
     return total;
   }
 
+  /// Converts a decimal number to Base58 using the specified alphabet.
   String base58DecimalTo58(String number) {
     var decimalValue = BigInt.parse(number);
     DivResult resultDiv;
@@ -173,6 +183,7 @@ class NosoCrypto {
     return result;
   }
 
+  /// Converts a hexadecimal number to a BigInt.
   BigInt _hexToDecimal(String hexNumber) {
     final bytes = <int>[];
     for (var i = 0; i < hexNumber.length; i += 2) {
@@ -185,6 +196,7 @@ class NosoCrypto {
     return BigInt.parse(hexString, radix: 16);
   }
 
+  /// Generates a random key pair.
   KeyPair _generateKeyPair() {
     final secureRandom = FortunaRandom()
       ..seed(KeyParameter(Uint8List.fromList(
@@ -212,6 +224,7 @@ class NosoCrypto {
     return keys;
   }
 
+  /// Divides a BigInt by another BigInt and returns the quotient and remainder.
   DivResult _divideBigInt(BigInt numerator, BigInt denominator) {
     DivResult result = DivResult();
     result.coefficient = numerator ~/ denominator;
@@ -219,6 +232,7 @@ class NosoCrypto {
     return result;
   }
 
+  /// Decodes a Base64-like encoding used in the NosoCrypto class.
   List<int> _nosoBase64Decode(String input) {
     final indexList = <int>[];
     for (var c in input.codeUnits) {

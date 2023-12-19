@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:nososova/blocs/events/debug_events.dart';
 
@@ -29,13 +27,12 @@ class DebugBloc extends Bloc<DebugEvent, DebugState> {
   _addToDebug(event, emit) {
     var list = state.debugList;
     DateTime now = DateTime.now();
-    list.add(DebugString(time: "${now.hour}:${now.minute}:${now.second.toString().padLeft(2, '0')}", message: event.value));
+    list.add(DebugString(
+        time:
+            "${now.hour}:${now.minute}:${now.second.toString().padLeft(2, '0')}",
+        message: event.value,
+        type: event.type));
 
     emit(state.copyWith(debugList: list));
-  }
-
-  @override
-  Future<void> close() {
-    return super.close();
   }
 }

@@ -296,6 +296,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get save => 'Зберегти';
 
   @override
+  String get nodeType => 'Тип вузла';
+
+  @override
+  String get status => 'Статус';
+
+  @override
   String get confirm => 'Підтвердити';
 
   @override

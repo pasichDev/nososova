@@ -53,4 +53,29 @@ class ExtraUtil {
 
     return Container();
   }
+
+  static String getNodeDescriptionString(
+    BuildContext context,
+    StatusConnectNodes statusConnected,
+    Seed seed,
+  ) {
+
+    switch (statusConnected) {
+      case StatusConnectNodes.error:
+        return AppLocalizations.of(context)!.errorConnection;
+      case StatusConnectNodes.searchNode:
+        return AppLocalizations.of(context)!.connection;
+      case StatusConnectNodes.sync:
+        return AppLocalizations.of(context)!.sync;
+      case StatusConnectNodes.consensus:
+        return AppLocalizations.of(context)!.consensusCheck;
+      case StatusConnectNodes.connected:
+        return '${AppLocalizations.of(context)!.activeConnect} (${seed.ping.toString()} ${AppLocalizations.of(context)!.pingMs})';
+
+      default:
+        break;
+    }
+
+    return "";
+  }
 }

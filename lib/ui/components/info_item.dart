@@ -5,7 +5,7 @@ import '../theme/style/text_style.dart';
 class InfoItem {
   itemInfo(String nameItem, String value, {String twoValue = ""}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -15,7 +15,7 @@ class InfoItem {
             style: AppTextStyles.itemStyle
                 .copyWith(color: Colors.black.withOpacity(0.5), fontSize: 18),
           ),
-          const SizedBox(height: 5),
+         // const SizedBox(height: 5),
           Row(children: [
             Text(
               value,

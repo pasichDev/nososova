@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../../blocs/events/app_data_events.dart';
-import '../../generated/assets.dart';
-import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
-import '../common/widgets/label.dart';
+import '../../utils/const/network_const.dart';
+import '../../utils/custom_class/shimmer.dart';
+import '../../utils/noso/model/node.dart';
 import '../components/extra_util.dart';
 import '../config/responsive.dart';
-import '../route/dialog_router.dart';
 import '../theme/style/text_style.dart';
 
 class DialogInfoNetwork extends StatefulWidget {
@@ -22,8 +21,6 @@ class DialogInfoNetwork extends StatefulWidget {
 }
 
 class DialogInfoNetworkState extends State<DialogInfoNetwork> {
-  bool _isNodeListVisible = false;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
@@ -43,86 +40,87 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
               Expanded(
                 child: SeedListItem(
                   seed: state.node.seed,
-                  isNodeListVisible: _isNodeListVisible,
                   statusConnected: state.statusConnected,
                 ),
               ),
               IconButton(
                   icon: const Icon(Icons.restart_alt_outlined),
                   onPressed: () {
-                    _isNodeListVisible = false;
                     return context.read<AppDataBloc>().add(ReconnectSeed(true));
                   }),
               IconButton(
                   icon: const Icon(Icons.navigate_next),
                   onPressed: () {
-                    _isNodeListVisible = false;
                     return context
                         .read<AppDataBloc>()
                         .add(ReconnectSeed(false));
                   }),
-              if (Responsive.isMobile(context))
-                IconButton(
-                  icon: _isNodeListVisible
-                      ? const Icon(Icons.expand_less)
-                      : const Icon(Icons.expand_more),
-                  onPressed: () {
-                    setState(() {
-                      _isNodeListVisible = !_isNodeListVisible;
-                    });
-                  },
-                ),
               const SizedBox(width: 10)
             ],
           ),
           if (!Responsive.isMobile(context)) ...[
-            Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 20.0),
-                child: Row(
-                  children: [
-                    Label(
-                        widget: ExtraUtil.getNodeDescription(
-                            context, state.statusConnected, state.node.seed)),
-                    const SizedBox(width: 10),
-                    Label(text: state.node.lastblock.toString()),
-                  ],
-                ))
+            itemInfo(
+                AppLocalizations.of(context)!.status,
+                ExtraUtil.getNodeDescriptionString(
+                    context, state.statusConnected, state.node.seed), StatusConnectNodes.connected)
           ],
-          if (_isNodeListVisible) ...[SeedInfoTile(nodeInfo: state.node)],
-          if (!_isNodeListVisible) ...[
-            ListTile(
-                //  contentPadding: EdgeInsets.zero,
-                leading: AppIconsStyle.icon3x2(Assets.iconsDebugI),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.debugInfo,
-                      style: AppTextStyles.itemStyle,
-                    ),
-                  ],
-                ),
-                onTap: () => DialogRouter.showDialogDebug(context)),
-          ],
+          itemInfo(AppLocalizations.of(context)!.nodeType,
+              getNetworkType(state.node), state.statusConnected),
+          itemInfo(AppLocalizations.of(context)!.lastBlock,
+              state.node.lastblock.toString(), state.statusConnected),
+          itemInfo(AppLocalizations.of(context)!.version,
+              state.node.version.toString(), state.statusConnected),
+          itemInfo(AppLocalizations.of(context)!.utcTime,
+              getNormalTime(state.node.utcTime), state.statusConnected),
           const SizedBox(height: 20),
         ],
       );
     });
   }
 
-  infoNode(String icon, String text) {
-    return ListTile(
-        leading: AppIconsStyle.icon3x2(icon),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              text,
-              style: AppTextStyles.itemStyle,
-            ),
-          ],
-        ),
-        onTap: null);
+  String getNetworkType(Node node) {
+    bool isDev = NetworkConst.getSeedList()
+        .any((item) => item.toTokenizer() == node.seed.toTokenizer());
+    return isDev ? "Verified node" : "Custom node";
+  }
+
+  String getNormalTime(int unixTime) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTime * 1000);
+    return DateFormat('HH:mm:ss').format(dateTime);
+  }
+
+  itemInfo(String nameItem, String value, StatusConnectNodes statusConnected) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            nameItem,
+            style: AppTextStyles.itemStyle
+                .copyWith(color: Colors.black.withOpacity(0.5), fontSize: 18),
+          ),
+          if (statusConnected == StatusConnectNodes.searchNode ||
+              statusConnected == StatusConnectNodes.sync || statusConnected == StatusConnectNodes.consensus)
+            Container(
+              margin: EdgeInsets.zero,
+              child: ShimmerPro.sized(
+                depth: 16,
+                scaffoldBackgroundColor:
+                Colors.grey.shade100.withOpacity(0.5),
+                width: 100,
+                borderRadius: 3,
+                height: 20,
+              ),
+            )
+          else Text(
+            value,
+            style: AppTextStyles.walletAddress
+                .copyWith(color: Colors.black, fontSize: 18),
+          ),
+        ],
+      ),
+    );
   }
 }

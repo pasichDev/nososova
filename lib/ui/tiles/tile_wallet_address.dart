@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:nososova/ui/theme/anim/blinkin_widget.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
@@ -26,12 +25,7 @@ class AddressListTile extends StatefulWidget {
 class AddressListTileState extends State<AddressListTile> {
   Widget _iconAddress() {
     if (widget.address.nodeAvailable) {
-      return SvgPicture.asset(
-        Assets.iconsNode,
-        width: 32,
-        height: 32,
-        color: Colors.grey,
-      );
+      return AppIconsStyle.icon3x2(Assets.iconsNode);
     } else if (widget.address.incoming > 0) {
       return BlinkingWidget(
           widget: AppIconsStyle.icon3x2(Assets.iconsInput),
@@ -45,12 +39,7 @@ class AddressListTileState extends State<AddressListTile> {
           duration: 500);
     }
 
-    return SvgPicture.asset(
-      Assets.iconsCard,
-      width: 32,
-      height: 32,
-      color: Colors.grey,
-    );
+    return AppIconsStyle.icon3x2(Assets.iconsCard);
   }
 
   @override
@@ -65,14 +54,15 @@ class AddressListTileState extends State<AddressListTile> {
               widget.address.nameAddressPublic,
               style: AppTextStyles.itemStyle.copyWith(fontSize: 20),
             ),
-            Column(
+            Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     widget.address.balance.toStringAsFixed(3),
                     style: AppTextStyles.walletAddress,
                   ),
+                  const SizedBox(width: 5),
                   if (widget.address.incoming > 0)
                     Text(
                       "+ ${widget.address.incoming}",
@@ -81,7 +71,6 @@ class AddressListTileState extends State<AddressListTile> {
                           fontFamily: "GilroySemiBold",
                           color: Colors.green),
                     ),
-                  const SizedBox(width: 5),
                   if (widget.address.outgoing > 0)
                     Text(
                       "- ${widget.address.outgoing}",

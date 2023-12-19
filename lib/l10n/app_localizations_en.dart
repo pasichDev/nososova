@@ -296,6 +296,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get nodeType => 'Node type';
+
+  @override
+  String get status => 'Status';
+
+  @override
   String get confirm => 'Confirm';
 
   @override

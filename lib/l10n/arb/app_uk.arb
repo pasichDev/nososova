@@ -93,6 +93,8 @@
   "confirmDelete": "Підтвердити вилучення адреси",
   "aliasNameAddress": "Зміна псевдоніма",
   "alias": "Псевдонім",
+  "nodeType": "Тип вузла",
+  "status": "Статус",
   "consensusCheck": "Вирішення консенсусу",
   "customNameAdd": "Встановити псевдоніму",
   "save": "Зберегти",

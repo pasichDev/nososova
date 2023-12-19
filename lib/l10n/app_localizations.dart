@@ -675,6 +675,18 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// No description provided for @nodeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Node type'**
+  String get nodeType;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:

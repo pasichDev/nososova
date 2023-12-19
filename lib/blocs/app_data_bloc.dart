@@ -13,11 +13,11 @@ import 'package:nososova/utils/noso/model/node.dart';
 import 'package:nososova/utils/noso/model/summary_data.dart';
 import 'package:nososova/utils/status_api.dart';
 
+import '../models/app/debug.dart';
 import '../models/app/stats.dart';
 import '../models/responses/response_node.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
-import '../utils/noso/model/pending_transaction.dart';
 import 'events/app_data_events.dart';
 import 'events/debug_events.dart';
 
@@ -32,10 +32,6 @@ class AppDataState {
     this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
     StatisticsCoin? statisticsCoin,
-    Seed? seedActive,
-    List<PendingTransaction>? pendings,
-    List<SumaryData>? summaryBlock,
-    List<Seed>? listPeopleNodes,
   })  : node = node ?? Node(seed: Seed()),
         statisticsCoin = statisticsCoin ?? StatisticsCoin();
 
@@ -91,15 +87,14 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   }
 
   Future<void> _reconnectNode(event, emit) async {
-    if (state.statusConnected == StatusConnectNodes.sync ||
-        state.statusConnected == StatusConnectNodes.consensus) {
+    if (state.statusConnected == StatusConnectNodes.sync ) {
       return;
     }
     _stopTimerSyncNetwork();
     if (event.lastNodeRun) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
       _debugBloc.add(AddStringDebug("Updating data from the last node"));
-      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode);
+      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode, repeat: true);
     } else {
       _debugBloc.add(AddStringDebug("Reconnecting to  new node"));
       await _selectTargetNode(
@@ -191,7 +186,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         _debugBloc
             .add(AddStringDebug("Block information not received, skipped"));
         _debugBloc
-            .add(AddStringDebug("Error: ${responseLastBlockInfo.errors}"));
+            .add(AddStringDebug("Error: ${responseLastBlockInfo.errors}", DebugType.error));
       }
 
       ResponseNode<List<int>> responseSummary =
@@ -216,7 +211,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         return;
       } else {
         _debugBloc.add(
-            AddStringDebug("Error processing Summary, trying to reconnect"));
+            AddStringDebug("Error processing Summary, trying to reconnect", DebugType.error));
         add(ReconnectSeed(false));
         return;
       }
@@ -229,6 +224,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (targetNode.pendings != 0) {
       _walletEvent.add(CalculateBalance([], false, []));
+    } else {
+      add(SyncResult(true));
     }
 
     return;
@@ -240,16 +237,15 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (success) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.connected));
       _debugBloc.add(AddStringDebug(
-          "Synchronization is complete, the application is ready to work with the network"));
+          "Synchronization is complete, the application is ready to work with the network", DebugType.success));
       _startTimerSyncNetwork();
+    }else{
+      add(ReconnectSeed(false));
     }
   }
 
   /// Method that starts a timer that simulates updating information
   void _startTimerSyncNetwork() {
-    if (timerSyncNetwork != null) {
-      timerSyncNetwork?.cancel();
-    }
     timerSyncNetwork =
         Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
       add(ReconnectSeed(true));

@@ -51,14 +51,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final DebugBloc _debugBloc;
 
   late StreamSubscription _walletEvents;
-
-  late StreamSubscription _summarySubscriptions;
-  late StreamSubscription _pendingsSubscriptions;
-
   final _walletUpdate = StreamController<bool>.broadcast();
-
-  Stream<bool> get walletUpdate => _walletUpdate.stream;
-
   final _responseStatusStream =
       StreamController<ResponseListenerPage>.broadcast();
 
@@ -218,25 +211,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       listAddresses = calculateResponse.address ?? listAddresses;
     }
 
+    List<PendingTransaction> pendingsParse = [];
     if (targetNode.pendings != 0) {
       var responsePendings = await _repositories.networkRepository
           .fetchNode(NetworkRequest.pendingsList, targetNode.seed);
-      var pendingsParse =
+      pendingsParse =
           _repositories.nosoCore.parsePendings(responsePendings.value);
-      if (responsePendings.errors == null || pendingsParse.isNotEmpty) {
-        _debugBloc.add(AddStringDebug(
-            "Pendings have been processed, we are completing synchronization"));
-        var calculatePendings =
-            await _syncPendings(pendingsParse, listAddresses);
-        listAddresses = calculatePendings.address ?? listAddresses;
-        calculateResponse = calculateResponse.copyWith(
-            totalOutgoing: calculatePendings.totalOutgoing,
-            totalIncoming: calculatePendings.totalIncoming);
-      } else {
+      if (responsePendings.errors != null || pendingsParse.isEmpty) {
         _debugBloc.add(
-            AddStringDebug("There are no Pendings, we will skip this action"));
+            AddStringDebug("Error getting pendings, try another connection"));
+        appDataBloc.add(SyncResult(false));
       }
     }
+
+    _debugBloc.add(AddStringDebug(
+        "Pendings have been processed, we are completing synchronization"));
+    var calculatePendings = await _syncPendings(pendingsParse, listAddresses);
+    listAddresses = calculatePendings.address ?? listAddresses;
+    calculateResponse = calculateResponse.copyWith(
+        totalOutgoing: calculatePendings.totalOutgoing,
+        totalIncoming: calculatePendings.totalIncoming);
 
     var totalNodes = appDataBloc.appBlocConfig.nodesList ?? "";
     List<String> nodesList = totalNodes.split(',');
@@ -386,9 +380,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     double totalOutgoing = 0;
     double totalIncoming = 0;
 
-    if (pendings.isEmpty) {
-      return ResponseCalculate();
-    }
+//    if (pendings.isEmpty) {
+    //   return ResponseCalculate();
+    //   }
     var calculateListAddress = address;
     for (var address in calculateListAddress) {
       PendingTransaction? foundReceiver = pendings.firstWhere(
@@ -410,14 +404,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         address.outgoing = 0;
       }
     }
-    if (totalIncoming != 0 || totalOutgoing != 0) {
-      return ResponseCalculate(
-          address: calculateListAddress,
-          totalIncoming: totalIncoming,
-          totalOutgoing: totalOutgoing);
-    } else {
-      return ResponseCalculate();
-    }
+    //  if (totalIncoming != 0 || totalOutgoing != 0) {
+    return ResponseCalculate(
+        address: calculateListAddress,
+        totalIncoming: totalIncoming,
+        totalOutgoing: totalOutgoing);
+    // } else {
+    //    return ResponseCalculate();
+    //  }
   }
 
   /// This method receives a file and processes its contents, and returns the contents of the file for confirmation
@@ -465,8 +459,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   @override
   Future<void> close() {
-    _summarySubscriptions.cancel();
-    _pendingsSubscriptions.cancel();
     _walletUpdate.close();
     _walletEvents.cancel();
     return super.close();

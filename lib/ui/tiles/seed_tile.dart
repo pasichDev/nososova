@@ -10,22 +10,19 @@ import '../config/responsive.dart';
 
 class SeedListItem extends StatelessWidget {
   final Seed seed;
-  final bool isNodeListVisible;
   final StatusConnectNodes statusConnected;
 
   const SeedListItem({
     super.key,
     required this.seed,
-    required this.isNodeListVisible,
     this.statusConnected = StatusConnectNodes.searchNode,
   });
-
-
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: AppIconsStyle.icon3x2(CheckConnect.getStatusConnected(statusConnected)),
+      leading: AppIconsStyle.icon3x2(
+          CheckConnect.getStatusConnected(statusConnected)),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -33,15 +30,16 @@ class SeedListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (statusConnected == StatusConnectNodes.searchNode ||
-                  statusConnected == StatusConnectNodes.sync)
+                  statusConnected == StatusConnectNodes.sync || statusConnected == StatusConnectNodes.consensus)
                 Container(
                   margin: EdgeInsets.zero,
                   child: ShimmerPro.sized(
-                    depth: 10,
-                    scaffoldBackgroundColor: Colors.grey.shade100,
-                    width: 150,
-                    borderRadius: 1,
-                    height: 14,
+                    depth: 16,
+                    scaffoldBackgroundColor:
+                        Colors.grey.shade100.withOpacity(0.5),
+                    width: 180,
+                    borderRadius: 3,
+                    height: 16,
                   ),
                 )
               else
