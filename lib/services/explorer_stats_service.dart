@@ -6,44 +6,10 @@ import 'package:nososova/models/apiExplorer/transaction_history.dart';
 
 import '../models/apiExplorer/block_info.dart';
 import '../models/apiExplorer/price_dat.dart';
-import '../models/block_mns.dart';
 import '../models/responses/response_api.dart';
 
 class ExplorerStatsService {
-  final String _apiExplorerHttp = "https://api.nosostats.com:8078";
   final String _apiStats = "https://api.nosocoin.com/";
-
-  /// TODO DeLETE
-  getResponseRpc(String method, dynamic params) async {
-    return await http.post(
-      Uri.parse(_apiExplorerHttp),
-      headers: {'Origin': 'https://api.nosostats.com'},
-      body: jsonEncode(
-          {"jsonrpc": "2.0", "method": method, "params": params, "id": 20}),
-    );
-  }
-
-  /// TODO DeLETE
-  Future<ResponseApi> fetchBlockMNS(int blockHeight) async {
-    var response = await getResponseRpc("getblockmns", [blockHeight]);
-
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
-
-      List<dynamic> resultList = jsonData['result'];
-      return ResponseApi(
-          value: BlockMNS_RPC(
-              block: resultList[0]['block'],
-              reward: resultList[0]['reward'] * 0.00000001,
-              total: resultList[0]['total'] * 0.00000001));
-    } else {
-      if (kDebugMode) {
-        print('Request failed with status: ${response.statusCode}');
-      }
-      return ResponseApi(
-          errors: 'Request failed with status: ${response.statusCode}');
-    }
-  }
 
   Future<ResponseApi> fetchHistoryTransactions(String addressHash) async {
     final response = await _fetchExplorerStats(
@@ -92,7 +58,6 @@ class ExplorerStatsService {
     if (response.errors != null) {
       return response;
     } else {
-     // Map<String, dynamic> jsonMap = json.decode(response.value);
       return ResponseApi(value: BlockInfo.fromJson(response.value));
     }
   }

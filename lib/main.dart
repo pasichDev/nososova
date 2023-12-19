@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
-import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
@@ -41,21 +40,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<DebugBloc>(create: (context) => locator<DebugBloc>()),
           BlocProvider<WalletBloc>(
-            create: (context) {
-              final dataBloc = locator<WalletBloc>();
-              return dataBloc;
-            },
+            create: (context) => locator<WalletBloc>(),
           ),
           BlocProvider<AppDataBloc>(create: (context) {
             final appDataBloc = locator<AppDataBloc>();
             appDataBloc.add(InitialConnect());
             return appDataBloc;
           }),
-          BlocProvider<NodeBloc>(create: (context) {
-            final nodeBlock = locator<NodeBloc>();
-            return nodeBlock;
-          }),
-
         ],
         child: const MainPage(),
       ),

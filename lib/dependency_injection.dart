@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/history_transactions_bloc.dart';
-import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/database/database.dart';
 import 'package:nososova/repositories/file_repository.dart';
@@ -53,14 +52,8 @@ Future<void> setupLocator() async {
       repositories: locator<Repositories>(), debugBloc: locator<DebugBloc>()));
   locator.registerLazySingleton<WalletBloc>(() => WalletBloc(
       repositories: locator<Repositories>(),
+      debugBloc: locator<DebugBloc>(),
       appDataBloc: locator<AppDataBloc>()));
-  locator.registerSingleton<NodeBloc>(
-    NodeBloc(
-      repositories: locator<Repositories>(),
-      appDataBloc: locator<AppDataBloc>(),
-      walletBloc: locator<WalletBloc>(),
-    ),
-  );
   locator.registerSingleton<HistoryTransactionsBloc>(
     HistoryTransactionsBloc(
       repositories: locator<Repositories>(),

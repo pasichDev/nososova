@@ -33,15 +33,16 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
 
   List<PriceData> getIntervalPrices(List<PriceData> dataPrice) {
     List<PriceData> lastTenWithInterval = [];
+    var dtPrice = dataPrice.reversed.toList();
 
-    for (PriceData priceData in dataPrice) {
+    for (PriceData priceData in dtPrice) {
       DateTime targetTime = DateTime.parse(priceData.timestamp);
       DateTime lastTime = DateTime.parse(lastTenWithInterval.isEmpty
           ? "2023-12-17 17:39:00"
           : lastTenWithInterval.last.timestamp);
 
       if (lastTenWithInterval.isEmpty ||
-          lastTime.difference(targetTime).inMinutes > 60) {
+          lastTime.difference(targetTime).inMinutes < 60) {
         lastTenWithInterval.add(priceData);
       }
     }
@@ -58,8 +59,8 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
         return const LoadingWidget();
       }
 
-      var listPrice = infoCoin.historyCoin?.reversed.toList();
-      var firstHistory = listPrice?.first.price ?? 0.0000000;
+      var listPrice = state.statisticsCoin.historyCoin?.reversed.toList();
+      var firstHistory = listPrice?.last.price ?? 0.0000000;
       var diff =
           (((infoCoin.getCurrentPrice - firstHistory) / firstHistory) * 100);
       var gradient = [

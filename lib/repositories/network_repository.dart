@@ -12,17 +12,6 @@ class NetworkRepository {
   NetworkRepository(this._nodeService, this._explorerStatsService);
 
   /// Node Service
-
-  /// DELETE
-  Future<ResponseNode<List<Seed>>> listenNodes() {
-    return _nodeService.testsListDefaultSeeds();
-  }
-
-  /// DELETE
-  Future<ResponseNode> testNode(Seed seed) {
-    return _nodeService.testLastSeed(seed);
-  }
-
   Future<ResponseNode<List<int>>> fetchNode(String command, Seed seed) {
     return _nodeService.fetchNode(command, seed);
   }
@@ -34,15 +23,10 @@ class NetworkRepository {
   /// Api Explorer Service
   /// https://api.nosocoin.com/docs/
 
-  Future<ResponseApi> fetchBlockInfo(int blockHeight) {
-    return _explorerStatsService.fetchBlockMNS(blockHeight);
-  }
-
   Future<ResponseApi> fetchHistoryTransactions(String hashAddress) {
     return _explorerStatsService.fetchHistoryTransactions(hashAddress);
   }
 
-  /// TODO DeLETE
   Future<ResponseApi> fetchHistoryPrice() {
     return _explorerStatsService.fetchHistoryPrice();
   }

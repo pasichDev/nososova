@@ -23,7 +23,7 @@ class StatisticsCoin {
     this.apiStatus = ApiStatus.loading,
   });
 
-  double get getCurrentPrice => historyCoin?.reversed.toList().last.price ?? 0;
+  double get getCurrentPrice => historyCoin?.reversed.toList().first.price ?? 0;
 
   Halving get getHalvingTimer => OtherUtils.getHalvingTimer(lastBlock);
 

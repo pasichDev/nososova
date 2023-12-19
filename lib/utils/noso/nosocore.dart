@@ -342,7 +342,6 @@ final class NosoCore extends NosoCrypto {
       int randomIndex = Random().nextInt(elementCount);
 
       var targetSeed = elements[randomIndex].split("|")[0];
-      print(targetSeed);
       return targetSeed;
     } else {
       return "127.0.0.1:8080";

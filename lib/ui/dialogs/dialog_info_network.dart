@@ -9,7 +9,6 @@ import '../../generated/assets.dart';
 import '../../ui/tiles/seed_info_tile.dart';
 import '../../ui/tiles/seed_tile.dart';
 import '../common/widgets/label.dart';
-import '../common/widgets/label_time.dart';
 import '../components/extra_util.dart';
 import '../config/responsive.dart';
 import '../route/dialog_router.dart';
@@ -86,7 +85,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                         widget: ExtraUtil.getNodeDescription(
                             context, state.statusConnected, state.node.seed)),
                     const SizedBox(width: 10),
-                    TimeLabel(time: state.node.utcTime)
+                    Label(text: state.node.lastblock.toString()),
                   ],
                 ))
           ],

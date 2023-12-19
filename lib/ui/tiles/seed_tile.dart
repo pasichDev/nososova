@@ -54,7 +54,6 @@ class SeedListItem extends StatelessWidget {
                   ],
                 ),
               if (Responsive.isMobile(context)) ...[
-                const SizedBox(height: 5),
                 ExtraUtil.getNodeDescription(context, statusConnected, seed)
               ],
             ],

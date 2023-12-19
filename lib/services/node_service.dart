@@ -27,7 +27,8 @@ class NodeService {
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
       if (kDebugMode) {
-       if(command != NetworkRequest.summary) print(String.fromCharCodes(responseBytes));
+        if (command != NetworkRequest.summary)
+          print(String.fromCharCodes(responseBytes));
       }
 
       socket.close();
@@ -58,10 +59,6 @@ class NodeService {
       return ResponseNode(errors: "ServerService Exception: $e");
     }
   }
-
-
-
-
 
   Future<ResponseNode<List<int>>> getRandomDevNode() async {
     final responseBytes = <int>[];
@@ -103,91 +100,6 @@ class NodeService {
       }
       return ResponseNode(errors: "ServerService Exception: $e");
     }
-  }
-
-
-  /// Метод який перебирає дефолтні сіди, і поаертає активний сід
-  Future<ResponseNode<List<Seed>>> testsListDefaultSeeds() async {
-    for (var seed in seedsDefault) {
-      try {
-        seed = await _testPingNode(seed);
-      } on TimeoutException catch (_) {
-        if (kDebugMode) {
-          print("Connection timed out. Check server availability.");
-        }
-        seed.online = false;
-      } on SocketException catch (e) {
-        if (kDebugMode) {
-          print("SocketException: ${e.message}");
-        }
-        seed.online = false;
-      } catch (e) {
-        if (kDebugMode) {
-          print("Unhandled Exception: $e");
-        }
-        seed.online = false;
-      }
-    }
-    final onlineSeeds = seedsDefault.where((seed) => seed.online).toList();
-    if (onlineSeeds.isNotEmpty) {
-      ResponseNode<List<Seed>> responseNode = ResponseNode(
-          seed: onlineSeeds.reduce((a, b) => a.ping < b.ping ? a : b),
-          value: onlineSeeds);
-      return responseNode;
-    } else {
-      return ResponseNode(errors: "No working seeds were found");
-    }
-  }
-
-  ///Метод який використовується для тестуваня підключення лише для останого сіду
-  Future<ResponseNode> testLastSeed(Seed seed) async {
-    try {
-      seed = await _testPingNode(seed);
-    } on TimeoutException catch (_) {
-      if (kDebugMode) {
-        print("Connection timed out. Check server availability.");
-      }
-      seed.online = false;
-      return ResponseNode(
-          seed: seed,
-          errors: "Connection timed out. Check server availability.");
-    } on SocketException catch (e) {
-      if (kDebugMode) {
-        print("SocketException: ${e.message}");
-      }
-      seed.online = false;
-      return ResponseNode(seed: seed, errors: "SocketException: ${e.message}");
-    } catch (e) {
-      if (kDebugMode) {
-        print("Unhandled Exception: $e");
-      }
-      seed.online = false;
-      return ResponseNode(seed: seed, errors: "Unhandled Exception: $e");
-    }
-    return ResponseNode(seed: seed);
-  }
-
-  Future<Seed> _testPingNode(Seed seed) async {
-    final clientSocket = await _connectSocket(seed);
-    final startTime = DateTime.now().millisecondsSinceEpoch;
-    clientSocket.write(NetworkRequest.nodeStatus);
-    final responseBytes = <int>[];
-    await for (var byteData in clientSocket) {
-      responseBytes.addAll(byteData);
-    }
-    final endTime = DateTime.now().millisecondsSinceEpoch;
-    final responseTime = endTime - startTime;
-
-    await clientSocket.close();
-
-    if (responseBytes.isNotEmpty) {
-      if (kDebugMode) {
-        print("Server response time: $responseTime ms");
-      }
-      seed.ping = responseTime;
-      seed.online = true;
-    }
-    return seed;
   }
 
   Future<Socket> _connectSocket(Seed seed) async {

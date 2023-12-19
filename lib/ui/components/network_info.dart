@@ -44,7 +44,7 @@ class NetworkInfo extends StatelessWidget {
                     colorCustom: Colors.white)
               ],
               if (state.statusConnected == StatusConnectNodes.connected ||
-                  state.statusConnected == StatusConnectNodes.sync) ...[
+                  state.statusConnected == StatusConnectNodes.sync || state.statusConnected == StatusConnectNodes.consensus) ...[
                 const SizedBox(width: 10),
                 Text(state.node.lastblock.toString(),
                     style: AppTextStyles.blockStyle)
