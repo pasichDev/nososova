@@ -103,6 +103,7 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
                             show: false,
                           ),
                           lineTouchData: const LineTouchData(enabled: true),
+
                           borderData: FlBorderData(
                             show: false,
                           ),

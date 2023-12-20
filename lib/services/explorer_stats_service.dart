@@ -45,7 +45,7 @@ class ExplorerStatsService {
           response.value.map((item) => PriceData.fromJson(item)));
 
       if (listPrice.isEmpty) {
-        return ResponseApi(errors: response.value['error']);
+        return ResponseApi(errors: response.errors);
       } else {
         return ResponseApi(value: listPrice);
       }

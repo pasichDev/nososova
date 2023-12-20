@@ -32,41 +32,45 @@ class _PendingsWidgetState extends State<PendingsWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    Text(AppLocalizations.of(context)!.incoming,
-                        style: AppTextStyles.itemStyle
-                            .copyWith(color: Colors.white)),
-                    BlinkingWidget(
-                        widget: Text(
-                            "${isIncoming ? "+" : ""}${widget.address.incoming.toStringAsFixed(8)}",
-                            style: AppTextStyles.categoryStyle.copyWith(
-                                fontSize: 20,
-                                color: isIncoming
-                                    ? CustomColors.positiveBalance
-                                    : Colors.white.withOpacity(0.8))),
-                        startBlinking: isIncoming,
-                        duration: 1000),
-                  ],
-                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Text(AppLocalizations.of(context)!.incoming,
+                            style: AppTextStyles.itemStyle
+                                .copyWith(color: Colors.white)),
+                        BlinkingWidget(
+                            widget: Text(
+                                "${isIncoming ? "+" : ""}${widget.address.incoming.toStringAsFixed(6)}",
+                                style: AppTextStyles.categoryStyle.copyWith(
+                                    fontSize: 20,
+                                    color: isIncoming
+                                        ? CustomColors.positiveBalance
+                                        : Colors.white.withOpacity(0.8))),
+                            startBlinking: isIncoming,
+                            duration: 1000),
+                      ],
+                    )),
                 const SizedBox(width: 60),
-                Column(
-                  children: [
-                    Text(AppLocalizations.of(context)!.outgoing,
-                        style: AppTextStyles.itemStyle
-                            .copyWith(color: Colors.white)),
-                    BlinkingWidget(
-                        widget: Text(
-                            "${isOutgoing ? "-" : ""}${widget.address.outgoing.toStringAsFixed(8)}",
-                            style: AppTextStyles.categoryStyle.copyWith(
-                                fontSize: 20,
-                                color: isOutgoing
-                                    ? CustomColors.negativeBalance
-                                    : Colors.white.withOpacity(0.8))),
-                        startBlinking: isOutgoing,
-                        duration: 1000),
-                  ],
-                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Text(AppLocalizations.of(context)!.outgoing,
+                            style: AppTextStyles.itemStyle
+                                .copyWith(color: Colors.white)),
+                        BlinkingWidget(
+                            widget: Text(
+                                "${isOutgoing ? "-" : ""}${widget.address.outgoing.toStringAsFixed(6)}",
+                                style: AppTextStyles.categoryStyle.copyWith(
+                                    fontSize: 20,
+                                    color: isOutgoing
+                                        ? CustomColors.negativeBalance
+                                        : Colors.white.withOpacity(0.8))),
+                            startBlinking: isOutgoing,
+                            duration: 1000),
+                      ],
+                    )),
               ],
             ),
           ),

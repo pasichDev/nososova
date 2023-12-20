@@ -8,15 +8,15 @@ import '../../../blocs/wallet_bloc.dart';
 import '../../../dependency_injection.dart';
 import '../../../models/apiExplorer/transaction_history.dart';
 import '../../../repositories/repositories.dart';
+import '../../config/responsive.dart';
 import '../../pages/addressInfo/address_info_page.dart';
 import '../../pages/addressInfo/transaction/transaction_page.dart';
-import '../../pages/payment/payment_page.dart';
 
 class PageRouter {
   /// Page for sending payment
-  static void routePaymentPage(
-      BuildContext context, Address address, { String receiver = ""}) {
-    Navigator.push(
+  static void routePaymentPage(BuildContext context, Address address,
+      {String receiver = ""}) {
+    /*  Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
@@ -25,6 +25,8 @@ class PageRouter {
         ),
       ),
     );
+
+    */
   }
 
   /// Address information page
@@ -56,14 +58,16 @@ class PageRouter {
   /// Transaction information page
   static void showTransactionInfo(
       BuildContext context, TransactionHistory transaction, bool isReceiver) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => TransactionPage(
-          transaction: transaction,
-          isReceiver: isReceiver,
+    if (Responsive.isMobile(context)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => TransactionPage(
+            transaction: transaction,
+            isReceiver: isReceiver,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

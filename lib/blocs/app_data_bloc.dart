@@ -87,14 +87,15 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   }
 
   Future<void> _reconnectNode(event, emit) async {
-    if (state.statusConnected == StatusConnectNodes.sync ) {
+    if (state.statusConnected == StatusConnectNodes.sync) {
       return;
     }
     _stopTimerSyncNetwork();
     if (event.lastNodeRun) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
       _debugBloc.add(AddStringDebug("Updating data from the last node"));
-      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode, repeat: true);
+      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode,
+          repeat: true);
     } else {
       _debugBloc.add(AddStringDebug("Reconnecting to  new node"));
       await _selectTargetNode(
@@ -185,8 +186,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       } else {
         _debugBloc
             .add(AddStringDebug("Block information not received, skipped"));
-        _debugBloc
-            .add(AddStringDebug("Error: ${responseLastBlockInfo.errors}", DebugType.error));
+        _debugBloc.add(AddStringDebug(
+            "Error: ${responseLastBlockInfo.errors}", DebugType.error));
       }
 
       ResponseNode<List<int>> responseSummary =
@@ -210,8 +211,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
         return;
       } else {
-        _debugBloc.add(
-            AddStringDebug("Error processing Summary, trying to reconnect", DebugType.error));
+        _debugBloc.add(AddStringDebug(
+            "Error processing Summary, trying to reconnect", DebugType.error));
         add(ReconnectSeed(false));
         return;
       }
@@ -236,10 +237,14 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     var success = event.success;
     if (success) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.connected));
+
+      appBlocConfig =
+          appBlocConfig.copyWith(lastSeed: state.node.seed.toTokenizer());
       _debugBloc.add(AddStringDebug(
-          "Synchronization is complete, the application is ready to work with the network", DebugType.success));
+          "Synchronization is complete, the application is ready to work with the network",
+          DebugType.success));
       _startTimerSyncNetwork();
-    }else{
+    } else {
       add(ReconnectSeed(false));
     }
   }

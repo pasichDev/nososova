@@ -44,7 +44,8 @@ class AddressListTileState extends State<AddressListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return GestureDetector(
+        onSecondaryTap: widget.onLong, child: ListTile(
       contentPadding: const EdgeInsets.only(left: 10, right: 15),
         leading: _iconAddress(),
         title: Row(
@@ -84,6 +85,6 @@ class AddressListTileState extends State<AddressListTile> {
           ],
         ),
         onLongPress: widget.onLong,
-        onTap: widget.onTap);
+        onTap: widget.onTap));
   }
 }

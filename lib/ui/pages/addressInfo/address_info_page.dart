@@ -14,6 +14,8 @@ import '../../../utils/const/const.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
 import '../../components/app_bar_other_page.dart';
+import '../../components/network_info.dart';
+import '../../config/responsive.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
@@ -55,7 +57,11 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
       if (mounted ||
           ResponseWidgetsIds.idsPageAddressInfo.contains(response.idWidget)) {
         await Future.delayed(const Duration(milliseconds: 200));
-        SnackBarWidgetResponse(context: context, response: response).get();
+        SnackBarWidgetResponse(
+                context: GlobalKey<ScaffoldMessengerState>().currentContext ??
+                    context,
+                response: response)
+            .get();
       }
     });
   }
@@ -73,35 +79,70 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
       appBar: CustomAppBar(onNodeStatusDialog: () {}),
       body: BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
         return Container(
-          decoration: const OtherGradientDecoration(),
+           decoration:     Responsive.isMobile(context) ? const OtherGradientDecoration() : const BoxDecoration(),
           child: SafeArea(
-              child: Column(
+              child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TransformWidget(
-                  widget: _cardAddress(address),
-                  changer: (reverse) {},
-                  middleChanger: (middle) {
-                    if (mounted) {
-                      setState(() {
-                        selectedIndexChild = selectedIndexChild == 0 ? 1 : 0;
-                      });
-                    }
-                  },
-                ),
-              ),
-              PendingsWidget(address: address),
+              if (!Responsive.isMobile(context))
+                Expanded(
+                    flex: 5,
+                    child: ClipRRect(
+                      borderRadius:  !Responsive.isMobile(context) ? BorderRadius.zero : const BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ) ,
+                      child: !Responsive.isMobile(context) ? historyWidget : selectedIndexChild == 0
+                          ? historyWidget
+                          : AddressActionsWidget(address: address),
+                    )),
+
+
+
               Expanded(
-                  child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-                child: selectedIndexChild == 0
-                    ? historyWidget
-                    : AddressActionsWidget(address: address),
-              )),
+                 flex: 3,
+                  child:
+             Container(
+                   // width: Responsive.isMobile(context) ?  double.infinity : 400 ,
+
+                      decoration:     !Responsive.isMobile(context) ? const OtherGradientDecoration() : const BoxDecoration(),
+                      child: Column(
+                        children: [
+
+                          if(!Responsive.isMobile(context)) AppBar(
+                            title: NetworkInfo(nodeStatusDialog: ()=> {}),
+                            backgroundColor: Colors.transparent,
+                            iconTheme: IconThemeData(color: Colors.white),
+                            elevation: 0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: TransformWidget(
+                              widget: _cardAddress(address),
+                              changer: (reverse) {},
+                              middleChanger: (middle) {
+                                if (mounted) {
+                                  setState(() {
+                                    selectedIndexChild =
+                                        selectedIndexChild == 0 ? 1 : 0;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          PendingsWidget(address: address),
+                          Expanded(
+                              flex: 2,
+                              child: ClipRRect(
+                                borderRadius: !Responsive.isMobile(context) ? BorderRadius.zero : const BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ) ,
+                                child: !Responsive.isMobile(context) ? AddressActionsWidget(address: address) : selectedIndexChild == 0
+                                    ? historyWidget
+                                    : AddressActionsWidget(address: address),
+                              )),
+                        ],
+                      ))),
             ],
           )),
         );
@@ -121,11 +162,12 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
             padding: const EdgeInsets.all(10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
+                  flex: 2,
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton(
@@ -144,7 +186,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(10),
                         child: Text(
                           AppLocalizations.of(context)!.address,
                           style: AppTextStyles.categoryStyle
@@ -169,7 +211,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                         });
                       },
                       child: Padding(
-                          padding: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(10),
                           child: Text(
                             AppLocalizations.of(context)!.keys,
                             style: AppTextStyles.categoryStyle
@@ -178,7 +220,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                     )
                   ],
                 )),
-                QrImageView(
+              Expanded(flex:2,child:   QrImageView(
                   eyeStyle: QrEyeStyle(
                     eyeShape: QrEyeShape.square,
                     color: Colors.white.withOpacity(0.9),
@@ -192,7 +234,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                       : "${address.publicKey} ${address.privateKey}",
                   version: QrVersions.auto,
                   size: 200.0,
-                ),
+                )),
               ],
             ),
           ),
@@ -202,6 +244,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   _cardAddress(Address mAddress) {
     return Container(
         height: 230,
+        width: double.infinity,
         decoration: const CardDecoration(),
         child: IndexedStack(
             index: selectedIndexChild,
@@ -237,7 +280,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               Text(
                 targetAddress.nameAddressFull,
                 style: AppTextStyles.titleMax.copyWith(
-                  fontSize: 24,
+                  fontSize: 18,
                   color: Colors.white.withOpacity(0.5),
                 ),
               ),

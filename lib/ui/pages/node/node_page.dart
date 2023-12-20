@@ -23,7 +23,6 @@ class NodeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: null,
         body: Container(
@@ -32,47 +31,59 @@ class NodeBody extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0),
-                    ),
-                    child: Column(children: [
-                      const Padding(
-                          padding: EdgeInsets.only(left: 20, right: 20, bottom: 30), child: StatsNodesUser()),
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
-                        child:SingleChildScrollView(child:  Container(
-                        //  height: MediaQuery.of(context).size.height * 0.6,
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      ),
+                      child: Column(
+                        children: [
+                          const Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20, right: 20, bottom: 30),
+                              child: StatsNodesUser()),
+                          Expanded(
+                            child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(AppLocalizations.of(context)!.masternode,
-                                          style: AppTextStyles.categoryStyle),
-                                      AppIconsStyle.icon2x4(Assets.iconsInfo,
-                                          colorCustom: CustomColors.primaryColor)
-                                    ]),
-                              ),
-                              // const SizedBox(height: 10),
-                              const ListNodes()
-                            ],
-                          ),
-                        )),
-                      )
-                    ],))),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20.0,
+                                            right: 20.0,
+                                            top: 20.0,
+                                            bottom: 10.0),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  AppLocalizations.of(context)!
+                                                      .masternode,
+                                                  style: AppTextStyles
+                                                      .categoryStyle),
+                                              AppIconsStyle.icon2x4(
+                                                  Assets.iconsInfo,
+                                                  colorCustom:
+                                                      CustomColors.primaryColor)
+                                            ]),
+                                      ),
+                                      // const SizedBox(height: 10),
+                                      const ListNodes()
+                                    ],
+                                  ),
+                                )),
+                          )
+                        ],
+                      ))),
             )));
-
-
   }
-
 }

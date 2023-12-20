@@ -34,6 +34,7 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
         .add(FetchHistory(widget.address.hash));
   }
 
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HistoryTransactionsBloc, HistoryTransactionsBState>(
@@ -43,14 +44,14 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
           listHistory.sort((a, b) => b.blockId.compareTo(a.blockId));
 
           return Container(
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: double.infinity,
               width: double.infinity,
               color: Colors.white,
-              child: Column(
+              child: SingleChildScrollView(child:Column(
                 children: [
                   Padding(
                       padding: const EdgeInsets.only(
-                          top: 20, left: 20, right: 20, bottom: 5),
+                          top: 20, left: 20, right: 20, bottom: 20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,9 +75,11 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                     const SizedBox(height: 200),
                     EmptyWidget(title: AppLocalizations.of(context)!.empty)
                   ],
+
+
+
                   if (state.apiStatus == ApiStatus.connected) ...[
-                    Expanded(
-                      child: ListView.builder(
+                    ListView.builder(
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0.0, vertical: 0.0),
@@ -103,7 +106,7 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                                 TransactionTile(
                                   transactionHistory: transaction,
                                   receiver: isReceiver,
-                                  onTap: () => PageRouter.showTransactionInfo(
+                                  onTap: () =>  PageRouter.showTransactionInfo(
                                       context, transaction, isReceiver),
                                 ),
                               ],
@@ -118,10 +121,10 @@ class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
                           }
                         },
                       ),
-                    )
+
                   ]
                 ],
-              ));
+              )));
         });
   }
 

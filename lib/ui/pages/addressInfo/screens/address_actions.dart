@@ -24,7 +24,7 @@ class AddressActionsWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
         color: Colors.white,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: SingleChildScrollView(child:  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: const EdgeInsets.only(
                   top: 20, left: 20, right: 20, bottom: 10),
@@ -48,6 +48,6 @@ class AddressActionsWidget extends StatelessWidget {
                 walletBloc.add(DeleteAddress(address));
                 Navigator.pop(context);
               }),
-        ]));
+        ])));
   }
 }

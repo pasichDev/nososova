@@ -15,8 +15,9 @@ class ListNodes extends StatelessWidget {
       builder: (context, state) {
         final nodes = state.stateNodes.nodes;
         if (nodes.isEmpty) {
-          return Container(
-            height: 400,
+          return Expanded(
+              flex: 2,
+              child:Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
             color: Colors.white,
@@ -24,7 +25,7 @@ class ListNodes extends StatelessWidget {
                 child: EmptyWidget(
                     title: AppLocalizations.of(context)!.empty,
                     descrpt: AppLocalizations.of(context)!.emptyNodesError)),
-          );
+          ));
         } else {
           return  ListView.builder(
                   shrinkWrap: true,

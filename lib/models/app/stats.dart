@@ -53,7 +53,7 @@ class StatisticsCoin {
   /// Method that returns a list of prices with a given interval
   List<PriceData> getIntervalPrices(int minutes) {
     List<PriceData> lastTenWithInterval = [];
-    var dtPrice = historyCoin?.reversed.toList() ?? [];
+    var dtPrice = historyCoin?.toList() ?? [];
 
     for (PriceData priceData in dtPrice) {
       DateTime targetTime = DateTime.parse(priceData.timestamp);
