@@ -687,6 +687,18 @@ abstract class AppLocalizations {
   /// **'Status'**
   String get status;
 
+  /// No description provided for @balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balance;
+
+  /// No description provided for @actionWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions on wallet'**
+  String get actionWallet;
+
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:

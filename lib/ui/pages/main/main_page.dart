@@ -9,11 +9,11 @@ import 'package:nososova/ui/pages/wallets/wallets_page.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 
-import '../../generated/assets.dart';
-import '../common/widgets/side_bar.dart';
-import '../config/responsive.dart';
-import '../config/size_config.dart';
-import '../route/dialog_router.dart';
+import '../../../generated/assets.dart';
+import '../../common/route/dialog_router.dart';
+import '../../config/responsive.dart';
+import '../../config/size_config.dart';
+import 'widgets/side_left_bar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -38,7 +38,7 @@ class MainPageState extends State<MainPage> {
     SizeConfig.init(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: Responsive.isMobile(context)
+      appBar: !Responsive.isDesktop(context)
           ? AppBar(
               elevation: 0,
               title: NetworkInfo(
@@ -52,11 +52,19 @@ class MainPageState extends State<MainPage> {
                       if (Platform.isAndroid || Platform.isIOS)
                         IconButton(
                           icon: AppIconsStyle.icon3x2(Assets.iconsScan,
-                              colorFilter: const ColorFilter.mode(
-                                  Colors.white, BlendMode.srcIn)),
+                              colorFilter: ColorFilter.mode(
+                                  Colors.white.withOpacity(0.7),
+                                  BlendMode.srcIn)),
                           onPressed: () =>
                               DialogRouter.showDialogScanQr(context),
                         ),
+                      IconButton(
+                        icon: AppIconsStyle.icon3x2(Assets.iconsDebugI,
+                            colorFilter: ColorFilter.mode(
+                                Colors.white.withOpacity(0.7),
+                                BlendMode.srcIn)),
+                        onPressed: () => DialogRouter.showDialogDebug(context),
+                      )
                     ],
                   ),
                 ),
@@ -69,20 +77,21 @@ class MainPageState extends State<MainPage> {
             ),
       body: Row(
         children: [
-          if (!Responsive.isMobile(context)) const SideBarDesktop(),
+          if (Responsive.isDesktop(context)) const SideLeftBarDesktop(),
           Expanded(
+              flex: 6,
               child: PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            children: _pages,
-          )),
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                children: _pages,
+              )),
         ],
       ),
-      bottomNavigationBar: Responsive.isMobile(context)
+      bottomNavigationBar: !Responsive.isDesktop(context)
           ? BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               elevation: 5,
@@ -91,7 +100,7 @@ class MainPageState extends State<MainPage> {
                 bottomItem(Assets.iconsWallet, 0),
                 bottomItem(Assets.iconsInfo, 1),
                 bottomItem(Assets.iconsNodeI, 2),
-              //  bottomItem(Assets.iconsMore, 3),
+                //  bottomItem(Assets.iconsMore, 3),
               ],
               currentIndex: _selectedIndex,
               onTap: (index) {

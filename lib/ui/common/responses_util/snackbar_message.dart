@@ -18,7 +18,8 @@ class SnackBarWidgetResponse {
     Color snackBarBackgroundColor = response.snackBarType == SnackBarType.error
         ? CustomColors.negativeBalance
         : CustomColors.positiveBalance;
-    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    return ScaffoldMessenger.of( context).showSnackBar(SnackBar(
+
       content: Text(
         ResponsesErrors.getCodeToTextMessages(context, response.codeMessage),
         style: AppTextStyles.walletAddress.copyWith(

@@ -95,6 +95,8 @@
   "alias": "Псевдонім",
   "nodeType": "Тип вузла",
   "status": "Статус",
+  "balance": "Баланс",
+  "actionWallet": "Дії над гаманцем",
   "consensusCheck": "Вирішення консенсусу",
   "customNameAdd": "Встановити псевдоніму",
   "save": "Зберегти",

@@ -7,7 +7,7 @@ import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/pages/main_page_tested.dart';
+import 'package:nososova/ui/pages/main/main_page.dart';
 
 import 'blocs/events/app_data_events.dart';
 import 'generated/assets.dart';

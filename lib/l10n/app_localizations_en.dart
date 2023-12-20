@@ -302,6 +302,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get status => 'Status';
 
   @override
+  String get balance => 'Balance';
+
+  @override
+  String get actionWallet => 'Actions on wallet';
+
+  @override
   String get confirm => 'Confirm';
 
   @override

@@ -18,7 +18,7 @@ class AppTextStyles {
       TextStyle(fontSize: 40.0, color: Colors.white, fontFamily: "GilroyBold");
 
   static TextStyle titleMin = const TextStyle(
-      fontSize: 26.0,
+      fontSize: 22.0,
       color: Colors.white,
       fontFamily: "GilroyBold");
 

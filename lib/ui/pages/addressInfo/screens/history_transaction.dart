@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/blocs/history_transactions_bloc.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
-import 'package:nososova/ui/route/page_router.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/events/history_transactions_events.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../common/route/page_router.dart';
 import '../../../components/empty_list_widget.dart';
 import '../../../components/loading.dart';
 import '../../../theme/style/text_style.dart';

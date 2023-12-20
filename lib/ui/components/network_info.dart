@@ -34,7 +34,7 @@ class NetworkInfo extends StatelessWidget {
               if (state.statusConnected == StatusConnectNodes.sync ||
                   state.statusConnected == StatusConnectNodes.searchNode) ...[
                 LoadingAnimationWidget.flickr(
-                  size: 28,
+                  size: 24,
                   leftDotColor: Colors.white.withOpacity(0.5),
                   rightDotColor: Colors.white,
                 )

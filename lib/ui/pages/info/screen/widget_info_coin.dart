@@ -6,7 +6,6 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../../../../models/apiExplorer/price_dat.dart';
 import '../../../../models/app/stats.dart';
 import '../../../../utils/status_api.dart';
 import '../../../components/info_item.dart';
@@ -31,44 +30,19 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  List<PriceData> getIntervalPrices(List<PriceData> dataPrice) {
-    List<PriceData> lastTenWithInterval = [];
-    var dtPrice = dataPrice.reversed.toList();
-
-    for (PriceData priceData in dtPrice) {
-      DateTime targetTime = DateTime.parse(priceData.timestamp);
-      DateTime lastTime = DateTime.parse(lastTenWithInterval.isEmpty
-          ? "2023-12-17 17:39:00"
-          : lastTenWithInterval.last.timestamp);
-
-      if (lastTenWithInterval.isEmpty ||
-          lastTime.difference(targetTime).inMinutes < 60) {
-        lastTenWithInterval.add(priceData);
-      }
-    }
-
-    return lastTenWithInterval;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppDataBloc, AppDataState>(builder: (context, state) {
-
       var infoCoin = state.statisticsCoin;
       if (infoCoin.apiStatus == ApiStatus.loading) {
         return const LoadingWidget();
       }
 
-      var listPrice = state.statisticsCoin.historyCoin?.reversed.toList();
-      var firstHistory = listPrice?.last.price ?? 0.0000000;
-      var diff =
-          (((infoCoin.getCurrentPrice - firstHistory) / firstHistory) * 100);
+      var diff = state.statisticsCoin.getDiff;
       var gradient = [
         CustomColors.primaryColor,
         diff > 0 ? CustomColors.positiveBalance : CustomColors.negativeBalance
       ];
-
-
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +108,8 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: getIntervalPrices(listPrice!)
+                              spots: infoCoin
+                                  .getIntervalPrices(30)
                                   .asMap()
                                   .entries
                                   .map((entry) {

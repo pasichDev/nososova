@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 
-import '../../blocs/app_data_bloc.dart';
-import '../../blocs/history_transactions_bloc.dart';
-import '../../blocs/wallet_bloc.dart';
-import '../../dependency_injection.dart';
-import '../../models/apiExplorer/transaction_history.dart';
-import '../../repositories/repositories.dart';
-import '../pages/addressInfo/address_info_page.dart';
-import '../pages/addressInfo/transaction/transaction_page.dart';
-import '../pages/payment/payment_page.dart';
+import '../../../blocs/app_data_bloc.dart';
+import '../../../blocs/history_transactions_bloc.dart';
+import '../../../blocs/wallet_bloc.dart';
+import '../../../dependency_injection.dart';
+import '../../../models/apiExplorer/transaction_history.dart';
+import '../../../repositories/repositories.dart';
+import '../../pages/addressInfo/address_info_page.dart';
+import '../../pages/addressInfo/transaction/transaction_page.dart';
+import '../../pages/payment/payment_page.dart';
 
 class PageRouter {
   /// Page for sending payment

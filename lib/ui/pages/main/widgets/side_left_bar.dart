@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
-import '../../../l10n/app_localizations.dart';
-import '../../dialogs/dialog_info_network.dart';
-import '../../pages/info/screen/widget_info_coin.dart';
-import '../../pages/node/screens/body_stats_nodes.dart';
-import '../../theme/style/text_style.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../dialogs/dialog_info_network.dart';
+import '../../../theme/style/text_style.dart';
+import '../../info/screen/widget_info_coin.dart';
+import '../../node/screens/body_stats_nodes.dart';
 
-class SideBarDesktop extends StatefulWidget {
-  const SideBarDesktop({
-    Key? key,
-  }) : super(key: key);
+class SideLeftBarDesktop extends StatelessWidget {
+  const SideLeftBarDesktop({super.key});
 
-  @override
-  State createState() => _SideBarDesktopState();
-}
-
-class _SideBarDesktopState extends State<SideBarDesktop> {
   @override
   Widget build(BuildContext context) {
     return Container(

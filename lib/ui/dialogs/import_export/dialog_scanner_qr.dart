@@ -11,7 +11,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/status_qr.dart';
-import '../../route/page_router.dart';
+import '../../common/route/page_router.dart';
 import '../../theme/style/colors.dart';
 
 class ScannerQrWidget extends StatefulWidget {

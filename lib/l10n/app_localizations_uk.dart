@@ -302,6 +302,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get status => 'Статус';
 
   @override
+  String get balance => 'Баланс';
+
+  @override
+  String get actionWallet => 'Дії над гаманцем';
+
+  @override
   String get confirm => 'Підтвердити';
 
   @override

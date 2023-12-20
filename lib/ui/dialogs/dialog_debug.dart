@@ -13,7 +13,10 @@ class DialogDebug extends StatefulWidget {
   DialogDebugState createState() => DialogDebugState();
 }
 
-class DialogDebugState extends State<DialogDebug> {
+class DialogDebugState extends State<DialogDebug>
+{
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DebugBloc, DebugState>(builder: (context, state) {

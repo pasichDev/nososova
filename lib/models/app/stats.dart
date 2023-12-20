@@ -40,9 +40,35 @@ class StatisticsCoin {
   get getBlockOneNodeReward => reward;
 
   get getBlockDayNodeReward => reward * 144;
+
   get getBlockWeekNodeReward => reward * 1008;
+
   get getBlockMonthNodeReward => reward * 4320;
 
+  get getLastPrice => historyCoin?.reversed.toList().last.price ?? 0.0000000;
+
+  get getDiff => (((getCurrentPrice - getLastPrice) / getLastPrice) * 100);
+
+
+  /// Method that returns a list of prices with a given interval
+  List<PriceData> getIntervalPrices(int minutes) {
+    List<PriceData> lastTenWithInterval = [];
+    var dtPrice = historyCoin?.reversed.toList() ?? [];
+
+    for (PriceData priceData in dtPrice) {
+      DateTime targetTime = DateTime.parse(priceData.timestamp);
+      DateTime lastTime = DateTime.parse(lastTenWithInterval.isEmpty
+          ? "2023-12-17 17:39:00"
+          : lastTenWithInterval.last.timestamp);
+
+      if (lastTenWithInterval.isEmpty ||
+          lastTime.difference(targetTime).inMinutes < minutes) {
+        lastTenWithInterval.add(priceData);
+      }
+    }
+
+    return lastTenWithInterval;
+  }
 
   StatisticsCoin copyWith({
     double? totalCoin,
