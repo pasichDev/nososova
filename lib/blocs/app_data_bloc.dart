@@ -165,7 +165,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         ? statsCopyCoin.copyWith(
             historyCoin: responsePriceHistory.value,
             lastBlock: targetNode.lastblock)
-        : statsCopyCoin.copyWith(lastBlock: targetNode.lastblock);
+        : statsCopyCoin.copyWith(
+            lastBlock: targetNode.lastblock, apiStatus: ApiStatus.error);
 
     if (state.node.lastblock != targetNode.lastblock ||
         state.node.seed.ip != targetNode.seed.ip) {
@@ -188,6 +189,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
             .add(AddStringDebug("Block information not received, skipped"));
         _debugBloc.add(AddStringDebug(
             "Error: ${responseLastBlockInfo.errors}", DebugType.error));
+        statsCopyCoin = statsCopyCoin.copyWith(apiStatus: ApiStatus.error);
       }
 
       ResponseNode<List<int>> responseSummary =
@@ -237,7 +239,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     var success = event.success;
     if (success) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.connected));
-
+      _repositories.sharedRepository
+          .saveLastSeed(state.node.seed.toTokenizer());
       appBlocConfig =
           appBlocConfig.copyWith(lastSeed: state.node.seed.toTokenizer());
       _debugBloc.add(AddStringDebug(

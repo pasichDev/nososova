@@ -741,6 +741,18 @@ abstract class AppLocalizations {
   /// **'Error trying to set alias'**
   String get errorDefaultErrorAlias;
 
+  /// No description provided for @priceInfoErrorServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Price information is not available'**
+  String get priceInfoErrorServer;
+
+  /// No description provided for @errorEmptyHistoryTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions were found for this address'**
+  String get errorEmptyHistoryTransactions;
+
   /// No description provided for @successSetAlias.
   ///
   /// In en, this message translates to:

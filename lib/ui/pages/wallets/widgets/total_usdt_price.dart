@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../utils/status_api.dart';
 import '../../../theme/style/colors.dart';
 import '../../../theme/style/text_style.dart';
@@ -40,11 +41,16 @@ class ItemTotalPrice extends StatelessWidget {
                 fontSize: 16),
           ),
         ],
-        const SizedBox(width: 10),
         if (state.statisticsCoin.apiStatus == ApiStatus.loading)
           LoadingAnimationWidget.prograssiveDots(
             color: Colors.white.withOpacity(0.5),
             size: 28,
+          ),
+        if (state.statisticsCoin.apiStatus == ApiStatus.error)
+          Text(
+            "${AppLocalizations.of(context)!.priceInfoErrorServer} ",
+            style: AppTextStyles.itemStyle
+                .copyWith(color: Colors.white.withOpacity(0.8), fontSize: 16),
           ),
       ]);
     });

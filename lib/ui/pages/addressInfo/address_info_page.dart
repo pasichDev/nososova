@@ -35,7 +35,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   var isMiddleChange = false;
   int selectedIndexChild = 0;
   int selectedOption = 1;
-  late HistoryTransactionsWidget historyWidget;
+  late HistoryTransactionsWidget? historyWidget;
   late Address address;
   late WalletBloc walletBloc;
   late StreamSubscription listenResponse;
@@ -79,7 +79,9 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
       appBar: CustomAppBar(onNodeStatusDialog: () {}),
       body: BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
         return Container(
-           decoration:     Responsive.isMobile(context) ? const OtherGradientDecoration() : const BoxDecoration(),
+          decoration: Responsive.isMobile(context)
+              ? const OtherGradientDecoration()
+              : const BoxDecoration(),
           child: SafeArea(
               child: Row(
             children: [
@@ -87,33 +89,35 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                 Expanded(
                     flex: 5,
                     child: ClipRRect(
-                      borderRadius:  !Responsive.isMobile(context) ? BorderRadius.zero : const BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0),
-                      ) ,
-                      child: !Responsive.isMobile(context) ? historyWidget : selectedIndexChild == 0
+                      borderRadius: !Responsive.isMobile(context)
+                          ? BorderRadius.zero
+                          : const BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),
+                            ),
+                      child: !Responsive.isMobile(context)
                           ? historyWidget
-                          : AddressActionsWidget(address: address),
+                          : selectedIndexChild == 0
+                              ? historyWidget
+                              : AddressActionsWidget(address: address),
                     )),
-
-
-
               Expanded(
-                 flex: 3,
-                  child:
-             Container(
-                   // width: Responsive.isMobile(context) ?  double.infinity : 400 ,
+                  flex: 3,
+                  child: Container(
+                      // width: Responsive.isMobile(context) ?  double.infinity : 400 ,
 
-                      decoration:     !Responsive.isMobile(context) ? const OtherGradientDecoration() : const BoxDecoration(),
+                      decoration: !Responsive.isMobile(context)
+                          ? const OtherGradientDecoration()
+                          : const BoxDecoration(),
                       child: Column(
                         children: [
-
-                          if(!Responsive.isMobile(context)) AppBar(
-                            title: NetworkInfo(nodeStatusDialog: ()=> {}),
-                            backgroundColor: Colors.transparent,
-                            iconTheme: IconThemeData(color: Colors.white),
-                            elevation: 0,
-                          ),
+                          if (!Responsive.isMobile(context))
+                            AppBar(
+                              title: NetworkInfo(nodeStatusDialog: () => {}),
+                              backgroundColor: Colors.transparent,
+                              iconTheme: const IconThemeData(color: Colors.white),
+                              elevation: 0,
+                            ),
                           Padding(
                             padding: const EdgeInsets.all(20),
                             child: TransformWidget(
@@ -133,13 +137,18 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                           Expanded(
                               flex: 2,
                               child: ClipRRect(
-                                borderRadius: !Responsive.isMobile(context) ? BorderRadius.zero : const BorderRadius.only(
-                                  topLeft: Radius.circular(30.0),
-                                  topRight: Radius.circular(30.0),
-                                ) ,
-                                child: !Responsive.isMobile(context) ? AddressActionsWidget(address: address) : selectedIndexChild == 0
-                                    ? historyWidget
-                                    : AddressActionsWidget(address: address),
+                                borderRadius: !Responsive.isMobile(context)
+                                    ? BorderRadius.zero
+                                    : const BorderRadius.only(
+                                        topLeft: Radius.circular(30.0),
+                                        topRight: Radius.circular(30.0),
+                                      ),
+                                child: !Responsive.isMobile(context)
+                                    ? AddressActionsWidget(address: address)
+                                    : selectedIndexChild == 0
+                                        ? historyWidget
+                                        : AddressActionsWidget(
+                                            address: address),
                               )),
                         ],
                       ))),
@@ -165,76 +174,80 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 2,
+                    flex: 2,
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide.none,
-                        backgroundColor: selectedOption == 1
-                            ? const Color(0xFF53566E).withOpacity(0.7)
-                            : Colors.white.withOpacity(0.05),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                            backgroundColor: selectedOption == 1
+                                ? const Color(0xFF53566E).withOpacity(0.7)
+                                : Colors.white.withOpacity(0.05),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedOption = 1;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              AppLocalizations.of(context)!.address,
+                              style: AppTextStyles.categoryStyle
+                                  .copyWith(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
                         ),
+                        const SizedBox(height: 20),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                            backgroundColor: selectedOption == 2
+                                ? const Color(0xFF53566E).withOpacity(0.7)
+                                : Colors.white.withOpacity(0.1),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedOption = 2;
+                            });
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                AppLocalizations.of(context)!.keys,
+                                style: AppTextStyles.categoryStyle.copyWith(
+                                    fontSize: 16, color: Colors.white),
+                              )),
+                        )
+                      ],
+                    )),
+                Expanded(
+                    flex: 2,
+                    child: QrImageView(
+                      eyeStyle: QrEyeStyle(
+                        eyeShape: QrEyeShape.square,
+                        color: Colors.white.withOpacity(0.9),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          selectedOption = 1;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          AppLocalizations.of(context)!.address,
-                          style: AppTextStyles.categoryStyle
-                              .copyWith(fontSize: 16, color: Colors.white),
-                        ),
+                      dataModuleStyle: QrDataModuleStyle(
+                        dataModuleShape: QrDataModuleShape.square,
+                        color: Colors.white.withOpacity(0.9),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide.none,
-                        backgroundColor: selectedOption == 2
-                            ? const Color(0xFF53566E).withOpacity(0.7)
-                            : Colors.white.withOpacity(0.1),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedOption = 2;
-                        });
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            AppLocalizations.of(context)!.keys,
-                            style: AppTextStyles.categoryStyle
-                                .copyWith(fontSize: 16, color: Colors.white),
-                          )),
-                    )
-                  ],
-                )),
-              Expanded(flex:2,child:   QrImageView(
-                  eyeStyle: QrEyeStyle(
-                    eyeShape: QrEyeShape.square,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                  dataModuleStyle: QrDataModuleStyle(
-                    dataModuleShape: QrDataModuleShape.square,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                  data: selectedOption == 1
-                      ? address.hash
-                      : "${address.publicKey} ${address.privateKey}",
-                  version: QrVersions.auto,
-                  size: 200.0,
-                )),
+                      data: selectedOption == 1
+                          ? address.hash
+                          : "${address.publicKey} ${address.privateKey}",
+                      version: QrVersions.auto,
+                      size: 200.0,
+                    )),
               ],
             ),
           ),

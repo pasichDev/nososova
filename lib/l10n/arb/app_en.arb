@@ -107,5 +107,7 @@
   "errorInformationIncorrect": "The shipping information is incorrect",
   "errorImportAddresses": "Addresses are not added because they are duplicates",
   "errorDefaultErrorAlias": "Error trying to set alias",
+  "priceInfoErrorServer": "Price information is not available",
+  "errorEmptyHistoryTransactions": "No transactions were found for this address",
   "successSetAlias": "Your request is successful and has been processed"
 }

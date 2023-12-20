@@ -329,5 +329,11 @@ class AppLocalizationsUk extends AppLocalizations {
   String get errorDefaultErrorAlias => 'Помилка при встановленні псевдоніма';
 
   @override
+  String get priceInfoErrorServer => 'Інформація про ціну недоступна';
+
+  @override
+  String get errorEmptyHistoryTransactions => 'Транзакцій за цією адресою не знайдено';
+
+  @override
   String get successSetAlias => 'Ваш запит успішно додано в обробку';
 }

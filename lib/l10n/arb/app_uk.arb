@@ -107,5 +107,7 @@
   "errorInformationIncorrect": "Невірна інформація для доставки",
   "errorDefaultErrorAlias": "Помилка при встановленні псевдоніма",
   "errorImportAddresses": "Адреси не додано тому що вони дублюються",
+  "priceInfoErrorServer": "Інформація про ціну недоступна",
+  "errorEmptyHistoryTransactions": "Транзакцій за цією адресою не знайдено",
   "successSetAlias": "Ваш запит успішно додано в обробку"
 }

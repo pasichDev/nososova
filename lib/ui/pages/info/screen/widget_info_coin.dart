@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/ui/components/empty_list_widget.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
@@ -36,6 +37,10 @@ class _WidgetInfoCoinState extends State<WidgetInfoCoin>
       var infoCoin = state.statisticsCoin;
       if (infoCoin.apiStatus == ApiStatus.loading) {
         return const LoadingWidget();
+      }
+
+      if (infoCoin.apiStatus == ApiStatus.error) {
+        return  EmptyWidget(descrpt: AppLocalizations.of(context)!.priceInfoErrorServer, title: AppLocalizations.of(context)!.unknownError,);
       }
 
       var diff = state.statisticsCoin.getDiff;

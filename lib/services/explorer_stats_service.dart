@@ -40,7 +40,8 @@ class ExplorerStatsService {
 
     if (response.errors != null) {
       return response;
-    } else {
+    }
+    else {
       List<PriceData> listPrice = List<PriceData>.from(
           response.value.map((item) => PriceData.fromJson(item)));
 

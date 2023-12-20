@@ -329,5 +329,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorDefaultErrorAlias => 'Error trying to set alias';
 
   @override
+  String get priceInfoErrorServer => 'Price information is not available';
+
+  @override
+  String get errorEmptyHistoryTransactions => 'No transactions were found for this address';
+
+  @override
   String get successSetAlias => 'Your request is successful and has been processed';
 }
