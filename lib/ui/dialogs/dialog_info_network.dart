@@ -5,12 +5,15 @@ import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
 import '../../blocs/events/app_data_events.dart';
+import '../../generated/assets.dart';
 import '../../ui/tiles/seed_tile.dart';
 import '../../utils/const/network_const.dart';
 import '../../utils/custom_class/shimmer.dart';
 import '../../utils/noso/model/node.dart';
+import '../common/route/dialog_router.dart';
 import '../components/extra_util.dart';
 import '../config/responsive.dart';
+import '../theme/style/icons_style.dart';
 import '../theme/style/text_style.dart';
 
 class DialogInfoNetwork extends StatefulWidget {
@@ -59,10 +62,19 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
             ],
           ),
           if (!Responsive.isMobile(context)) ...[
+            ListTile(
+              leading: AppIconsStyle.icon3x2(Assets.iconsDebugI),
+              title: Text(
+                AppLocalizations.of(context)!.debugInfo,
+                style: AppTextStyles.itemStyle,
+              ),
+              onTap: () => DialogRouter.showDialogDebug(context),
+            ),
             itemInfo(
                 AppLocalizations.of(context)!.status,
                 ExtraUtil.getNodeDescriptionString(
-                    context, state.statusConnected, state.node.seed), StatusConnectNodes.connected)
+                    context, state.statusConnected, state.node.seed),
+                StatusConnectNodes.connected)
           ],
           itemInfo(AppLocalizations.of(context)!.nodeType,
               getNetworkType(state.node), state.statusConnected),
@@ -102,23 +114,24 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                 .copyWith(color: Colors.black.withOpacity(0.5), fontSize: 18),
           ),
           if (statusConnected == StatusConnectNodes.searchNode ||
-              statusConnected == StatusConnectNodes.sync || statusConnected == StatusConnectNodes.consensus)
+              statusConnected == StatusConnectNodes.sync ||
+              statusConnected == StatusConnectNodes.consensus)
             Container(
               margin: EdgeInsets.zero,
               child: ShimmerPro.sized(
                 depth: 16,
-                scaffoldBackgroundColor:
-                Colors.grey.shade100.withOpacity(0.5),
+                scaffoldBackgroundColor: Colors.grey.shade100.withOpacity(0.5),
                 width: 100,
                 borderRadius: 3,
                 height: 20,
               ),
             )
-          else Text(
-            value,
-            style: AppTextStyles.walletAddress
-                .copyWith(color: Colors.black, fontSize: 18),
-          ),
+          else
+            Text(
+              value,
+              style: AppTextStyles.walletAddress
+                  .copyWith(color: Colors.black, fontSize: 18),
+            ),
         ],
       ),
     );

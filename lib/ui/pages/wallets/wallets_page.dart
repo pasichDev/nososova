@@ -70,7 +70,7 @@ class WalletsPageState extends State<WalletsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.primaryBg,
+      backgroundColor: Colors.white,
       appBar: null,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
