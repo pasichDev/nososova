@@ -5,20 +5,19 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
+import 'package:nososova/blocs/events/wallet_events.dart';
+import 'package:nososova/models/apiExplorer/block_info.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
-import 'package:nososova/models/app/info_coin.dart';
 import 'package:nososova/models/seed.dart';
 import 'package:nososova/utils/noso/model/node.dart';
 import 'package:nososova/utils/noso/model/summary_data.dart';
+import 'package:nososova/utils/status_api.dart';
 
-import '../models/app/parse_mn_info.dart';
+import '../models/app/debug.dart';
 import '../models/app/stats.dart';
-import '../models/block_mns.dart';
-import '../models/responses/response_api.dart';
 import '../models/responses/response_node.dart';
 import '../repositories/repositories.dart';
 import '../utils/const/network_const.dart';
-import '../utils/noso/model/pending_transaction.dart';
 import 'events/app_data_events.dart';
 import 'events/debug_events.dart';
 
@@ -26,48 +25,27 @@ class AppDataState {
   final Node node;
   final StatusConnectNodes statusConnected;
   final ConnectivityResult deviceConnectedNetworkStatus;
-  final StatsInfoCoin statsInfoCoin;
-
-  //wallet
-  final List<PendingTransaction> pendings;
-  final List<SumaryData> summaryBlock;
-  final List<Seed> listPeopleNodes;
+  final StatisticsCoin statisticsCoin;
 
   AppDataState({
     this.statusConnected = StatusConnectNodes.searchNode,
     this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
-    StatsInfoCoin? statsInfoCoin,
-    InfoCoin? infoCoin,
-    Seed? seedActive,
-    List<PendingTransaction>? pendings,
-    List<SumaryData>? summaryBlock,
-    List<Seed>? listPeopleNodes,
+    StatisticsCoin? statisticsCoin,
   })  : node = node ?? Node(seed: Seed()),
-        statsInfoCoin = statsInfoCoin ??
-            StatsInfoCoin(
-                blockInfo: BlockMNS_RPC(total: 0, reward: 0, block: 0)),
-        pendings = pendings ?? [],
-        summaryBlock = summaryBlock ?? [],
-        listPeopleNodes = listPeopleNodes ?? [];
+        statisticsCoin = statisticsCoin ?? StatisticsCoin();
 
   AppDataState copyWith(
       {Node? node,
-      StatsInfoCoin? statsInfoCoin,
+      StatisticsCoin? statisticsCoin,
       StatusConnectNodes? statusConnected,
-      ConnectivityResult? deviceConnectedNetworkStatus,
-      List<PendingTransaction>? pendings,
-      List<Seed>? listPeopleNodes,
-      List<SumaryData>? summaryBlock}) {
+      ConnectivityResult? deviceConnectedNetworkStatus}) {
     return AppDataState(
       node: node ?? this.node,
-      statsInfoCoin: statsInfoCoin ?? this.statsInfoCoin,
+      statisticsCoin: statisticsCoin ?? this.statisticsCoin,
       statusConnected: statusConnected ?? this.statusConnected,
       deviceConnectedNetworkStatus:
           deviceConnectedNetworkStatus ?? this.deviceConnectedNetworkStatus,
-      pendings: pendings ?? this.pendings,
-      summaryBlock: summaryBlock ?? this.summaryBlock,
-      listPeopleNodes: listPeopleNodes ?? this.listPeopleNodes,
     );
   }
 }
@@ -75,283 +53,211 @@ class AppDataState {
 class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppBlocConfig appBlocConfig = AppBlocConfig();
   final DebugBloc _debugBloc;
-  Timer? _timerDelaySync;
+  Timer? timerSyncNetwork;
   final Repositories _repositories;
 
-  final _dataSumary = StreamController<List<SumaryData>>.broadcast();
+  final _walletEvent = StreamController<WalletEvent>.broadcast();
 
-  Stream<List<SumaryData>> get dataSumaryStream => _dataSumary.stream;
+  Stream<WalletEvent> get walletEvents => _walletEvent.stream;
 
-  final _pendingsSumary =
-      StreamController<List<PendingTransaction>>.broadcast();
-
-  Stream<List<PendingTransaction>> get pendingsStream => _pendingsSumary.stream;
-
-  final _status = StreamController<StatusConnectNodes>.broadcast();
-
-  Stream<StatusConnectNodes> get statusConnected => _status.stream;
-
-  // TODO: Окремо вести таймер перебудуваня блоку, та коли плок перебудовується потрібно ресетнути системний таймер
   AppDataBloc({
     required Repositories repositories,
     required DebugBloc debugBloc,
   })  : _repositories = repositories,
         _debugBloc = debugBloc,
         super(AppDataState()) {
-    Connectivity().onConnectivityChanged.listen((result) {
-      emit(state.copyWith(deviceConnectedNetworkStatus: result));
-    });
+    Connectivity().onConnectivityChanged.listen((result) {});
     on<ReconnectSeed>(_reconnectNode);
     on<InitialConnect>(_init);
+    on<SyncResult>(_syncResult);
   }
 
-  Future<void> _init(AppDataEvent e, Emitter emit) async {
-    _debugBloc.add(AddStringDebug("Network initialization"));
+  /// This method initializes the first network connection
+  Future<void> _init(event, emit) async {
+    _debugBloc.add(AddStringDebug("First network connection"));
     await loadConfig();
+
     if (appBlocConfig.lastSeed != null) {
-      await _selectNode(InitialNodeAlgh.connectLastNode);
+      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode);
     } else if (appBlocConfig.nodesList != null) {
-      await _selectNode(InitialNodeAlgh.listenUserNodes);
+      await _selectTargetNode(event, emit, InitialNodeAlgh.listenUserNodes);
     } else {
-      await _selectNode(InitialNodeAlgh.listenDefaultNodes);
+      await _selectTargetNode(event, emit, InitialNodeAlgh.listenDefaultNodes);
     }
   }
 
-  ///Коли робимо рестарт потрібно, зупинити таймер оновення та запустити новий
   Future<void> _reconnectNode(event, emit) async {
-    emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
-
+    if (state.statusConnected == StatusConnectNodes.sync) {
+      return;
+    }
+    _stopTimerSyncNetwork();
     if (event.lastNodeRun) {
-      _debugBloc.add(AddStringDebug("Manual update of information"));
-      _syncDataToNode(state.node.seed);
+      emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
+      _debugBloc.add(AddStringDebug("Updating data from the last node"));
+      await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode,
+          repeat: true);
     } else {
-      _debugBloc.add(AddStringDebug("Attempting to modify a node"));
-      await _selectNode(Random().nextInt(2) == 0
-          ? InitialNodeAlgh.listenDefaultNodes
-          : InitialNodeAlgh.listenUserNodes);
+      _debugBloc.add(AddStringDebug("Reconnecting to  new node"));
+      await _selectTargetNode(
+          event,
+          emit,
+          Random().nextInt(2) == 0
+              ? InitialNodeAlgh.listenDefaultNodes
+              : InitialNodeAlgh.listenUserNodes);
     }
   }
 
-  /// Підключення та вибір ноди
-  Future<void> _selectNode(InitialNodeAlgh initNodeAlgh) async {
-    emit(state.copyWith(statusConnected: StatusConnectNodes.searchNode));
-    ResponseNode response;
-
-    switch (initNodeAlgh) {
-      case InitialNodeAlgh.connectLastNode:
-        {
-          response = await _repositories.networkRepository
-              .testNode(Seed().tokenizer(appBlocConfig.lastSeed));
-          if (response.errors != null) {
-            await _selectNode(InitialNodeAlgh.listenDefaultNodes);
-            return;
-          }
-        }
-        break;
-      case InitialNodeAlgh.listenUserNodes:
-        {
-          var seed = Seed().tokenizer(
-              _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList));
-          response = await _repositories.networkRepository.testNode(seed);
-          if (response.errors == null) {
-            var lastSeed = response.seed.toTokenizer();
-            appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
-            _repositories.sharedRepository.saveLastSeed(lastSeed);
-          }
-        }
-
-        break;
-      default:
-        {
-          response = await _repositories.networkRepository.listenNodes();
-          if (response.errors == null) {
-            var lastSeed = response.seed.toTokenizer();
-            appBlocConfig = appBlocConfig.copyWith(lastSeed: lastSeed);
-            _repositories.sharedRepository.saveLastSeed(lastSeed);
-          } else {
-            await _selectNode(InitialNodeAlgh.listenUserNodes);
-            return;
-          }
-        }
-        break;
-    }
-
-    if (response.errors != null) {
-      emit(state.copyWith(
-          node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
-          statusConnected: StatusConnectNodes.error));
+  /// This method implements the selection of the node to which we will connect in the future
+  Future<void> _selectTargetNode(event, emit, InitialNodeAlgh initAlgh,
+      {bool repeat = false}) async {
+    if (!repeat) {
+      emit(state.copyWith(statusConnected: StatusConnectNodes.searchNode));
+      _debugBloc.add(AddStringDebug("Active node search"));
     } else {
-      _syncDataToNode(response.seed);
-      if (_timerDelaySync != null) {
-        _timerDelaySync?.cancel();
-      }
-      _timerDelaySync =
-          Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
-        _debugBloc.add(AddStringDebug("----------------------"));
-        _debugBloc.add(AddStringDebug("Updating data"));
-        _syncDataToNode(response.seed);
-      });
-    }
-  }
-
-  /// TODO Pendigs при першому завнтажені не підтягуються тому що вону отримуються раніше symmary
-  Future<void> _syncDataToNode(Seed seed) async {
-    ///init var && send state loading
-    emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
-    var responsePendings = ResponseNode(errors: null);
-    List<PendingTransaction> pendingsOutput = [];
-    List<SumaryData> sumaryBlock = [];
-
-    _debugBloc.add(AddStringDebug("We connect to the node ${seed.ip}"));
-    final ResponseNode<List<int>> responseNodeInfo =
-        await _fetchNode(NetworkRequest.nodeStatus, seed);
-    if (responseNodeInfo.errors != null) {
-      _debugBloc.add(AddStringDebug(responseNodeInfo.errors ?? ""));
-      return errorInit();
-    }
-
-    final Node nodeOutput = _repositories.nosoCore
-        .parseResponseNode(responseNodeInfo.value, responseNodeInfo.seed);
-
-    /// Loading pendings
-    if (nodeOutput.pendings != 0) {
-      print("pendigs");
-      _debugBloc.add(AddStringDebug("Request pending"));
-      responsePendings = await _fetchNode(NetworkRequest.pendingsList, seed);
-      if (responsePendings.errors != null) {
-        _debugBloc.add(AddStringDebug(responsePendings.errors ?? ""));
-        return errorInit();
-      }
-      pendingsOutput =
-          _repositories.nosoCore.parsePendings(responsePendings.value);
-    }
-
-    /// Оновлення інформації коли перебудовується блок, або перщий запуск
-    if (state.node.lastblock != nodeOutput.lastblock ||
-        appBlocConfig.isOneStartup) {
       _debugBloc.add(AddStringDebug(
-          "Loading information for block ${nodeOutput.lastblock}"));
-      var parseMn = await loadPeopleNodes(seed);
-      ResponseApi blockInfo = await _repositories.networkRepository
-          .fetchBlockInfo(nodeOutput.lastblock);
-      //Отриманя summary.zip
-      ResponseNode<List<int>> responseSummary =
-          await _fetchNode(NetworkRequest.summary, seed);
-      if (responseSummary.errors != null) {
-        return errorInit();
+          "Repeated attempt to search for a node, the last one ended in failure"));
+    }
+
+    ResponseNode<List<int>> responseTargetNode =
+        await _searchTargetNode(initAlgh);
+    final Node? nodeOutput = _repositories.nosoCore
+        .parseResponseNode(responseTargetNode.value, responseTargetNode.seed);
+    if (responseTargetNode.errors == null && nodeOutput != null) {
+      await _syncNetwork(event, emit, nodeOutput);
+    } else {
+      await _selectTargetNode(event, emit, initAlgh, repeat: true);
+    }
+  }
+
+  /// A method that tests and returns the active node
+  Future<ResponseNode<List<int>>> _searchTargetNode(
+      InitialNodeAlgh initAlgh) async {
+    var listUsersNodes = appBlocConfig.nodesList;
+    if ((listUsersNodes ?? "").isEmpty) {
+      initAlgh = InitialNodeAlgh.listenDefaultNodes;
+    }
+    switch (initAlgh) {
+      case InitialNodeAlgh.connectLastNode:
+        return await _repositories.networkRepository.fetchNode(
+            NetworkRequest.nodeStatus,
+            Seed().tokenizer(appBlocConfig.lastSeed));
+
+      case InitialNodeAlgh.listenUserNodes:
+        return await _repositories.networkRepository.fetchNode(
+            NetworkRequest.nodeStatus,
+            Seed().tokenizer(
+                _repositories.nosoCore.getRandomNode(listUsersNodes)));
+
+      default:
+        return await _repositories.networkRepository.getRandomDevNode();
+    }
+  }
+
+  Future<void> _syncNetwork(event, emit, Node targetNode) async {
+    emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
+    _debugBloc.add(AddStringDebug(
+        "Getting information from the node ${targetNode.seed.toTokenizer()}"));
+
+    var statsCopyCoin = state.statisticsCoin;
+    var responsePriceHistory =
+        await _repositories.networkRepository.fetchHistoryPrice();
+    statsCopyCoin = responsePriceHistory.errors == null
+        ? statsCopyCoin.copyWith(
+            historyCoin: responsePriceHistory.value,
+            lastBlock: targetNode.lastblock)
+        : statsCopyCoin.copyWith(
+            lastBlock: targetNode.lastblock, apiStatus: ApiStatus.error);
+
+    if (state.node.lastblock != targetNode.lastblock ||
+        state.node.seed.ip != targetNode.seed.ip) {
+      var responseLastBlockInfo =
+          await _repositories.networkRepository.fetchLastBlockInfo();
+      if (responseLastBlockInfo.errors == null) {
+        BlockInfo blockInfo = responseLastBlockInfo.value;
+        _repositories.sharedRepository
+            .saveNodesList(blockInfo.getMasternodesString());
+        appBlocConfig =
+            appBlocConfig.copyWith(nodesList: blockInfo.getMasternodesString());
+        statsCopyCoin = statsCopyCoin.copyWith(
+            totalNodes: blockInfo.count,
+            reward: blockInfo.reward,
+            apiStatus: ApiStatus.connected);
+        _debugBloc.add(AddStringDebug(
+            "Obtaining information about the block is successful ${targetNode.lastblock}"));
+      } else {
+        _debugBloc
+            .add(AddStringDebug("Block information not received, skipped"));
+        _debugBloc.add(AddStringDebug(
+            "Error: ${responseLastBlockInfo.errors}", DebugType.error));
+        statsCopyCoin = statsCopyCoin.copyWith(apiStatus: ApiStatus.error);
       }
+
+      ResponseNode<List<int>> responseSummary =
+          await _fetchNode(NetworkRequest.summary, targetNode.seed);
       var isSavedSummary = await _repositories.fileRepository
           .writeSummaryZip(responseSummary.value ?? []);
-      if (!isSavedSummary) {
-        return errorInit();
-      }
-      sumaryBlock = _repositories.nosoCore.parseSumary(
-          await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
-
-      if (await _checkConsensus(nodeOutput) == ConsensusStatus.sync) {
+      if (responseSummary.errors == null && isSavedSummary) {
+        List<SumaryData> sumaryBlock = _repositories.nosoCore.parseSumary(
+            await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
         double totalCoins = sumaryBlock.fold(
             0, (double sum, SumaryData data) => sum + data.balance);
+        statsCopyCoin = statsCopyCoin.copyWith(totalCoin: totalCoins);
+        _debugBloc.add(AddStringDebug("Download Summary successful"));
 
         emit(state.copyWith(
-          node: nodeOutput,
-          pendings: pendingsOutput,
-          summaryBlock: sumaryBlock,
-          statusConnected: StatusConnectNodes.connected,
-          listPeopleNodes: parseMn.listNodes,
-          statsInfoCoin: state.statsInfoCoin.copyWith(
-              blockInfo: blockInfo.value,
-              totalCoin: totalCoins.toInt(),
-              totalNodesPeople: parseMn.count),
-        ));
-        _dataSumary.add(sumaryBlock);
-        _debugBloc.add(AddStringDebug("Synchronization is successful"));
+            node: targetNode,
+            statusConnected: StatusConnectNodes.consensus,
+            statisticsCoin: statsCopyCoin));
+
+        _walletEvent.add(CalculateBalance(sumaryBlock, true, []));
+
         return;
       } else {
-        _debugBloc.add(
-            AddStringDebug("Reconnecting because the consensus is incorrect"));
-        return _selectNode(InitialNodeAlgh.listenUserNodes);
+        _debugBloc.add(AddStringDebug(
+            "Error processing Summary, trying to reconnect", DebugType.error));
+        add(ReconnectSeed(false));
+        return;
       }
     }
 
     emit(state.copyWith(
-        node: nodeOutput,
-        pendings: pendingsOutput,
-        statusConnected: StatusConnectNodes.connected));
-    _pendingsSumary.add(pendingsOutput);
-    _debugBloc.add(AddStringDebug("Data update successful"));
-  }
+        node: targetNode,
+        statusConnected: StatusConnectNodes.connected,
+        statisticsCoin: statsCopyCoin));
 
-  //також додати первірку щоб рандомом не вибирався активний вузол
-  Future<ConsensusStatus> _checkConsensus(Node targetNode) async {
-    _debugBloc.add(AddStringDebug("Consensus check"));
-
-    List<Seed> testSeeds = [];
-    List<bool> decisionNodes = [];
-
-    for (int i = 0; i < 3; i++) {
-      testSeeds.add(Seed().tokenizer(
-          _repositories.nosoCore.getRandomNode(appBlocConfig.nodesList)));
-    }
-   //оптимізувати цей запит злб він зразу повертав nodeInfo
-    ResponseNode<List<Seed>> responseDevNodes =
-        await _repositories.networkRepository.listenNodes();
-    if (responseDevNodes.value != null) {
-    // витягує 2 активних вузла
-      testSeeds.addAll(responseDevNodes.value!
-          .where((seed) => seed.online)
-          .take(2)
-          .toList());
-    }
-    if (responseDevNodes.errors != null || testSeeds.length < 2) {
-      return ConsensusStatus.error;
-    }
-
-    // отримаємо всі дані з доступних вузлів для вирішення консенсусу
-    for (Seed testSeed in testSeeds) {
-      ResponseNode testResponse = await _repositories.networkRepository
-          .fetchNode(NetworkRequest.nodeStatus, testSeed);
-      if (testResponse.errors == null) {
-        var tNode = _repositories.nosoCore
-            .parseResponseNode(testResponse.value, testResponse.seed);
-        decisionNodes.add(isValidNode(tNode, targetNode));
-      }
-    }
-
-    if (decisionNodes.every((element) => element == true)) {
-      _debugBloc.add(AddStringDebug(
-          "Consensus is correct, node -> ${targetNode.seed.toTokenizer()}"));
-      return ConsensusStatus.sync;
+    if (targetNode.pendings != 0) {
+      _walletEvent.add(CalculateBalance([], false, []));
     } else {
-      // Повертаємо те що консенсус ytdshybq
-      return ConsensusStatus.error;
+      add(SyncResult(true));
+    }
+
+    return;
+  }
+
+  /// The method that receives the response about the synchronization status in WalletBloc
+  Future<void> _syncResult(event, emit) async {
+    var success = event.success;
+    if (success) {
+      emit(state.copyWith(statusConnected: StatusConnectNodes.connected));
+      _repositories.sharedRepository
+          .saveLastSeed(state.node.seed.toTokenizer());
+      appBlocConfig =
+          appBlocConfig.copyWith(lastSeed: state.node.seed.toTokenizer());
+      _debugBloc.add(AddStringDebug(
+          "Synchronization is complete, the application is ready to work with the network",
+          DebugType.success));
+      _startTimerSyncNetwork();
+    } else {
+      add(ReconnectSeed(false));
     }
   }
 
-  bool isValidNode(Node tNode, Node targetNode) {
-    if (tNode.branch == targetNode.branch ||
-        tNode.lastblock == targetNode.lastblock) {
-      return true;
-    }
-    return false;
-  }
-
-  errorInit() {
-    emit(state.copyWith(
-        node: state.node.copyWith(lastblock: appBlocConfig.lastBlock),
-        statusConnected: StatusConnectNodes.error));
-  }
-
-  Future<ParseMNInfo> loadPeopleNodes(Seed seed) async {
-    ResponseNode<List<int>> responseNodeList =
-        await _fetchNode(NetworkRequest.nodeList, seed);
-    if (responseNodeList.value != null) {
-      var nodesPeople =
-          _repositories.nosoCore.parseMNString(responseNodeList.value);
-      _repositories.sharedRepository.saveNodesList(nodesPeople.nodes);
-      appBlocConfig = appBlocConfig.copyWith(nodesList: nodesPeople.nodes);
-      return nodesPeople;
-    }
-    return ParseMNInfo();
+  /// Method that starts a timer that simulates updating information
+  void _startTimerSyncNetwork() {
+    timerSyncNetwork =
+        Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
+      add(ReconnectSeed(true));
+    });
   }
 
   /// The base method for referencing a request to a node
@@ -379,13 +285,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
   @override
   Future<void> close() {
-    _pendingsSumary.close();
-    _dataSumary.close();
-    _stopTimer();
+    _stopTimerSyncNetwork();
     return super.close();
   }
 
-  void _stopTimer() {
-    _timerDelaySync?.cancel();
+  void _stopTimerSyncNetwork() {
+    timerSyncNetwork?.cancel();
   }
 }

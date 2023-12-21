@@ -13,3 +13,7 @@ class ReconnectSeed extends AppDataEvent {
   ReconnectSeed(this.lastNodeRun);
 }
 
+class SyncResult extends AppDataEvent {
+  final bool success;
+  SyncResult(this.success);
+}

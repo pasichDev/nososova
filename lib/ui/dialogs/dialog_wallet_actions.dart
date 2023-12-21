@@ -14,11 +14,12 @@ import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
 import '../../utils/const/files_const.dart';
-import '../route/dialog_router.dart';
+import '../common/route/dialog_router.dart';
+import '../config/responsive.dart';
 import '../theme/style/text_style.dart';
 
 class DialogWalletActions extends StatefulWidget {
-  const DialogWalletActions({Key? key}) : super(key: key);
+  const DialogWalletActions({super.key});
 
   @override
   State createState() => _DialogWalletActionsState();
@@ -35,7 +36,8 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      if(Responsive.isMobile(context)) ...[
       Container(
         padding: const EdgeInsets.all(10.0),
         child: Card(
@@ -66,9 +68,17 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
             ),
           ),
         ),
-      ),
+      ),]
+      else ...[
+      Padding(
+          padding:
+          const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          child: Text(
+            AppLocalizations.of(context)!.actionWallet,
+            style: AppTextStyles.dialogTitle,
+          )),],
       ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+       // padding: const EdgeInsets.symmetric(horizontal: 10),
         shrinkWrap: true,
         children: [
           buildListTileSvg(
@@ -84,7 +94,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                 Assets.iconsScan,
                 AppLocalizations.of(context)!.scanQrCode,
                 () => DialogRouter.showDialogScanQr(context)),
-          ListTile(
+          if(Responsive.isMobile(context))   ListTile(
               title: Text(AppLocalizations.of(context)!.fileWallet,
                   style: AppTextStyles.dialogTitle)),
           ListTile(
@@ -104,7 +114,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                       .copyWith(fontFamily: "GilroySemiBold")),
               subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle,
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
-              trailing: PopupMenuButton<String>(
+            /*  trailing: PopupMenuButton<String>(
                 onSelected: (String choice) {
                   if (choice == '.pkw') {
                     _exportWalletFile(context, FormatWalletFile.pkw);
@@ -130,6 +140,8 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                   ];
                 },
               ),
+
+             */
               onTap: () =>
                   _exportWalletFile(context, FormatWalletFile.nososova)),
           const SizedBox(height: 10)
@@ -140,11 +152,11 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
 
   void _createNewAddress(BuildContext context) async {
     walletBloc.add(CreateNewAddress());
-    Navigator.pop(context);
+    if(Responsive.isMobile(context))  Navigator.pop(context);
   }
 
   void _importToKeysPair(BuildContext context) async {
-    Navigator.pop(context);
+    if(Responsive.isMobile(context))  Navigator.pop(context);
     DialogRouter.showDialogImportAddressFromKeysPair(context);
   }
 
@@ -153,7 +165,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
     if (result != null) {
       walletBloc.add(ImportWalletFile(result));
       if (!context.mounted) return;
-      Navigator.pop(context);
+      if(Responsive.isMobile(context))  Navigator.pop(context);
     }
   }
 

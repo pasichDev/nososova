@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-import '../../blocs/app_data_bloc.dart';
-import '../../blocs/debug_bloc.dart';
-import '../../blocs/wallet_bloc.dart';
-import '../dialogs/address_action/dialog_address_info.dart';
-import '../dialogs/address_action/dialog_custom_name.dart';
-import '../dialogs/address_action/dialog_view_qr.dart';
-import '../dialogs/dialog_debug.dart';
-import '../dialogs/dialog_info_network.dart';
-import '../dialogs/dialog_wallet_actions.dart';
-import '../dialogs/import_export/dialog_import_keys_pair.dart';
-import '../dialogs/import_export/dialog_scanner_qr.dart';
-import '../theme/style/dialog_style.dart';
+import '../../../blocs/app_data_bloc.dart';
+import '../../../blocs/debug_bloc.dart';
+import '../../../blocs/wallet_bloc.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../dialogs/address_action/dialog_address_info.dart';
+import '../../dialogs/address_action/dialog_custom_name.dart';
+import '../../dialogs/address_action/dialog_view_qr.dart';
+import '../../dialogs/dialog_debug.dart';
+import '../../dialogs/dialog_info_network.dart';
+import '../../dialogs/dialog_wallet_actions.dart';
+import '../../dialogs/import_export/dialog_import_keys_pair.dart';
+import '../../dialogs/import_export/dialog_scanner_qr.dart';
+import '../../theme/style/dialog_style.dart';
+import '../../theme/style/text_style.dart';
 
 class DialogRouter {
   /// The dialog that displays the qr Codes scanner
@@ -57,17 +60,38 @@ class DialogRouter {
 
   /// The dialog that can be used to restore the address with a pair of keys
   static void showDialogImportAddressFromKeysPair(BuildContext context) {
-    showDialog(
+
+    WoltModalSheet.show(
+      context: context,
+      pageListBuilder: (BuildContext _) {
+        return [
+          WoltModalSheetPage(
+              backgroundColor: Colors.white,
+              hasSabGradient: false,
+              topBarTitle: Text( AppLocalizations.of(context)!.importKeysPair, textAlign: TextAlign.center, style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+              isTopBarLayerAlwaysVisible: true,
+              child:  BlocProvider.value(
+          value: BlocProvider.of<WalletBloc>(context),
+        child: const DialogImportKeysPair(),
+        ))
+
+        ];
+      },
+      // Other properties...
+    );
+  /*  showDialog(
       context: context,
       builder: (_) => Dialog(
         child: Material(
           child: BlocProvider.value(
-            value: BlocProvider.of<AppDataBloc>(context),
+            value: BlocProvider.of<WalletBloc>(context),
             child: const DialogImportKeysPair(),
           ),
         ),
       ),
     );
+
+   */
   }
 
   /// A dialog in which actions on the address are provided
@@ -109,7 +133,7 @@ class DialogRouter {
 
   /// Dialog in which debug information is displayed
   static void showDialogDebug(BuildContext context) {
-    Navigator.of(context).pop();
+  //  Navigator.of(context).pop();
     showModalBottomSheet(
         shape: DialogStyle.borderShape,
         context: context,

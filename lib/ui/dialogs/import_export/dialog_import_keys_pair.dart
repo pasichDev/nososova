@@ -49,11 +49,13 @@ class DialogImportKeysPairState extends State<DialogImportKeysPair> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+      /*    Text(
             AppLocalizations.of(context)!.importKeysPair,
             style: AppTextStyles.dialogTitle,
           ),
-          const SizedBox(height: 20),
+
+       */
+    //      const SizedBox(height: 20),
           FocusScope(
             child: Focus(
               onFocusChange: (hasFocus) {

@@ -19,8 +19,9 @@ import '../../theme/style/text_style.dart';
 
 class PaymentPage extends StatefulWidget {
   final Address address;
+  final String receiver;
 
-  const PaymentPage({Key? key, required this.address}) : super(key: key);
+  const PaymentPage({Key? key, required this.address, this.receiver = ""}) : super(key: key);
 
   @override
   PaymentPageState createState() => PaymentPageState();
@@ -30,13 +31,13 @@ class PaymentPageState extends State<PaymentPage> {
   bool isFinished = false;
   bool isActiveButtonSend = false;
   TextEditingController amountController = TextEditingController();
-  TextEditingController receiverController =
-      TextEditingController(text: "pasichDev");
+  TextEditingController receiverController = TextEditingController();
+
   double comission = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
+    receiverController.text = widget.receiver.isEmpty ? "" : widget.receiver;
     super.initState();
   }
 

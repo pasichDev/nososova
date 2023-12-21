@@ -1,110 +1,18 @@
 import 'dart:math';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:nososova/utils/noso/model/summary_data.dart';
 import 'package:nososova/utils/noso/src/crypto.dart';
 
 import '../../models/app/parse_mn_info.dart';
 import '../../models/seed.dart';
 import '../const/const.dart';
+import '../const/network_const.dart';
 import 'model/address_object.dart';
 import 'model/node.dart';
 import 'model/pending_transaction.dart';
 
 final class NosoCore extends NosoCrypto {
-  ///delete
-  /*  String createAliasOrder(Address targetAddress, int block, String alias) {
-     final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-     const int amount = 0;
-     const int fre = Const.customizationFee;
-     const int trxLine = 1;
-     const String type = "CUSTOM";
-     var message = (currentTimeMillis.toString() +
-         targetAddress.hash +
-         alias +
-         amount.toString() +
-         fre.toString() +
-         trxLine.toString());
-
-     var signature = NosoCrypto().signMessage('Customize this ${targetAddress.nameAddressFull} $alias', targetAddress.privateKey);
-
-     NewOrderSend orderInfo = NewOrderSend(
-         orderID: '',
-         orderLines: trxLine,
-         orderType: type,
-         timeStamp: currentTimeMillis,
-         reference: 'null',
-         trxLine: trxLine,
-         sender: targetAddress.publicKey,
-         address: targetAddress.nameAddressFull,
-         receiver: alias,
-         amountFee: fre,
-         amountTrf: amount,
-         signature: NosoCrypto().encodeSignatureToBase64(signature),
-         trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
-             targetAddress.nameAddressFull +
-             alias// +
-           //amount.toString() +
-           //  block.toString()
-         ));
-
-     orderInfo.orderID = NosoCore().getOrderHash(
-         "$trxLine${currentTimeMillis.toString() + (orderInfo.trfrID ?? "")}");
-
-     var orderStringCustom =
-         "NS$type ${Const.protocol} ${Const.programVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo.getStringToData()} \$";
-
-     return orderStringCustom.substring(0, orderStringCustom.length - 2);
-
-  }
-
-  */
-
-  /*
-   final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    const int amount = 0;
-    const int fre = Const.customizationFee;
-    const int trxLine = 1;
-    const String type = "CUSTOM";
-    var message = (currentTimeMillis.toString() +
-        targetAddress.hash +
-        alias +
-        amount.toString() +
-        fre.toString() +
-        trxLine.toString());
-
-    var signature = NosoCrypto().signMessage('Customize this ${targetAddress.nameAddressFull} $alias', targetAddress.privateKey);
-
-    NewOrderData orderInfo = NewOrderData(
-        orderID: '',
-        orderLines: trxLine,
-        orderType: type,
-        timeStamp: currentTimeMillis,
-        reference: 'null',
-        trxLine: trxLine,
-        sender: targetAddress.publicKey,
-        address: targetAddress.nameAddressFull,
-        receiver: alias,
-        amountFee: fre,
-        amountTrf: amount,
-        signature: NosoCrypto().encodeSignatureToBase64(signature),
-        trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
-            targetAddress.nameAddressFull +
-            alias// +
-            //amount.toString() +
-          //  block.toString()
-        ));
-
-    orderInfo.orderID = NosoCore().getOrderHash(
-        "$trxLine${currentTimeMillis.toString() + orderInfo.trfrID}");
-
-    var orderStringCustom =
-        "NS$type ${Const.protocol} ${Const.programVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo.getStringFromOrder()} \$";
-
-    return orderStringCustom.substring(0, orderStringCustom.length - 2);
-
-   */
-
   String getTransferHash(String value) {
     var hash256 = getSha256HashToString(value);
     hash256 = base58Encode(hash256, BigInt.from(58));
@@ -138,8 +46,6 @@ final class NosoCore extends NosoCrypto {
       String privateKeyPart = keyParts[1];
 
       bool verification = verifyKeysPair(publicKeyPart, privateKeyPart);
-
-      print(verification);
       if (verification &&
           privateKeyPart.length == 44 &&
           publicKeyPart.length == 88) {
@@ -228,11 +134,15 @@ final class NosoCore extends NosoCrypto {
         listNodes: resultMNList);
   }
 
-  Node parseResponseNode(List<int>? response, Seed seedActive) {
+  Node? parseResponseNode(List<int>? response, Seed seedActive) {
     if (response == null) {
-      return Node(seed: seedActive);
+      return null;
     }
     List<String> values = String.fromCharCodes(response).split(" ");
+
+    if (values.length <= 2) {
+      return null;
+    }
 
     return Node(
       seed: seedActive,
@@ -253,19 +163,26 @@ final class NosoCore extends NosoCrypto {
     List<String> array = String.fromCharCodes(response).split(" ");
     List<PendingTransaction> pendingList = [];
 
-    for (String value in array) {
-      var pending = value.split(",");
-      if (pending.length >= 5) {
-        pendingList.add(PendingTransaction(
-          orderType: pending[0],
-          sender: pending[1],
-          receiver: pending[2],
-          amountTransfer: int.parse(pending[3]) / 100000000,
-          amountFee: int.parse(pending[4]) / 100000000,
-        ));
+    try {
+      for (String value in array) {
+        var pending = value.split(",");
+        if (pending.length >= 5) {
+          pendingList.add(PendingTransaction(
+            orderType: pending[0],
+            sender: pending[1],
+            receiver: pending[2],
+            amountTransfer: int.parse(pending[3]) / 100000000,
+            amountFee: int.parse(pending[4]) / 100000000,
+          ));
+        }
       }
+      return pendingList;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return [];
     }
-    return pendingList;
   }
 
   List<SumaryData> parseSumary(Uint8List bytes) {
@@ -296,27 +213,10 @@ final class NosoCore extends NosoCrypto {
     return addressSummary;
   }
 
-  int doubleToBigEndian(double value) {
-    var byteData = ByteData(8);
-    byteData.setFloat64(
-        0, value, Endian.little); // Встановлюємо значення в little-endian
-
-    //  var byteBuffer = Uint8List.fromList(Uint8List).buffer;
-    //  var dataView = ByteData.view(byteBuffer);
-    var intValue = byteData.setFloat64(0, value, Endian.little);
-
-    //  print(intValue);
-    //  print(String.fromCharCodes());
-    //  Int64 int64Value = Int64.fromBytes(result);
-    return 99;
-    //  return byteData.getInt64(0, Endian.big);
-  }
-
   double _bigEndianToDouble(List<int> bytes) {
     var byteBuffer = Uint8List.fromList(bytes).buffer;
     var dataView = ByteData.view(byteBuffer);
     var intValue = dataView.getInt64(0, Endian.little);
-    // print(intValue);
     return intValue / 100000000;
   }
 
@@ -327,19 +227,17 @@ final class NosoCore extends NosoCrypto {
   }
 
   String getRandomNode(String? inputString) {
-    if (inputString == null) {
-      return "127.0.0.1:8080";
-    }
-
-    List<String> elements = inputString.split('|');
+    List<String> elements = (inputString ?? "").split(',');
     int elementCount = elements.length;
 
-    if (elementCount > 0) {
+    if (elementCount > 0 && inputString != null) {
       int randomIndex = Random().nextInt(elementCount);
-
-      return elements[randomIndex];
+      var targetSeed = elements[randomIndex].split("|")[0];
+      return targetSeed;
     } else {
-      return "127.0.0.1:8080";
+      var devNode = NetworkConst.getSeedList();
+      int randomDev = Random().nextInt(devNode.length);
+      return devNode[randomDev].toTokenizer();
     }
   }
 }

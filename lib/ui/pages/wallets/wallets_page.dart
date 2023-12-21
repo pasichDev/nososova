@@ -6,16 +6,18 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/pages/wallets/screens/card_header.dart';
 import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
-import 'package:nososova/ui/route/dialog_router.dart';
+import 'package:nososova/ui/pages/wallets/widgets/side_right_bar.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
+import '../../common/responses_util/response_widget_id.dart';
+import '../../common/responses_util/snackbar_message.dart';
+import '../../common/route/dialog_router.dart';
+import '../../config/responsive.dart';
 import '../../dialogs/import_export/dialog_import_address.dart';
-import '../../responses_util/response_widget_id.dart';
-import '../../responses_util/snackbar_message.dart';
 import '../../theme/style/dialog_style.dart';
 import '../../theme/style/text_style.dart';
 
@@ -54,7 +56,7 @@ class WalletsPageState extends State<WalletsPage> {
         }
 
         await Future.delayed(const Duration(milliseconds: 200));
-        SnackBarWidgetResponse(context: context, response: response).get();
+        SnackBarWidgetResponse(context: GlobalKey<ScaffoldMessengerState>().currentContext ?? context, response: response).get();
       }
     });
   }
@@ -68,34 +70,46 @@ class WalletsPageState extends State<WalletsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: null,
-      body: Column(
+      body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CardHeader(),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 10.0,
-            ),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(AppLocalizations.of(context)!.myAddresses,
-                    style: AppTextStyles.categoryStyle),
-                Row(
-                  children: [
-                    IconButton(
-                        icon: AppIconsStyle.icon2x4(Assets.iconsMenu,
-                            colorCustom: CustomColors.primaryColor),
-                        onPressed: () => DialogRouter.showDialogActionWallet(context)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const ListAddresses(),
+          Expanded(
+              flex: 4,
+              child: Column(
+                children: [
+                  const CardHeader(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 10.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(AppLocalizations.of(context)!.myAddresses,
+                            style: AppTextStyles.categoryStyle),
+                        Row(
+                          children: [
+                            if (Responsive.isMobile(context))
+                              IconButton(
+                                  icon: AppIconsStyle.icon2x4(Assets.iconsMenu,
+                                      colorCustom: CustomColors.primaryColor),
+                                  onPressed: () =>
+                                      DialogRouter.showDialogActionWallet(
+                                          context)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const ListAddresses(),
+                ],
+              )),
+          if (!Responsive.isMobile(context))
+            const Expanded(flex: 2, child: SideRightBarDesktop())
         ],
       ),
     );

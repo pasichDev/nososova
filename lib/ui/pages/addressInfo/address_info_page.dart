@@ -5,15 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/address_actions.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/history_transaction.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/pendings_widget.dart';
-import 'package:nososova/ui/responses_util/snackbar_message.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
+import '../../common/responses_util/response_widget_id.dart';
+import '../../common/responses_util/snackbar_message.dart';
 import '../../components/app_bar_other_page.dart';
-import '../../responses_util/response_widget_id.dart';
+import '../../components/network_info.dart';
+import '../../config/responsive.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
@@ -33,7 +35,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   var isMiddleChange = false;
   int selectedIndexChild = 0;
   int selectedOption = 1;
-  late HistoryTransactionsWidget historyWidget;
+  late HistoryTransactionsWidget? historyWidget;
   late Address address;
   late WalletBloc walletBloc;
   late StreamSubscription listenResponse;
@@ -55,7 +57,11 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
       if (mounted ||
           ResponseWidgetsIds.idsPageAddressInfo.contains(response.idWidget)) {
         await Future.delayed(const Duration(milliseconds: 200));
-        SnackBarWidgetResponse(context: context, response: response).get();
+        SnackBarWidgetResponse(
+                context: GlobalKey<ScaffoldMessengerState>().currentContext ??
+                    context,
+                response: response)
+            .get();
       }
     });
   }
@@ -73,35 +79,80 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
       appBar: CustomAppBar(onNodeStatusDialog: () {}),
       body: BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
         return Container(
-          decoration: const OtherGradientDecoration(),
+          decoration: Responsive.isMobile(context)
+              ? const OtherGradientDecoration()
+              : const BoxDecoration(),
           child: SafeArea(
-              child: Column(
+              child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: TransformWidget(
-                  widget: _cardAddress(address),
-                  changer: (reverse) {},
-                  middleChanger: (middle) {
-                    if (mounted) {
-                      setState(() {
-                        selectedIndexChild = selectedIndexChild == 0 ? 1 : 0;
-                      });
-                    }
-                  },
-                ),
-              ),
-              PendingsWidget(address: address),
+              if (!Responsive.isMobile(context))
+                Expanded(
+                    flex: 5,
+                    child: ClipRRect(
+                      borderRadius: !Responsive.isMobile(context)
+                          ? BorderRadius.zero
+                          : const BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),
+                            ),
+                      child: !Responsive.isMobile(context)
+                          ? historyWidget
+                          : selectedIndexChild == 0
+                              ? historyWidget
+                              : AddressActionsWidget(address: address),
+                    )),
               Expanded(
-                  child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-                child: selectedIndexChild == 0
-                    ? historyWidget
-                    : AddressActionsWidget(address: address),
-              )),
+                  flex: 3,
+                  child: Container(
+                      decoration: !Responsive.isMobile(context)
+                          ? const OtherGradientDecoration()
+                          : const BoxDecoration(),
+                      child: Column(
+                        children: [
+                          if (!Responsive.isMobile(context))
+                            AppBar(
+                              title: Responsive.isTablet(context)
+                                  ? NetworkInfo(nodeStatusDialog: () => {})
+                                  : null,
+                              backgroundColor: Colors.transparent,
+                              iconTheme:
+                                  const IconThemeData(color: Colors.white),
+                              elevation: 0,
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: TransformWidget(
+                              widget: _cardAddress(address),
+                              changer: (reverse) {},
+                              middleChanger: (middle) {
+                                if (mounted) {
+                                  setState(() {
+                                    selectedIndexChild =
+                                        selectedIndexChild == 0 ? 1 : 0;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          PendingsWidget(address: address),
+                          Expanded(
+                              flex: 2,
+                              child: ClipRRect(
+                                borderRadius: !Responsive.isMobile(context)
+                                    ? BorderRadius.zero
+                                    : const BorderRadius.only(
+                                        topLeft: Radius.circular(30.0),
+                                        topRight: Radius.circular(30.0),
+                                      ),
+                                child: !Responsive.isMobile(context)
+                                    ? AddressActionsWidget(address: address)
+                                    : selectedIndexChild == 0
+                                        ? historyWidget
+                                        : AddressActionsWidget(
+                                            address: address),
+                              )),
+                        ],
+                      ))),
             ],
           )),
         );
@@ -121,78 +172,83 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
             padding: const EdgeInsets.all(10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
+                    flex: 2,
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide.none,
-                        backgroundColor: selectedOption == 1
-                            ? const Color(0xFF53566E).withOpacity(0.7)
-                            : Colors.white.withOpacity(0.05),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                            backgroundColor: selectedOption == 1
+                                ? const Color(0xFF53566E).withOpacity(0.7)
+                                : Colors.white.withOpacity(0.05),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedOption = 1;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              AppLocalizations.of(context)!.address,
+                              style: AppTextStyles.categoryStyle
+                                  .copyWith(fontSize: 16, color: Colors.white),
+                            ),
+                          ),
                         ),
+                        const SizedBox(height: 20),
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                            backgroundColor: selectedOption == 2
+                                ? const Color(0xFF53566E).withOpacity(0.7)
+                                : Colors.white.withOpacity(0.1),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedOption = 2;
+                            });
+                          },
+                          child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                AppLocalizations.of(context)!.keys,
+                                style: AppTextStyles.categoryStyle.copyWith(
+                                    fontSize: 16, color: Colors.white),
+                              )),
+                        )
+                      ],
+                    )),
+                Expanded(
+                    flex: 2,
+                    child: QrImageView(
+                      eyeStyle: QrEyeStyle(
+                        eyeShape: QrEyeShape.square,
+                        color: Colors.white.withOpacity(0.9),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          selectedOption = 1;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          AppLocalizations.of(context)!.address,
-                          style: AppTextStyles.categoryStyle
-                              .copyWith(fontSize: 16, color: Colors.white),
-                        ),
+                      dataModuleStyle: QrDataModuleStyle(
+                        dataModuleShape: QrDataModuleShape.square,
+                        color: Colors.white.withOpacity(0.9),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide.none,
-                        backgroundColor: selectedOption == 2
-                            ? const Color(0xFF53566E).withOpacity(0.7)
-                            : Colors.white.withOpacity(0.1),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedOption = 2;
-                        });
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Text(
-                            AppLocalizations.of(context)!.keys,
-                            style: AppTextStyles.categoryStyle
-                                .copyWith(fontSize: 16, color: Colors.white),
-                          )),
-                    )
-                  ],
-                )),
-                QrImageView(
-                  eyeStyle: QrEyeStyle(
-                    eyeShape: QrEyeShape.square,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                  dataModuleStyle: QrDataModuleStyle(
-                    dataModuleShape: QrDataModuleShape.square,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                  data: selectedOption == 1
-                      ? address.hash
-                      : "${address.publicKey} ${address.privateKey}",
-                  version: QrVersions.auto,
-                  size: 200.0,
-                ),
+                      data: selectedOption == 1
+                          ? address.hash
+                          : "${address.publicKey} ${address.privateKey}",
+                      version: QrVersions.auto,
+                      size: 200.0,
+                    )),
               ],
             ),
           ),
@@ -202,6 +258,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   _cardAddress(Address mAddress) {
     return Container(
         height: 230,
+        width: double.infinity,
         decoration: const CardDecoration(),
         child: IndexedStack(
             index: selectedIndexChild,
@@ -237,7 +294,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               Text(
                 targetAddress.nameAddressFull,
                 style: AppTextStyles.titleMax.copyWith(
-                  fontSize: 24,
+                  fontSize: 18,
                   color: Colors.white.withOpacity(0.5),
                 ),
               ),

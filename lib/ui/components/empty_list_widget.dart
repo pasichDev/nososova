@@ -11,7 +11,7 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
+      child: Padding(padding: const EdgeInsets.symmetric(vertical: 50), child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -27,7 +27,7 @@ class EmptyWidget extends StatelessWidget {
               style: AppTextStyles.itemStyle,
             )
         ],
-      ),
+      )),
     );
   }
 }
