@@ -212,10 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nosoPrice => 'Noso Price';
 
   @override
-  String get rewardNodeLaunched => 'One block reward';
-
-  @override
-  String get launched => 'Launched';
+  String get launched => 'Running';
 
   @override
   String get available => 'Available';

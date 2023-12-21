@@ -212,9 +212,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get nosoPrice => 'Вартість Noso';
 
   @override
-  String get rewardNodeLaunched => 'Винагорода за один блок';
-
-  @override
   String get launched => 'Запущені';
 
   @override

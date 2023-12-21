@@ -84,7 +84,7 @@ class StatsNodesUser extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.rewardNodeLaunched,
+                  AppLocalizations.of(context)!.nr24,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.itemStyle
                       .copyWith(color: Colors.white, fontSize: 14),

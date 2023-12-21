@@ -507,16 +507,10 @@ abstract class AppLocalizations {
   /// **'Noso Price'**
   String get nosoPrice;
 
-  /// No description provided for @rewardNodeLaunched.
-  ///
-  /// In en, this message translates to:
-  /// **'One block reward'**
-  String get rewardNodeLaunched;
-
   /// No description provided for @launched.
   ///
   /// In en, this message translates to:
-  /// **'Launched'**
+  /// **'Running'**
   String get launched;
 
   /// No description provided for @available.
