@@ -65,6 +65,7 @@ class AddressInfoState extends State<AddressInfo> {
           ),
           const SizedBox(width: 10),
           IconButton(
+            tooltip: AppLocalizations.of(context)!.viewQr,
               onPressed: () => _viewQr(context),
               icon: SvgPicture.asset(
                 Assets.iconsScan,

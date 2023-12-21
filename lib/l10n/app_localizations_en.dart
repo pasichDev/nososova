@@ -314,6 +314,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amount => 'Payment amount';
 
   @override
+  String get chanceNode => 'Change node';
+
+  @override
+  String get viewQr => 'View Qr code';
+
+  @override
+  String get updateInfo => 'Update information';
+
+  @override
   String get informMyNodes => 'Status of your nodes';
 
   @override

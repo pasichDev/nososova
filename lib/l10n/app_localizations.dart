@@ -711,6 +711,24 @@ abstract class AppLocalizations {
   /// **'Payment amount'**
   String get amount;
 
+  /// No description provided for @chanceNode.
+  ///
+  /// In en, this message translates to:
+  /// **'Change node'**
+  String get chanceNode;
+
+  /// No description provided for @viewQr.
+  ///
+  /// In en, this message translates to:
+  /// **'View Qr code'**
+  String get viewQr;
+
+  /// No description provided for @updateInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Update information'**
+  String get updateInfo;
+
   /// No description provided for @informMyNodes.
   ///
   /// In en, this message translates to:

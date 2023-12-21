@@ -314,6 +314,15 @@ class AppLocalizationsUk extends AppLocalizations {
   String get amount => 'Сумма платежа';
 
   @override
+  String get chanceNode => 'Змінити вузол';
+
+  @override
+  String get viewQr => 'Переглянути QR коди';
+
+  @override
+  String get updateInfo => 'Оновити інформацію';
+
+  @override
   String get informMyNodes => 'Статус ваших вузлів';
 
   @override

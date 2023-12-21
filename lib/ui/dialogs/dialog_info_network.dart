@@ -47,11 +47,13 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                 ),
               ),
               IconButton(
+                  tooltip:   AppLocalizations.of(context)!.updateInfo,
                   icon: const Icon(Icons.restart_alt_outlined),
                   onPressed: () {
                     return context.read<AppDataBloc>().add(ReconnectSeed(true));
                   }),
               IconButton(
+                tooltip:   AppLocalizations.of(context)!.chanceNode,
                   icon: const Icon(Icons.navigate_next),
                   onPressed: () {
                     return context
