@@ -27,8 +27,11 @@ class NodeService {
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
       if (kDebugMode) {
-        if (command != NetworkRequest.summary)
+
+        if (command != NetworkRequest.summary) {
           print(String.fromCharCodes(responseBytes));
+        }
+
       }
 
       socket.close();

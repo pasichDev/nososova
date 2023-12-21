@@ -100,6 +100,8 @@
   "balance": "Balance",
   "actionWallet": "Actions on wallet",
   "confirm": "Confirm",
+  "createPayment": "Create payment",
+  "amount": "Payment amount",
   "informMyNodes": "Status of your nodes",
   "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias.",
   "errorNoFoundCoinsTransaction": "There are not enough coins for the transaction",

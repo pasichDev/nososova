@@ -308,6 +308,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get confirm => 'Підтвердити';
 
   @override
+  String get createPayment => 'Створити платіж';
+
+  @override
+  String get amount => 'Сумма платежа';
+
+  @override
   String get informMyNodes => 'Статус ваших вузлів';
 
   @override
