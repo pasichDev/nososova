@@ -29,7 +29,7 @@ class DebugBloc extends Bloc<DebugEvent, DebugState> {
     DateTime now = DateTime.now();
     list.add(DebugString(
         time:
-            "${now.hour}:${now.minute}:${now.second.toString().padLeft(2, '0')}",
+            "${now.hour}:${now.minute}:${now.second.toString().length < 2 ? now.second : now.second.toString().padLeft(2, '0')}",
         message: event.value,
         type: event.type));
 
