@@ -320,6 +320,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get viewQr => 'Переглянути QR коди';
 
   @override
+  String get infoTotalPriceUst => 'Баланс в USDT';
+
+  @override
   String get updateInfo => 'Оновити інформацію';
 
   @override

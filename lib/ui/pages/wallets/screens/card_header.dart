@@ -77,9 +77,9 @@ class CardBody extends StatelessWidget {
               ),
             ],
           ),
-          ItemTotalPrice(totalPrice: state.wallet.balanceTotal),
           const SizedBox(height: 10),
-          const SizedBox(height: 20),
+          ItemTotalPrice(totalPrice: state.wallet.balanceTotal),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

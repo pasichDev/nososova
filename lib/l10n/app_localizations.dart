@@ -723,6 +723,12 @@ abstract class AppLocalizations {
   /// **'View Qr code'**
   String get viewQr;
 
+  /// No description provided for @infoTotalPriceUst.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance in USDT'**
+  String get infoTotalPriceUst;
+
   /// No description provided for @updateInfo.
   ///
   /// In en, this message translates to:

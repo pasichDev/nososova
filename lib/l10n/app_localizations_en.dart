@@ -320,6 +320,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewQr => 'View Qr code';
 
   @override
+  String get infoTotalPriceUst => 'Balance in USDT';
+
+  @override
   String get updateInfo => 'Update information';
 
   @override

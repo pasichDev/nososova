@@ -22,24 +22,31 @@ class ItemTotalPrice extends StatelessWidget {
 
       var totalUsdtBalance = totalPrice * state.statisticsCoin.getCurrentPrice;
 
-      return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          AppLocalizations.of(context)!.infoTotalPriceUst,
+          style: AppTextStyles.titleMin
+              .copyWith(color: Colors.white.withOpacity(0.5), fontSize: 16),
+        ),
         if (state.statisticsCoin.apiStatus == ApiStatus.connected) ...[
-          Text(
-            "${totalUsdtBalance.toStringAsFixed(2)} USDT",
-            style: AppTextStyles.titleMin
-                .copyWith(color: Colors.white.withOpacity(0.8)),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            "${state.statisticsCoin.getDiff < 0 ? "" : "+"}${priceDif.toStringAsFixed(2)} USDT",
-            style: AppTextStyles.titleMin.copyWith(
-                color: diff == 0
-                    ? Colors.black
-                    : diff < 0
-                        ? CustomColors.negativeBalance
-                        : CustomColors.positiveBalance,
-                fontSize: 16),
-          ),
+          Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Text(
+              "${totalUsdtBalance.toStringAsFixed(2)} USDT",
+              style: AppTextStyles.titleMin
+                  .copyWith(color: Colors.white.withOpacity(0.8)),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              "${state.statisticsCoin.getDiff < 0 ? "" : "+"}${priceDif.toStringAsFixed(2)} USDT",
+              style: AppTextStyles.titleMin.copyWith(
+                  color: diff == 0
+                      ? Colors.black
+                      : diff < 0
+                          ? CustomColors.negativeBalance
+                          : CustomColors.positiveBalance,
+                  fontSize: 16),
+            ),
+          ])
         ],
         if (state.statisticsCoin.apiStatus == ApiStatus.loading)
           LoadingAnimationWidget.prograssiveDots(
