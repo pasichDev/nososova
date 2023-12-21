@@ -39,6 +39,49 @@ class NewOrderSend {
     return "$orderType $orderID ${orderLines.toString()} $orderType ${timeStamp.toString()} $reference ${trxLine.toString()} $sender $address $receiver ${amountFee.toString()} ${amountTrf.toString()} $signature $trfrID";
   }
 
+
+  /// This string returns a prepared string for sending the payment
+  getOrderString(Address targetAddress, String message, String receiver, int amount, int commission, int block) {
+    final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    const int trxLine = 1;
+    const String type = "ORDER";
+
+    var messageSignature = (currentTimeMillis.toString() +
+        targetAddress.hash +
+        receiver +
+        amount.toString() +
+        commission.toString() +
+        trxLine.toString());
+    var signature = NosoCrypto().signMessage(messageSignature, targetAddress.privateKey);
+
+    NewOrderSend orderInfo = NewOrderSend(
+        orderID: '',
+        orderLines: trxLine,
+        orderType: "TRFR",
+        timeStamp: currentTimeMillis,
+        reference: message,
+        trxLine: trxLine,
+        sender: targetAddress.publicKey,
+        address: targetAddress.nameAddressFull,
+        receiver: receiver,
+        amountFee: commission,
+        amountTrf: amount,
+        signature: NosoCrypto().encodeSignatureToBase64(signature),
+        trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
+            targetAddress.hash +
+            receiver +
+            amount.toString() +
+            block.toString()));
+
+    orderInfo.orderID = NosoCore().getOrderHash(
+        "$trxLine${currentTimeMillis.toString() + orderInfo.trfrID}");
+
+    var orderStringCustom =
+        "NSL$type ${Const.protocol} ${Const.programVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo._getStringToData()} \$";
+
+    return orderStringCustom.substring(0, orderStringCustom.length - 2);
+  }
+
   /// Returns the query string to change the alias
   getAliasOrderString(Address targetAddress, String alias) {
     final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
