@@ -6,15 +6,18 @@ class ResponseApi<T> extends Response<T> {
     T? value,
     Seed? seed,
     String? errors,
+    int? errorCode,
   }) : super(value: value, errors: errors);
 
   ResponseApi copyWith({
     T? value,
     String? errors,
+    int? errorCode,
   }) {
     return ResponseApi(
       value: value ?? this.value,
       errors: errors ?? this.errors,
+      errorCode: errorCode ?? 0,
     );
   }
 }

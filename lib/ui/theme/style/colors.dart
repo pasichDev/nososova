@@ -9,4 +9,8 @@ final class CustomColors {
 
   static const Color negativeBalance = Color(0xffc35b54);
   static const Color positiveBalance = Color(0xff4dc484);
+
+  static const barBg = Color(0xffe3e3ee);
+  static const primaryBg = Color(0xfff5f5fd);
+  static const secondaryBg = Color(0xffececf6);
 }

@@ -33,14 +33,14 @@ final class CheckConnect {
       case StatusConnectNodes.error:
         return Assets.iconsClose;
       default:
-        return "";
+        return Assets.iconsNode;
     }
   }
 }
 
 enum InitialNodeAlgh { listenDefaultNodes, connectLastNode, listenUserNodes }
 
-enum StatusConnectNodes { connected, error, searchNode, sync }
+enum StatusConnectNodes { connected, error, searchNode, sync, consensus }
 
 /// Connected - підключено
 /// error - помилка

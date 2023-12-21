@@ -68,7 +68,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleInfoNetwork => 'Node info';
 
   @override
-  String get debugInfo => 'Debug Information';
+  String get debugInfo => 'Debugging';
 
   @override
   String get connections => 'Connections';
@@ -212,7 +212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nosoPrice => 'Noso Price';
 
   @override
-  String get rewardNodeLaunched => 'One block reward for your nodes';
+  String get rewardNodeLaunched => 'One block reward';
 
   @override
   String get launched => 'Launched';
@@ -290,10 +290,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alias => 'Alias';
 
   @override
+  String get consensusCheck => 'Consensus resolution';
+
+  @override
   String get save => 'Save';
 
   @override
+  String get nodeType => 'Node type';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get balance => 'Balance';
+
+  @override
+  String get actionWallet => 'Actions on wallet';
+
+  @override
   String get confirm => 'Confirm';
+
+  @override
+  String get createPayment => 'Create payment';
+
+  @override
+  String get amount => 'Payment amount';
+
+  @override
+  String get informMyNodes => 'Status of your nodes';
 
   @override
   String get aliasMessage => 'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.';
@@ -309,6 +333,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorDefaultErrorAlias => 'Error trying to set alias';
+
+  @override
+  String get priceInfoErrorServer => 'Price information is not available';
+
+  @override
+  String get errorEmptyHistoryTransactions => 'No transactions were found for this address';
 
   @override
   String get successSetAlias => 'Your request is successful and has been processed';

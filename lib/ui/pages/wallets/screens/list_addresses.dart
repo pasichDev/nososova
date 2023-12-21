@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
-import 'package:nososova/ui/route/dialog_router.dart';
-import 'package:nososova/ui/route/page_router.dart';
 
+import '../../../common/route/dialog_router.dart';
+import '../../../common/route/page_router.dart';
 import '../../../tiles/tile_wallet_address.dart';
 
 class ListAddresses extends StatelessWidget {

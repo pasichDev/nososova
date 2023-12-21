@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/blocs/node_bloc.dart';
+import 'package:nososova/blocs/wallet_bloc.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../components/empty_list_widget.dart';
@@ -11,12 +11,13 @@ class ListNodes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NodeBloc, NodeState>(
+    return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
-        final nodes = state.stateNode.nodes;
+        final nodes = state.stateNodes.nodes;
         if (nodes.isEmpty) {
-          return Container(
-            height: 400,
+          return Expanded(
+              flex: 2,
+              child:Container(
             padding: const EdgeInsets.all(20),
             width: double.infinity,
             color: Colors.white,
@@ -24,10 +25,9 @@ class ListNodes extends StatelessWidget {
                 child: EmptyWidget(
                     title: AppLocalizations.of(context)!.empty,
                     descrpt: AppLocalizations.of(context)!.emptyNodesError)),
-          );
+          ));
         } else {
-          return Expanded(
-              child: ListView.builder(
+          return  ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(
                       horizontal: 0.0, vertical: 0.0),
@@ -36,7 +36,7 @@ class ListNodes extends StatelessWidget {
                     return AddressNodeTile(
                       address: nodes[index],
                     );
-                  }));
+                  });
         }
       },
     );

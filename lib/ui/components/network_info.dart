@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
+import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 import 'package:nososova/utils/const/network_const.dart';
 
@@ -23,7 +23,6 @@ class NetworkInfo extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
                 side: BorderSide.none,
-
               ),
               backgroundColor: Colors.white.withOpacity(0.1),
               elevation: 0),
@@ -35,21 +34,17 @@ class NetworkInfo extends StatelessWidget {
               if (state.statusConnected == StatusConnectNodes.sync ||
                   state.statusConnected == StatusConnectNodes.searchNode) ...[
                 LoadingAnimationWidget.flickr(
-                  size: 28,
+                  size: 24,
                   leftDotColor: Colors.white.withOpacity(0.5),
                   rightDotColor: Colors.white,
                 )
               ] else ...[
-                SvgPicture.asset(
-                  CheckConnect.getStatusConnected(state.statusConnected),
-                  width: 24,
-                  height: 24,
-                  color: Colors.white
-                )
-
+                AppIconsStyle.icon2x4(
+                    CheckConnect.getStatusConnected(state.statusConnected),
+                    colorCustom: Colors.white)
               ],
               if (state.statusConnected == StatusConnectNodes.connected ||
-                  state.statusConnected == StatusConnectNodes.sync) ...[
+                  state.statusConnected == StatusConnectNodes.sync || state.statusConnected == StatusConnectNodes.consensus) ...[
                 const SizedBox(width: 10),
                 Text(state.node.lastblock.toString(),
                     style: AppTextStyles.blockStyle)

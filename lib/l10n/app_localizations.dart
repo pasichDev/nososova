@@ -222,7 +222,7 @@ abstract class AppLocalizations {
   /// No description provided for @debugInfo.
   ///
   /// In en, this message translates to:
-  /// **'Debug Information'**
+  /// **'Debugging'**
   String get debugInfo;
 
   /// No description provided for @connections.
@@ -510,7 +510,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardNodeLaunched.
   ///
   /// In en, this message translates to:
-  /// **'One block reward for your nodes'**
+  /// **'One block reward'**
   String get rewardNodeLaunched;
 
   /// No description provided for @launched.
@@ -663,17 +663,65 @@ abstract class AppLocalizations {
   /// **'Alias'**
   String get alias;
 
+  /// No description provided for @consensusCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Consensus resolution'**
+  String get consensusCheck;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
 
+  /// No description provided for @nodeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Node type'**
+  String get nodeType;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balance;
+
+  /// No description provided for @actionWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions on wallet'**
+  String get actionWallet;
+
   /// No description provided for @confirm.
   ///
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @createPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Create payment'**
+  String get createPayment;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment amount'**
+  String get amount;
+
+  /// No description provided for @informMyNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Status of your nodes'**
+  String get informMyNodes;
 
   /// No description provided for @aliasMessage.
   ///
@@ -704,6 +752,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error trying to set alias'**
   String get errorDefaultErrorAlias;
+
+  /// No description provided for @priceInfoErrorServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Price information is not available'**
+  String get priceInfoErrorServer;
+
+  /// No description provided for @errorEmptyHistoryTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions were found for this address'**
+  String get errorEmptyHistoryTransactions;
 
   /// No description provided for @successSetAlias.
   ///

@@ -1,22 +1,22 @@
 import '../../utils/noso/model/address_object.dart';
 
-class StateNode {
+class StateNodes {
   List<Address> nodes;
   int launchedNodes = 0;
   double rewardDay = 0;
 
-  StateNode({
+  StateNodes({
     this.nodes = const [],
     this.launchedNodes = 0,
     this.rewardDay = 0,
   });
 
-  StateNode copyWith({
+  StateNodes copyWith({
     List<Address>? nodes,
     int? launchedNodes,
     double? rewardDay,
   }) {
-    return StateNode(
+    return StateNodes(
       nodes: nodes ?? this.nodes,
       launchedNodes: launchedNodes ?? this.launchedNodes,
       rewardDay: rewardDay ?? this.rewardDay,

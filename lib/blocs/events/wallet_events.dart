@@ -1,12 +1,10 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:nososova/utils/noso/model/summary_data.dart';
 
 import '../../utils/noso/model/address_object.dart';
 import '../../utils/noso/model/pending_transaction.dart';
 
 abstract class WalletEvent {}
-
-/// Event to request all addresses from the local database
-class FetchAddress extends WalletEvent {}
 
 /// Event for synchronizing the balance
 class SyncBalance extends WalletEvent {
@@ -68,4 +66,21 @@ class SetAlias extends WalletEvent {
   final int widgetId;
 
   SetAlias(this.alias, this.address, this.widgetId);
+}
+
+class SendOrder extends WalletEvent {
+  final String receiver;
+  final String message;
+  final int amount;
+  final Address address;
+
+  SendOrder(this.receiver, this.message, this.amount, this.address);
+}
+
+class CalculateBalance extends WalletEvent {
+  final List<SumaryData> summaryData;
+  final List<Address> address;
+  final bool checkConsensus;
+
+  CalculateBalance(this.summaryData, this.checkConsensus, this.address);
 }

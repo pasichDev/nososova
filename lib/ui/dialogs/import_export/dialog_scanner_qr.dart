@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
+import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/status_qr.dart';
+import '../../common/route/page_router.dart';
 import '../../theme/style/colors.dart';
-import '../../theme/style/dialog_style.dart';
-import '../dialog_send_address.dart';
 
 class ScannerQrWidget extends StatefulWidget {
   const ScannerQrWidget({super.key});
@@ -104,7 +104,6 @@ class _ScannerQrWidgetState extends State<ScannerQrWidget> {
     );
   }
 
-  /// TODO Закінчит работу над сканером
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((Barcode scanData) async {
@@ -118,21 +117,9 @@ class _ScannerQrWidgetState extends State<ScannerQrWidget> {
       } else if (qrStatus == TypeQrCode.qrAddress) {
         controller.pauseCamera();
         Navigator.pop(context);
-        controller.pauseCamera();
-        showModalBottomSheet(
-            context: context,
-            shape: DialogStyle.borderShape,
-            builder: (BuildContext context) {
-              return DialogSendAddress(
-                addressTo: data,
-                onCancelButtonPressedSend: () {
-                  controller.resumeCamera();
-                },
-                onSendButtonPressed: () {
-                  Navigator.pop(context);
-                },
-              );
-            });
+        PageRouter.routePaymentPage(
+            context, Address(hash: "", publicKey: "", privateKey: ""),
+            receiver: data);
       }
     });
   }

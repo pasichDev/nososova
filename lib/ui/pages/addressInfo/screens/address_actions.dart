@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/ui/route/dialog_router.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../../blocs/events/wallet_events.dart';
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../route/page_router.dart';
+import '../../../common/route/dialog_router.dart';
+import '../../../common/route/page_router.dart';
 import '../../../theme/style/text_style.dart';
 import '../../../tiles/dialog_tile.dart';
 import '../../../tiles/tile_сonfirm_list.dart';
@@ -24,7 +24,7 @@ class AddressActionsWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
         color: Colors.white,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: SingleChildScrollView(child:  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: const EdgeInsets.only(
                   top: 20, left: 20, right: 20, bottom: 10),
@@ -48,6 +48,6 @@ class AddressActionsWidget extends StatelessWidget {
                 walletBloc.add(DeleteAddress(address));
                 Navigator.pop(context);
               }),
-        ]));
+        ])));
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,21 +8,20 @@ import 'package:nososova/ui/theme/decoration/textfield_decoration.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
+import '../../../blocs/events/wallet_events.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/noso/model/address_object.dart';
-import '../../../utils/noso/model/order_create.dart';
-import '../../../utils/noso/nosocore.dart';
-import '../../../utils/noso/src/crypto.dart';
 import '../../../utils/noso/utils.dart';
-import '../../components/app_bar_other_page.dart';
+import '../../theme/style/colors.dart';
 import '../../theme/style/text_style.dart';
 
 class PaymentPage extends StatefulWidget {
   final Address address;
+  final String receiver;
 
-  const PaymentPage({Key? key, required this.address}) : super(key: key);
+  const PaymentPage({Key? key, required this.address, this.receiver = ""}) : super(key: key);
 
   @override
   PaymentPageState createState() => PaymentPageState();
@@ -30,45 +31,54 @@ class PaymentPageState extends State<PaymentPage> {
   bool isFinished = false;
   bool isActiveButtonSend = false;
   TextEditingController amountController = TextEditingController();
-  TextEditingController receiverController =
-      TextEditingController(text: "pasichDev");
+  TextEditingController receiverController = TextEditingController();
+  TextEditingController messageControler = TextEditingController();
+
+  double selButton = 0;
+
   double comission = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
+    receiverController.text = widget.receiver.isEmpty ? "" : widget.receiver;
     super.initState();
   }
+
+  /// TODO DAILY
+  /// Додати кнопки вибору адреси
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:  CustomAppBar(onNodeStatusDialog: () {  }, isWhite: true,),
+      appBar:  AppBar(title:  Text(
+        AppLocalizations.of(context)!.createPayment,
+        textAlign: TextAlign.start,
+        style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+      ),),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            Text(
-              "Create payment",
-              textAlign: TextAlign.start,
-              style: AppTextStyles.dialogTitle.copyWith(fontSize: 36),
-            ),
             const SizedBox(height: 30),
+            Text(
+              AppLocalizations.of(context)!.sender,
+              textAlign: TextAlign.start,
+              style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+            ),
+            const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(5.0),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1.0,
-                ),
+
               ),
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -80,7 +90,7 @@ class PaymentPageState extends State<PaymentPage> {
                     const SizedBox(width: 10),
                     Text(
                       widget.address.nameAddressFull,
-                      style: AppTextStyles.dialogTitle.copyWith(
+                      style: AppTextStyles.itemStyle.copyWith(
                         fontSize: 20,
                         color: Colors.black,
                       ),
@@ -90,13 +100,32 @@ class PaymentPageState extends State<PaymentPage> {
               ),
             ),
             const SizedBox(height: 30),
+            Text(
+              AppLocalizations.of(context)!.receiver,
+              textAlign: TextAlign.start,
+              style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+            ),
+            const SizedBox(height: 10),
             TextField(
                 controller: receiverController,
                 style: AppTextStyles.textFieldStyle,
                 decoration:
-                    AppTextFiledDecoration.defaultDecoration("Recipient")),
+                    AppTextFiledDecoration.defaultDecoration( AppLocalizations.of(context)!.receiver)),
             const SizedBox(height: 30),
+            Text(
+              AppLocalizations.of(context)!.amount,
+              textAlign: TextAlign.start,
+              style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+            ),
+            const SizedBox(height: 10),
             TextField(
+              onChanged: (text) {
+                if(mounted && selButton != 0) {
+                  setState(() {
+                  selButton = 0;
+                });
+                }
+              },
                 controller: amountController,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
@@ -108,7 +137,7 @@ class PaymentPageState extends State<PaymentPage> {
                 style: AppTextStyles.textFieldStyle,
                 decoration:
                     AppTextFiledDecoration.defaultDecoration("0.0000000")),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -118,11 +147,12 @@ class PaymentPageState extends State<PaymentPage> {
                 buttonPercent(100),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             TextField(
+                controller: messageControler,
                 style: AppTextStyles.textFieldStyle,
                 decoration:
-                    AppTextFiledDecoration.defaultDecoration("Reference")),
+                    AppTextFiledDecoration.defaultDecoration(AppLocalizations.of(context)!.message)),
             const SizedBox(height: 20),
             Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +225,26 @@ class PaymentPageState extends State<PaymentPage> {
 
   //ErrorCode := 6
   /// Додати зміінну в адрес про реальний бланс з урахуванням очікувань та імпортити її вbalanceAdress
+
+
+
+  int getAmount(){
+    return (double.parse(amountController.text) * 100000000).toInt();
+  }
+  double _bigEndianToDouble(List<int> bytes) {
+    var byteBuffer = Uint8List.fromList(bytes).buffer;
+    var dataView = ByteData.view(byteBuffer);
+    var intValue = dataView.getInt64(0, Endian.little);
+    return intValue / 100000000;
+  }
+
   sendOrder() {
+    var block = BlocProvider.of<WalletBloc>(context);
+    block.add(SendOrder(receiverController.text,messageControler.text, getAmount(), widget.address));
+  }
+
+  /*
+
     var block = BlocProvider.of<WalletBloc>(context);
     int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     var amount = doubleToIndianInt(double.parse(amountController.text));
@@ -268,7 +317,7 @@ class PaymentPageState extends State<PaymentPage> {
     ORDERSTRINGSEND = ORDERSTRINGSEND.substring(0, ORDERSTRINGSEND.length - 2);
 
     //block.add(SendOrder(ORDERSTRINGSEND));
-  }
+   */
 
   checkButtonActive() {
     var priceCheck = widget.address.balance <=
@@ -281,21 +330,27 @@ class PaymentPageState extends State<PaymentPage> {
   }
 
   buttonPercent(int percent) {
+    double value = calculatePercentage(widget.address.balance, percent);
     return OutlinedButton(
         onPressed: () {
           setState(() {
-            double value = calculatePercentage(widget.address.balance, percent);
+
             amountController.text = value.toString();
             comission = UtilsDataNoso.getFee(value);
+            selButton = value;
           });
         },
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Colors.grey),
+          backgroundColor: selButton == value ? CustomColors.primaryColor.withOpacity(0.3) : Colors.transparent,
+          side:  BorderSide(color: selButton == value ? CustomColors.primaryColor.withOpacity(0.5) : Colors.grey),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
         ),
         child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: Text("$percent%",
-                style: const TextStyle(fontSize: 18, color: Colors.black))));
+                style:  TextStyle(fontSize: 16, fontWeight: selButton == value ? FontWeight.bold : FontWeight.normal, color: selButton == value ? CustomColors.primaryColor.withOpacity(0.9) : Colors.black))));
   }
 
   double calculatePercentage(double amount, int percentage) {

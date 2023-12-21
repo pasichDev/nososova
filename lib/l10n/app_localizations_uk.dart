@@ -68,7 +68,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get titleInfoNetwork => 'Інформація про вузол';
 
   @override
-  String get debugInfo => 'Інформація про налагодження';
+  String get debugInfo => 'Налагодження';
 
   @override
   String get connections => 'Підключеннь';
@@ -212,7 +212,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get nosoPrice => 'Вартість Noso';
 
   @override
-  String get rewardNodeLaunched => 'Винагорода за один блок для ваших вузлів';
+  String get rewardNodeLaunched => 'Винагорода за один блок';
 
   @override
   String get launched => 'Запущені';
@@ -290,10 +290,34 @@ class AppLocalizationsUk extends AppLocalizations {
   String get alias => 'Псевдонім';
 
   @override
+  String get consensusCheck => 'Вирішення консенсусу';
+
+  @override
   String get save => 'Зберегти';
 
   @override
+  String get nodeType => 'Тип вузла';
+
+  @override
+  String get status => 'Статус';
+
+  @override
+  String get balance => 'Баланс';
+
+  @override
+  String get actionWallet => 'Дії над гаманцем';
+
+  @override
   String get confirm => 'Підтвердити';
+
+  @override
+  String get createPayment => 'Створити платіж';
+
+  @override
+  String get amount => 'Сумма платежа';
+
+  @override
+  String get informMyNodes => 'Статус ваших вузлів';
 
   @override
   String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за зміну псевдоніму знімається комісія за операцію.';
@@ -309,6 +333,12 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorDefaultErrorAlias => 'Помилка при встановленні псевдоніма';
+
+  @override
+  String get priceInfoErrorServer => 'Інформація про ціну недоступна';
+
+  @override
+  String get errorEmptyHistoryTransactions => 'Транзакцій за цією адресою не знайдено';
 
   @override
   String get successSetAlias => 'Ваш запит успішно додано в обробку';

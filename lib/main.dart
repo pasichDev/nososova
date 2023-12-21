@@ -3,17 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
-import 'package:nososova/blocs/node_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/ui/pages/main/main_page.dart';
 
 import 'blocs/events/app_data_events.dart';
-import 'blocs/events/wallet_events.dart';
 import 'generated/assets.dart';
-import 'ui/pages/main_page.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: Assets.nososova);
@@ -43,25 +40,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<DebugBloc>(create: (context) => locator<DebugBloc>()),
           BlocProvider<WalletBloc>(
-            create: (context) {
-              final dataBloc = locator<WalletBloc>();
-              dataBloc.add(FetchAddress());
-              return dataBloc;
-            },
+            create: (context) => locator<WalletBloc>(),
           ),
           BlocProvider<AppDataBloc>(create: (context) {
             final appDataBloc = locator<AppDataBloc>();
             appDataBloc.add(InitialConnect());
             return appDataBloc;
           }),
-          BlocProvider<CoinInfoBloc>(
-              create: (context) => locator<CoinInfoBloc>()),
-          BlocProvider<NodeBloc>(create: (context) {
-            final nodeBlock = locator<NodeBloc>();
-            return nodeBlock;
-          }),
-      //  BlocProvider<HistoryTransactionsBloc>(create: (context) => locator<HistoryTransactionsBloc>()),
-
         ],
         child: const MainPage(),
       ),

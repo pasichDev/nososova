@@ -10,7 +10,7 @@ import 'package:swipeable_button_view/swipeable_button_view.dart';
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
-import '../../responses_util/response_widget_id.dart';
+import '../../common/responses_util/response_widget_id.dart';
 import '../../theme/decoration/textfield_decoration.dart';
 import '../../theme/style/text_style.dart';
 

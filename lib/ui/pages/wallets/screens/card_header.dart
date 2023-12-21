@@ -1,44 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:nososova/blocs/coin_info_bloc.dart';
 import 'package:nososova/utils/const/const.dart';
-import 'package:nososova/utils/status_api.dart';
 
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../config/responsive.dart';
+import '../../../theme/anim/blinkin_widget.dart';
+import '../../../theme/decoration/standart_gradient_decoration.dart';
 import '../../../theme/decoration/standart_gradient_decoration_round.dart';
+import '../../../theme/style/colors.dart';
 import '../../../theme/style/text_style.dart';
+import '../widgets/total_usdt_price.dart';
 
 class CardHeader extends StatelessWidget {
   const CardHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const HomeGradientDecorationRound(),
-      child: const SafeArea(
-        child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.0),
-            child: CardBody()),
-      ),
-    );
+    return !Responsive.isMobile(context)
+        ? Container(
+            height: 300,
+            width: double.infinity,
+            decoration: !Responsive.isMobile(context)
+                ? const HomeGradientDecoration()
+                : const HomeGradientDecorationRound(),
+            child: const SafeArea(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: CardBody()),
+            ),
+          )
+        : Container(
+            width: double.infinity,
+            decoration: !Responsive.isMobile(context)
+                ? const HomeGradientDecoration()
+                : const HomeGradientDecorationRound(),
+            child: const SafeArea(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: CardBody()),
+            ),
+          );
   }
 }
 
 class CardBody extends StatelessWidget {
-
   const CardBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
+      var isOutgoing = state.wallet.totalOutgoing > 0;
+      var isIncoming =  state.wallet.totalIncoming > 0;
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
+          Text(
+            AppLocalizations.of(context)!.balance,
+            style: AppTextStyles.walletAddress
+                .copyWith(fontSize: 22, color: Colors.white.withOpacity(0.5)),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,48 +77,60 @@ class CardBody extends StatelessWidget {
               ),
             ],
           ),
-
-          ItemTotalPrice(totalPrice:  state.wallet.balanceTotal),
+          ItemTotalPrice(totalPrice: state.wallet.balanceTotal),
           const SizedBox(height: 10),
-          Text(
-            '${AppLocalizations.of(context)!.incoming}: ${state.wallet.totalIncoming.toStringAsFixed(8)}',
-            style: AppTextStyles.titleMin
-                .copyWith(fontSize: 16.0, color: Colors.white.withOpacity(0.9)),
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.outgoing}: ${state.wallet.totalOutgoing.toStringAsFixed(8)}',
-            style: AppTextStyles.titleMin
-                .copyWith(fontSize: 16.0, color: Colors.white),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.incoming,
+                    style: AppTextStyles.titleMin.copyWith(
+                        fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
+                  ),
+                  BlinkingWidget(
+                      widget: Text(
+                         state.wallet.totalIncoming.toStringAsFixed(8),
+                          style: AppTextStyles.categoryStyle.copyWith(
+                              fontSize: 16,
+                              color: isIncoming
+                                  ? CustomColors.positiveBalance
+                                  : Colors.white.withOpacity(0.8))),
+                      startBlinking: isIncoming,
+                      duration: 1000)
+
+                ],
+              ),
+              const SizedBox(width: 30),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.outgoing,
+                    style: AppTextStyles.titleMin.copyWith(
+                        fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
+                  ),
+                  BlinkingWidget(
+                      widget: Text(
+                         state.wallet.totalOutgoing.toStringAsFixed(8),
+                          style: AppTextStyles.categoryStyle.copyWith(
+                              fontSize: 16,
+                              color: isOutgoing
+                                  ? CustomColors.negativeBalance
+                                  : Colors.white.withOpacity(0.8))),
+                      startBlinking: isOutgoing,
+                      duration: 1000)
+
+                ],
+              )
+            ],
           ),
           const SizedBox(height: 30),
         ],
       );
     });
-  }
-}
-
-
-
-class ItemTotalPrice extends StatelessWidget {
-  final double totalPrice;
-  const ItemTotalPrice({super.key, required this.totalPrice});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return BlocBuilder<CoinInfoBloc, CoinInfoState>(builder: (context, state) {
-      var priceMoney = state.infoCoin.minimalInfo?.rate ?? 0;
-      var price = totalPrice * priceMoney;
-      return Row(children : [
-        if(state.apiPriceStatus == ApiStatus.connected)    Text(
-          "${price.toStringAsFixed(2)} USDT",
-          style: AppTextStyles.titleMin
-              .copyWith(color: Colors.white.withOpacity(0.5)),
-        ),
-        const SizedBox(width: 10),
-      if(state.apiPriceStatus == ApiStatus.loading)  LoadingAnimationWidget.prograssiveDots(
-         color: Colors.white.withOpacity(0.5), size: 26,
-        ),
-      ]);});
   }
 }
