@@ -13,31 +13,22 @@ import '../../config/responsive.dart';
 import '../../pages/addressInfo/address_info_page.dart';
 import '../../pages/addressInfo/transaction/transaction_dialog.dart';
 import '../../pages/addressInfo/transaction/transaction_page.dart';
-import '../../pages/payment/payment_page.dart';
 
 class PageRouter {
   /// Page for sending payment
   static void routePaymentPage(BuildContext context, Address address,
       {String receiver = ""}) {
-     Navigator.push(
+    /*  Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-              value: locator<WalletBloc>(),
-            ),
-            BlocProvider.value(
-              value: locator<AppDataBloc>(),
-            ),
-
-          ],
+        builder: (_) => BlocProvider.value(
+          value: BlocProvider.of<WalletBloc>(context),
           child: PaymentPage(address: address, receiver: receiver),
         ),
       ),
     );
 
-
+    */
   }
 
   /// Address information page

@@ -311,12 +311,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm => 'Confirm';
 
   @override
-  String get createPayment => 'Create payment';
-
-  @override
-  String get amount => 'Payment amount';
-
-  @override
   String get informMyNodes => 'Status of your nodes';
 
   @override

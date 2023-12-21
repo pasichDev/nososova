@@ -72,7 +72,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ImportWalletQr>(_importWalletQr);
     on<AddAddresses>(_addAddresses);
     on<SetAlias>(_setAliasAddress);
-    on<SendOrder>(_sendOrder);
     on<CalculateBalance>(_calculateBalance);
     initBloc();
 
@@ -119,8 +118,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _sendOrder(e, emit) async {
-
-
     print("sendOrder");
     //print(e.value);
     ResponseNode resp = await _repositories.networkRepository

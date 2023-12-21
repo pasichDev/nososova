@@ -705,18 +705,6 @@ abstract class AppLocalizations {
   /// **'Confirm'**
   String get confirm;
 
-  /// No description provided for @createPayment.
-  ///
-  /// In en, this message translates to:
-  /// **'Create payment'**
-  String get createPayment;
-
-  /// No description provided for @amount.
-  ///
-  /// In en, this message translates to:
-  /// **'Payment amount'**
-  String get amount;
-
   /// No description provided for @informMyNodes.
   ///
   /// In en, this message translates to:
