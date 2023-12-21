@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../blocs/app_data_bloc.dart';
 import '../../../blocs/history_transactions_bloc.dart';
@@ -10,6 +11,7 @@ import '../../../models/apiExplorer/transaction_history.dart';
 import '../../../repositories/repositories.dart';
 import '../../config/responsive.dart';
 import '../../pages/addressInfo/address_info_page.dart';
+import '../../pages/addressInfo/transaction/transaction_dialog.dart';
 import '../../pages/addressInfo/transaction/transaction_page.dart';
 
 class PageRouter {
@@ -67,6 +69,19 @@ class PageRouter {
             isReceiver: isReceiver,
           ),
         ),
+      );
+    } else {
+      WoltModalSheet.show(
+        context: context,
+        pageListBuilder: (BuildContext _) {
+          return [
+            TransactionDialog().showDialog(
+              _,
+              transaction,
+              isReceiver,
+            )
+          ];
+        },
       );
     }
   }

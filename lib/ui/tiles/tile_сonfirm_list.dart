@@ -26,6 +26,14 @@ class TileConfirmList extends StatefulWidget {
 
 class _TileConfirmListStateState extends State<TileConfirmList> {
   bool _clicked = false;
+  late Timer? timer;
+
+  @override
+  void initState() {
+
+    timer = null;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +49,38 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
         _clicked ? widget.confirm : widget.title,
         style: _clicked
             ? AppTextStyles.walletAddress.copyWith(
-          color: CustomColors.negativeBalance,
-        )
+                color: CustomColors.negativeBalance,
+              )
             : AppTextStyles.itemStyle,
       ),
       onTap: () {
+        if(mounted){
           setState(() {
             _clicked = !_clicked;
           });
-          if (_clicked) {
-          Timer(const Duration(seconds: 3), () {
-            setState(() {
-              _clicked = false;
-            });
+        }
+
+        if (_clicked) {
+          timer =   Timer(const Duration(seconds: 3), () {
+            if (mounted) {
+              setState(() {
+                _clicked = false;
+              });
+            }
           });
         }
-    if (!_clicked) {
-      widget.onClick();
-    }
+        if (!_clicked) {
+          widget.onClick();
+        }
       },
     );
+  }
+  @override
+  void dispose() {
+    if(timer!=null){
+
+      timer!.cancel();
+    }
+    super.dispose();
   }
 }

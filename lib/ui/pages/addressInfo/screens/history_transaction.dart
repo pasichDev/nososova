@@ -20,12 +20,11 @@ class HistoryTransactionsWidget extends StatefulWidget {
   const HistoryTransactionsWidget({super.key, required this.address});
 
   @override
-  HistoryTransactionWidgetsState createState() =>
-      HistoryTransactionWidgetsState();
+  State createState() => _HistoryTransactionWidgetsState();
 }
 
-class HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
-  final GlobalKey<HistoryTransactionWidgetsState> _historyKey = GlobalKey();
+class _HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
+  final GlobalKey<_HistoryTransactionWidgetsState> _historyKey = GlobalKey();
 
   @override
   void initState() {

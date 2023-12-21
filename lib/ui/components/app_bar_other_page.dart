@@ -15,9 +15,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Responsive.isMobile(context)
         ?  AppBar(
+
       title: NetworkInfo(nodeStatusDialog: onNodeStatusDialog),
       backgroundColor: Colors.transparent,
       iconTheme: IconThemeData(color: isWhite ? Colors.black : Colors.white),
+
       elevation: 0,
     ): const PreferredSize(
       preferredSize: Size.zero,

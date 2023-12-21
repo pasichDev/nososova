@@ -104,8 +104,6 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               Expanded(
                   flex: 3,
                   child: Container(
-                      // width: Responsive.isMobile(context) ?  double.infinity : 400 ,
-
                       decoration: !Responsive.isMobile(context)
                           ? const OtherGradientDecoration()
                           : const BoxDecoration(),
@@ -113,9 +111,12 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                         children: [
                           if (!Responsive.isMobile(context))
                             AppBar(
-                              title: NetworkInfo(nodeStatusDialog: () => {}),
+                              title: Responsive.isTablet(context)
+                                  ? NetworkInfo(nodeStatusDialog: () => {})
+                                  : null,
                               backgroundColor: Colors.transparent,
-                              iconTheme: const IconThemeData(color: Colors.white),
+                              iconTheme:
+                                  const IconThemeData(color: Colors.white),
                               elevation: 0,
                             ),
                           Padding(

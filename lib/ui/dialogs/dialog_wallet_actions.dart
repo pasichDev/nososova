@@ -70,7 +70,6 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
         ),
       ),]
       else ...[
-
       Padding(
           padding:
           const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
@@ -79,7 +78,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
             style: AppTextStyles.dialogTitle,
           )),],
       ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+       // padding: const EdgeInsets.symmetric(horizontal: 10),
         shrinkWrap: true,
         children: [
           buildListTileSvg(
