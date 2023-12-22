@@ -107,6 +107,7 @@
   "infoTotalPriceUst": "Balance in USDT",
   "updateInfo": "Update information",
   "informMyNodes": "Status of your nodes",
+  "emptyListAddress": "Create or generate new addresses for your use",
   "aliasMessage": "Alias can be set with a length from 3 to 32 characters. Also, don't forget that there is a fee for changing the alias.",
   "errorNoFoundCoinsTransaction": "There are not enough coins for the transaction",
   "errorInformationIncorrect": "The shipping information is incorrect",

@@ -741,6 +741,12 @@ abstract class AppLocalizations {
   /// **'Status of your nodes'**
   String get informMyNodes;
 
+  /// No description provided for @emptyListAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or generate new addresses for your use'**
+  String get emptyListAddress;
+
   /// No description provided for @aliasMessage.
   ///
   /// In en, this message translates to:

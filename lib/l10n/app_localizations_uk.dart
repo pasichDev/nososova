@@ -329,6 +329,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get informMyNodes => 'Статус ваших вузлів';
 
   @override
+  String get emptyListAddress => 'Створіть або згенеруйте нові адреси для вашого використання';
+
+  @override
   String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за зміну псевдоніму знімається комісія за операцію.';
 
   @override

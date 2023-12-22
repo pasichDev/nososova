@@ -11,7 +11,9 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(padding: const EdgeInsets.symmetric(vertical: 50), child: Column(
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 0),
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
