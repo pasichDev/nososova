@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
+import 'package:nososova/ui/config/responsive.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../blocs/events/wallet_events.dart';
@@ -35,11 +36,14 @@ class DialogImportAddressState extends State<DialogImportAddress> {
   @override
   Widget build(BuildContext context) {
     var addresses = widget.address;
-    return Padding(
+    return SafeArea(child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if(Responsive.isMobile(context))
+            const SizedBox(height: 60),
           Text(
             AppLocalizations.of(context)!.foundAddresses,
             style: AppTextStyles.dialogTitle,
@@ -55,7 +59,8 @@ class DialogImportAddressState extends State<DialogImportAddress> {
                 final isSelected = selectedItems.contains(item);
 
                 return ListTile(
-                  title: Text(item.hash),
+                  contentPadding: const EdgeInsets.all(0),
+                  title: Text(item.hash, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
                   leading: Checkbox(
                     activeColor: CustomColors.primaryColor,
                     value: isSelected,
@@ -75,6 +80,7 @@ class DialogImportAddressState extends State<DialogImportAddress> {
           ),
           const SizedBox(height: 10),
           ListTile(
+              contentPadding: const EdgeInsets.all(0),
             leading: IconButton(
               icon: Icon(!selectAll ? Icons.select_all : Icons.deselect),
               onPressed: () {
@@ -122,6 +128,6 @@ class DialogImportAddressState extends State<DialogImportAddress> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

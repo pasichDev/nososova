@@ -9,7 +9,6 @@ import 'package:nososova/ui/pages/wallets/screens/list_addresses.dart';
 import 'package:nososova/ui/pages/wallets/widgets/side_right_bar.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../generated/assets.dart';
 import '../../../utils/const/files_const.dart';
@@ -17,8 +16,6 @@ import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
 import '../../common/route/dialog_router.dart';
 import '../../config/responsive.dart';
-import '../../dialogs/import_export/dialog_import_address.dart';
-import '../../theme/style/dialog_style.dart';
 import '../../theme/style/text_style.dart';
 
 class WalletsPage extends StatefulWidget {
@@ -31,6 +28,7 @@ class WalletsPage extends StatefulWidget {
 class WalletsPageState extends State<WalletsPage> {
   late WalletBloc walletBloc;
   late StreamSubscription listenResponse;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -45,18 +43,16 @@ class WalletsPageState extends State<WalletsPage> {
       if (mounted ||
           ResponseWidgetsIds.idsPageWallet.contains(response.idWidget)) {
         if (response.action == ActionsFileWallet.walletOpen) {
-          List<Address> address = response.actionValue;
-          showModalBottomSheet(
-              shape: DialogStyle.borderShape,
-              context: context,
-              builder: (_) => BlocProvider.value(
-                  value: walletBloc,
-                  child: DialogImportAddress(address: address)));
+          DialogRouter.showDialogImportFile(context, response.actionValue);
           return;
         }
 
         await Future.delayed(const Duration(milliseconds: 200));
-        SnackBarWidgetResponse(context: GlobalKey<ScaffoldMessengerState>().currentContext ?? context, response: response).get();
+        SnackBarWidgetResponse(
+                context: GlobalKey<ScaffoldMessengerState>().currentContext ??
+                    context,
+                response: response)
+            .get();
       }
     });
   }
@@ -71,6 +67,7 @@ class WalletsPageState extends State<WalletsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      key: _scaffoldKey,
       appBar: null,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -99,7 +96,7 @@ class WalletsPageState extends State<WalletsPage> {
                                       colorCustom: CustomColors.primaryColor),
                                   onPressed: () =>
                                       DialogRouter.showDialogActionWallet(
-                                          context)),
+                                          context, _scaffoldKey)),
                           ],
                         ),
                       ],

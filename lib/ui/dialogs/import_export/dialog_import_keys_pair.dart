@@ -42,26 +42,17 @@ class DialogImportKeysPairState extends State<DialogImportKeysPair> {
 
   @override
   Widget build(BuildContext context) {
-    var walletBloc = BlocProvider.of<WalletBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      /*    Text(
-            AppLocalizations.of(context)!.importKeysPair,
-            style: AppTextStyles.dialogTitle,
-          ),
-
-       */
-    //      const SizedBox(height: 20),
           FocusScope(
             child: Focus(
-              onFocusChange: (hasFocus) {
-                // Handle focus changes if needed
-              },
+              onFocusChange: (hasFocus) {},
               child: TextField(
+                maxLength: 133,
                 focusNode: _focusNode,
                 controller: _textEditingController,
                 style: AppTextStyles.textFieldStyle,
@@ -85,7 +76,7 @@ class DialogImportKeysPairState extends State<DialogImportKeysPair> {
               onPressed: isButtonEnabled
                   ? () {
                       Navigator.pop(context);
-                      walletBloc
+                      BlocProvider.of<WalletBloc>(context)
                           .add(ImportWalletQr(_textEditingController.text));
                     }
                   : null,
@@ -93,12 +84,8 @@ class DialogImportKeysPairState extends State<DialogImportKeysPair> {
                 padding: const EdgeInsets.all(15),
                 child: Text(
                   AppLocalizations.of(context)!.addToWallet,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontFamily: "GilroyBold",
-                  ),
+                  style: AppTextStyles.walletAddress.copyWith(
+                      color: isButtonEnabled ? Colors.white : Colors.black),
                 ),
               ),
             ),

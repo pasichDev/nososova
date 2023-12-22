@@ -756,7 +756,7 @@ abstract class AppLocalizations {
   /// No description provided for @aliasMessage.
   ///
   /// In en, this message translates to:
-  /// **'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.'**
+  /// **'The alias can be set from 3 to 32 characters long. Also, don\'t forget that a transaction fee is charged for setting up alias.'**
   String get aliasMessage;
 
   /// No description provided for @errorNoFoundCoinsTransaction.
@@ -794,6 +794,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No transactions were found for this address'**
   String get errorEmptyHistoryTransactions;
+
+  /// No description provided for @warringMessageSetAlias.
+  ///
+  /// In en, this message translates to:
+  /// **'The operation is available only once'**
+  String get warringMessageSetAlias;
 
   /// No description provided for @successSetAlias.
   ///

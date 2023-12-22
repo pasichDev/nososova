@@ -14,6 +14,7 @@ import '../../dialogs/address_action/dialog_view_qr.dart';
 import '../../dialogs/dialog_debug.dart';
 import '../../dialogs/dialog_info_network.dart';
 import '../../dialogs/dialog_wallet_actions.dart';
+import '../../dialogs/import_export/dialog_import_address.dart';
 import '../../dialogs/import_export/dialog_import_keys_pair.dart';
 import '../../dialogs/import_export/dialog_scanner_qr.dart';
 import '../../theme/style/dialog_style.dart';
@@ -32,13 +33,14 @@ class DialogRouter {
   }
 
   /// The dialog that displays possible actions on the wallet
-  static void showDialogActionWallet(BuildContext context) {
+  static void showDialogActionWallet(
+      BuildContext context, GlobalKey<ScaffoldState> scaffoldKey) {
     showModalBottomSheet(
         shape: DialogStyle.borderShape,
         context: context,
         builder: (_) => BlocProvider.value(
             value: BlocProvider.of<WalletBloc>(context),
-            child: const DialogWalletActions()));
+            child: DialogWalletActions(scaffoldKey: scaffoldKey)));
   }
 
   /// The dialog that displays the status of the network connection and actions on it
@@ -61,7 +63,6 @@ class DialogRouter {
 
   /// The dialog that can be used to restore the address with a pair of keys
   static void showDialogImportAddressFromKeysPair(BuildContext context) {
-
     WoltModalSheet.show(
       context: context,
       pageListBuilder: (BuildContext _) {
@@ -69,35 +70,22 @@ class DialogRouter {
           WoltModalSheetPage(
               backgroundColor: Colors.white,
               hasSabGradient: false,
-              topBarTitle: Text( AppLocalizations.of(context)!.importKeysPair, textAlign: TextAlign.center, style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+              topBarTitle: Text(AppLocalizations.of(context)!.importKeysPair,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
               isTopBarLayerAlwaysVisible: true,
-              child:  BlocProvider.value(
-          value: BlocProvider.of<WalletBloc>(context),
-        child: const DialogImportKeysPair(),
-        ))
-
+              child: BlocProvider.value(
+                value: BlocProvider.of<WalletBloc>(context),
+                child: const DialogImportKeysPair(),
+              ))
         ];
       },
-      // Other properties...
     );
-  /*  showDialog(
-      context: context,
-      builder: (_) => Dialog(
-        child: Material(
-          child: BlocProvider.value(
-            value: BlocProvider.of<WalletBloc>(context),
-            child: const DialogImportKeysPair(),
-          ),
-        ),
-      ),
-    );
-
-   */
   }
 
   /// A dialog in which actions on the address are provided
   static void showDialogAddressActions(BuildContext context, Address address) {
-    if(Responsive.isMobile(context)){
+    if (Responsive.isMobile(context)) {
       showModalBottomSheet(
           shape: DialogStyle.borderShape,
           context: context,
@@ -106,7 +94,7 @@ class DialogRouter {
               child: AddressInfo(
                 address: address,
               )));
-    }else {
+    } else {
       WoltModalSheet.show(
         context: context,
         pageListBuilder: (BuildContext _) {
@@ -114,50 +102,91 @@ class DialogRouter {
             WoltModalSheetPage(
                 backgroundColor: Colors.white,
                 hasSabGradient: false,
-                topBarTitle: Text( address.hashPublic, textAlign: TextAlign.center, style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+                topBarTitle: Text(address.hashPublic,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
                 isTopBarLayerAlwaysVisible: true,
-                child:   BlocProvider.value(
+                child: BlocProvider.value(
                     value: BlocProvider.of<WalletBloc>(context),
                     child: AddressInfo(
                       address: address,
                     )))
-
           ];
         },
       );
     }
-
-
   }
 
   /// Dialog for viewing the qr code of the address
   static void showDialogViewQr(BuildContext context, Address address) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (_) => SafeArea(child: DialogViewQrWidget(address: address)),
-    );
+    if (Responsive.isMobile(context)) {
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (_) => SafeArea(child: DialogViewQrWidget(address: address)),
+      );
+    } else {
+      WoltModalSheet.show(
+        context: context,
+        pageListBuilder: (BuildContext _) {
+          return [
+            WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                hasSabGradient: false,
+                topBarTitle: Text(address.hashPublic,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+                isTopBarLayerAlwaysVisible: true,
+                child: DialogViewQrWidget(address: address))
+          ];
+        },
+      );
+    }
   }
 
   /// Dialog for setting alias
   static void showDialogCustomName(BuildContext context, Address address) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: DialogStyle.borderShape,
+    if (Responsive.isMobile(context)) {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          shape: DialogStyle.borderShape,
+          context: context,
+          builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: BlocProvider.of<WalletBloc>(context),
+                  ),
+                ],
+                child: DialogCustomName(address: address),
+              ));
+    } else {
+      WoltModalSheet.show(
         context: context,
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: BlocProvider.of<WalletBloc>(context),
-                ),
-              ],
-              child: DialogCustomName(address: address),
-            ));
+        pageListBuilder: (BuildContext _) {
+          return [
+            WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                hasSabGradient: false,
+                topBarTitle: Text(AppLocalizations.of(context)!.customNameAdd,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+                isTopBarLayerAlwaysVisible: true,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(
+                      value: BlocProvider.of<WalletBloc>(context),
+                    ),
+                  ],
+                  child: DialogCustomName(address: address),
+                ))
+          ];
+        },
+      );
+    }
   }
 
   /// Dialog in which debug information is displayed
   static void showDialogDebug(BuildContext context) {
-  //  Navigator.of(context).pop();
     showModalBottomSheet(
         shape: DialogStyle.borderShape,
         context: context,
@@ -165,5 +194,17 @@ class DialogRouter {
               value: BlocProvider.of<DebugBloc>(context),
               child: const DialogDebug(),
             ));
+  }
+
+  /// Dialog in which list address to import file
+  static void showDialogImportFile(
+      BuildContext context, List<Address> address) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: DialogStyle.borderShape,
+        context: context,
+        builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<WalletBloc>(context),
+            child: DialogImportAddress(address: address)));
   }
 }

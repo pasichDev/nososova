@@ -335,7 +335,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyListAddress => 'Create or generate new addresses for your use';
 
   @override
-  String get aliasMessage => 'Alias can be set with a length from 3 to 32 characters. Also, don\'t forget that there is a fee for changing the alias.';
+  String get aliasMessage => 'The alias can be set from 3 to 32 characters long. Also, don\'t forget that a transaction fee is charged for setting up alias.';
 
   @override
   String get errorNoFoundCoinsTransaction => 'There are not enough coins for the transaction';
@@ -354,6 +354,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorEmptyHistoryTransactions => 'No transactions were found for this address';
+
+  @override
+  String get warringMessageSetAlias => 'The operation is available only once';
 
   @override
   String get successSetAlias => 'Your request is successful and has been processed';

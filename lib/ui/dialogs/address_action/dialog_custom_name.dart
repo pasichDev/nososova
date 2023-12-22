@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
+import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
@@ -11,6 +12,7 @@ import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
 import '../../common/responses_util/response_widget_id.dart';
+import '../../config/responsive.dart';
 import '../../theme/decoration/textfield_decoration.dart';
 import '../../theme/style/text_style.dart';
 
@@ -20,7 +22,7 @@ class DialogCustomName extends StatefulWidget {
   const DialogCustomName({super.key, required this.address});
 
   @override
-  _DialogCustomNameState createState() => _DialogCustomNameState();
+  State createState() => _DialogCustomNameState();
 }
 
 class _DialogCustomNameState extends State<DialogCustomName> {
@@ -64,14 +66,19 @@ class _DialogCustomNameState extends State<DialogCustomName> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  AppLocalizations.of(context)!.aliasNameAddress,
+                if (Responsive.isMobile(context))  ...[  Text(
+                  AppLocalizations.of(context)!.customNameAdd,
                   style: AppTextStyles.dialogTitle,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 20)],
                 Text(
                   AppLocalizations.of(context)!.aliasMessage,
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  AppLocalizations.of(context)!.warringMessageSetAlias,
+                  style: AppTextStyles.walletAddress.copyWith(fontSize: 18, color: CustomColors.negativeBalance),
                 ),
                 const SizedBox(height: 20),
                 TextField(

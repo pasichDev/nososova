@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/app/debug.dart';
 import '../theme/style/text_style.dart';
 
@@ -27,8 +28,8 @@ class DialogDebugState extends State<DialogDebug>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Debug Information",
+             Text(
+              AppLocalizations.of(context)!.debugInfo,
               style: AppTextStyles.dialogTitle,
             ),
             const SizedBox(height: 20),

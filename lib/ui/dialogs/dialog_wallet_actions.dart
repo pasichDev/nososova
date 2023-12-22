@@ -19,7 +19,8 @@ import '../config/responsive.dart';
 import '../theme/style/text_style.dart';
 
 class DialogWalletActions extends StatefulWidget {
-  const DialogWalletActions({super.key});
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  const DialogWalletActions({super.key,  this.scaffoldKey});
 
   @override
   State createState() => _DialogWalletActionsState();
@@ -157,7 +158,8 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
 
   void _importToKeysPair(BuildContext context) async {
     if(Responsive.isMobile(context))  Navigator.pop(context);
-    DialogRouter.showDialogImportAddressFromKeysPair(context);
+    DialogRouter.showDialogImportAddressFromKeysPair(widget.scaffoldKey?.currentContext ?? context);
+
   }
 
   void _importWalletFile(BuildContext context) async {

@@ -266,7 +266,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get catActionAddress => 'Дії над адресою';
 
   @override
-  String get customNameAdd => 'Встановити псевдоніму';
+  String get customNameAdd => 'Встановити псевдонім';
 
   @override
   String get today => 'Сьогодні';
@@ -335,7 +335,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get emptyListAddress => 'Створіть або згенеруйте нові адреси для вашого використання';
 
   @override
-  String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за зміну псевдоніму знімається комісія за операцію.';
+  String get aliasMessage => 'Псевдонім можна встановити довжиною від 3 до 32 символів. Також не забувайте, що за встановлення псевдоніма знімається комісія за операцію.';
 
   @override
   String get errorNoFoundCoinsTransaction => 'Недостатньо монет для проведення транзакції';
@@ -354,6 +354,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorEmptyHistoryTransactions => 'Транзакцій за цією адресою не знайдено';
+
+  @override
+  String get warringMessageSetAlias => 'Операція доступна лише один раз';
 
   @override
   String get successSetAlias => 'Ваш запит успішно додано в обробку';

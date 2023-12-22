@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nososova/ui/config/responsive.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -92,20 +93,21 @@ class _ScannerWidgetState extends State<DialogViewQrWidget> {
           ],
         ),
         const SizedBox(height: 30),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: CustomColors.negativeBalance,
+        if (Responsive.isMobile(context))
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: CustomColors.negativeBalance,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(AppLocalizations.of(context)!.cancel,
+                  style: AppTextStyles.walletAddress
+                      .copyWith(color: Colors.white)),
+            ),
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Text(AppLocalizations.of(context)!.cancel,
-                style:
-                    AppTextStyles.walletAddress.copyWith(color: Colors.white)),
-          ),
-        ),
       ],
     );
   }

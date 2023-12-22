@@ -87,7 +87,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   }
 
   Future<void> _reconnectNode(event, emit) async {
-    if (state.statusConnected == StatusConnectNodes.sync) {
+    if (state.statusConnected == StatusConnectNodes.sync || event.lastNodeRun) {
       return;
     }
     _stopTimerSyncNetwork();
