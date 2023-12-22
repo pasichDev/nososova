@@ -735,6 +735,12 @@ abstract class AppLocalizations {
   /// **'Update information'**
   String get updateInfo;
 
+  /// No description provided for @copyAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the address'**
+  String get copyAddress;
+
   /// No description provided for @informMyNodes.
   ///
   /// In en, this message translates to:

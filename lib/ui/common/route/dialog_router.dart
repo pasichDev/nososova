@@ -7,6 +7,7 @@ import '../../../blocs/app_data_bloc.dart';
 import '../../../blocs/debug_bloc.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../config/responsive.dart';
 import '../../dialogs/address_action/dialog_address_info.dart';
 import '../../dialogs/address_action/dialog_custom_name.dart';
 import '../../dialogs/address_action/dialog_view_qr.dart';
@@ -96,14 +97,37 @@ class DialogRouter {
 
   /// A dialog in which actions on the address are provided
   static void showDialogAddressActions(BuildContext context, Address address) {
-    showModalBottomSheet(
-        shape: DialogStyle.borderShape,
+    if(Responsive.isMobile(context)){
+      showModalBottomSheet(
+          shape: DialogStyle.borderShape,
+          context: context,
+          builder: (_) => BlocProvider.value(
+              value: BlocProvider.of<WalletBloc>(context),
+              child: AddressInfo(
+                address: address,
+              )));
+    }else {
+      WoltModalSheet.show(
         context: context,
-        builder: (_) => BlocProvider.value(
-            value: BlocProvider.of<WalletBloc>(context),
-            child: AddressInfo(
-              address: address,
-            )));
+        pageListBuilder: (BuildContext _) {
+          return [
+            WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                hasSabGradient: false,
+                topBarTitle: Text( address.hashPublic, textAlign: TextAlign.center, style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+                isTopBarLayerAlwaysVisible: true,
+                child:   BlocProvider.value(
+                    value: BlocProvider.of<WalletBloc>(context),
+                    child: AddressInfo(
+                      address: address,
+                    )))
+
+          ];
+        },
+      );
+    }
+
+
   }
 
   /// Dialog for viewing the qr code of the address

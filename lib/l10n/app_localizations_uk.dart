@@ -326,6 +326,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get updateInfo => 'Оновити інформацію';
 
   @override
+  String get copyAddress => 'Скопіювати адресу';
+
+  @override
   String get informMyNodes => 'Статус ваших вузлів';
 
   @override

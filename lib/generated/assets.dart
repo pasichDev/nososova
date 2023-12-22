@@ -25,6 +25,7 @@ class Assets {
   static const String iconsRename = 'assets/icons/rename.svg';
   static const String iconsScan = 'assets/icons/scan.svg';
   static const String iconsText = 'assets/icons/text.svg';
+  static const String iconsTextTwo = 'assets/icons/text_two.svg';
   static const String iconsWallet = 'assets/icons/wallet.svg';
   static const String nososova = '.env';
 

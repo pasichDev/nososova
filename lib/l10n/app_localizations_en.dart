@@ -326,6 +326,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateInfo => 'Update information';
 
   @override
+  String get copyAddress => 'Copy the address';
+
+  @override
   String get informMyNodes => 'Status of your nodes';
 
   @override
