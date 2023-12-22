@@ -19,7 +19,9 @@ class Address {
   bool nodeStatusOn;
 
   /// Returns the wallet address displayed to the user, either truncated or custom
-  get nameAddressPublic => custom ?? OtherUtils.hashObfuscation(hash);
+  get nameAddressPublic => custom ?? hashPublic;
+
+  get hashPublic =>  OtherUtils.hashObfuscation(hash);
 
   /// Returns the hash or alias of the address
   get nameAddressFull => custom ?? hash;

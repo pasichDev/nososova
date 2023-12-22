@@ -45,46 +45,58 @@ class AddressListTileState extends State<AddressListTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onSecondaryTap: widget.onLong, child: ListTile(
-      contentPadding: const EdgeInsets.only(left: 10, right: 15),
-        leading: _iconAddress(),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              widget.address.nameAddressPublic,
-              style: AppTextStyles.itemStyle.copyWith(fontSize: 20),
+        onSecondaryTap: widget.onLong,
+        child: ListTile(
+            contentPadding: const EdgeInsets.only(left: 10, right: 15),
+            leading: _iconAddress(),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.address.hashPublic,
+                      style: AppTextStyles.walletAddress.copyWith(fontSize: 18),
+                    ),
+                    if (widget.address.custom != null)
+                      Text(
+                        widget.address.custom ?? "",
+                        style: AppTextStyles.itemStyle.copyWith(fontSize: 16),
+                      )
+                  ],
+
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.address.balance.toStringAsFixed(3),
+                        style: AppTextStyles.walletAddress,
+                      ),
+                      const SizedBox(width: 5),
+                      if (widget.address.incoming > 0)
+                        Text(
+                          "+ ${widget.address.incoming}",
+                          style: AppTextStyles.itemStyle.copyWith(
+                              fontSize: 16,
+                              fontFamily: "GilroySemiBold",
+                              color: Colors.green),
+                        ),
+                      if (widget.address.outgoing > 0)
+                        Text(
+                          "- ${widget.address.outgoing}",
+                          style: AppTextStyles.itemStyle.copyWith(
+                              fontSize: 16,
+                              fontFamily: "GilroySemiBold",
+                              color: Colors.red),
+                        ),
+                    ]),
+              ],
             ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.address.balance.toStringAsFixed(3),
-                    style: AppTextStyles.walletAddress,
-                  ),
-                  const SizedBox(width: 5),
-                  if (widget.address.incoming > 0)
-                    Text(
-                      "+ ${widget.address.incoming}",
-                      style: AppTextStyles.itemStyle.copyWith(
-                          fontSize: 16,
-                          fontFamily: "GilroySemiBold",
-                          color: Colors.green),
-                    ),
-                  if (widget.address.outgoing > 0)
-                    Text(
-                      "- ${widget.address.outgoing}",
-                      style: AppTextStyles.itemStyle.copyWith(
-                          fontSize: 16,
-                          fontFamily: "GilroySemiBold",
-                          color: Colors.red),
-                    ),
-                ]),
-          ],
-        ),
-        onLongPress: widget.onLong,
-        onTap: widget.onTap));
+            onLongPress: widget.onLong,
+            onTap: widget.onTap));
   }
 }
