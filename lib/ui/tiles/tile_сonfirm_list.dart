@@ -30,7 +30,6 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
 
   @override
   void initState() {
-
     timer = null;
     super.initState();
   }
@@ -54,14 +53,14 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
             : AppTextStyles.itemStyle,
       ),
       onTap: () {
-        if(mounted){
+        if (mounted) {
           setState(() {
             _clicked = !_clicked;
           });
         }
 
         if (_clicked) {
-          timer =   Timer(const Duration(seconds: 3), () {
+          timer = Timer(const Duration(seconds: 3), () {
             if (mounted) {
               setState(() {
                 _clicked = false;
@@ -75,10 +74,10 @@ class _TileConfirmListStateState extends State<TileConfirmList> {
       },
     );
   }
+
   @override
   void dispose() {
-    if(timer!=null){
-
+    if (timer != null) {
       timer!.cancel();
     }
     super.dispose();

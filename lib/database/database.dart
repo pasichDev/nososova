@@ -17,16 +17,16 @@ class MyDatabase extends _$MyDatabase {
   Stream<List<Address>> fetchAddresses() => select(addresses).watch();
 
   Future<void> addAddress(Address value) async {
-
-
     await batch((batch) {
-      batch.insert(addresses, AddressesCompanion(
-        publicKey: Value(value.publicKey),
-        privateKey: Value(value.privateKey),
-        hash: Value(value.hash),
-      ));
+      batch.insert(
+          addresses,
+          AddressesCompanion(
+            publicKey: Value(value.publicKey),
+            privateKey: Value(value.privateKey),
+            hash: Value(value.hash),
+          ));
     });
-   // await into(addresses).insertOnConflictUpdate(insertable);
+    // await into(addresses).insertOnConflictUpdate(insertable);
   }
 
   Future<void> addAddresses(List<Address> value) async {
@@ -42,8 +42,6 @@ class MyDatabase extends _$MyDatabase {
     });
   }
 
-
-
   Future<void> deleteWallet(Address value) async {
     final insertable = AddressesCompanion(
       publicKey: Value(value.publicKey),
@@ -53,16 +51,21 @@ class MyDatabase extends _$MyDatabase {
     await delete(addresses).delete(insertable);
   }
 
-
-
   @override
   int get schemaVersion => 1;
 }
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    String dbFolder;
+    if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
+      var path = await getApplicationDocumentsDirectory();
+      dbFolder = "${path.path}/NosoSova";
+    } else {
+      var path = await getApplicationDocumentsDirectory();
+      dbFolder = path.path;
+    }
+    final file = File(p.join(dbFolder, 'db.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }
