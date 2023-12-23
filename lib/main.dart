@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/dependency_injection.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/pages/main/main_page.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'blocs/events/app_data_events.dart';
 import 'generated/assets.dart';
@@ -15,11 +18,31 @@ import 'generated/assets.dart';
 Future<void> main() async {
   await dotenv.load(fileName: Assets.nososova);
   setupLocator();
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(1000, 800),
+      center: true,
+      minimumSize: Size(1000, 800),
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  Future testWindowFunctions() async {}
 
   @override
   Widget build(BuildContext context) {

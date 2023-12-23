@@ -10,6 +10,7 @@ import '../../../theme/decoration/standart_gradient_decoration.dart';
 import '../../../theme/decoration/standart_gradient_decoration_round.dart';
 import '../../../theme/style/colors.dart';
 import '../../../theme/style/text_style.dart';
+import '../../main/widgets/default_app_bar.dart';
 import '../widgets/total_usdt_price.dart';
 
 class CardHeader extends StatelessWidget {
@@ -24,10 +25,13 @@ class CardHeader extends StatelessWidget {
             decoration: !Responsive.isMobile(context)
                 ? const HomeGradientDecoration()
                 : const HomeGradientDecorationRound(),
-            child: const SafeArea(
-              child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: CardBody()),
+            child:  SafeArea(
+              child: Column(  mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [ DefaultAppBar(isVisible: Responsive.isTablet(context)),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.0),
+          child:  CardBody()) ], ),
             ),
           )
         : Container(
@@ -52,12 +56,12 @@ class CardBody extends StatelessWidget {
     return BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
       var isOutgoing = state.wallet.totalOutgoing > 0;
       var isIncoming =  state.wallet.totalIncoming > 0;
+
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 10),
-          Text(
+           Text(
             AppLocalizations.of(context)!.balance,
             style: AppTextStyles.walletAddress
                 .copyWith(fontSize: 22, color: Colors.white.withOpacity(0.5)),
@@ -79,7 +83,7 @@ class CardBody extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ItemTotalPrice(totalPrice: state.wallet.balanceTotal),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -104,7 +108,7 @@ class CardBody extends StatelessWidget {
 
                 ],
               ),
-              const SizedBox(width: 30),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,7 +132,7 @@ class CardBody extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
         ],
       );
     });

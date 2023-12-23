@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nososova/ui/pages/info/info_page.dart';
 import 'package:nososova/ui/pages/main/widgets/default_app_bar.dart';
@@ -17,6 +19,7 @@ class MainPage extends StatefulWidget {
   @override
   MainPageState createState() => MainPageState();
 }
+
 class MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
@@ -26,6 +29,7 @@ class MainPageState extends State<MainPage> {
   ];
 
   final PageController _pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -37,44 +41,46 @@ class MainPageState extends State<MainPage> {
           if (Responsive.isDesktop(context)) const SideLeftBarDesktop(),
           Expanded(
             flex: 6,
-            child: !Responsive.isMobile(context) ?Navigator(
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(
-                  builder: (context) => _pages[_selectedIndex],
-                );
-              },
-            ) : PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              children: _pages,
-            ),
+            child: Platform.isWindows || Platform.isMacOS || Platform.isLinux
+                ? Navigator(
+                    onGenerateRoute: (settings) {
+                      return MaterialPageRoute(
+                        builder: (context) => _pages[_selectedIndex],
+                      );
+                    },
+                  )
+                : PageView(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    children: _pages,
+                  ),
           ),
         ],
       ),
-      bottomNavigationBar: Responsive.isMobile(context)
-          ? BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        elevation: 5,
-        selectedItemColor: CustomColors.primaryColor,
-        items: <BottomNavigationBarItem>[
-          bottomItem(Assets.iconsWallet, 0),
-          bottomItem(Assets.iconsInfo, 1),
-          bottomItem(Assets.iconsNodeI, 2),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.decelerate,
-          );
-        },
-      )
-          : null,
+      bottomNavigationBar:  Platform.isWindows || Platform.isMacOS || Platform.isLinux
+          ? null : BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              elevation: 5,
+              selectedItemColor: CustomColors.primaryColor,
+              items: <BottomNavigationBarItem>[
+                bottomItem(Assets.iconsWallet, 0),
+                bottomItem(Assets.iconsInfo, 1),
+                bottomItem(Assets.iconsNodeI, 2),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.decelerate,
+                );
+              },
+            )
+          ,
     );
   }
 
@@ -93,4 +99,3 @@ class MainPageState extends State<MainPage> {
     );
   }
 }
-

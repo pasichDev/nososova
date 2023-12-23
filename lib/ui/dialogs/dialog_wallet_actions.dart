@@ -9,7 +9,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/generated/assets.dart';
 import 'package:nososova/l10n/app_localizations.dart';
-import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
@@ -37,8 +36,8 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if(Responsive.isMobile(context)) ...[
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+     /* if(Responsive.isMobile(context)) ...[
       Container(
         padding: const EdgeInsets.all(10.0),
         child: Card(
@@ -71,15 +70,16 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
         ),
       ),]
       else ...[
+      */
       Padding(
           padding:
           const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Text(
             AppLocalizations.of(context)!.actionWallet,
             style: AppTextStyles.dialogTitle,
-          )),],
-      ListView(
-       // padding: const EdgeInsets.symmetric(horizontal: 10),
+          )),
+    //],
+     SingleChildScrollView(child:  ListView(
         shrinkWrap: true,
         children: [
           buildListTileSvg(
@@ -147,7 +147,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                   _exportWalletFile(context, FormatWalletFile.nososova)),
           const SizedBox(height: 10)
         ],
-      ),
+      )),
     ]);
   }
 

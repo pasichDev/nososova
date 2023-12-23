@@ -9,11 +9,12 @@ import '../../../config/responsive.dart';
 import '../../../theme/style/icons_style.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({Key? key}) : super(key: key);
+  final bool isVisible;
+   const DefaultAppBar({super.key,  this.isVisible = false});
 
   @override
   Widget build(BuildContext context) {
-    return Responsive.isMobile(context)
+    return Responsive.isMobile(context) || isVisible
         ? AppBar(
             elevation: 0,
             title: NetworkInfo(
