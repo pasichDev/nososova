@@ -71,7 +71,7 @@ class AddressListTileState extends State<AddressListTile> {
 
                 Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         widget.address.balance.toStringAsFixed(5),

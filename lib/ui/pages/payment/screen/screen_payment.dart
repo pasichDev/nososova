@@ -252,7 +252,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
               )
             : TransactionWidgetInfo(
                 transaction: transactionHistory,
-                isReceiver: true,
+                isReceiver: false,
+                isProcess: true,
               ));
   }
 
@@ -293,7 +294,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : UtilsDataNoso.isValidHashNoso(receiver);
 
     setState(() {
-      if (selButton != double.parse(amountController.text.isEmpty ? "0" : amountController.text)) {
+      if (selButton !=
+          double.parse(
+              amountController.text.isEmpty ? "0" : amountController.text)) {
         selButton = -1;
       }
       isActiveButtonSend = priceCheck && receiverCheck;
