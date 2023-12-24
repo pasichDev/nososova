@@ -54,7 +54,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   void _responseListener() {
     listenResponse =
         walletBloc.getResponseStatusStream.listen((response) async {
-      if (mounted ||
+      if (mounted &&
           ResponseWidgetsIds.idsPageAddressInfo.contains(response.idWidget)) {
         await Future.delayed(const Duration(milliseconds: 200));
         SnackBarWidgetResponse(

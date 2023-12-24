@@ -1,17 +1,16 @@
-import '../const/const.dart';
+
 
 class UtilsDataNoso {
   static int getCountMonetToRunNode() {
     return 10500;
   }
 
-  static double getFee(double amount) {
-    double result = amount / Const.comissiontrfr;
 
-    if (result < Const.minimumFee) {
-      return Const.minimumFee;
+  static isValidHashNoso(String hash){
+    if (hash.length < 3 ||
+        hash.length > 32){
+      return false;
     }
-
-    return result;
+    return true;
   }
 }

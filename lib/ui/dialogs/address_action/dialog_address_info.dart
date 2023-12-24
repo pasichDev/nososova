@@ -16,8 +16,9 @@ import '../../tiles/tile_сonfirm_list.dart';
 
 class AddressInfo extends StatefulWidget {
   final Address address;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const AddressInfo({Key? key, required this.address}) : super(key: key);
+  const AddressInfo({Key? key, required this.address, required this.scaffoldKey}) : super(key: key);
 
   @override
   AddressInfoState createState() => AddressInfoState();
@@ -81,6 +82,6 @@ class AddressInfoState extends State<AddressInfo> {
 
   void _paymentPage(BuildContext context) {
     Navigator.pop(context);
-    PageRouter.routePaymentPage(context, widget.address);
+    PageRouter.routePaymentPage(widget.scaffoldKey.currentContext ?? context, widget.address);
   }
 }

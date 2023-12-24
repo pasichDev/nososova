@@ -311,7 +311,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createPayment => 'Create payment';
 
   @override
-  String get amount => 'Payment amount';
+  String get amount => 'Amount';
+
+  @override
+  String get send => 'Send';
 
   @override
   String get chanceNode => 'Change node';
@@ -354,6 +357,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorEmptyHistoryTransactions => 'No transactions were found for this address';
+
+  @override
+  String get errorNoValidAddress => 'Error, invalid address';
+
+  @override
+  String get errorNoSync => 'The application is not synchronized with the main network';
+
+  @override
+  String get errorAddressBlock => 'Address blocked, payment cancelled';
+
+  @override
+  String get sendProcess => 'Payment is awaiting confirmation';
+
+  @override
+  String get errorSendOrderDefault => 'Error sending payment, try again later';
 
   @override
   String get warringMessageSetAlias => 'The operation is available only once';

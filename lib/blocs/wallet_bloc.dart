@@ -8,6 +8,7 @@ import 'package:nososova/repositories/repositories.dart';
 import 'package:nososova/utils/noso/model/pending_transaction.dart';
 import 'package:nososova/utils/noso/model/summary_data.dart';
 
+import '../models/apiExplorer/transaction_history.dart';
 import '../models/app/response_calculate.dart';
 import '../models/app/state_node.dart';
 import '../models/app/wallet.dart';
@@ -83,11 +84,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   /// The method used to change the alias address
   Future<void> _setAliasAddress(e, emit) async {
-    var isBalanceCorrect = e.address.availableBalance > Const.customizationFee;
+    var isBalanceCorrect = e.address.availableBalance >= Const.customizationFee;
     if (e.address.hash == "" || e.alias == "" || !isBalanceCorrect) {
       _responseStatusStream.add(ResponseListenerPage(
           idWidget: e.widgetId,
           codeMessage: !isBalanceCorrect ? 1 : 2,
+          snackBarType: SnackBarType.error));
+      return;
+    }
+    if (state.wallet.consensusStatus != ConsensusStatus.sync) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: e.widgetId,
+          codeMessage: 10,
           snackBarType: SnackBarType.error));
       return;
     }
@@ -119,14 +127,81 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   Future<void> _sendOrder(e, emit) async {
+    var receiver = e.receiver;
+    var message = e.message;
+    var amount = _repositories.nosoCore.convertAmount(e.amount);
+    Address address = e.address;
+    var commission = _repositories.nosoCore.getFee(amount);
+    var widgetId = e.widgetId;
 
+    var isBalanceCorrect =
+        _repositories.nosoCore.convertAmount(address.availableBalance) >=
+            (amount + commission);
 
-    print("sendOrder");
-    //print(e.value);
+    print(_repositories.nosoCore.convertAmount(address.availableBalance));
+    print((amount));
+    if (receiver == "" || address.hash.isEmpty || !isBalanceCorrect) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: widgetId,
+          codeMessage: !isBalanceCorrect ? 1 : 2,
+          snackBarType: SnackBarType.error));
+      _debugBloc.add(AddStringDebug(
+          "An attempt to send a payment was unsuccessful. Input error or not enough coins"));
+      return;
+    }
+    if (state.wallet.consensusStatus != ConsensusStatus.sync) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: widgetId,
+          codeMessage: 10,
+          snackBarType: SnackBarType.error));
+      _debugBloc.add(AddStringDebug(
+          "An attempt to send a payment was unsuccessful. The system is not synchronized with the network"));
+      return;
+    }
+    var sendString = NewOrderSend().getOrderString(address, message, receiver,
+        amount, commission, appDataBloc.state.node.lastblock);
+    var sendStringParse = sendString.split(" ");
+
     ResponseNode resp = await _repositories.networkRepository
-        .fetchNode("${e.value}\n", appDataBloc.state.node.seed);
+        .fetchNode("$sendString\n", appDataBloc.state.node.seed);
+    var result = String.fromCharCodes(resp.value).split(' ');
 
-    print(resp.value);
+    if (result.length == 1) {
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: e.widgetId,
+          codeMessage: 4,
+          actionValue: TransactionHistory(
+              blockId: appDataBloc.state.node.lastblock,
+              id: sendStringParse[7],
+              timestamp: sendStringParse[3],
+              sender: address.nameAddressFull,
+              amount: e.amount.toString(),
+              fee: (commission / 100000000).toStringAsFixed(8),
+              type: sendStringParse[9],
+              receiver: receiver),
+          snackBarType: SnackBarType.ignore));
+      _debugBloc.add(AddStringDebug(
+          "New payment has been created, ID -> ${sendStringParse[7]}"));
+      appDataBloc.add(ReconnectSeed(true));
+    } else {
+      if (int.parse(result[1]) == 11) {
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: e.widgetId,
+            codeMessage: 11,
+            snackBarType: SnackBarType.success));
+        _debugBloc.add(AddStringDebug(
+            "An attempt to send a payment was unsuccessful. Address blocked"));
+        return;
+      }
+
+      _responseStatusStream.add(ResponseListenerPage(
+          idWidget: e.widgetId,
+          codeMessage: 12,
+          snackBarType: SnackBarType.error));
+      _debugBloc.add(
+          AddStringDebug("Your request is successful and has been processed"));
+      return;
+    }
   }
 
   initBloc() async {
@@ -383,10 +458,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     double totalOutgoing = 0;
     double totalIncoming = 0;
 
-//    if (pendings.isEmpty) {
-    //   return ResponseCalculate();
-    //   }
     var calculateListAddress = address;
+
     for (var address in calculateListAddress) {
       PendingTransaction? foundReceiver = pendings.firstWhere(
           (other) => other.receiver == address.hash,
@@ -397,16 +470,17 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
       if (foundReceiver.receiver.isNotEmpty) {
         totalIncoming += foundReceiver.amountTransfer;
-        address.incoming = foundReceiver.amountTransfer;
+        address.incoming += foundReceiver.amountTransfer;
       } else if (foundSender.sender.isNotEmpty) {
         var cell = foundSender.amountTransfer + foundSender.amountFee;
         totalOutgoing += cell;
-        address.outgoing = cell;
+        address.outgoing += cell;
       } else {
         address.incoming = 0;
         address.outgoing = 0;
       }
     }
+
     //  if (totalIncoming != 0 || totalOutgoing != 0) {
     return ResponseCalculate(
         address: calculateListAddress,

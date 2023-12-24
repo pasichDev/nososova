@@ -197,10 +197,11 @@ final class NosoCore extends NosoCrypto {
 
       sumData.hash = String.fromCharCodes(
           bytes.sublist(index + 1, index + bytes[index] + 1));
+
       sumData.custom = String.fromCharCodes(
           bytes.sublist(index + 42, index + 42 + bytes[index + 41]));
       sumData.balance =
-          _bigEndianToDouble(bytes.sublist(index + 82, index + 90));
+          bigEndianToDouble(bytes.sublist(index + 82, index + 90));
 
       final scoreArray = bytes.sublist(index + 91, index + 98);
       if (!scoreArray.every((element) => element == 0)) {
@@ -213,7 +214,33 @@ final class NosoCore extends NosoCrypto {
     return addressSummary;
   }
 
-  double _bigEndianToDouble(List<int> bytes) {
+  int getFee(int amount) {
+    int result = amount ~/ Const.comissiontrfr;
+    if (result < Const.minimumFee) {
+      return Const.minimumFee;
+    }
+    return result;
+  }
+
+
+  int convertAmount(dynamic amount) {
+    if (amount is int) {
+      return int.parse("${amount}00000000");
+    }
+    if (amount is double) {
+      List<String> tempArray = amount.toString().split('.');
+
+      while (tempArray[1].length < 8) {
+        tempArray[1] += '0';
+      }
+
+      return int.parse(tempArray[0] + tempArray[1]);
+    }
+
+    return 0;
+  }
+
+  double bigEndianToDouble(List<int> bytes) {
     var byteBuffer = Uint8List.fromList(bytes).buffer;
     var dataView = ByteData.view(byteBuffer);
     var intValue = dataView.getInt64(0, Endian.little);

@@ -4,20 +4,24 @@ import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 
-import '../../../../../generated/assets.dart';
-import '../../../../../l10n/app_localizations.dart';
-import '../../../../../utils/const/const.dart';
-import '../../../../../utils/custom_class/dasher_divider.dart';
-import '../../../../../utils/other_utils.dart';
-import '../../../../config/responsive.dart';
-import '../../../../theme/style/text_style.dart';
+import '../../../generated/assets.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/const/const.dart';
+import '../../../utils/custom_class/dasher_divider.dart';
+import '../../../utils/other_utils.dart';
+import '../../config/responsive.dart';
+import '../../theme/style/text_style.dart';
 
 class TransactionWidgetInfo extends StatefulWidget {
   final TransactionHistory transaction;
   final bool isReceiver;
+  final bool isProcess;
 
   const TransactionWidgetInfo(
-      {Key? key, required this.transaction, required this.isReceiver})
+      {Key? key,
+      required this.transaction,
+      required this.isReceiver,
+      this.isProcess = false})
       : super(key: key);
 
   @override
@@ -83,9 +87,15 @@ class _TransactionWidgetInfoState extends State<TransactionWidgetInfo> {
                     style: AppTextStyles.walletAddress
                         .copyWith(color: Colors.black, fontSize: 20)),
                 const SizedBox(height: 10),
-                Text(widget.transaction.timestamp,
-                    style:
-                        AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
+                if (widget.isProcess) ...[
+                  Text(widget.transaction.timestamp,
+                      style:
+                          AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
+                ] else ...[
+                  Text(AppLocalizations.of(context)!.sendProcess,
+                      style: AppTextStyles.itemStyle
+                          .copyWith(color: Colors.grey, fontSize: 20)),
+                ],
                 const SizedBox(height: 20),
                 const DasherDivider(
                   color: Colors.grey,

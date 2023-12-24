@@ -101,7 +101,8 @@
   "actionWallet": "Actions on wallet",
   "confirm": "Confirm",
   "createPayment": "Create payment",
-  "amount": "Payment amount",
+  "amount": "Amount",
+  "send": "Send",
   "chanceNode": "Change node",
   "viewQr": "View Qr code",
   "infoTotalPriceUst": "Balance in USDT",
@@ -116,6 +117,11 @@
   "errorDefaultErrorAlias": "Error trying to set alias",
   "priceInfoErrorServer": "Price information is not available",
   "errorEmptyHistoryTransactions": "No transactions were found for this address",
+  "errorNoValidAddress": "Error, invalid address",
+  "errorNoSync": "The application is not synchronized with the main network",
+  "errorAddressBlock": "Address blocked, payment cancelled",
+  "sendProcess": "Payment is awaiting confirmation",
+  "errorSendOrderDefault": "Error sending payment, try again later",
   "warringMessageSetAlias": "The operation is available only once",
   "successSetAlias": "Your request is successful and has been processed"
 }

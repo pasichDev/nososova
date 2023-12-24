@@ -27,7 +27,7 @@ class Address {
   get nameAddressFull => custom ?? hash;
 
   /// Available balance to perform paid transactions
-  get availableBalance => (balance - outgoing) - incoming;
+  get availableBalance => outgoing > balance ? 0 : balance - outgoing;
 
   Address({
     required this.hash,

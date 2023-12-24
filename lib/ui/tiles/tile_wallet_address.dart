@@ -68,18 +68,19 @@ class AddressListTileState extends State<AddressListTile> {
                   ],
 
                 ),
-                Row(
+
+                Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        widget.address.balance.toStringAsFixed(3),
+                        widget.address.balance.toStringAsFixed(5),
                         style: AppTextStyles.walletAddress,
                       ),
-                      const SizedBox(width: 5),
+                      const SizedBox(height: 5),
                       if (widget.address.incoming > 0)
                         Text(
-                          "+ ${widget.address.incoming}",
+                          "+ ${widget.address.incoming.toStringAsFixed(5)}",
                           style: AppTextStyles.itemStyle.copyWith(
                               fontSize: 16,
                               fontFamily: "GilroySemiBold",
@@ -87,7 +88,7 @@ class AddressListTileState extends State<AddressListTile> {
                         ),
                       if (widget.address.outgoing > 0)
                         Text(
-                          "- ${widget.address.outgoing}",
+                          "- ${widget.address.outgoing.toStringAsFixed(5)}",
                           style: AppTextStyles.itemStyle.copyWith(
                               fontSize: 16,
                               fontFamily: "GilroySemiBold",

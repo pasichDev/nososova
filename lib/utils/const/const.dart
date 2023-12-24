@@ -9,12 +9,12 @@ class Const {
   static const String verifyMessage = "VERIFICATION";
   static const String customValid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@*+-_:";
 
+
   static const double comisionCustom = 200000;
   static const int customizationFee = 25000;
+  static const double comissiontrfr = 10000;
+  static const int minimumFee = 1000000;
 
-  static const double comissiontrfr =
-      10000;
-  static const double minimumFee = 1000000;
   static const double protocol = 1.0;
   static const String programVersion = "NOSOSOVA_1_0";
 }

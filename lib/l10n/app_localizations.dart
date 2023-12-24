@@ -708,8 +708,14 @@ abstract class AppLocalizations {
   /// No description provided for @amount.
   ///
   /// In en, this message translates to:
-  /// **'Payment amount'**
+  /// **'Amount'**
   String get amount;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
 
   /// No description provided for @chanceNode.
   ///
@@ -794,6 +800,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No transactions were found for this address'**
   String get errorEmptyHistoryTransactions;
+
+  /// No description provided for @errorNoValidAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Error, invalid address'**
+  String get errorNoValidAddress;
+
+  /// No description provided for @errorNoSync.
+  ///
+  /// In en, this message translates to:
+  /// **'The application is not synchronized with the main network'**
+  String get errorNoSync;
+
+  /// No description provided for @errorAddressBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Address blocked, payment cancelled'**
+  String get errorAddressBlock;
+
+  /// No description provided for @sendProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is awaiting confirmation'**
+  String get sendProcess;
+
+  /// No description provided for @errorSendOrderDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Error sending payment, try again later'**
+  String get errorSendOrderDefault;
 
   /// No description provided for @warringMessageSetAlias.
   ///

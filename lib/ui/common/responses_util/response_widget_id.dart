@@ -4,4 +4,5 @@ class ResponseWidgetsIds {
 
   static const int widgetSetAliasName = 11;
   static const int widgetImportAddress = 21;
+  static const int pageSendOrder = 22;
 }

@@ -311,7 +311,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get createPayment => 'Створити платіж';
 
   @override
-  String get amount => 'Сумма платежа';
+  String get amount => 'Сумма';
+
+  @override
+  String get send => 'Відправити';
 
   @override
   String get chanceNode => 'Змінити вузол';
@@ -354,6 +357,21 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorEmptyHistoryTransactions => 'Транзакцій за цією адресою не знайдено';
+
+  @override
+  String get errorNoValidAddress => 'Помилка, недійсна адреса';
+
+  @override
+  String get errorNoSync => 'Додаток не синхронізований з основною мережею';
+
+  @override
+  String get errorAddressBlock => 'Адреса заблокована, платіж скасовано';
+
+  @override
+  String get sendProcess => 'Платіж чекає підтвердження';
+
+  @override
+  String get errorSendOrderDefault => 'Помилка відправки платежа, спробуйте пізніше';
 
   @override
   String get warringMessageSetAlias => 'Операція доступна лише один раз';

@@ -84,7 +84,7 @@ class DialogRouter {
   }
 
   /// A dialog in which actions on the address are provided
-  static void showDialogAddressActions(BuildContext context, Address address) {
+  static void showDialogAddressActions(BuildContext context, Address address, GlobalKey<ScaffoldState> scaffoldKey) {
     if (Responsive.isMobile(context)) {
       showModalBottomSheet(
           shape: DialogStyle.borderShape,
@@ -93,6 +93,7 @@ class DialogRouter {
               value: BlocProvider.of<WalletBloc>(context),
               child: AddressInfo(
                 address: address,
+                scaffoldKey: scaffoldKey,
               )));
     } else {
       WoltModalSheet.show(
@@ -102,6 +103,7 @@ class DialogRouter {
             WoltModalSheetPage(
                 backgroundColor: Colors.white,
                 hasSabGradient: false,
+
                 topBarTitle: Text(address.hashPublic,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
@@ -110,6 +112,7 @@ class DialogRouter {
                     value: BlocProvider.of<WalletBloc>(context),
                     child: AddressInfo(
                       address: address,
+                      scaffoldKey: scaffoldKey,
                     )))
           ];
         },

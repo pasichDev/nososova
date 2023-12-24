@@ -62,7 +62,7 @@ class NewOrderSend {
         reference: message,
         trxLine: trxLine,
         sender: targetAddress.publicKey,
-        address: targetAddress.nameAddressFull,
+        address: targetAddress.hash,
         receiver: receiver,
         amountFee: commission,
         amountTrf: amount,

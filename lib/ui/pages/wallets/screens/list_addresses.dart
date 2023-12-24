@@ -9,7 +9,8 @@ import '../../../components/empty_list_widget.dart';
 import '../../../tiles/tile_wallet_address.dart';
 
 class ListAddresses extends StatelessWidget {
-  const ListAddresses({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+  const ListAddresses({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ListAddresses extends StatelessWidget {
                     onTap: () =>
                         PageRouter.routeAddressInfoPage(context, address),
                     onLong: () =>
-                        DialogRouter.showDialogAddressActions(context, address),
+                        DialogRouter.showDialogAddressActions(context, address, scaffoldKey),
                   );
                 }));
       },

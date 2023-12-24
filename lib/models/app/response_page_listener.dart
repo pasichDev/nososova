@@ -13,4 +13,4 @@ class ResponseListenerPage {
       this.actionValue});
 }
 
-enum SnackBarType { error, success }
+enum SnackBarType { error, success, ignore }

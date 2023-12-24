@@ -100,7 +100,8 @@
   "customNameAdd": "Встановити псевдонім",
   "save": "Зберегти",
   "confirm": "Підтвердити",
-  "amount": "Сумма платежа",
+  "amount": "Сумма",
+  "send": "Відправити",
   "createPayment": "Створити платіж",
   "informMyNodes": "Статус ваших вузлів",
   "chanceNode": "Змінити вузол",
@@ -116,6 +117,11 @@
   "errorDefaultErrorAlias": "Помилка при встановленні псевдоніма",
   "errorImportAddresses": "Адреси не додано тому що вони дублюються",
   "priceInfoErrorServer": "Інформація про ціну недоступна",
+  "errorNoValidAddress": "Помилка, недійсна адреса",
   "errorEmptyHistoryTransactions": "Транзакцій за цією адресою не знайдено",
-  "successSetAlias": "Ваш запит успішно додано в обробку"
+  "successSetAlias": "Ваш запит успішно додано в обробку",
+  "sendProcess": "Платіж чекає підтвердження",
+  "errorAddressBlock": "Адреса заблокована, платіж скасовано",
+  "errorSendOrderDefault": "Помилка відправки платежа, спробуйте пізніше",
+  "errorNoSync": "Додаток не синхронізований з основною мережею"
 }

@@ -11,6 +11,7 @@ import 'package:swipeable_button_view/swipeable_button_view.dart';
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
+import '../../../utils/noso/utils.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../config/responsive.dart';
 import '../../theme/decoration/textfield_decoration.dart';
@@ -66,11 +67,13 @@ class _DialogCustomNameState extends State<DialogCustomName> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (Responsive.isMobile(context))  ...[  Text(
-                  AppLocalizations.of(context)!.customNameAdd,
-                  style: AppTextStyles.dialogTitle,
-                ),
-                const SizedBox(height: 20)],
+                if (Responsive.isMobile(context)) ...[
+                  Text(
+                    AppLocalizations.of(context)!.customNameAdd,
+                    style: AppTextStyles.dialogTitle,
+                  ),
+                  const SizedBox(height: 20)
+                ],
                 Text(
                   AppLocalizations.of(context)!.aliasMessage,
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 18),
@@ -78,7 +81,8 @@ class _DialogCustomNameState extends State<DialogCustomName> {
                 const SizedBox(height: 20),
                 Text(
                   AppLocalizations.of(context)!.warringMessageSetAlias,
-                  style: AppTextStyles.walletAddress.copyWith(fontSize: 18, color: CustomColors.negativeBalance),
+                  style: AppTextStyles.walletAddress.copyWith(
+                      fontSize: 18, color: CustomColors.negativeBalance),
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -141,8 +145,7 @@ class _DialogCustomNameState extends State<DialogCustomName> {
   _checkAliasText(String text) {
     setState(() {
       if (text == widget.address.custom ||
-          text.length < 3 ||
-          text.length > 32) {
+          !UtilsDataNoso.isValidHashNoso(text)) {
         isActiveButtonSend = false;
       } else {
         isActiveButtonSend = true;

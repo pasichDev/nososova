@@ -14,20 +14,47 @@ import '../../pages/addressInfo/address_info_page.dart';
 import '../../pages/addressInfo/transaction/transaction_dialog.dart';
 import '../../pages/addressInfo/transaction/transaction_page.dart';
 import '../../pages/payment/payment_page.dart';
+import '../../pages/payment/screen/screen_payment.dart';
 
 class PageRouter {
   /// Page for sending payment
   static void routePaymentPage(BuildContext context, Address address,
       {String receiver = ""}) {
-     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: BlocProvider.of<WalletBloc>(context),
-          child: PaymentPage(address: address, receiver: receiver),
+
+    if (Responsive.isMobile(context)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<WalletBloc>(context),
+            child: PaymentPage(address: address, receiver: receiver),
+          ),
         ),
-      ),
-    );
+      );
+
+    } else {
+      WoltModalSheet.show(
+        context: context,
+        pageListBuilder: (BuildContext _) {
+          return [
+            WoltModalSheetPage(
+                trailingNavBarWidget: IconButton(
+                  padding: const EdgeInsets.all(20),
+                  icon: const Icon(Icons.close),
+                  onPressed: Navigator.of(context).pop,
+                ),
+                backgroundColor: Colors.white,
+                hasSabGradient: false,
+              isTopBarLayerAlwaysVisible: true,
+                child: BlocProvider.value(
+                  value: BlocProvider.of<WalletBloc>(context),
+                  child: PaymentScreen(address: address, receiver: receiver),
+                ))
+          ];
+        },
+      );
+    }
+
 
 
   }

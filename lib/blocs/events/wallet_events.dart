@@ -71,10 +71,11 @@ class SetAlias extends WalletEvent {
 class SendOrder extends WalletEvent {
   final String receiver;
   final String message;
-  final int amount;
+  final double amount;
   final Address address;
+  final int widgetId;
 
-  SendOrder(this.receiver, this.message, this.amount, this.address);
+  SendOrder(this.receiver, this.message, this.amount, this.address, this.widgetId);
 }
 
 class CalculateBalance extends WalletEvent {

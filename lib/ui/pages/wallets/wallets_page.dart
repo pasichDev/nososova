@@ -40,12 +40,13 @@ class WalletsPageState extends State<WalletsPage> {
   void _responseListener() {
     listenResponse =
         walletBloc.getResponseStatusStream.listen((response) async {
-      if (mounted ||
+      if (mounted &&
           ResponseWidgetsIds.idsPageWallet.contains(response.idWidget)) {
         if (response.action == ActionsFileWallet.walletOpen) {
           DialogRouter.showDialogImportFile(context, response.actionValue);
           return;
         }
+
 
         await Future.delayed(const Duration(milliseconds: 200));
         SnackBarWidgetResponse(
@@ -102,7 +103,7 @@ class WalletsPageState extends State<WalletsPage> {
                       ],
                     ),
                   ),
-                  const ListAddresses(),
+                   ListAddresses(scaffoldKey: _scaffoldKey),
                 ],
               )),
           if (!Responsive.isMobile(context))
