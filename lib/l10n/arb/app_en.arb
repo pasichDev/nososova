@@ -120,6 +120,7 @@
   "errorNoValidAddress": "Error, invalid address",
   "errorNoSync": "The application is not synchronized with the main network",
   "errorAddressBlock": "Address blocked, payment cancelled",
+  "errorAddressFound": "Recipient does not exist",
   "sendProcess": "Payment is awaiting confirmation",
   "errorSendOrderDefault": "Error sending payment, try again later",
   "warringMessageSetAlias": "The operation is available only once",

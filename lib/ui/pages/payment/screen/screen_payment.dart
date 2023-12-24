@@ -39,7 +39,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   TextEditingController amountController = TextEditingController();
   TextEditingController receiverController = TextEditingController();
   TextEditingController messageController = TextEditingController();
-  double selButton = -1;
+  double selButton = 0;
   double commission = 0;
   Key containerKey = UniqueKey();
   bool isResultWidget = false;
@@ -118,87 +118,93 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 30),
-                      Text(
-                        AppLocalizations.of(context)!.sender,
-                        textAlign: TextAlign.start,
-                        style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(5.0),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 30),
+                        Text(
+                          AppLocalizations.of(context)!.sender,
+                          textAlign: TextAlign.start,
+                          style:
+                              AppTextStyles.dialogTitle.copyWith(fontSize: 22),
                         ),
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: AddressListTile(
-                            address: targetAddress,
-                            onLong: () {},
-                            onTap: () {},
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: AddressListTile(
+                              address: targetAddress,
+                              onLong: () {},
+                              onTap: () {},
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        AppLocalizations.of(context)!.receiver,
-                        textAlign: TextAlign.start,
-                        style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                          maxLength: 33,
-                          onChanged: (text) => checkButtonActive(null),
-                          controller: receiverController,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z0-9@*+\-_:]')),
-                          ],
-                          style: AppTextStyles.textFieldStyle,
-                          decoration: AppTextFiledDecoration.defaultDecoration(
-                              AppLocalizations.of(context)!.receiver)),
-                      const SizedBox(height: 10),
-                      Text(
-                        AppLocalizations.of(context)!.amount,
-                        textAlign: TextAlign.start,
-                        style: AppTextStyles.dialogTitle.copyWith(fontSize: 22),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                          onChanged: (text) => checkButtonActive(null),
-                          controller: amountController,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d*')),
-                            TextInputFormatter.withFunction(
-                                (oldValue, newValue) {
-                              var value = double.parse(
-                                  newValue.text.isEmpty ? "0" : newValue.text);
-                              if (value <= targetAddress.availableBalance) {
-                                return newValue;
-                              }
+                        const SizedBox(height: 10),
+                        Text(
+                          AppLocalizations.of(context)!.receiver,
+                          textAlign: TextAlign.start,
+                          style:
+                              AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                            maxLength: 33,
+                            onChanged: (text) => checkButtonActive(null),
+                            controller: receiverController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z0-9@*+\-_:]')),
+                            ],
+                            style: AppTextStyles.textFieldStyle,
+                            decoration:
+                                AppTextFiledDecoration.defaultDecoration(
+                                    AppLocalizations.of(context)!.receiver)),
+                        const SizedBox(height: 10),
+                        Text(
+                          AppLocalizations.of(context)!.amount,
+                          textAlign: TextAlign.start,
+                          style:
+                              AppTextStyles.dialogTitle.copyWith(fontSize: 22),
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                            onChanged: (text) => checkButtonActive(null),
+                            controller: amountController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d*')),
+                              TextInputFormatter.withFunction(
+                                  (oldValue, newValue) {
+                                var value = double.parse(newValue.text.isEmpty
+                                    ? "0"
+                                    : newValue.text);
+                                if (value <= targetAddress.availableBalance) {
+                                  return newValue;
+                                }
 
-                              return oldValue;
-                            })
+                                return oldValue;
+                              })
+                            ],
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            style: AppTextStyles.textFieldStyle,
+                            decoration:
+                                AppTextFiledDecoration.defaultDecoration(
+                                    "0.0000000")),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            buttonPercent(25),
+                            buttonPercent(50),
+                            buttonPercent(75),
+                            buttonPercent(100),
                           ],
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          style: AppTextStyles.textFieldStyle,
-                          decoration: AppTextFiledDecoration.defaultDecoration(
-                              "0.0000000")),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          buttonPercent(25),
-                          buttonPercent(50),
-                          buttonPercent(75),
-                          buttonPercent(100),
-                        ],
-                      ),
-                      /*       const SizedBox(height: 30),
+                        ),
+                        /*       const SizedBox(height: 30),
                           TextField(
                               maxLength: 120,
                               controller: messageController,
@@ -208,49 +214,45 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       AppLocalizations.of(context)!.message)),
 
                     */
-                      const SizedBox(height: 10),
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.commission,
-                              style: AppTextStyles.walletAddress.copyWith(
-                                  color: Colors.black.withOpacity(1),
-                                  fontSize: 18),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              (commission).toStringAsFixed(8),
-                              style: AppTextStyles.walletAddress
-                                  .copyWith(color: Colors.black, fontSize: 18),
-                            ),
-                          ]),
-                      const SizedBox(height: 30),
-
-                            Center(
-                                key: containerKey,
-                                child: SwipeableButtonView(
-                                  isActive: isActiveButtonSend,
-                                  buttonText:
-                                      AppLocalizations.of(context)!.send,
-                                  buttonWidget: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Colors.grey,
-                                  ),
-                                  activeColor: const Color(0xFF2B2F4F),
-                                  onWaitingProcess: () => sendOrder(),
-                                  onFinish: () {},
-                                )),
-
+                        const SizedBox(height: 10),
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.commission,
+                                style: AppTextStyles.walletAddress.copyWith(
+                                    color: Colors.black.withOpacity(1),
+                                    fontSize: 18),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                (commission).toStringAsFixed(8),
+                                style: AppTextStyles.walletAddress.copyWith(
+                                    color: Colors.black, fontSize: 18),
+                              ),
+                            ]),
                         const SizedBox(height: 30),
-                          ]),
-
+                        Center(
+                            key: containerKey,
+                            child: SwipeableButtonView(
+                              isActive: isActiveButtonSend,
+                              buttonText: AppLocalizations.of(context)!.send,
+                              buttonWidget: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.grey,
+                              ),
+                              activeColor: const Color(0xFF2B2F4F),
+                              onWaitingProcess: () => sendOrder(),
+                              onFinish: () {},
+                            )),
+                        const SizedBox(height: 30),
+                      ]),
                 ),
               )
             : TransactionWidgetInfo(
                 transaction: transactionHistory,
-                isReceiver: false,
+                isReceiver: true,
               ));
   }
 
@@ -281,11 +283,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
             amountController.text.isEmpty ? "0" : amountController.text);
     var receiver =
         receiverController.text.isEmpty ? "" : receiverController.text;
-    if (mounted && selButton != 0) {
-      setState(() {
-        selButton = 0;
-      });
-    }
 
     commission = getFee(amount);
     var priceCheck = amountController.text.isEmpty
@@ -296,6 +293,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : UtilsDataNoso.isValidHashNoso(receiver);
 
     setState(() {
+      if (selButton != double.parse(amountController.text.isEmpty ? "0" : amountController.text)) {
+        selButton = -1;
+      }
       isActiveButtonSend = priceCheck && receiverCheck;
     });
   }
@@ -303,22 +303,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
   buttonPercent(int percent) {
     double value = double.parse(
         ((percent / 100) * targetAddress.availableBalance).toStringAsFixed(7));
+    var valueAmount = (value - getFee(value));
+
     return OutlinedButton(
         onPressed: () {
-          var valueAmount = percent == 100 ? (value - getFee(value)) : value;
           setState(() {
             amountController.text = valueAmount.toStringAsFixed(7);
-            selButton = value;
+            selButton = double.parse(valueAmount.toStringAsFixed(7));
 
             checkButtonActive(valueAmount);
           });
         },
         style: OutlinedButton.styleFrom(
-          backgroundColor: selButton == value
-              ? CustomColors.primaryColor.withOpacity(0.3)
-              : Colors.transparent,
+          backgroundColor:
+              selButton == double.parse(valueAmount.toStringAsFixed(7))
+                  ? CustomColors.primaryColor.withOpacity(0.3)
+                  : Colors.transparent,
           side: BorderSide(
-              color: selButton == value
+              color: selButton == double.parse(valueAmount.toStringAsFixed(7))
                   ? CustomColors.primaryColor.withOpacity(0.5)
                   : Colors.grey),
           shape: RoundedRectangleBorder(
@@ -330,10 +332,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: Text("$percent%",
                 style: TextStyle(
                     fontSize: 16,
-                    fontWeight: selButton == value
+                    fontWeight: selButton ==
+                            double.parse(valueAmount.toStringAsFixed(7))
                         ? FontWeight.bold
                         : FontWeight.normal,
-                    color: selButton == value
+                    color: selButton ==
+                            double.parse(valueAmount.toStringAsFixed(7))
                         ? CustomColors.primaryColor.withOpacity(0.9)
                         : Colors.black))));
   }

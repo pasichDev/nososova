@@ -80,7 +80,7 @@ class SendOrder extends WalletEvent {
 
 class CalculateBalance extends WalletEvent {
   final List<SumaryData> summaryData;
-  final List<Address> address;
+  final List<Address>? address;
   final bool checkConsensus;
 
   CalculateBalance(this.summaryData, this.checkConsensus, this.address);

@@ -155,7 +155,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get billAction => 'Виставити рахунок на цю адресу';
 
   @override
-  String get addressesAdded => 'У ваш гамнець додано нові адреси';
+  String get addressesAdded => 'У ваш гаманець додано нові адреси';
 
   @override
   String get settings => 'Налаштування';
@@ -366,6 +366,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errorAddressBlock => 'Адреса заблокована, платіж скасовано';
+
+  @override
+  String get errorAddressFound => 'Адреси отримувача не існує';
 
   @override
   String get sendProcess => 'Платіж чекає підтвердження';

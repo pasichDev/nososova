@@ -107,7 +107,7 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
               subtitle: Text(AppLocalizations.of(context)!.importFileSubtitle,
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
               onTap: () => _importWalletFile(context)),
-          ListTile(
+       /*   ListTile(
               leading:
                   SvgPicture.asset(Assets.iconsExport, height: 32, width: 32),
               title: Text(AppLocalizations.of(context)!.exportFile,
@@ -115,6 +115,8 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                       .copyWith(fontFamily: "GilroySemiBold")),
               subtitle: Text(AppLocalizations.of(context)!.exportFileSubtitle,
                   style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+
+        */
             /*  trailing: PopupMenuButton<String>(
                 onSelected: (String choice) {
                   if (choice == '.pkw') {
@@ -142,9 +144,9 @@ class _DialogWalletActionsState extends State<DialogWalletActions> {
                 },
               ),
 
-             */
+
               onTap: () =>
-                  _exportWalletFile(context, FormatWalletFile.nososova)),
+                  _exportWalletFile(context, FormatWalletFile.nososova)), */
           const SizedBox(height: 10)
         ],
       )),

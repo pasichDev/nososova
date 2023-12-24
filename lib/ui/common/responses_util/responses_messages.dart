@@ -18,6 +18,7 @@ class ResponsesErrors {
       10: AppLocalizations.of(context)!.errorNoSync,
       11: AppLocalizations.of(context)!.errorAddressBlock,
       12: AppLocalizations.of(context)!.errorSendOrderDefault,
+      13: AppLocalizations.of(context)!.errorAddressFound,
     };
     if (messages.containsKey(errorCode)) {
       String? value = messages[errorCode];

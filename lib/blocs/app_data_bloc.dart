@@ -90,6 +90,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (state.statusConnected == StatusConnectNodes.sync && event.lastNodeRun) {
       return;
     }
+    print(event.lastNodeRun);
     _stopTimerSyncNetwork();
     if (event.lastNodeRun) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
@@ -136,6 +137,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if ((listUsersNodes ?? "").isEmpty) {
       initAlgh = InitialNodeAlgh.listenDefaultNodes;
     }
+
     switch (initAlgh) {
       case InitialNodeAlgh.connectLastNode:
         return await _repositories.networkRepository.fetchNode(
@@ -170,6 +172,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (state.node.lastblock != targetNode.lastblock ||
         state.node.seed.ip != targetNode.seed.ip) {
+
       var responseLastBlockInfo =
           await _repositories.networkRepository.fetchLastBlockInfo();
       if (responseLastBlockInfo.errors == null) {
@@ -205,11 +208,11 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         _debugBloc.add(AddStringDebug("Download Summary successful"));
 
         emit(state.copyWith(
-            node: targetNode,
+          node: targetNode,
             statusConnected: StatusConnectNodes.consensus,
             statisticsCoin: statsCopyCoin));
 
-        _walletEvent.add(CalculateBalance(sumaryBlock, true, []));
+        _walletEvent.add(CalculateBalance(sumaryBlock, true, null));
 
         return;
       } else {
@@ -226,7 +229,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         statisticsCoin: statsCopyCoin));
 
     if (targetNode.pendings != 0) {
-      _walletEvent.add(CalculateBalance([], false, []));
+      _walletEvent.add(CalculateBalance([], false, null));
     } else {
       add(SyncResult(true));
     }
@@ -246,7 +249,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       _debugBloc.add(AddStringDebug(
           "Synchronization is complete, the application is ready to work with the network",
           DebugType.success));
-      _startTimerSyncNetwork();
+    _startTimerSyncNetwork();
+
     } else {
       add(ReconnectSeed(false));
     }
@@ -256,6 +260,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   void _startTimerSyncNetwork() {
     timerSyncNetwork =
         Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
+          print("timer");
       add(ReconnectSeed(true));
     });
   }

@@ -368,6 +368,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorAddressBlock => 'Address blocked, payment cancelled';
 
   @override
+  String get errorAddressFound => 'Recipient does not exist';
+
+  @override
   String get sendProcess => 'Payment is awaiting confirmation';
 
   @override

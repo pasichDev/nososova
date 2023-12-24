@@ -819,6 +819,12 @@ abstract class AppLocalizations {
   /// **'Address blocked, payment cancelled'**
   String get errorAddressBlock;
 
+  /// No description provided for @errorAddressFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient does not exist'**
+  String get errorAddressFound;
+
   /// No description provided for @sendProcess.
   ///
   /// In en, this message translates to:

@@ -256,8 +256,7 @@ final class NosoCore extends NosoCrypto {
   String getRandomNode(String? inputString) {
     List<String> elements = (inputString ?? "").split(',');
     int elementCount = elements.length;
-
-    if (elementCount > 0 && inputString != null) {
+    if (elementCount > 0 && inputString != null && inputString.isNotEmpty) {
       int randomIndex = Random().nextInt(elementCount);
       var targetSeed = elements[randomIndex].split("|")[0];
       return targetSeed;

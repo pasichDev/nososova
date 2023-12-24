@@ -87,10 +87,9 @@ class _TransactionWidgetInfoState extends State<TransactionWidgetInfo> {
                     style: AppTextStyles.walletAddress
                         .copyWith(color: Colors.black, fontSize: 20)),
                 const SizedBox(height: 10),
-                if (widget.isProcess) ...[
+                if (!widget.isProcess) ...[
                   Text(widget.transaction.timestamp,
-                      style:
-                          AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
+                      style: AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
                 ] else ...[
                   Text(AppLocalizations.of(context)!.sendProcess,
                       style: AppTextStyles.itemStyle

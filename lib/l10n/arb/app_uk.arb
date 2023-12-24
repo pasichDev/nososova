@@ -49,7 +49,7 @@
   "unknownError": "Виникла помилка",
   "searchAddressResult": "Знайдено адрес",
   "billAction": "Виставити рахунок на цю адресу",
-  "addressesAdded": "У ваш гамнець додано нові адреси",
+  "addressesAdded": "У ваш гаманець додано нові адреси",
   "settings": "Налаштування",
   "sync": "Синхронізація",
   "information": "Інформація",
@@ -121,6 +121,7 @@
   "errorEmptyHistoryTransactions": "Транзакцій за цією адресою не знайдено",
   "successSetAlias": "Ваш запит успішно додано в обробку",
   "sendProcess": "Платіж чекає підтвердження",
+  "errorAddressFound": "Адреси отримувача не існує",
   "errorAddressBlock": "Адреса заблокована, платіж скасовано",
   "errorSendOrderDefault": "Помилка відправки платежа, спробуйте пізніше",
   "errorNoSync": "Додаток не синхронізований з основною мережею"

@@ -29,7 +29,7 @@ class NodeService {
       if (kDebugMode) {
 
         if (command != NetworkRequest.summary) {
-          print(String.fromCharCodes(responseBytes));
+          print("${String.fromCharCodes(responseBytes)}, seed -> ${seed.ip}");
         }
 
       }
@@ -82,7 +82,9 @@ class NodeService {
       if (responseBytes.isNotEmpty) {
         targetSeed.ping = responseTime;
         targetSeed.online = true;
+
         return ResponseNode(value: responseBytes, seed: targetSeed);
+
       } else {
         return ResponseNode(errors: "Empty response");
       }
@@ -96,6 +98,7 @@ class NodeService {
       if (kDebugMode) {
         print("SocketException: ${e.message}");
       }
+      print("Errro");
       return ResponseNode(errors: "SocketException: ${e.message}");
     } catch (e) {
       if (kDebugMode) {

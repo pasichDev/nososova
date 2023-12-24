@@ -50,6 +50,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   final AppDataBloc appDataBloc;
   final Repositories _repositories;
   final DebugBloc _debugBloc;
+  bool isFirstInit = true;
 
   late StreamSubscription _walletEvents;
   final _walletUpdate = StreamController<bool>.broadcast();
@@ -138,8 +139,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         _repositories.nosoCore.convertAmount(address.availableBalance) >=
             (amount + commission);
 
-    print(_repositories.nosoCore.convertAmount(address.availableBalance));
-    print((amount));
     if (receiver == "" || address.hash.isEmpty || !isBalanceCorrect) {
       _responseStatusStream.add(ResponseListenerPage(
           idWidget: widgetId,
@@ -188,7 +187,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         _responseStatusStream.add(ResponseListenerPage(
             idWidget: e.widgetId,
             codeMessage: 11,
-            snackBarType: SnackBarType.success));
+            snackBarType: SnackBarType.error));
+        _debugBloc.add(AddStringDebug(
+            "An attempt to send a payment was unsuccessful. Address blocked"));
+        return;
+      }
+      if (int.parse(result[1]) == 10) {
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: e.widgetId,
+            codeMessage: 13,
+            snackBarType: SnackBarType.error));
         _debugBloc.add(AddStringDebug(
             "An attempt to send a payment was unsuccessful. Address blocked"));
         return;
@@ -207,7 +215,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   initBloc() async {
     final addressStream = _repositories.localRepository.fetchAddress();
     await for (final addressList in addressStream) {
-      if (state.wallet.address.isEmpty) {
+      if (isFirstInit) {
+        isFirstInit = false;
         emit(state.copyWith(
             wallet: state.wallet.copyWith(address: addressList)));
       } else {
@@ -260,8 +269,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   void _calculateBalance(event, emit) async {
     var summary =
         event.summaryData.isEmpty ? state.wallet.summary : event.summaryData;
-    var listAddresses =
-        event.address.isEmpty ? state.wallet.address : event.address;
+    var listAddresses = event.address ?? state.wallet.address;
     var checkConsensus = event.checkConsensus;
     var targetNode = appDataBloc.state.node;
     ResponseCalculate calculateResponse = ResponseCalculate(
@@ -277,7 +285,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         _debugBloc.add(AddStringDebug(
             "Consensus is correct, branch: ${targetNode.branch}"));
         calculateResponse = await _syncBalance(summary, address: listAddresses);
-        listAddresses = calculateResponse.address ?? listAddresses;
+        listAddresses = calculateResponse.address;
       } else {
         _debugBloc.add(
             AddStringDebug("Consensus is incorrect, let's try to reconnect"));
@@ -286,7 +294,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       }
     } else if (consensusReturn == ConsensusStatus.sync && !checkConsensus) {
       calculateResponse = await _syncBalance(summary, address: listAddresses);
-      listAddresses = calculateResponse.address ?? listAddresses;
+      listAddresses = calculateResponse.address;
     }
 
     List<PendingTransaction> pendingsParse = [];
@@ -305,7 +313,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     _debugBloc.add(AddStringDebug(
         "Pendings have been processed, we are completing synchronization"));
     var calculatePendings = await _syncPendings(pendingsParse, listAddresses);
-    listAddresses = calculatePendings.address ?? listAddresses;
+    listAddresses =  listAddresses;
     calculateResponse = calculateResponse.copyWith(
         totalOutgoing: calculatePendings.totalOutgoing,
         totalIncoming: calculatePendings.totalIncoming);
@@ -345,26 +353,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             balanceTotal: calculateResponse.totalBalance,
             totalIncoming: calculateResponse.totalIncoming,
             totalOutgoing: calculateResponse.totalOutgoing)));
+
+
     appDataBloc.add(SyncResult(true));
   }
 
   /// Method that checks the consensus for correctness
   /// It selects two nodes from the verified nodes and 3 nodes from the custom nodes for consensus verification
-  ///
   Future<ConsensusStatus> _checkConsensus(Node targetNode) async {
     List<Node> testNodes = [];
     List<bool> decisionNodes = [];
+    var listNodesUsers = appDataBloc.appBlocConfig.nodesList;
 
     int maxDevAttempts = 2;
     int maxDevFalseAttempts = 4;
     int attemptsDev = 0;
-
     do {
       var targetDevNode =
           await _repositories.networkRepository.getRandomDevNode();
       final Node? nodeOutput = _repositories.nosoCore
           .parseResponseNode(targetDevNode.value, targetDevNode.seed);
-
       if (targetDevNode.errors != null ||
           nodeOutput == null ||
           testNodes.any((node) =>
@@ -377,14 +385,19 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       }
     } while (attemptsDev < maxDevAttempts && attemptsDev < maxDevFalseAttempts);
 
-    int maxUserAttempts = testNodes.length == 2 ? 3 : 5;
+    int maxUserAttempts = testNodes.length == 2
+        ? listNodesUsers == null || listNodesUsers.isEmpty
+            ? 2
+            : 1
+        : 3;
     int attemptsUser = 0;
 
     do {
-      var targetUserNode = await _repositories.networkRepository.fetchNode(
-          NetworkRequest.nodeStatus,
-          Seed().tokenizer(_repositories.nosoCore
-              .getRandomNode(appDataBloc.appBlocConfig.nodesList)));
+      var randomSeed = Seed()
+          .tokenizer(_repositories.nosoCore.getRandomNode(listNodesUsers));
+      var targetUserNode = await _repositories.networkRepository
+          .fetchNode(NetworkRequest.nodeStatus, randomSeed);
+
       final Node? nodeUserOutput = _repositories.nosoCore
           .parseResponseNode(targetUserNode.value, targetUserNode.seed);
 
@@ -423,9 +436,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       {List<Address>? address}) async {
     var listAddress = address ?? state.wallet.address;
 
-    if (listAddress.isEmpty) {
+   /* if (listAddress.isEmpty) {
       return ResponseCalculate();
     }
+
+    */
 
     double totalBalance = 0;
     for (var address in listAddress) {
@@ -444,12 +459,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       }
     }
 
-    if (totalBalance != 0) {
+  //  if (totalBalance != 0) {
       return ResponseCalculate(
           address: listAddress, totalBalance: totalBalance);
-    } else {
-      return ResponseCalculate();
-    }
+ //   } else {
+  //    return ResponseCalculate();
+  //  }
   }
 
   /// Method that synchronizes pendings
@@ -461,34 +476,34 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     var calculateListAddress = address;
 
     for (var address in calculateListAddress) {
-      PendingTransaction? foundReceiver = pendings.firstWhere(
-          (other) => other.receiver == address.hash,
-          orElse: () => PendingTransaction());
-      PendingTransaction? foundSender = pendings.firstWhere(
-          (other) => other.sender == address.hash,
-          orElse: () => PendingTransaction());
+      List<PendingTransaction> foundReceivers =
+          pendings.where((other) => other.receiver == address.hash).toList();
 
-      if (foundReceiver.receiver.isNotEmpty) {
-        totalIncoming += foundReceiver.amountTransfer;
-        address.incoming += foundReceiver.amountTransfer;
-      } else if (foundSender.sender.isNotEmpty) {
-        var cell = foundSender.amountTransfer + foundSender.amountFee;
-        totalOutgoing += cell;
-        address.outgoing += cell;
-      } else {
-        address.incoming = 0;
-        address.outgoing = 0;
+      List<PendingTransaction> foundSenders =
+          pendings.where((other) => other.sender == address.hash).toList();
+
+      address.incoming = 0;
+      address.outgoing = 0;
+
+      if (foundReceivers.isNotEmpty) {
+        for (var pending in foundReceivers) {
+          totalIncoming += pending.amountTransfer;
+          address.incoming += pending.amountTransfer;
+        }
+      }
+      if (foundSenders.isNotEmpty) {
+        for (var pending in foundSenders) {
+          var cell = pending.amountTransfer + pending.amountFee;
+          totalOutgoing += cell;
+          address.outgoing += cell;
+        }
       }
     }
 
-    //  if (totalIncoming != 0 || totalOutgoing != 0) {
     return ResponseCalculate(
         address: calculateListAddress,
         totalIncoming: totalIncoming,
         totalOutgoing: totalOutgoing);
-    // } else {
-    //    return ResponseCalculate();
-    //  }
   }
 
   /// This method receives a file and processes its contents, and returns the contents of the file for confirmation
