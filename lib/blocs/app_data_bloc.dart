@@ -90,7 +90,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (state.statusConnected == StatusConnectNodes.sync && event.lastNodeRun) {
       return;
     }
-    print(event.lastNodeRun);
     _stopTimerSyncNetwork();
     if (event.lastNodeRun) {
       emit(state.copyWith(statusConnected: StatusConnectNodes.sync));
