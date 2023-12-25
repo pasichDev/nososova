@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
@@ -9,6 +8,7 @@ import '../../generated/assets.dart';
 import '../../ui/tiles/seed_tile.dart';
 import '../../utils/const/network_const.dart';
 import '../../utils/custom_class/shimmer.dart';
+import '../../utils/date_utils.dart';
 import '../../utils/noso/model/node.dart';
 import '../common/route/dialog_router.dart';
 import '../components/extra_util.dart';
@@ -47,13 +47,13 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
                 ),
               ),
               IconButton(
-                  tooltip:   AppLocalizations.of(context)!.updateInfo,
+                  tooltip: AppLocalizations.of(context)!.updateInfo,
                   icon: const Icon(Icons.restart_alt_outlined),
                   onPressed: () {
                     return context.read<AppDataBloc>().add(ReconnectSeed(true));
                   }),
               IconButton(
-                tooltip:   AppLocalizations.of(context)!.chanceNode,
+                  tooltip: AppLocalizations.of(context)!.chanceNode,
                   icon: const Icon(Icons.navigate_next),
                   onPressed: () {
                     return context
@@ -85,7 +85,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
           itemInfo(AppLocalizations.of(context)!.version,
               state.node.version.toString(), state.statusConnected),
           itemInfo(AppLocalizations.of(context)!.utcTime,
-              getNormalTime(state.node.utcTime), state.statusConnected),
+              DateUtil.getUtcTime(state.node.utcTime), state.statusConnected),
           const SizedBox(height: 20),
         ],
       );
@@ -96,11 +96,6 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
     bool isDev = NetworkConst.getSeedList()
         .any((item) => item.toTokenizer() == node.seed.toTokenizer());
     return isDev ? "Verified node" : "Custom node";
-  }
-
-  String getNormalTime(int unixTime) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(unixTime * 1000);
-    return DateFormat('HH:mm:ss').format(dateTime);
   }
 
   itemInfo(String nameItem, String value, StatusConnectNodes statusConnected) {
