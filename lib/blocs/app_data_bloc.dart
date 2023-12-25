@@ -97,13 +97,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       await _selectTargetNode(event, emit, InitialNodeAlgh.connectLastNode,
           repeat: true);
     } else {
-      _debugBloc.add(AddStringDebug("Reconnecting to  new node"));
-      await _selectTargetNode(
-          event,
-          emit,
-          Random().nextInt(2) == 0
-              ? InitialNodeAlgh.listenDefaultNodes
-              : InitialNodeAlgh.listenUserNodes);
+      _debugBloc.add(AddStringDebug("Reconnecting to new node"));
+      await _selectTargetNode(event, emit, getRandomAlgorithm());
     }
   }
 
@@ -125,8 +120,18 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     if (responseTargetNode.errors == null && nodeOutput != null) {
       await _syncNetwork(event, emit, nodeOutput);
     } else {
-      await _selectTargetNode(event, emit, initAlgh, repeat: true);
+      _debugBloc.add(AddStringDebug(
+          "The node did not respond properly -> ${responseTargetNode.seed.toTokenizer()}"));
+      _debugBloc.add(AddStringDebug("Reconnecting to new node"));
+      await _selectTargetNode(event, emit, getRandomAlgorithm(), repeat: true);
     }
+  }
+
+  /// NEW get randomNode
+  InitialNodeAlgh getRandomAlgorithm() {
+    return Random().nextInt(2) == 0
+        ? InitialNodeAlgh.listenDefaultNodes
+        : InitialNodeAlgh.listenUserNodes;
   }
 
   /// A method that tests and returns the active node
@@ -171,15 +176,22 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
 
     if (state.node.lastblock != targetNode.lastblock ||
         state.node.seed.ip != targetNode.seed.ip) {
-
       var responseLastBlockInfo =
           await _repositories.networkRepository.fetchLastBlockInfo();
       if (responseLastBlockInfo.errors == null) {
         BlockInfo blockInfo = responseLastBlockInfo.value;
-        _repositories.sharedRepository
-            .saveNodesList(blockInfo.getMasternodesString());
-        appBlocConfig =
-            appBlocConfig.copyWith(nodesList: blockInfo.getMasternodesString());
+        if (blockInfo.masternodes.isNotEmpty) {
+          _repositories.sharedRepository
+              .saveNodesList(blockInfo.getMasternodesString());
+          appBlocConfig = appBlocConfig.copyWith(
+              nodesList: blockInfo.getMasternodesString());
+          _debugBloc.add(AddStringDebug(
+              "The list of active nodes is updated, currently they are -> ${blockInfo.count}"));
+        } else {
+          _debugBloc
+              .add(AddStringDebug("The list of active nodes is not updated"));
+        }
+
         statsCopyCoin = statsCopyCoin.copyWith(
             totalNodes: blockInfo.count,
             reward: blockInfo.reward,
@@ -207,7 +219,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         _debugBloc.add(AddStringDebug("Download Summary successful"));
 
         emit(state.copyWith(
-          node: targetNode,
+            node: targetNode,
             statusConnected: StatusConnectNodes.consensus,
             statisticsCoin: statsCopyCoin));
 
@@ -248,8 +260,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       _debugBloc.add(AddStringDebug(
           "Synchronization is complete, the application is ready to work with the network",
           DebugType.success));
-    _startTimerSyncNetwork();
-
+      _startTimerSyncNetwork();
     } else {
       add(ReconnectSeed(false));
     }
@@ -259,7 +270,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   void _startTimerSyncNetwork() {
     timerSyncNetwork =
         Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
-          print("timer");
       add(ReconnectSeed(true));
     });
   }

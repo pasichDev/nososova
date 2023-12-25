@@ -9,6 +9,7 @@ import 'package:nososova/utils/noso/model/pending_transaction.dart';
 import 'package:nososova/utils/noso/model/summary_data.dart';
 
 import '../models/apiExplorer/transaction_history.dart';
+import '../models/app/debug.dart';
 import '../models/app/response_calculate.dart';
 import '../models/app/state_node.dart';
 import '../models/app/wallet.dart';
@@ -283,7 +284,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       consensusReturn = await _checkConsensus(targetNode);
       if (consensusReturn == ConsensusStatus.sync) {
         _debugBloc.add(AddStringDebug(
-            "Consensus is correct, branch: ${targetNode.branch}"));
+            "Consensus is correct, branch: ${targetNode.branch}", DebugType.error));
         calculateResponse = await _syncBalance(summary, address: listAddresses);
         listAddresses = calculateResponse.address;
       } else {
@@ -436,12 +437,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       {List<Address>? address}) async {
     var listAddress = address ?? state.wallet.address;
 
-   /* if (listAddress.isEmpty) {
-      return ResponseCalculate();
-    }
-
-    */
-
     double totalBalance = 0;
     for (var address in listAddress) {
       SumaryData found = summary.firstWhere(
@@ -458,13 +453,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             found.balance >= UtilsDataNoso.getCountMonetToRunNode();
       }
     }
-
-  //  if (totalBalance != 0) {
       return ResponseCalculate(
           address: listAddress, totalBalance: totalBalance);
- //   } else {
-  //    return ResponseCalculate();
-  //  }
+
   }
 
   /// Method that synchronizes pendings
