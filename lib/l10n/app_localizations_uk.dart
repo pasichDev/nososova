@@ -5,12 +5,6 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get overallOnBalance => 'Загалом в гаманці';
-
-  @override
-  String get price => 'Вартість';
-
-  @override
   String get incoming => 'Вхідні';
 
   @override
@@ -29,18 +23,6 @@ class AppLocalizationsUk extends AppLocalizations {
   String get myAddresses => 'Адреси';
 
   @override
-  String get notImplemented => 'Функція не реалізована';
-
-  @override
-  String get newTitle => 'Новий';
-
-  @override
-  String get import => 'Імпорт';
-
-  @override
-  String get export => 'Експорт';
-
-  @override
   String get genNewKeyPair => 'Згенерувати нову адресу';
 
   @override
@@ -51,9 +33,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get titleScannerCode => 'Сканер Qr-коду';
-
-  @override
-  String get descriptionScannerCode => 'Наведіть видошукач на свій QR-код';
 
   @override
   String get foundAddresses => 'Знайдені адреси';
@@ -110,13 +89,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get keys => 'Ключі';
 
   @override
-  String get certificate => 'Сертифікат';
-
-  @override
   String get sendFromAddress => 'Відправити з цієї адреси';
-
-  @override
-  String get lock => 'Заблокувати';
 
   @override
   String get removeAddress => 'Видалити адресу з гаманця';
@@ -138,15 +111,6 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get newFormatWalletFileDescrypt => 'Наш захоплюючий додаток пропонує вам можливість зберігати свій гаманець в найбільш безпечному форматі';
-
-  @override
-  String get errorEmptyListWallet => 'Це файл не містить адрес';
-
-  @override
-  String get errorNotSupportedWallet => 'Цей файл не підтримується';
-
-  @override
-  String get unknownError => 'Виникла помилка';
 
   @override
   String get searchAddressResult => 'Знайдено адрес';
@@ -381,4 +345,13 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get successSetAlias => 'Ваш запит успішно додано в обробку';
+
+  @override
+  String get errorEmptyListWallet => 'Це файл не містить адрес';
+
+  @override
+  String get errorNotSupportedWallet => 'Цей файл не підтримується';
+
+  @override
+  String get unknownError => 'Виникла помилка';
 }

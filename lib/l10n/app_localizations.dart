@@ -93,18 +93,6 @@ abstract class AppLocalizations {
     Locale('uk')
   ];
 
-  /// No description provided for @overallOnBalance.
-  ///
-  /// In en, this message translates to:
-  /// **'Overall on wallet'**
-  String get overallOnBalance;
-
-  /// No description provided for @price.
-  ///
-  /// In en, this message translates to:
-  /// **'Price'**
-  String get price;
-
   /// No description provided for @incoming.
   ///
   /// In en, this message translates to:
@@ -141,30 +129,6 @@ abstract class AppLocalizations {
   /// **'Addresses'**
   String get myAddresses;
 
-  /// No description provided for @notImplemented.
-  ///
-  /// In en, this message translates to:
-  /// **'The function is not implemented'**
-  String get notImplemented;
-
-  /// No description provided for @newTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'New'**
-  String get newTitle;
-
-  /// No description provided for @import.
-  ///
-  /// In en, this message translates to:
-  /// **'Import'**
-  String get import;
-
-  /// No description provided for @export.
-  ///
-  /// In en, this message translates to:
-  /// **'Export'**
-  String get export;
-
   /// No description provided for @genNewKeyPair.
   ///
   /// In en, this message translates to:
@@ -188,12 +152,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Qr Code scanner'**
   String get titleScannerCode;
-
-  /// No description provided for @descriptionScannerCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Point the viewfinder at your QR Code'**
-  String get descriptionScannerCode;
 
   /// No description provided for @foundAddresses.
   ///
@@ -303,23 +261,11 @@ abstract class AppLocalizations {
   /// **'Keys'**
   String get keys;
 
-  /// No description provided for @certificate.
-  ///
-  /// In en, this message translates to:
-  /// **'Certificate'**
-  String get certificate;
-
   /// No description provided for @sendFromAddress.
   ///
   /// In en, this message translates to:
   /// **'Send from this address'**
   String get sendFromAddress;
-
-  /// No description provided for @lock.
-  ///
-  /// In en, this message translates to:
-  /// **'Lock'**
-  String get lock;
 
   /// No description provided for @removeAddress.
   ///
@@ -362,24 +308,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our exciting application offers you the opportunity to store your wallet in the most secure format'**
   String get newFormatWalletFileDescrypt;
-
-  /// No description provided for @errorEmptyListWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'This file does not contain an address'**
-  String get errorEmptyListWallet;
-
-  /// No description provided for @errorNotSupportedWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'This file is not supported'**
-  String get errorNotSupportedWallet;
-
-  /// No description provided for @unknownError.
-  ///
-  /// In en, this message translates to:
-  /// **'An error occurred'**
-  String get unknownError;
 
   /// No description provided for @searchAddressResult.
   ///
@@ -848,6 +776,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your request is successful and has been processed'**
   String get successSetAlias;
+
+  /// No description provided for @errorEmptyListWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'This file does not contain an address'**
+  String get errorEmptyListWallet;
+
+  /// No description provided for @errorNotSupportedWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not supported'**
+  String get errorNotSupportedWallet;
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get unknownError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

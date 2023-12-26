@@ -5,12 +5,6 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get overallOnBalance => 'Overall on wallet';
-
-  @override
-  String get price => 'Price';
-
-  @override
   String get incoming => 'Incoming';
 
   @override
@@ -29,18 +23,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myAddresses => 'Addresses';
 
   @override
-  String get notImplemented => 'The function is not implemented';
-
-  @override
-  String get newTitle => 'New';
-
-  @override
-  String get import => 'Import';
-
-  @override
-  String get export => 'Export';
-
-  @override
   String get genNewKeyPair => 'Generate new address';
 
   @override
@@ -51,9 +33,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get titleScannerCode => 'Qr Code scanner';
-
-  @override
-  String get descriptionScannerCode => 'Point the viewfinder at your QR Code';
 
   @override
   String get foundAddresses => 'Found addresses';
@@ -110,13 +89,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keys => 'Keys';
 
   @override
-  String get certificate => 'Certificate';
-
-  @override
   String get sendFromAddress => 'Send from this address';
-
-  @override
-  String get lock => 'Lock';
 
   @override
   String get removeAddress => 'Remove address from wallet';
@@ -138,15 +111,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newFormatWalletFileDescrypt => 'Our exciting application offers you the opportunity to store your wallet in the most secure format';
-
-  @override
-  String get errorEmptyListWallet => 'This file does not contain an address';
-
-  @override
-  String get errorNotSupportedWallet => 'This file is not supported';
-
-  @override
-  String get unknownError => 'An error occurred';
 
   @override
   String get searchAddressResult => 'Address found';
@@ -381,4 +345,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get successSetAlias => 'Your request is successful and has been processed';
+
+  @override
+  String get errorEmptyListWallet => 'This file does not contain an address';
+
+  @override
+  String get errorNotSupportedWallet => 'This file is not supported';
+
+  @override
+  String get unknownError => 'An error occurred';
 }
