@@ -27,11 +27,9 @@ class NodeService {
       final endTime = DateTime.now().millisecondsSinceEpoch;
       final responseTime = endTime - startTime;
       if (kDebugMode) {
-
         if (command != NetworkRequest.summary) {
           print("${String.fromCharCodes(responseBytes)}, seed -> ${seed.ip}");
         }
-
       }
 
       socket.close();
@@ -84,7 +82,6 @@ class NodeService {
         targetSeed.online = true;
 
         return ResponseNode(value: responseBytes, seed: targetSeed);
-
       } else {
         return ResponseNode(errors: "Empty response");
       }
@@ -98,7 +95,6 @@ class NodeService {
       if (kDebugMode) {
         print("SocketException: ${e.message}");
       }
-      print("Errro");
       return ResponseNode(errors: "SocketException: ${e.message}");
     } catch (e) {
       if (kDebugMode) {
