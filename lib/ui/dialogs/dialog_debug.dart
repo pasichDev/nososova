@@ -14,21 +14,20 @@ class DialogDebug extends StatefulWidget {
   DialogDebugState createState() => DialogDebugState();
 }
 
-class DialogDebugState extends State<DialogDebug>
-{
-
+class DialogDebugState extends State<DialogDebug> {
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DebugBloc, DebugState>(builder: (context, state) {
-      var listDebug = state.debugList;
+      var listDebug = state.debugList.reversed.toList();
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Text(
+            Text(
               AppLocalizations.of(context)!.debugInfo,
               style: AppTextStyles.dialogTitle,
             ),
@@ -43,6 +42,7 @@ class DialogDebugState extends State<DialogDebug>
               height: MediaQuery.of(context).size.height * 0.4,
               child: ListView.builder(
                 shrinkWrap: true,
+                controller: _controller,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
                 itemCount: listDebug.length,
@@ -52,8 +52,13 @@ class DialogDebugState extends State<DialogDebug>
                     padding: EdgeInsets.symmetric(
                         vertical: item.type != DebugType.inform ? 10 : 0),
                     child: Text("${item.time}: ${item.message}",
-                        style: AppTextStyles.itemStyle.copyWith(fontSize: 16, color: item.type != DebugType.inform ?  item.type != DebugType.error ? CustomColors.positiveBalance : CustomColors.negativeBalance
-                            : Colors.black)),
+                        style: AppTextStyles.itemStyle.copyWith(
+                            fontSize: 16,
+                            color: item.type != DebugType.inform
+                                ? item.type != DebugType.error
+                                    ? CustomColors.positiveBalance
+                                    : CustomColors.negativeBalance
+                                : Colors.black)),
                   );
                 },
               ),

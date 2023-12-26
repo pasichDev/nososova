@@ -24,9 +24,12 @@ class DebugBloc extends Bloc<DebugEvent, DebugState> {
     on<AddStringDebug>(_addToDebug);
   }
 
+  /// A method that adds an event to the console
   _addToDebug(event, emit) {
+    final DateTime now = DateTime.now();
     var list = state.debugList;
-    DateTime now = DateTime.now();
+    list = list.length >= 100 ? [] : list;
+
     list.add(DebugString(
         time:
             "${now.hour}:${now.minute}:${now.second.toString().length < 2 ? now.second : now.second.toString().padLeft(2, '0')}",
