@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -41,8 +42,7 @@ class ExplorerStatsService {
 
     if (response.errors != null) {
       return response;
-    }
-    else {
+    } else {
       List<PriceData> listPrice = List<PriceData>.from(
           response.value.map((item) => PriceData.fromJson(item)));
 
@@ -65,20 +65,32 @@ class ExplorerStatsService {
   }
 
   Future<ResponseApi> _fetchExplorerStats(String uri) async {
-    final response = await http.get(
-      Uri.parse(uri),
-      headers: {"accept": "application/json"},
-    ).timeout(const Duration(seconds: NetworkConst.durationTimeOut));
+    try {
+      final response = await http.get(
+        Uri.parse(uri),
+        headers: {"accept": "application/json"},
+      ).timeout(const Duration(seconds: NetworkConst.durationTimeOut));
 
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
-      return ResponseApi(value: jsonData);
-    } else {
-      if (kDebugMode) {
-        print('Request failed with status: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body);
+        return ResponseApi(value: jsonData);
+      } else {
+        if (kDebugMode) {
+          print('Request failed with status: ${response.statusCode}');
+        }
+        return ResponseApi(
+            errors: 'Request failed with status: ${response.statusCode}');
       }
-      return ResponseApi(
-          errors: 'Request failed with status: ${response.statusCode}');
+    } on TimeoutException catch (e) {
+      if (kDebugMode) {
+        print('Request timed out: $e');
+      }
+      return ResponseApi(errors: 'Request timed out: $e');
+    } catch (e) {
+      if (kDebugMode) {
+        print('Request failed with error: $e');
+      }
+      return ResponseApi(errors: 'Request failed with error: $e');
     }
   }
 }

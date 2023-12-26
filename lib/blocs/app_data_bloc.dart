@@ -127,7 +127,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
     }
   }
 
-  /// NEW get randomNode
+  /// A method that selects a random algorithm type
   InitialNodeAlgh getRandomAlgorithm() {
     return Random().nextInt(2) == 0
         ? InitialNodeAlgh.listenDefaultNodes
@@ -178,6 +178,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         state.node.seed.ip != targetNode.seed.ip) {
       var responseLastBlockInfo =
           await _repositories.networkRepository.fetchLastBlockInfo();
+
       if (responseLastBlockInfo.errors == null) {
         BlockInfo blockInfo = responseLastBlockInfo.value;
         if (blockInfo.masternodes.isNotEmpty) {
@@ -206,8 +207,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         statsCopyCoin = statsCopyCoin.copyWith(apiStatus: ApiStatus.error);
       }
 
-      ResponseNode<List<int>> responseSummary =
-          await _fetchNode(NetworkRequest.summary, targetNode.seed);
+      ResponseNode<List<int>> responseSummary = await _repositories
+          .networkRepository
+          .fetchNode(NetworkRequest.summary, targetNode.seed);
       var isSavedSummary = await _repositories.fileRepository
           .writeSummaryZip(responseSummary.value ?? []);
       if (responseSummary.errors == null && isSavedSummary) {
@@ -272,15 +274,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
         Timer.periodic(Duration(seconds: appBlocConfig.delaySync), (timer) {
       add(ReconnectSeed(true));
     });
-  }
-
-  /// The base method for referencing a request to a node
-  Future<ResponseNode<List<int>>> _fetchNode(String command, Seed? seed) async {
-    seed ??= state.node.seed;
-    if (state.statusConnected == StatusConnectNodes.error) {
-      return ResponseNode(errors: "You are not connected to nodes.");
-    }
-    return await _repositories.networkRepository.fetchNode(command, seed);
   }
 
   /// Request data from sharedPrefs

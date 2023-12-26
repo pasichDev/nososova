@@ -4,7 +4,7 @@ import 'package:nososova/generated/assets.dart';
 import '../../models/seed.dart';
 
 final class NetworkConst {
-  static const int durationTimeOut = 5;
+  static const int durationTimeOut = 3;
   static const int delaySync = 30;
 
   static List<Seed> getSeedList() {
