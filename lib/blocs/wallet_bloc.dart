@@ -284,12 +284,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       consensusReturn = await _checkConsensus(targetNode);
       if (consensusReturn == ConsensusStatus.sync) {
         _debugBloc.add(AddStringDebug(
-            "Consensus is correct, branch: ${targetNode.branch}", DebugType.error));
+            "Consensus is correct, branch: ${targetNode.branch}", DebugType.success));
         calculateResponse = await _syncBalance(summary, address: listAddresses);
         listAddresses = calculateResponse.address;
       } else {
         _debugBloc.add(
-            AddStringDebug("Consensus is incorrect, let's try to reconnect"));
+            AddStringDebug("Consensus is incorrect, let's try to reconnect", DebugType.error));
         appDataBloc.add(ReconnectSeed(false));
         return;
       }
