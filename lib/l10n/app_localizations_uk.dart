@@ -299,6 +299,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get informMyNodes => 'Статус ваших вузлів';
 
   @override
+  String get getKeysPair => 'Переглянути ключі';
+
+  @override
   String get emptyListAddress => 'Створіть або згенеруйте нові адреси для вашого використання';
 
   @override

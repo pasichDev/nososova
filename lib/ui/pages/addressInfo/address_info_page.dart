@@ -274,7 +274,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
           child: Text(
             Const.coinName,
             style: AppTextStyles.titleMax
-                .copyWith(color: Colors.white.withOpacity(0.4)),
+                .copyWith(color: Colors.white.withOpacity(0.4),  fontSize: 32,),
           ),
         ),
         Positioned(
@@ -286,15 +286,15 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
               Text(
                 targetAddress.balance.toStringAsFixed(8),
                 style: AppTextStyles.titleMax.copyWith(
-                  fontSize: 36,
+                  fontSize: 32,
                   color: Colors.white.withOpacity(1),
                 ),
               ),
               const SizedBox(height: 15),
               Text(
-                targetAddress.nameAddressFull,
+                targetAddress.hashPublic,
                 style: AppTextStyles.titleMax.copyWith(
-                  fontSize: 18,
+                  fontSize: 20,
                   color: Colors.white.withOpacity(0.5),
                 ),
               ),

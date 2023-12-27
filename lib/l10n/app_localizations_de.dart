@@ -299,6 +299,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get informMyNodes => 'Status meiner Nodes';
 
   @override
+  String get getKeysPair => 'Schlüssel anzeigen';
+
+  @override
   String get emptyListAddress => 'Erstelle eine neue Adresse';
 
   @override

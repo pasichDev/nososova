@@ -685,6 +685,12 @@ abstract class AppLocalizations {
   /// **'Status of your nodes'**
   String get informMyNodes;
 
+  /// No description provided for @getKeysPair.
+  ///
+  /// In en, this message translates to:
+  /// **'View keys'**
+  String get getKeysPair;
+
   /// No description provided for @emptyListAddress.
   ///
   /// In en, this message translates to:

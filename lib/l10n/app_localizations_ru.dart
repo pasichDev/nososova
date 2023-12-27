@@ -299,6 +299,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get informMyNodes => 'Статус Вашей ноды';
 
   @override
+  String get getKeysPair => 'Просмотр ключей';
+
+  @override
   String get emptyListAddress => 'Создать или сгенерировать новые адреса';
 
   @override

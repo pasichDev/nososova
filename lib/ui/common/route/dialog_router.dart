@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nososova/ui/dialogs/dialog_view_keyspair.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -84,7 +85,8 @@ class DialogRouter {
   }
 
   /// A dialog in which actions on the address are provided
-  static void showDialogAddressActions(BuildContext context, Address address, GlobalKey<ScaffoldState> scaffoldKey) {
+  static void showDialogAddressActions(BuildContext context, Address address,
+      GlobalKey<ScaffoldState> scaffoldKey) {
     if (Responsive.isMobile(context)) {
       showModalBottomSheet(
           shape: DialogStyle.borderShape,
@@ -103,7 +105,6 @@ class DialogRouter {
             WoltModalSheetPage(
                 backgroundColor: Colors.white,
                 hasSabGradient: false,
-
                 topBarTitle: Text(address.hashPublic,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
@@ -209,5 +210,27 @@ class DialogRouter {
         builder: (_) => BlocProvider.value(
             value: BlocProvider.of<WalletBloc>(context),
             child: DialogImportAddress(address: address)));
+  }
+
+
+  static void showDialogViewKeysPair(BuildContext context, Address address) {
+    WoltModalSheet.show(
+      context: context,
+      minDialogWidth: 600,
+      pageListBuilder: (BuildContext _) {
+        return [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            hasSabGradient: false,
+            topBarTitle: Text("Secret keys",
+                textAlign: TextAlign.center,
+                style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
+            isTopBarLayerAlwaysVisible: true,
+
+            child: DialogViewKeysPair(address: address),
+          )
+        ];
+      },
+    );
   }
 }

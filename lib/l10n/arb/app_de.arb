@@ -98,6 +98,7 @@
   "copyAddress": "Adresse kopieren",
   "informMyNodes": "Status meiner Nodes",
   "emptyListAddress": "Erstelle eine neue Adresse",
+  "getKeysPair": "Schlüssel anzeigen",
   "aliasMessage": "Der Alias kann zwischen 3 und 32 Zeichen lang sein. Vergiss nicht, dass für die Einrichtung eines Alias eine Transaktionsgebühr erhoben wird.",
   "errorNoFoundCoinsTransaction": "Der Kontostand ist zu niedrig für diese Transaktion",
   "errorInformationIncorrect": "Die Transaktionsinformationen sind nicht korrekt",

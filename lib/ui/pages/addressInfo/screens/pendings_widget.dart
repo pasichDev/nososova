@@ -43,7 +43,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             widget: Text(
                                 "${isIncoming ? "+" : ""}${widget.address.incoming.toStringAsFixed(6)}",
                                 style: AppTextStyles.categoryStyle.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     color: isIncoming
                                         ? CustomColors.positiveBalance
                                         : Colors.white.withOpacity(0.8))),
@@ -63,7 +63,7 @@ class _PendingsWidgetState extends State<PendingsWidget> {
                             widget: Text(
                                 "${isOutgoing ? "-" : ""}${widget.address.outgoing.toStringAsFixed(6)}",
                                 style: AppTextStyles.categoryStyle.copyWith(
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     color: isOutgoing
                                         ? CustomColors.negativeBalance
                                         : Colors.white.withOpacity(0.8))),

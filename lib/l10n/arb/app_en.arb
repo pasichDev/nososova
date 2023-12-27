@@ -97,6 +97,7 @@
   "updateInfo": "Update information",
   "copyAddress": "Copy the address",
   "informMyNodes": "Status of your nodes",
+  "getKeysPair": "View keys",
   "emptyListAddress": "Create or generate new addresses for your use",
   "aliasMessage": "The alias can be set from 3 to 32 characters long. Also, don't forget that a transaction fee is charged for setting up alias.",
   "errorNoFoundCoinsTransaction": "There are not enough coins for the transaction",
