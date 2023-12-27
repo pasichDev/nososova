@@ -14,6 +14,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
+import '../../common/widgets/node_light_status.dart';
 import '../../components/app_bar_other_page.dart';
 import '../../components/network_info.dart';
 import '../../config/responsive.dart';
@@ -135,7 +136,10 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                               },
                             ),
                           ),
-                          PendingsWidget(address: address),
+                          if (address.nodeAvailable)
+                            NodeLightStatus(address: address)
+                          else
+                            PendingsWidget(address: address),
                           Expanded(
                               flex: 2,
                               child: ClipRRect(

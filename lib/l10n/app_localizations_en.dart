@@ -302,6 +302,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getKeysPair => 'View keys';
 
   @override
+  String get reward => 'Reward';
+
+  @override
+  String get online => 'Online';
+
+  @override
+  String get offline => 'Offline';
+
+  @override
   String get emptyListAddress => 'Create or generate new addresses for your use';
 
   @override

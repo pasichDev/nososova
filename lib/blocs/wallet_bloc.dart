@@ -284,12 +284,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       consensusReturn = await _checkConsensus(targetNode);
       if (consensusReturn == ConsensusStatus.sync) {
         _debugBloc.add(AddStringDebug(
-            "Consensus is correct, branch: ${targetNode.branch}", DebugType.success));
+            "Consensus is correct, branch: ${targetNode.branch}",
+            DebugType.success));
         calculateResponse = await _syncBalance(summary, address: listAddresses);
         listAddresses = calculateResponse.address;
       } else {
-        _debugBloc.add(
-            AddStringDebug("Consensus is incorrect, let's try to reconnect", DebugType.error));
+        _debugBloc.add(AddStringDebug(
+            "Consensus is incorrect, let's try to reconnect", DebugType.error));
         appDataBloc.add(ReconnectSeed(false));
         return;
       }
@@ -314,36 +315,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     _debugBloc.add(AddStringDebug(
         "Pendings have been processed, we are completing synchronization"));
     var calculatePendings = await _syncPendings(pendingsParse, listAddresses);
-    listAddresses =  listAddresses;
+    listAddresses = listAddresses;
     calculateResponse = calculateResponse.copyWith(
         totalOutgoing: calculatePendings.totalOutgoing,
         totalIncoming: calculatePendings.totalIncoming);
 
-    var totalNodes = appDataBloc.appBlocConfig.nodesList ?? "";
-    List<String> nodesList = totalNodes.split(',');
-
-    if (nodesList.isNotEmpty) {
-      List<Address> listUserNodes = [];
-      bool containsSeedWallet(String address) =>
-          nodesList.any((itemNode) => address == itemNode.split("|")[1]);
-
-      for (Address address in listAddresses) {
-        if (address.balance >= UtilsDataNoso.getCountMonetToRunNode()) {
-          address.nodeAvailable = true;
-          address.nodeStatusOn = containsSeedWallet(address.hash);
-          listUserNodes.add(address);
-        }
-      }
-      var launched =
-          listUserNodes.where((item) => item.nodeStatusOn == true).length;
-      var nodesRewardDay =
-          appDataBloc.state.statisticsCoin.getBlockDayNodeReward * launched;
-
-      stateNodes = stateNodes.copyWith(
-          launchedNodes: launched,
-          rewardDay: nodesRewardDay,
-          nodes: listUserNodes);
-    }
+    /// getInfoActiveNodes
+    stateNodes = _getActiveNodesInfo(
+        stateNodes, appDataBloc.appBlocConfig.nodesList ?? "", listAddresses);
 
     emit(state.copyWith(
         stateNodes: stateNodes,
@@ -355,8 +334,41 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             totalIncoming: calculateResponse.totalIncoming,
             totalOutgoing: calculateResponse.totalOutgoing)));
 
-
     appDataBloc.add(SyncResult(true));
+  }
+
+  StateNodes _getActiveNodesInfo(
+      StateNodes stateNodes, String totalNodes, List<Address> listAddresses) {
+    List<String> nodesList = totalNodes.split(',');
+    var nodeRewardDay = appDataBloc.state.statisticsCoin.getBlockDayNodeReward;
+
+    if (nodesList.isNotEmpty) {
+      List<Address> listUserNodes = [];
+      bool containsSeedWallet(String address) =>
+          nodesList.any((itemNode) => address == itemNode.split("|")[1]);
+
+      for (Address address in listAddresses) {
+        if (address.balance >= UtilsDataNoso.getCountMonetToRunNode()) {
+          address.nodeAvailable = true;
+          address.nodeStatusOn = containsSeedWallet(address.hash);
+          address.rewardDay = address.nodeStatusOn ? nodeRewardDay : 0;
+          listUserNodes.add(address);
+        } else {
+          address.nodeAvailable = false;
+          address.nodeStatusOn = false;
+          address.rewardDay = 0;
+        }
+      }
+      var launched =
+          listUserNodes.where((item) => item.nodeStatusOn == true).length;
+
+      return stateNodes.copyWith(
+          launchedNodes: launched,
+          rewardDay: nodeRewardDay * launched,
+          nodes: listUserNodes);
+    }
+
+    return stateNodes;
   }
 
   /// Method that checks the consensus for correctness
@@ -453,9 +465,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             found.balance >= UtilsDataNoso.getCountMonetToRunNode();
       }
     }
-      return ResponseCalculate(
-          address: listAddress, totalBalance: totalBalance);
-
+    return ResponseCalculate(address: listAddress, totalBalance: totalBalance);
   }
 
   /// Method that synchronizes pendings
