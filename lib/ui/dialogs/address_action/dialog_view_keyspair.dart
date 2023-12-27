@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 
-import '../theme/style/text_style.dart';
+import '../../theme/style/text_style.dart';
 
 class DialogViewKeysPair extends StatefulWidget {
   final Address address;

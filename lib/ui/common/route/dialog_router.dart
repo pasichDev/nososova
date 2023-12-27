@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/ui/dialogs/dialog_view_keyspair.dart';
+import 'package:nososova/ui/dialogs/address_action/dialog_view_keyspair.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -189,6 +189,7 @@ class DialogRouter {
     }
   }
 
+
   /// Dialog in which debug information is displayed
   static void showDialogDebug(BuildContext context) {
     showModalBottomSheet(
@@ -226,7 +227,6 @@ class DialogRouter {
                 textAlign: TextAlign.center,
                 style: AppTextStyles.walletAddress.copyWith(fontSize: 20)),
             isTopBarLayerAlwaysVisible: true,
-
             child: DialogViewKeysPair(address: address),
           )
         ];
