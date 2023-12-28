@@ -159,7 +159,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       return;
     }
     var sendString = NewOrderSend().getOrderString(address, message, receiver,
-        amount, commission, appDataBloc.state.node.lastblock);
+        amount, commission, appDataBloc.state.node.lastblock, _getTrxCount());
     var sendStringParse = sendString.split(" ");
 
     ResponseNode resp = await _repositories.networkRepository
@@ -291,6 +291,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       } else {
         _debugBloc.add(AddStringDebug(
             "Consensus is incorrect, let's try to reconnect", DebugType.error));
+        emit(state.copyWith(
+            wallet: state.wallet.copyWith(
+                summary: [], consensusStatus: ConsensusStatus.error)));
         appDataBloc.add(ReconnectSeed(false));
         return;
       }
@@ -308,6 +311,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       if (responsePendings.errors != null || pendingsParse.isEmpty) {
         _debugBloc.add(
             AddStringDebug("Error getting pendings, try another connection"));
+        emit(state.copyWith(
+            wallet: state.wallet.copyWith(
+                summary: [], consensusStatus: ConsensusStatus.error)));
         appDataBloc.add(SyncResult(false));
       }
     }
@@ -329,6 +335,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         wallet: state.wallet.copyWith(
             address: listAddresses,
             summary: summary,
+            pendings: pendingsParse,
             consensusStatus: consensusReturn,
             balanceTotal: calculateResponse.totalBalance,
             totalIncoming: calculateResponse.totalIncoming,
@@ -505,6 +512,25 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         address: calculateListAddress,
         totalIncoming: totalIncoming,
         totalOutgoing: totalOutgoing);
+  }
+
+  int _getTrxCount() {
+    var calculateListAddress = state.wallet.address;
+    var pendingsList = state.wallet.pendings;
+    int countTrx = 0;
+
+    for (var address in calculateListAddress) {
+      List<PendingTransaction> foundReceivers = pendingsList
+          .where((other) => other.receiver == address.hash)
+          .toList();
+      List<PendingTransaction> foundSenders =
+          pendingsList.where((other) => other.sender == address.hash).toList();
+
+      countTrx += foundReceivers.length + foundSenders.length;
+    }
+
+    print("Count trx -> $countTrx");
+    return countTrx == 0 ? 1 : countTrx;
   }
 
   /// This method receives a file and processes its contents, and returns the contents of the file for confirmation

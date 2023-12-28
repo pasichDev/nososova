@@ -41,7 +41,7 @@ class NewOrderSend {
 
 
   /// This string returns a prepared string for sending the payment
-  getOrderString(Address targetAddress, String message, String receiver, int amount, int commission, int block) {
+  getOrderString(Address targetAddress, String message, String receiver, int amount, int commission, int block, int countTrx) {
     final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     const int trxLine = 1;
     const String type = "ORDER";
@@ -51,16 +51,16 @@ class NewOrderSend {
         receiver +
         amount.toString() +
         commission.toString() +
-        trxLine.toString());
+        countTrx.toString());
     var signature = NosoCrypto().signMessage(messageSignature, targetAddress.privateKey);
 
     NewOrderSend orderInfo = NewOrderSend(
         orderID: '',
-        orderLines: trxLine,
+        orderLines: countTrx,
         orderType: "TRFR",
         timeStamp: currentTimeMillis,
         reference: message,
-        trxLine: trxLine,
+        trxLine: countTrx,
         sender: targetAddress.publicKey,
         address: targetAddress.hash,
         receiver: receiver,
