@@ -18,12 +18,12 @@ import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
 import '../../common/widgets/node_light_status.dart';
 import '../../components/app_bar_other_page.dart';
-import '../../components/network_info.dart';
 import '../../config/responsive.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
 import '../../theme/decoration/other_gradient_decoration.dart';
 import '../../theme/style/text_style.dart';
+import '../main/widgets/default_app_bar.dart';
 
 class AddressInfoPage extends StatefulWidget {
   final String hash;
@@ -113,15 +113,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                       child: Column(
                         children: [
                           if (!Responsive.isMobile(context))
-                            AppBar(
-                              title: Responsive.isTablet(context)
-                                  ? NetworkInfo(nodeStatusDialog: () => {})
-                                  : null,
-                              backgroundColor: Colors.transparent,
-                              iconTheme:
-                                  const IconThemeData(color: Colors.white),
-                              elevation: 0,
-                            ),
+                            const DefaultAppBar(isVisible: true),
                           Padding(
                             padding: const EdgeInsets.all(20),
                             child: TransformWidget(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../../../dialogs/dialog_info_network.dart';
 import '../../../theme/style/text_style.dart';
 import '../../info/screen/widget_info_coin.dart';
 import '../../node/screens/body_stats_nodes.dart';
@@ -14,14 +13,13 @@ class SideLeftBarDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 400,
+      height: double.infinity,
       color: CustomColors.barBg,
       child: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  const Card(child: DialogInfoNetwork()),
-                  const SizedBox(height: 10),
                   const Card(child: WidgetInfoCoin()),
                   const SizedBox(height: 10),
                   Card(

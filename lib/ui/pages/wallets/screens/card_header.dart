@@ -10,7 +10,6 @@ import '../../../theme/decoration/standart_gradient_decoration.dart';
 import '../../../theme/decoration/standart_gradient_decoration_round.dart';
 import '../../../theme/style/colors.dart';
 import '../../../theme/style/text_style.dart';
-import '../../main/widgets/default_app_bar.dart';
 import '../widgets/total_usdt_price.dart';
 
 class CardHeader extends StatelessWidget {
@@ -25,13 +24,16 @@ class CardHeader extends StatelessWidget {
             decoration: !Responsive.isMobile(context)
                 ? const HomeGradientDecoration()
                 : const HomeGradientDecorationRound(),
-            child:  SafeArea(
-              child: Column(  mainAxisAlignment: MainAxisAlignment.center,
+            child: const SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [ DefaultAppBar(isVisible: Responsive.isTablet(context)),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.0),
-          child:  CardBody()) ], ),
+                children: [
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.0),
+                      child: CardBody())
+                ],
+              ),
             ),
           )
         : Container(
@@ -55,13 +57,13 @@ class CardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WalletBloc, WalletState>(builder: (context, state) {
       var isOutgoing = state.wallet.totalOutgoing > 0;
-      var isIncoming =  state.wallet.totalIncoming > 0;
+      var isIncoming = state.wallet.totalIncoming > 0;
 
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
+          Text(
             AppLocalizations.of(context)!.balance,
             style: AppTextStyles.walletAddress
                 .copyWith(fontSize: 22, color: Colors.white.withOpacity(0.5)),
@@ -97,7 +99,7 @@ class CardBody extends StatelessWidget {
                   ),
                   BlinkingWidget(
                       widget: Text(
-                         state.wallet.totalIncoming.toStringAsFixed(8),
+                          state.wallet.totalIncoming.toStringAsFixed(8),
                           style: AppTextStyles.categoryStyle.copyWith(
                               fontSize: 16,
                               color: isIncoming
@@ -105,7 +107,6 @@ class CardBody extends StatelessWidget {
                                   : Colors.white.withOpacity(0.8))),
                       startBlinking: isIncoming,
                       duration: 1000)
-
                 ],
               ),
               const SizedBox(width: 10),
@@ -119,7 +120,7 @@ class CardBody extends StatelessWidget {
                   ),
                   BlinkingWidget(
                       widget: Text(
-                         state.wallet.totalOutgoing.toStringAsFixed(8),
+                          state.wallet.totalOutgoing.toStringAsFixed(8),
                           style: AppTextStyles.categoryStyle.copyWith(
                               fontSize: 16,
                               color: isOutgoing
@@ -127,7 +128,6 @@ class CardBody extends StatelessWidget {
                                   : Colors.white.withOpacity(0.8))),
                       startBlinking: isOutgoing,
                       duration: 1000)
-
                 ],
               )
             ],
