@@ -9,6 +9,8 @@ import 'package:nososova/ui/pages/addressInfo/screens/pendings_widget.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../blocs/events/history_transactions_events.dart';
+import '../../../blocs/history_transactions_bloc.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/const/const.dart';
@@ -37,7 +39,6 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
   var isMiddleChange = false;
   int selectedIndexChild = 0;
   int selectedOption = 1;
-  late HistoryTransactionsWidget? historyWidget;
   late Address address;
   late WalletBloc walletBloc;
   late StreamSubscription listenResponse;
@@ -48,8 +49,8 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
     walletBloc = BlocProvider.of<WalletBloc>(context);
     address = walletBloc.state.wallet.getAddress(widget.hash) ??
         Address(hash: "", publicKey: "", privateKey: "");
-    historyWidget = HistoryTransactionsWidget(address: address);
-
+    BlocProvider.of<HistoryTransactionsBloc>(context)
+        .add(FetchHistory(address.hash));
     _responseListener();
   }
 
@@ -98,9 +99,9 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                               topRight: Radius.circular(30.0),
                             ),
                       child: !Responsive.isMobile(context)
-                          ? historyWidget
+                          ? HistoryTransactionsWidget(address: address)
                           : selectedIndexChild == 0
-                              ? historyWidget
+                              ? HistoryTransactionsWidget(address: address)
                               : AddressActionsWidget(address: address),
                     )),
               Expanded(
@@ -152,7 +153,8 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
                                 child: !Responsive.isMobile(context)
                                     ? AddressActionsWidget(address: address)
                                     : selectedIndexChild == 0
-                                        ? historyWidget
+                                        ? HistoryTransactionsWidget(
+                                            address: address)
                                         : AddressActionsWidget(
                                             address: address),
                               )),

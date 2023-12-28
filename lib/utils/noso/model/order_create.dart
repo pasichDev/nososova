@@ -51,16 +51,16 @@ class NewOrderSend {
         receiver +
         amount.toString() +
         commission.toString() +
-        countTrx.toString());
+        trxLine.toString());
     var signature = NosoCrypto().signMessage(messageSignature, targetAddress.privateKey);
 
     NewOrderSend orderInfo = NewOrderSend(
         orderID: '',
-        orderLines: countTrx,
+        orderLines: trxLine,
         orderType: "TRFR",
         timeStamp: currentTimeMillis,
         reference: message,
-        trxLine: countTrx,
+        trxLine: trxLine,
         sender: targetAddress.publicKey,
         address: targetAddress.hash,
         receiver: receiver,
