@@ -166,13 +166,22 @@ final class NosoCore extends NosoCrypto {
     try {
       for (String value in array) {
         var pending = value.split(",");
-        if (pending.length >= 5) {
+        if (pending.length == 5) {
           pendingList.add(PendingTransaction(
             orderType: pending[0],
             sender: pending[1],
             receiver: pending[2],
             amountTransfer: int.parse(pending[3]) / 100000000,
             amountFee: int.parse(pending[4]) / 100000000,
+          ));
+        } else if (pending.length == 6) {
+          pendingList.add(PendingTransaction(
+            orderId: pending[0],
+            orderType: pending[1],
+            sender: pending[2],
+            receiver: pending[3],
+            amountTransfer: int.parse(pending[4]) / 100000000,
+            amountFee: int.parse(pending[5]) / 100000000,
           ));
         }
       }
@@ -221,7 +230,6 @@ final class NosoCore extends NosoCrypto {
     }
     return result;
   }
-
 
   int convertAmount(dynamic amount) {
     if (amount is int) {
