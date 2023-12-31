@@ -19,7 +19,7 @@ on:
 
 jobs:
 
-  build:
+  build-linux:
     name: Build Linux (ubuntu-latest)
     runs-on: [ubuntu-latest]
     strategy:
@@ -47,11 +47,45 @@ jobs:
 
       - name: List Files
         run: |
-          echo "Listing build"
-          ls -alF build
+          echo "Listing build/linux/x64/release/bundle"
+          ls -alF build/linux/x64/release/bundle
 
-      - name: Upload build folder
+      - name: Upload bundle folder
         uses: actions/upload-artifact@v3
         with:
           name: NosoSova-ubuntu-latest-x86_64-bundle
           path: build/linux/x64/release/bundle
+
+  build-windows:
+    name: Build Windows (windows-latest)
+    runs-on: [windows-latest]
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.0"
+          channel: "stable"
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Application
+        run: flutter build windows --release
+
+      - name: List Files
+        run: |
+          echo "Listing build/windows/x64/release/bundle"
+          ls -alF build/windows/x64/release/bundle
+
+      - name: Upload bundle folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: NosoSova-windows-latest-x86_64-bundle
+          path: build/windows/x64/release/bundle
