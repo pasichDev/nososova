@@ -20,7 +20,7 @@ on:
 jobs:
 
   build-linux:
-    name: Build Linux (ubuntu-latest)
+    name: Build Linux (ubuntu-latest;flutter 3.16.0)
     runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
@@ -57,7 +57,7 @@ jobs:
           path: build/linux/x64/release/bundle
 
   build-windows:
-    name: Build Windows (windows-latest)
+    name: Build Windows (windows-latest;flutter 3.16.0)
     runs-on: [windows-latest]
     strategy:
       fail-fast: false
@@ -81,11 +81,45 @@ jobs:
 
       - name: List Files
         run: |
+          echo "Listing build/windows/x64/runner/Release"
+          ls -alF build/windows/x64/runner/Release
+
+      - name: Upload Release folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: NosoSova-windows-latest-x86_64-release
+          path: build/windows/x64/runner/Release
+
+  build-macos:
+    name: Build macOS (macos-latest;flutter 3.16.0)
+    runs-on: [macos-latest]
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.0"
+          channel: "stable"
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Application
+        run: flutter build macos --release
+
+      - name: List Files
+        run: |
           echo "Listing build"
           ls -alF build
 
       - name: Upload build folder
         uses: actions/upload-artifact@v3
         with:
-          name: NosoSova-windows-latest-x86_64-bundle
+          name: NosoSova-macos-latest-x86_64-build
           path: build
