@@ -46,11 +46,11 @@ jobs:
 
       - name: List Files
         run: |
-          echo "Listing build/macos/Build/Products/Release"
-          ls -alF build/macos/Build/Products/Release
+          echo "Listing build/macos/Build/Products/Release/NosoSova.app/Contents/MacOS"
+          ls -alF build/macos/Build/Products/Release/NosoSova.app/Contents/MacOS
 
-      #- name: Upload build folder
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: NosoSova-macos-latest-x86_64-build
-      #    path: build
+      - name: Upload build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: NosoSova-macos-latest-x86_64-NosoSova_app
+          path: build/macos/Build/Products/Release/NosoSova.app
