@@ -19,13 +19,19 @@ on:
 
 jobs:
 
-  build-macos:
-    name: Build macOS (macos-latest;flutter 3.16.0)
-    runs-on: [macos-latest]
+  build-android:
+    name: Build Android (ubuntu-latest;flutter 3.16.0)
+    runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
 
     steps:
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -41,16 +47,16 @@ jobs:
 
       - name: Build Application
         run: |
-          flutter config --enable-macos-desktop
-          flutter build macos --release
+          flutter build apk --release
+          flutter build appbundle --release
 
       - name: List Files
         run: |
-          echo "Listing build/macos/Build/Products/Release/NosoSova.app/Contents/MacOS"
-          ls -alF build/macos/Build/Products/Release/NosoSova.app/Contents/MacOS
+          echo "Listing build"
+          ls -alF build
 
       - name: Upload build folder
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: NosoSova-macos-latest-x86_64-NosoSova_app
-          path: build/macos/Build/Products/Release/NosoSova.app
+          name: NosoSova-ubuntu-latest-android-build
+          path: build
