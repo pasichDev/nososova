@@ -44,8 +44,8 @@ jobs:
 
       - name: List Files
         run: |
-          echo "Listing build"
-          ls -alF build/macos
+          echo "Listing build/macos/Build"
+          ls -alF build/macos/Build
 
       #- name: Upload build folder
       #  uses: actions/upload-artifact@v3
