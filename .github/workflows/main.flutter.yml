@@ -42,7 +42,7 @@ jobs:
       - name: Build Application
         run: flutter build linux --release
 
-      - name List Files
+      - name: List Files
         run: |
           echo "Listing linux"
           ls -alF linux
