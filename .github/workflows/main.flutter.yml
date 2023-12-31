@@ -26,6 +26,10 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Install Ubuntu packages
+        run: |
+          sudo apt install -y ninja-build
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
