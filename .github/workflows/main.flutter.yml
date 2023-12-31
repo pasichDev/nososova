@@ -1,0 +1,53 @@
+name: NosoSova Main Workflow
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+on:
+
+  push:
+    branches: [ main, create-ci-cd ]
+    tags: [ "*" ]
+    paths-ignore: [ "README.md" ]
+
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    name: Build Linux (ubuntu-latest)
+    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+          with:
+            flutter-version: "3.16.0"
+            channel: "stable"
+            cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Application
+        run: flutter build linux --release
+
+      - name List Files
+        run: |
+          echo "Listing linux"
+          ls -alF linux
+          echo "Listing linux/build"
+          ls -alF linux/build
+          echo "Listing build"
+          ls -alF build
+
