@@ -81,11 +81,11 @@ jobs:
 
       - name: List Files
         run: |
-          echo "Listing build/windows/x64/release/bundle"
-          ls -alF build/windows/x64/release/bundle
+          echo "Listing build"
+          ls -alF build
 
-      - name: Upload bundle folder
+      - name: Upload build folder
         uses: actions/upload-artifact@v3
         with:
           name: NosoSova-windows-latest-x86_64-bundle
-          path: build/windows/x64/release/bundle
+          path: build
