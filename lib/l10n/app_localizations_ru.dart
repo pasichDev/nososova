@@ -299,6 +299,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get informMyNodes => 'Статус Вашей ноды';
 
   @override
+  String get getKeysPair => 'Просмотр ключей';
+
+  @override
+  String get reward => 'Награда';
+
+  @override
+  String get online => 'В сети';
+
+  @override
+  String get offline => 'Не в сети';
+
+  @override
   String get emptyListAddress => 'Создать или сгенерировать новые адреса';
 
   @override

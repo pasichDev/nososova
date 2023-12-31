@@ -113,6 +113,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
           "Repeated attempt to search for a node, the last one ended in failure"));
     }
 
+
     ResponseNode<List<int>> responseTargetNode =
         await _searchTargetNode(initAlgh);
     final Node? nodeOutput = _repositories.nosoCore

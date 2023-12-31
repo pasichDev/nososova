@@ -15,13 +15,20 @@ class Address {
   bool isLocked;
   double incoming;
   double outgoing;
+
+  /// Can this address start the node
   bool nodeAvailable;
+
+  /// Does he work at this address?
   bool nodeStatusOn;
+
+  /// How much does this node earn per day?
+  double rewardDay;
 
   /// Returns the wallet address displayed to the user, either truncated or custom
   get nameAddressPublic => custom ?? hashPublic;
 
-  get hashPublic =>  OtherUtils.hashObfuscation(hash);
+  get hashPublic => OtherUtils.hashObfuscation(hash);
 
   /// Returns the hash or alias of the address
   get nameAddressFull => custom ?? hash;
@@ -41,6 +48,7 @@ class Address {
     this.isLocked = false,
     this.incoming = 0,
     this.outgoing = 0,
+    this.rewardDay = 0,
     this.nodeAvailable = false,
     this.nodeStatusOn = false,
   });
@@ -57,6 +65,7 @@ class Address {
     bool? isLocked,
     double? incoming,
     double? outgoing,
+    double? rewardDay,
     bool? nodeOn,
     bool? nodeStatusOn,
   }) {
@@ -72,6 +81,7 @@ class Address {
       isLocked: isLocked ?? this.isLocked,
       incoming: incoming ?? this.incoming,
       outgoing: outgoing ?? this.outgoing,
+      rewardDay: rewardDay ?? this.rewardDay,
       nodeAvailable: nodeAvailable,
       nodeStatusOn: nodeStatusOn ?? this.nodeStatusOn,
     );

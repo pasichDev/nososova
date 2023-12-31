@@ -37,7 +37,7 @@ class SeedListItem extends StatelessWidget {
                     depth: 16,
                     scaffoldBackgroundColor:
                         Colors.grey.shade100.withOpacity(0.5),
-                    width: 140,
+                    width: 110,
                     borderRadius: 3,
                     height: 16,
                   ),

@@ -685,6 +685,30 @@ abstract class AppLocalizations {
   /// **'Status of your nodes'**
   String get informMyNodes;
 
+  /// No description provided for @getKeysPair.
+  ///
+  /// In en, this message translates to:
+  /// **'View keys'**
+  String get getKeysPair;
+
+  /// No description provided for @reward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward'**
+  String get reward;
+
+  /// No description provided for @online.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get online;
+
+  /// No description provided for @offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get offline;
+
   /// No description provided for @emptyListAddress.
   ///
   /// In en, this message translates to:

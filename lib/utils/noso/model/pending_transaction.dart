@@ -1,4 +1,5 @@
 class PendingTransaction {
+  String orderId;
   String orderType;
   String sender;
   String receiver;
@@ -6,6 +7,7 @@ class PendingTransaction {
   double amountFee;
 
   PendingTransaction({
+     this.orderId = "",
      this.orderType = "",
      this.sender = "",
      this.receiver = "",
@@ -14,6 +16,7 @@ class PendingTransaction {
   });
 
   PendingTransaction copyWith({
+    String? orderId,
     String? orderType,
     String? address,
     String? receiver,
@@ -22,6 +25,7 @@ class PendingTransaction {
     int? timeStamp,
   }) {
     return PendingTransaction(
+      orderId: orderId ?? this.orderId,
       orderType: orderType ?? this.orderType,
       sender: sender ?? this.sender,
       receiver: receiver ?? this.receiver,

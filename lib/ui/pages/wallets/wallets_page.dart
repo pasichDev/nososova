@@ -47,7 +47,6 @@ class WalletsPageState extends State<WalletsPage> {
           return;
         }
 
-
         await Future.delayed(const Duration(milliseconds: 200));
         SnackBarWidgetResponse(
                 context: GlobalKey<ScaffoldMessengerState>().currentContext ??
@@ -103,11 +102,10 @@ class WalletsPageState extends State<WalletsPage> {
                       ],
                     ),
                   ),
-                   ListAddresses(scaffoldKey: _scaffoldKey),
+                  ListAddresses(scaffoldKey: _scaffoldKey),
                 ],
               )),
-          if (!Responsive.isMobile(context))
-            const Expanded(flex: 2, child: SideRightBarDesktop())
+          if (!Responsive.isMobile(context)) const SideRightBarDesktop()
         ],
       ),
     );

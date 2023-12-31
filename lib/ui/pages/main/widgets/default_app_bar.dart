@@ -17,6 +17,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Responsive.isMobile(context) || isVisible
         ? AppBar(
             elevation: 0,
+            iconTheme: const IconThemeData(color: Colors.white),
             title: NetworkInfo(
                 nodeStatusDialog: () =>
                     DialogRouter.showDialogInfoNetwork(context)),

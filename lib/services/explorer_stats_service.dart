@@ -8,7 +8,6 @@ import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import '../models/apiExplorer/block_info.dart';
 import '../models/apiExplorer/price_dat.dart';
 import '../models/responses/response_api.dart';
-import '../utils/const/network_const.dart';
 
 class ExplorerStatsService {
   final String _apiStats = "https://api.nosocoin.com/";
@@ -69,7 +68,7 @@ class ExplorerStatsService {
       final response = await http.get(
         Uri.parse(uri),
         headers: {"accept": "application/json"},
-      ).timeout(const Duration(seconds: NetworkConst.durationTimeOut));
+      ).timeout(const Duration(seconds: 6));
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);

@@ -6,7 +6,6 @@ import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:nososova/utils/status_api.dart';
 
-import '../../../../blocs/events/history_transactions_events.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../common/route/page_router.dart';
 import '../../../components/empty_list_widget.dart';
@@ -29,8 +28,7 @@ class _HistoryTransactionWidgetsState extends State<HistoryTransactionsWidget> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HistoryTransactionsBloc>(context)
-        .add(FetchHistory(widget.address.hash));
+
   }
 
   @override

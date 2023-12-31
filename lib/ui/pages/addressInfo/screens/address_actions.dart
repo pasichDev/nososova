@@ -24,7 +24,9 @@ class AddressActionsWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
         color: Colors.white,
-        child: SingleChildScrollView(child:  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
               padding: const EdgeInsets.only(
                   top: 20, left: 20, right: 20, bottom: 10),
@@ -40,6 +42,10 @@ class AddressActionsWidget extends StatelessWidget {
                 enabled: address.custom == null,
                 AppLocalizations.of(context)!.customNameAdd,
                 () => DialogRouter.showDialogCustomName(context, address)),
+          buildListTileSvg(
+              Assets.iconsLock,
+              AppLocalizations.of(context)!.getKeysPair,
+              () => DialogRouter.showDialogViewKeysPair(context, address)),
           TileConfirmList(
               iconData: Assets.iconsDelete,
               title: AppLocalizations.of(context)!.removeAddress,
@@ -50,4 +56,6 @@ class AddressActionsWidget extends StatelessWidget {
               }),
         ])));
   }
+
+
 }
