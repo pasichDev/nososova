@@ -40,14 +40,14 @@ jobs:
         run: flutter pub get
 
       - name: Build Application
-        run: flutter build macos --release
+        run: |
+          flutter config --enable-macos-desktop
+          flutter build macos --release
 
       - name: List Files
         run: |
-          echo "Listing build/macos/Build/Intermediates.noindex"
-          ls -alF build/macos/Build/Intermediates.noindex
-          echo "Listing build/macos/Build/Products"
-          ls -alF build/macos/Build/Products
+          echo "Listing build/macos/Build/Products/Release"
+          ls -alF build/macos/Build/Products/Release
 
       #- name: Upload build folder
       #  uses: actions/upload-artifact@v3
