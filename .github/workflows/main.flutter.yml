@@ -47,10 +47,6 @@ jobs:
 
       - name: List Files
         run: |
-          echo "Listing linux"
-          ls -alF linux
-          echo "Listing linux/build"
-          ls -alF linux/build
           echo "Listing build"
           ls -alF build
 
