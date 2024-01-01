@@ -253,7 +253,7 @@ jobs:
         mv NosoSova-macos-latest-x86_64 NosoSova.app
         zip -r NosoSova-darwin-v${{ env.tag }}.zip NosoSova.app
         # Android
-        cd NosoSova-macos-latest-android
+        cd NosoSova-ubuntu-latest-android
         zip -r ../NosoSova-Android-APK-v${{ env.tag }}.zip *.apk
         cd ..
 
