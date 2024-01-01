@@ -19,19 +19,13 @@ on:
 
 jobs:
 
-  build-android:
-    name: Build Android (ubuntu-latest;flutter 3.16.0)
-    runs-on: [ubuntu-latest]
+  build-macos:
+    name: Build iOS (macos-latest;flutter 3.16.0)
+    runs-on: [macos-latest]
     strategy:
       fail-fast: false
 
     steps:
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -47,8 +41,7 @@ jobs:
 
       - name: Build Application
         run: |
-          flutter build apk --release
-          flutter build appbundle --release
+          flutter build ios --release --no-codesign
 
       - name: List Files
         run: |
@@ -58,5 +51,5 @@ jobs:
       - name: Upload build folder
         uses: actions/upload-artifact@v4
         with:
-          name: NosoSova-ubuntu-latest-android-build
+          name: NosoSova-macos-latest-ios-build
           path: build
