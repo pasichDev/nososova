@@ -237,15 +237,24 @@ jobs:
         echo "Listing macOS"
         ls -alF NosoSova-macos-latest-x86_64
         echo "Listing Android"
-        ls -alF NosoSova-macos-latest-android
+        ls -alF NosoSova-ubuntu-latest-android
 
     - name: Create Linux Archive
       run: |
+        # Linux
         cd NosoSova-ubuntu-latest-x86_64
         tar -zcvf ../NosoSova-x86_64-linux-v${{ env.tag }}.tar.gz *
         cd ..
+        # windows-latest
         cd NosoSova-windows-latest-x86_64
         zip -r ../NosoSova-x86_64-win64-v${{ env.tag }}.zip *
+        cd ..
+        # macOS
+        mv NosoSova-macos-latest-x86_64 NosoSova.app
+        zip -r NosoSova-darwin-v${{ env.tag }}.zip NosoSova.app
+        # Android
+        cd NosoSova-macos-latest-android
+        zip -r ../NosoSova-Android-APK-v${{ env.tag }}.zip *.apk
         cd ..
 
     - name: Create GitHub release
