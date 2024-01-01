@@ -126,7 +126,7 @@ jobs:
           echo "Listing build/macos/Build/Products/Release/NosoSova.app"
           ls -alF build/macos/Build/Products/Release/NosoSova.app
 
-      - name: Upload build folder
+      - name: Upload NosoSova.app folder
         uses: actions/upload-artifact@v4
         with:
           name: NosoSova-macos-latest-x86_64
