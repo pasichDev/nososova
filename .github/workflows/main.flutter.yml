@@ -256,7 +256,8 @@ jobs:
         tar -zcvf NosoSova-x86_64-darwin-${{ env.tag }}.tar.gz NosoSova.app
         # Android
         cd NosoSova-ubuntu-latest-android
-        zip -r ../NosoSova-arm-android-APK-${{ env.tag }}.zip *.apk
+        mv app-release.apk nososova.apk
+        zip -r ../NosoSova-arm-android-APK-${{ env.tag }}.zip nososova.apk
         cd ..
 
     - name: Create GitHub release
