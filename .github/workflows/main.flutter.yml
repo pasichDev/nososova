@@ -223,7 +223,7 @@ jobs:
         fetch-depth: 0
 
     - name: Export tag
-      run: echo "env.tag=${{ github.ref_name }}"
+      run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"
 
     - name: Download the Release binaries
       uses: actions/download-artifact@v4
