@@ -244,19 +244,19 @@ jobs:
         # Linux
         cd NosoSova-ubuntu-latest-x86_64
         chmod +x nososova
-        tar -zcvf ../NosoSova-x86_64-linux-v${{ env.tag }}.tar.gz *
+        tar -zcvf ../NosoSova-x86_64-linux-${{ env.tag }}.tar.gz *
         cd ..
         # windows-latest
         cd NosoSova-windows-latest-x86_64
-        zip -r ../NosoSova-x86_64-win64-v${{ env.tag }}.zip *
+        zip -r ../NosoSova-x86_64-win64-${{ env.tag }}.zip *
         cd ..
         # macOS
         mv NosoSova-macos-latest-x86_64 NosoSova.app
         chmod +x NosoSova.app/Contents/MacOS/NosoSova
-        tar -zcvf NosoSova-x86_64-darwin-v${{ env.tag }}.tar.gz NosoSova.app
+        tar -zcvf NosoSova-x86_64-darwin-${{ env.tag }}.tar.gz NosoSova.app
         # Android
         cd NosoSova-ubuntu-latest-android
-        zip -r ../NosoSova-arm-android-APK-v${{ env.tag }}.zip *.apk
+        zip -r ../NosoSova-arm-android-APK-${{ env.tag }}.zip *.apk
         cd ..
 
     - name: Create GitHub release
