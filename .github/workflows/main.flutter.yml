@@ -251,17 +251,17 @@ jobs:
         cd ..
         # macOS
         mv NosoSova-macos-latest-x86_64 NosoSova.app
-        zip -r NosoSova-darwin-v${{ env.tag }}.zip NosoSova.app
+        zip -r NosoSova-x86_64-darwin-v${{ env.tag }}.zip NosoSova.app
         # Android
         cd NosoSova-ubuntu-latest-android
-        zip -r ../NosoSova-Android-APK-v${{ env.tag }}.zip *.apk
+        zip -r ../NosoSova-arm-android-APK-v${{ env.tag }}.zip *.apk
         cd ..
 
     - name: Create GitHub release
       uses: softprops/action-gh-release@v1
       with:
         name: NosoSova ${{ env.tag }}
-        body: "This text needs to be replaced by the git-cliff output"
+        body: "This text needs to be replaced by the git-cliff output.\r\nBut before that, you need to begin to use the proper wait to commit messages!!!"
         files: |
           *.tar.gz
           *.zip
