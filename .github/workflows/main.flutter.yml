@@ -264,7 +264,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         name: NosoSova ${{ env.tag }}
-        body: "This text needs to be replaced by the git-cliff output.\r\nBut before that, you need to begin to use the proper way of wording commit messages!!!"
+        body: "This text needs to be replaced by the git-cliff output.\r\nBut before that, you need to begin to use the proper way of wording the commit messages!!!"
         files: |
           *.tar.gz
           *.zip
