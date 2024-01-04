@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/events/wallet_events.dart';
 import 'package:nososova/models/apiExplorer/block_info.dart';
@@ -24,12 +23,10 @@ import 'events/debug_events.dart';
 class AppDataState {
   final Node node;
   final StatusConnectNodes statusConnected;
-  final ConnectivityResult deviceConnectedNetworkStatus;
   final StatisticsCoin statisticsCoin;
 
   AppDataState({
     this.statusConnected = StatusConnectNodes.searchNode,
-    this.deviceConnectedNetworkStatus = ConnectivityResult.none,
     Node? node,
     StatisticsCoin? statisticsCoin,
   })  : node = node ?? Node(seed: Seed()),
@@ -38,15 +35,12 @@ class AppDataState {
   AppDataState copyWith(
       {Node? node,
       StatisticsCoin? statisticsCoin,
-      StatusConnectNodes? statusConnected,
-      ConnectivityResult? deviceConnectedNetworkStatus}) {
+      StatusConnectNodes? statusConnected,}) {
     return AppDataState(
       node: node ?? this.node,
       statisticsCoin: statisticsCoin ?? this.statisticsCoin,
       statusConnected: statusConnected ?? this.statusConnected,
-      deviceConnectedNetworkStatus:
-          deviceConnectedNetworkStatus ?? this.deviceConnectedNetworkStatus,
-    );
+     );
   }
 }
 
@@ -66,7 +60,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   })  : _repositories = repositories,
         _debugBloc = debugBloc,
         super(AppDataState()) {
-    Connectivity().onConnectivityChanged.listen((result) {});
     on<ReconnectSeed>(_reconnectNode);
     on<InitialConnect>(_init);
     on<SyncResult>(_syncResult);

@@ -54,6 +54,8 @@
     <true/>
     <key>UIFileSharingEnabled</key>
     <true/>
+	<key>FLTEnableImpeller</key>
+    <false/>
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>sms</string>

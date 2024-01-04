@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
@@ -14,7 +13,7 @@ class StatusNetworkConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var oneStart = true;
+  /*  var oneStart = true;
     ConnectivityResult? statusOld;
     return BlocBuilder<AppDataBloc, AppDataState>(
       builder: (context, state) {
@@ -48,7 +47,9 @@ class StatusNetworkConnection extends StatelessWidget {
         oneStart = true;
         return Container();
       },
-    );
+    );*/
+
+    return Container();
   }
 
   Widget message(String message, Color color) {
