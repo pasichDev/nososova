@@ -96,41 +96,41 @@ jobs:
           name: NosoSova-windows-latest-x86_64
           path: build/windows/x64/runner/Release
 
-  build-macos:
-    name: Build macOS (macos-latest;flutter 3.16.0)
-    runs-on: [macos-latest]
-    strategy:
-      fail-fast: false
+#  build-macos:
+#    name: Build macOS (macos-latest;flutter 3.16.0)
+#    runs-on: [macos-latest]
+#    strategy:
+#      fail-fast: false
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v2
+#        with:
+#          flutter-version: "3.16.0"
+#          channel: "stable"
+#          cache: true
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.16.0"
-          channel: "stable"
-          cache: true
+#      - name: Get dependencies
+#        run: flutter pub get
 
-      - name: Get dependencies
-        run: flutter pub get
+#      - name: Build Application
+#        run: |
+#          flutter config --enable-macos-desktop
+#          flutter build macos --release
 
-      - name: Build Application
-        run: |
-          flutter config --enable-macos-desktop
-          flutter build macos --release
+#      - name: List Files
+#        run: |
+#          echo "Listing build/macos/Build/Products/Release/NosoSova.app"
+#          ls -alF build/macos/Build/Products/Release/NosoSova.app
 
-      - name: List Files
-        run: |
-          echo "Listing build/macos/Build/Products/Release/NosoSova.app"
-          ls -alF build/macos/Build/Products/Release/NosoSova.app
-
-      - name: Upload NosoSova.app folder
-        uses: actions/upload-artifact@v4
-        with:
-          name: NosoSova-macos-latest-x86_64
-          path: build/macos/Build/Products/Release/NosoSova.app
+#      - name: Upload NosoSova.app folder
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: NosoSova-macos-latest-x86_64
+#          path: build/macos/Build/Products/Release/NosoSova.app
 
   build-android:
     name: Build Android (ubuntu-latest;flutter 3.16.0;Java zulu 17)
@@ -172,35 +172,35 @@ jobs:
           name: NosoSova-ubuntu-latest-android
           path: build/app/outputs/apk/release
 
-  build-ios:
-    name: Build iOS (macos-latest;flutter 3.16.0)
-    runs-on: [macos-latest]
-    strategy:
-      fail-fast: false
+#  build-ios:
+#    name: Build iOS (macos-latest;flutter 3.16.0)
+#    runs-on: [macos-latest]
+#    strategy:
+#      fail-fast: false
+#
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v2
+#        with:
+#          flutter-version: "3.16.0"
+#          channel: "stable"
+#          cache: true
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.16.0"
-          channel: "stable"
-          cache: true
+#      - name: Get dependencies
+#        run: flutter pub get
 
-      - name: Get dependencies
-        run: flutter pub get
+#      - name: Build Application
+#        run: |
+#          flutter build ios --release --no-codesign
 
-      - name: Build Application
-        run: |
-          flutter build ios --release --no-codesign
-
-      - name: List Files
-        run: |
-          echo "Listing build"
-          ls -alF build
-
+#      - name: List Files
+#        run: |
+#         echo "Listing build"
+#          ls -alF build
+#
 #      - name: Upload build folder
 #        uses: actions/upload-artifact@v4
 #        with:
@@ -210,8 +210,9 @@ jobs:
   release:
     if: contains(github.ref_type, 'tag')
 
+#
     name: Create GitHub Release
-    needs: [build-linux,build-windows,build-macos,build-android]
+    needs: [build-linux,build-windows,build-android]
     runs-on: [ubuntu-latest]
     strategy:
       fail-fast: false
