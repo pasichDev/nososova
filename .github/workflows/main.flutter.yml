@@ -235,8 +235,6 @@ jobs:
         ls -alF NosoSova-ubuntu-latest-x86_64
         echo "Listing Windows"
         ls -alF NosoSova-windows-latest-x86_64
-        echo "Listing macOS"
-        ls -alF NosoSova-macos-latest-x86_64
         echo "Listing Android"
         ls -alF NosoSova-ubuntu-latest-android
 
@@ -247,14 +245,10 @@ jobs:
         chmod +x nososova
         tar -zcvf ../NosoSova-x86_64-linux-${{ env.tag }}.tar.gz *
         cd ..
-        # windows-latest
+        # Windows
         cd NosoSova-windows-latest-x86_64
         zip -r ../NosoSova-x86_64-win64-${{ env.tag }}.zip *
         cd ..
-        # macOS
-        mv NosoSova-macos-latest-x86_64 NosoSova.app
-        chmod +x NosoSova.app/Contents/MacOS/NosoSova
-        tar -zcvf NosoSova-x86_64-darwin-${{ env.tag }}.tar.gz NosoSova.app
         # Android
         cd NosoSova-ubuntu-latest-android
         mv app-release.apk nososova.apk
