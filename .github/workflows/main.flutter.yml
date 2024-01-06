@@ -10,7 +10,7 @@ defaults:
 on:
 
   push:
-    branches: [ main, create-ci-cd ]
+    branches: [ main ]
     tags: [ "*" ]
     paths-ignore: [ "README.md" ]
 
