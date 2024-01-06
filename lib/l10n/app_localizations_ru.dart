@@ -23,7 +23,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get myAddresses => 'Адреса';
 
   @override
-  String get genNewKeyPair => 'Новый адрес';
+  String get genNewKeyPair => 'Создать новый адрес';
 
   @override
   String get scanQrCode => 'Сканировать QR код';
@@ -44,7 +44,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get addToWallet => 'Добавить в кошелёк';
 
   @override
-  String get titleInfoNetwork => 'Нода';
+  String get titleInfoNetwork => 'Подключение к сети.';
 
   @override
   String get debugInfo => 'Отладка';
@@ -53,7 +53,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get connections => 'Соединения';
 
   @override
-  String get lastBlock => 'Блок';
+  String get lastBlock => 'Блок:';
 
   @override
   String get pendings => 'В процессе';
@@ -62,10 +62,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get branch => 'Ветвь';
 
   @override
-  String get version => 'Версия';
+  String get version => 'Версия:';
 
   @override
-  String get utcTime => 'Время (UTC)';
+  String get utcTime => 'Время (UTC):';
 
   @override
   String get pingMs => 'мс';
@@ -77,7 +77,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get activeConnect => 'Подключено';
 
   @override
-  String get connection => 'Поиск доступной ноды..';
+  String get connection => 'Поиск доступной ноды...';
 
   @override
   String get errorConnection => 'Ошибка при подключении';
@@ -89,7 +89,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get keys => 'Ключи';
 
   @override
-  String get sendFromAddress => 'Отправить с этого адреса';
+  String get sendFromAddress => 'Отправить монеты с этого адреса';
 
   @override
   String get removeAddress => 'Удалить адрес из кошелька';
@@ -110,7 +110,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fileWallet => 'Файл кошелька';
 
   @override
-  String get newFormatWalletFileDescrypt => 'Наше приложение предлагает вам возможность хранить ваш кошелек в самом безопасном формате..';
+  String get newFormatWalletFileDescrypt => 'Наше приложение предлагает вам возможность хранить ваш кошелек в самом безопасном формате.';
 
   @override
   String get searchAddressResult => 'Адрес найден';
@@ -164,19 +164,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nbr => 'Награда за блок';
 
   @override
-  String get nr24 => 'За сутки';
+  String get nr24 => 'Вознаграждение за сутки';
 
   @override
-  String get nr7 => 'За неделю';
+  String get nr7 => 'Вознаграждение за неделю';
 
   @override
-  String get nr30 => 'За 30 дней';
+  String get nr30 => 'Вознаграждение за 30 дней';
 
   @override
   String get nosoPrice => 'Стоимость NOSO';
 
   @override
-  String get launched => 'Запуск';
+  String get launched => 'Запущено';
 
   @override
   String get available => 'Доступно';
@@ -188,7 +188,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get empty => 'Пусто';
 
   @override
-  String get emptyNodesError => 'У Вас нет подходящих адресов для запуска Мастерноды..';
+  String get emptyNodesError => 'У Вас нет подходящих адресов для запуска Мастерноды.';
 
   @override
   String get importKeysPair => 'Импорт из Key Pair';
@@ -200,7 +200,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get transactionInfo => 'Данные транзакции';
 
   @override
-  String get block => 'Блок';
+  String get block => 'Блок:';
 
   @override
   String get orderId => 'Order ID';
@@ -227,7 +227,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get errorLoading => 'Ошибка';
 
   @override
-  String get catActionAddress => 'Что Вы хотите сделать?.';
+  String get catActionAddress => 'Что Вы хотите сделать?';
 
   @override
   String get customNameAdd => 'Задать псевдоним';
@@ -257,22 +257,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get save => 'Сохранить';
 
   @override
-  String get nodeType => 'Тип';
+  String get nodeType => 'Тип:';
 
   @override
-  String get status => 'Статус';
+  String get status => 'Статус:';
 
   @override
   String get balance => 'Баланс';
 
   @override
-  String get actionWallet => 'Что Вы хотите сделать?.';
+  String get actionWallet => 'Что Вы хотите сделать?';
 
   @override
   String get confirm => 'Подтвердить';
 
   @override
-  String get createPayment => 'Создать платёж';
+  String get createPayment => 'Сделать перевод';
 
   @override
   String get amount => 'Количество';
@@ -296,25 +296,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get copyAddress => 'Скопировать адрес';
 
   @override
-  String get informMyNodes => 'Статус Вашей ноды';
+  String get informMyNodes => 'Ваши мастерноды';
 
   @override
-  String get getKeysPair => 'Просмотр ключей';
+  String get getKeysPair => 'View keys';
 
   @override
-  String get reward => 'Награда';
+  String get reward => 'Reward';
 
   @override
-  String get online => 'В сети';
+  String get online => 'Online';
 
   @override
-  String get offline => 'Не в сети';
+  String get sellAddress => 'Выберите адрес';
+
+  @override
+  String get offline => 'Offline';
 
   @override
   String get emptyListAddress => 'Создать или сгенерировать новые адреса';
 
   @override
-  String get aliasMessage => 'Псевдоним может быть длиной от 3 до 32 символов. Также не забывайте, что за создание псевдонима взимается комиссия..';
+  String get aliasMessage => 'Псевдоним может быть длиной от 3 до 32 символов. Также не забывайте, что за создание псевдонима взимается комиссия.';
 
   @override
   String get errorNoFoundCoinsTransaction => 'Недостаточно монет';

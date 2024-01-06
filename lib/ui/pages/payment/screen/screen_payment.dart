@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
+import 'package:nososova/ui/common/route/dialog_router.dart';
 import 'package:nososova/ui/theme/decoration/textfield_decoration.dart';
 import 'package:nososova/ui/tiles/tile_wallet_address.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
@@ -19,6 +20,7 @@ import '../../../common/responses_util/snackbar_message.dart';
 import '../../../common/widgets/widget_transaction.dart';
 import '../../../theme/style/colors.dart';
 import '../../../theme/style/text_style.dart';
+import '../../../tiles/tile_select_address.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Address address;
@@ -109,6 +111,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  void refreshAddress(Address address) {
+    setState(() {
+      targetAddress = address;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
@@ -135,11 +143,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: AddressListTile(
-                              address: targetAddress,
-                              onLong: () {},
-                              onTap: () {},
-                            ),
+                            child: targetAddress.hash.isEmpty
+                                ? SelectAddressListTile(
+                                    onTap: () =>
+                                        DialogRouter.showDialogSellAddress(
+                                            context,
+                                            targetAddress,
+                                            (selAddress) =>
+                                                refreshAddress(selAddress)))
+                                : AddressListTile(
+                                    address: targetAddress,
+                                    onLong: () {},
+                                    onTap: () =>
+                                        DialogRouter.showDialogSellAddress(
+                                            context,
+                                            targetAddress,
+                                            (selAddress) =>
+                                                refreshAddress(selAddress)),
+                                  ),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -310,12 +331,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     return OutlinedButton(
         onPressed: () {
-          setState(() {
-            amountController.text = valueAmount.toStringAsFixed(7);
-            selButton = double.parse(valueAmount.toStringAsFixed(7));
+          if (targetAddress.hash.isNotEmpty) {
+            setState(() {
+              amountController.text = valueAmount.toStringAsFixed(7);
+              selButton = double.parse(valueAmount.toStringAsFixed(7));
 
-            checkButtonActive(valueAmount);
-          });
+              checkButtonActive(valueAmount);
+            });
+          }
         },
         style: OutlinedButton.styleFrom(
           backgroundColor:

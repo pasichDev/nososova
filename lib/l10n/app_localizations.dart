@@ -703,6 +703,12 @@ abstract class AppLocalizations {
   /// **'Online'**
   String get online;
 
+  /// No description provided for @sellAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an address'**
+  String get sellAddress;
+
   /// No description provided for @offline.
   ///
   /// In en, this message translates to:

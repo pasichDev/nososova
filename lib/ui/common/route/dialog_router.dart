@@ -14,6 +14,7 @@ import '../../dialogs/address_action/dialog_custom_name.dart';
 import '../../dialogs/address_action/dialog_view_qr.dart';
 import '../../dialogs/dialog_debug.dart';
 import '../../dialogs/dialog_info_network.dart';
+import '../../dialogs/dialog_sel_address.dart';
 import '../../dialogs/dialog_wallet_actions.dart';
 import '../../dialogs/import_export/dialog_import_address.dart';
 import '../../dialogs/import_export/dialog_import_keys_pair.dart';
@@ -189,7 +190,6 @@ class DialogRouter {
     }
   }
 
-
   /// Dialog in which debug information is displayed
   static void showDialogDebug(BuildContext context) {
     showModalBottomSheet(
@@ -213,7 +213,6 @@ class DialogRouter {
             child: DialogImportAddress(address: address)));
   }
 
-
   static void showDialogViewKeysPair(BuildContext context, Address address) {
     WoltModalSheet.show(
       context: context,
@@ -232,5 +231,19 @@ class DialogRouter {
         ];
       },
     );
+  }
+
+  static void showDialogSellAddress(
+      BuildContext context, Address targetAddress, Function(Address) selected) {
+    showModalBottomSheet(
+        shape: DialogStyle.borderShape,
+        context: context,
+        builder: (_) => BlocProvider.value(
+              value: BlocProvider.of<WalletBloc>(context),
+              child: DialogSellAddress(
+                targetAddress: targetAddress,
+                selected: selected,
+              ),
+            ));
   }
 }

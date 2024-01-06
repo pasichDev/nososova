@@ -102,6 +102,7 @@
   "reward" : "Belohnen",
   "online": "Online",
   "offline": "Offline",
+  "sellAddress": "Wählen Sie eine Adresse aus",
   "aliasMessage": "Der Alias kann zwischen 3 und 32 Zeichen lang sein. Vergiss nicht, dass für die Einrichtung eines Alias eine Transaktionsgebühr erhoben wird.",
   "errorNoFoundCoinsTransaction": "Der Kontostand ist zu niedrig für diese Transaktion",
   "errorInformationIncorrect": "Die Transaktionsinformationen sind nicht korrekt",

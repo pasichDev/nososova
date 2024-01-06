@@ -18,11 +18,8 @@ import 'generated/assets.dart';
 Future<void> main() async {
   await dotenv.load(fileName: Assets.nososova);
   setupLocator();
-   WidgetsFlutterBinding.ensureInitialized();
-   // || Platform.isMacOS
-  if (Platform.isWindows || Platform.isLinux) {
- 
-
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
@@ -37,7 +34,6 @@ Future<void> main() async {
       await windowManager.focus();
     });
   }
-  print("Start Xcode");
   runApp(const MyApp());
 }
 
@@ -48,8 +44,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  //  SystemChrome.setSystemUIOverlayStyle(
-  //      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     FontLoader("GilroyHeavy").addFont(rootBundle.load(Assets.fontsGilroyHeavy));
     FontLoader("GilroyBold").addFont(rootBundle.load(Assets.fontsGilroyBold));
     FontLoader("GilroyRegular")

@@ -308,6 +308,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get online => 'В мережі';
 
   @override
+  String get sellAddress => 'Виберіть адресу';
+
+  @override
   String get offline => 'Не в мережі';
 
   @override

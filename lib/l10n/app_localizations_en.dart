@@ -308,6 +308,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get online => 'Online';
 
   @override
+  String get sellAddress => 'Select an address';
+
+  @override
   String get offline => 'Offline';
 
   @override
