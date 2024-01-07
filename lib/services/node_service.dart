@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:nososova/models/seed.dart';
-import 'package:nososova/utils/const/network_const.dart';
+import 'package:noso_dart/models/seed.dart';
+import 'package:nososova/utils/network_const.dart';
 
 import '../models/responses/response_node.dart';
 

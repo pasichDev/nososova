@@ -1,12 +1,29 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:nososova/generated/assets.dart';
+import 'dart:math';
 
-import '../../models/seed.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:noso_dart/models/app_info.dart';
+import 'package:noso_dart/models/seed.dart';
+import 'package:nososova/generated/assets.dart';
 
 final class NetworkConst {
   static const int durationTimeOut = 3;
   static const int delaySync = 30;
+  static AppInfo appInfo = AppInfo(protocol: 1.0, appVersion: "NOSOSOVA_1_0");
 
+
+  String getRandomNode(String? inputString) {
+    List<String> elements = (inputString ?? "").split(',');
+    int elementCount = elements.length;
+    if (elementCount > 0 && inputString != null && inputString.isNotEmpty) {
+      int randomIndex = Random().nextInt(elementCount);
+      var targetSeed = elements[randomIndex].split("|")[0];
+      return targetSeed;
+    } else {
+      var devNode = NetworkConst.getSeedList();
+      int randomDev = Random().nextInt(devNode.length);
+      return devNode[randomDev].toTokenizer();
+    }
+  }
   static List<Seed> getSeedList() {
     var string = dotenv.env['seeds_default'] ?? "";
     List<Seed> defSeed = [];

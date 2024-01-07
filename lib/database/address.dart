@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
 
 @UseRowClass(Address)
 class Addresses extends Table {

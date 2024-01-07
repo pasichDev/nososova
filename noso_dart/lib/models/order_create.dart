@@ -1,7 +1,7 @@
-import '../../const/const.dart';
-import '../nosocore.dart';
-import '../src/crypto.dart';
-import 'address_object.dart';
+import 'package:noso_dart/const.dart';
+import 'package:noso_dart/models/address_object.dart';
+import 'package:noso_dart/models/app_info.dart';
+import 'package:noso_dart/noso.dart';
 
 class NewOrderSend {
   String? orderID;
@@ -23,7 +23,7 @@ class NewOrderSend {
     this.orderLines,
     this.orderType,
     this.timeStamp,
-    this.reference,
+    this.reference = "null",
     this.trxLine,
     this.sender,
     this.address,
@@ -39,9 +39,9 @@ class NewOrderSend {
     return "$orderType $orderID ${orderLines.toString()} $orderType ${timeStamp.toString()} $reference ${trxLine.toString()} $sender $address $receiver ${amountFee.toString()} ${amountTrf.toString()} $signature $trfrID";
   }
 
-
   /// This string returns a prepared string for sending the payment
-  getOrderString(Address targetAddress, String message, String receiver, int amount, int commission, int block, int countTrx) {
+  getOrderString(AddressObject targetAddress, String message, String receiver,
+      int amount, int commission, int block, int countTrx, AppInfo appInfo) {
     final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     const int trxLine = 1;
     const String type = "ORDER";
@@ -52,7 +52,8 @@ class NewOrderSend {
         amount.toString() +
         commission.toString() +
         trxLine.toString());
-    var signature = NosoCrypto().signMessage(messageSignature, targetAddress.privateKey);
+    var signature =
+        Noso().signMessage(messageSignature, targetAddress.privateKey);
 
     NewOrderSend orderInfo = NewOrderSend(
         orderID: '',
@@ -66,29 +67,30 @@ class NewOrderSend {
         receiver: receiver,
         amountFee: commission,
         amountTrf: amount,
-        signature: NosoCrypto().encodeSignatureToBase64(signature),
-        trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
+        signature: Noso().encodeSignatureToBase64(signature),
+        trfrID: Noso().getTransferHash(currentTimeMillis.toString() +
             targetAddress.hash +
             receiver +
             amount.toString() +
             block.toString()));
 
-    orderInfo.orderID = NosoCore().getOrderHash(
+    orderInfo.orderID = Noso().getOrderHash(
         "$trxLine${currentTimeMillis.toString() + orderInfo.trfrID}");
 
     var orderStringCustom =
-        "NSL$type ${Const.protocol} ${Const.programVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo._getStringToData()} \$";
+        "NSL$type ${appInfo.protocol} ${appInfo.appVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo._getStringToData()} \$";
 
     return orderStringCustom.substring(0, orderStringCustom.length - 2);
   }
 
   /// Returns the query string to change the alias
-  getAliasOrderString(Address targetAddress, String alias) {
+  getAliasOrderString(
+      AddressObject targetAddress, String alias, AppInfo appInfo) {
     final int currentTimeMillis = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     const int trxLine = 1;
     const String type = "CUSTOM";
 
-    var signature = NosoCrypto().signMessage(
+    var signature = Noso().signMessage(
         'Customize this ${targetAddress.nameAddressFull} $alias',
         targetAddress.privateKey);
 
@@ -102,18 +104,18 @@ class NewOrderSend {
         sender: targetAddress.publicKey,
         address: targetAddress.nameAddressFull,
         receiver: alias,
-        amountFee: Const.customizationFee,
+        amountFee: NosoConst.customizationFee,
         amountTrf: 0,
-        signature: NosoCrypto().encodeSignatureToBase64(signature),
-        trfrID: NosoCore().getTransferHash(currentTimeMillis.toString() +
+        signature: Noso().encodeSignatureToBase64(signature),
+        trfrID: Noso().getTransferHash(currentTimeMillis.toString() +
             targetAddress.nameAddressFull +
             alias));
 
-    orderInfo.orderID = NosoCore().getOrderHash(
+    orderInfo.orderID = Noso().getOrderHash(
         "$trxLine${currentTimeMillis.toString() + orderInfo.trfrID}");
 
     var orderStringCustom =
-        "NSL$type ${Const.protocol} ${Const.programVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo._getStringToData()} \$";
+        "NSL$type ${appInfo.protocol} ${appInfo.appVersion} ${DateTime.now().millisecondsSinceEpoch ~/ 1000} ORDER $trxLine \$${orderInfo._getStringToData()} \$";
 
     return orderStringCustom.substring(0, orderStringCustom.length - 2);
   }

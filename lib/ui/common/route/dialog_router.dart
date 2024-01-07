@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/models/address_object.dart';
 import 'package:nososova/ui/dialogs/address_action/dialog_view_keyspair.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../blocs/app_data_bloc.dart';
 import '../../../blocs/debug_bloc.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../models/address_wallet.dart';
 import '../../config/responsive.dart';
 import '../../dialogs/address_action/dialog_address_info.dart';
 import '../../dialogs/address_action/dialog_custom_name.dart';
@@ -203,7 +204,7 @@ class DialogRouter {
 
   /// Dialog in which list address to import file
   static void showDialogImportFile(
-      BuildContext context, List<Address> address) {
+      BuildContext context, List<AddressObject> address) {
     showModalBottomSheet(
         isScrollControlled: true,
         shape: DialogStyle.borderShape,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/utils.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/common/route/dialog_router.dart';
 import 'package:nososova/ui/theme/decoration/textfield_decoration.dart';
@@ -12,9 +13,8 @@ import 'package:swipeable_button_view/swipeable_button_view.dart';
 import '../../../../blocs/events/wallet_events.dart';
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../models/address_wallet.dart';
 import '../../../../models/app/response_page_listener.dart';
-import '../../../../utils/noso/model/address_object.dart';
-import '../../../../utils/noso/utils.dart';
 import '../../../common/responses_util/response_widget_id.dart';
 import '../../../common/responses_util/snackbar_message.dart';
 import '../../../common/widgets/widget_transaction.dart';
@@ -312,7 +312,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : targetAddress.availableBalance >= amount + commission;
     var receiverCheck = targetAddress.hash == receiverController.text
         ? false
-        : UtilsDataNoso.isValidHashNoso(receiver);
+        : OtherUtils.isValidHashNoso(receiver);
 
     setState(() {
       if (selButton !=

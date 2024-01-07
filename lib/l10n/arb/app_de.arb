@@ -120,5 +120,6 @@
   "successSetAlias": "Die Anfrage war erfolgreich und wurde ausgeführt",
   "errorEmptyListWallet": "Diese Datei enthält keine Adressen",
   "errorNotSupportedWallet": "Diese Datei ist nicht unterstützt",
-  "unknownError": "Ein Fehler ist passiert"
+  "unknownError": "Ein Fehler ist passiert",
+  "errorLastTime": "Ваша час відстає, оновіть ваш час"
 }

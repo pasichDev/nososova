@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../config/responsive.dart';
+import '../../config/responsive.dart';
 import 'network_info.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

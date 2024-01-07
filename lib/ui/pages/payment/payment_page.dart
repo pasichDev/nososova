@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nososova/ui/pages/payment/screen/screen_payment.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/noso/model/address_object.dart';
+import '../../../models/address_wallet.dart';
 import '../../theme/style/text_style.dart';
 
 class PaymentPage extends StatefulWidget {

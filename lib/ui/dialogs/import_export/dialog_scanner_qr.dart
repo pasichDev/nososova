@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/const/status_qr.dart';
+import '../../../models/address_wallet.dart';
+import '../../../utils/status_qr.dart';
 import '../../common/route/page_router.dart';
 import '../../theme/style/colors.dart';
 

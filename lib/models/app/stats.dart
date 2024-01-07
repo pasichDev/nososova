@@ -1,6 +1,5 @@
-import 'package:nososova/models/app/halving.dart';
+import 'package:noso_dart/models/halving.dart';
 
-import '../../utils/other_utils.dart';
 import '../../utils/status_api.dart';
 import '../apiExplorer/price_dat.dart';
 
@@ -25,7 +24,7 @@ class StatisticsCoin {
 
   double get getCurrentPrice => historyCoin?.reversed.toList().first.price ?? 0;
 
-  Halving get getHalvingTimer => OtherUtils.getHalvingTimer(lastBlock);
+  Halving get getHalvingTimer => Halving().getHalvingTimer(lastBlock);
 
   get getTotalCoin => totalCoin;
 
@@ -48,7 +47,6 @@ class StatisticsCoin {
   get getLastPrice => historyCoin?.reversed.toList().last.price ?? 0.0000000;
 
   get getDiff => (((getCurrentPrice - getLastPrice) / getLastPrice) * 100);
-
 
   /// Method that returns a list of prices with a given interval
   List<PriceData> getIntervalPrices(int minutes) {

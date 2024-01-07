@@ -6,7 +6,7 @@ import '../../../blocs/events/wallet_events.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/noso/model/address_object.dart';
+import '../../../models/address_wallet.dart';
 import '../../common/route/dialog_router.dart';
 import '../../common/route/page_router.dart';
 import '../../config/responsive.dart';
@@ -18,7 +18,9 @@ class AddressInfo extends StatefulWidget {
   final Address address;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const AddressInfo({Key? key, required this.address, required this.scaffoldKey}) : super(key: key);
+  const AddressInfo(
+      {Key? key, required this.address, required this.scaffoldKey})
+      : super(key: key);
 
   @override
   AddressInfoState createState() => AddressInfoState();
@@ -33,41 +35,45 @@ class AddressInfoState extends State<AddressInfo> {
     walletBloc = BlocProvider.of<WalletBloc>(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment:CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-      if (Responsive.isMobile(context)) ...[
-        Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-            child: Text(
-              widget.address.nameAddressPublic,
-              style: AppTextStyles.dialogTitle,
-            ))
-      ],
-      Column(
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildListTileSvg(
-              Assets.iconsOutput,
-              AppLocalizations.of(context)!.sendFromAddress,
-              () => _paymentPage(context)),
-          buildListTileSvg(Assets.iconsScan,
-              AppLocalizations.of(context)!.viewQr, () => _viewQr(context)),
-          buildListTileSvg(Assets.iconsTextTwo,
-              AppLocalizations.of(context)!.copyAddress, () => _copy(context)),
-          TileConfirmList(
-              iconData: Assets.iconsDelete,
-              title: AppLocalizations.of(context)!.removeAddress,
-              confirm: AppLocalizations.of(context)!.confirmDelete,
-              onClick: () {
-                walletBloc.add(DeleteAddress(widget.address));
-                Navigator.pop(context);
-              })
-        ],
-      ),
-    ]);
+          if (Responsive.isMobile(context)) ...[
+            Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 20.0),
+                child: Text(
+                  widget.address.nameAddressPublic,
+                  style: AppTextStyles.dialogTitle,
+                ))
+          ],
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              buildListTileSvg(
+                  Assets.iconsOutput,
+                  AppLocalizations.of(context)!.sendFromAddress,
+                  () => _paymentPage(context)),
+              buildListTileSvg(Assets.iconsScan,
+                  AppLocalizations.of(context)!.viewQr, () => _viewQr(context)),
+              buildListTileSvg(
+                  Assets.iconsTextTwo,
+                  AppLocalizations.of(context)!.copyAddress,
+                  () => _copy(context)),
+              TileConfirmList(
+                  iconData: Assets.iconsDelete,
+                  title: AppLocalizations.of(context)!.removeAddress,
+                  confirm: AppLocalizations.of(context)!.confirmDelete,
+                  onClick: () {
+                    walletBloc.add(DeleteAddress(widget.address));
+                    Navigator.pop(context);
+                  })
+            ],
+          ),
+        ]);
   }
 
   void _copy(BuildContext context) {
@@ -82,6 +88,7 @@ class AddressInfoState extends State<AddressInfo> {
 
   void _paymentPage(BuildContext context) {
     Navigator.pop(context);
-    PageRouter.routePaymentPage(widget.scaffoldKey.currentContext ?? context, widget.address);
+    PageRouter.routePaymentPage(
+        widget.scaffoldKey.currentContext ?? context, widget.address);
   }
 }

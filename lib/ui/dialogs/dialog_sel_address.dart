@@ -4,7 +4,7 @@ import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../l10n/app_localizations.dart';
-import '../../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
 import '../theme/style/text_style.dart';
 import '../tiles/tile_wallet_address.dart';
 

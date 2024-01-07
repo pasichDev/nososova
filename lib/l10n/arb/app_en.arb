@@ -120,5 +120,6 @@
   "successSetAlias": "Your request is successful and has been processed",
   "errorEmptyListWallet": "This file does not contain an address",
   "errorNotSupportedWallet": "This file is not supported",
+  "errorLastTime": "Your time is behind, please update your time",
   "unknownError": "An error occurred"
 }

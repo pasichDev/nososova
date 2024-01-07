@@ -116,5 +116,6 @@
   "successSetAlias": "Ваш запрос обработан и успешно выполнен",
   "errorEmptyListWallet": "Этот файл не содержит адреса",
   "errorNotSupportedWallet": "Этот файл не поддерживается",
-  "unknownError": "Произошла ошибка"
+  "unknownError": "Произошла ошибка",
+  "errorLastTime": "Ваше время отстает, обновите ваше время"
 }

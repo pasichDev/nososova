@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/style/text_style.dart';
+import '../../theme/style/text_style.dart';
+
 
 class InfoItem {
   itemInfo(String nameItem, String value, {String twoValue = ""}) {

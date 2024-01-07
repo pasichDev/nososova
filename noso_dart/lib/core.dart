@@ -3,7 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:nososova/utils/const/const.dart';
+import 'package:noso_dart/const.dart';
 import 'package:pointycastle/export.dart';
 import 'package:pointycastle/pointycastle.dart';
 
@@ -17,7 +17,7 @@ class DivResult {
   BigInt remainder = BigInt.zero;
 }
 
-class NosoCrypto {
+class NosoCore {
   final algorithmName = Mac("SHA-1/HMAC");
 
   /// Generates a key pair containing a private key and a public key.
@@ -87,7 +87,7 @@ class NosoCrypto {
     final sum = base58Checksum(hash1Encoded);
     final key = base58DecimalTo58(sum.toString());
     final hash2 = hash1Encoded + key;
-    return Const.coinChar + hash2;
+    return NosoConst.coinChar + hash2;
   }
 
   /// Calculates the SHA-256 hash of a given public key.
@@ -115,9 +115,9 @@ class NosoCrypto {
     String alphabetUsed;
 
     if (alphabetNumber == BigInt.from(36)) {
-      alphabetUsed = Const.b36Alphabet;
+      alphabetUsed = NosoConst.b36Alphabet;
     } else {
-      alphabetUsed = Const.b58Alphabet;
+      alphabetUsed = NosoConst.b58Alphabet;
     }
 
     while (decimalValue.bitLength >= 2) {
@@ -147,7 +147,7 @@ class NosoCrypto {
     int total = 0;
     for (var i = 0; i < input.length; i++) {
       var currentChar = input[i];
-      var foundIndex = Const.b58Alphabet.indexOf(currentChar);
+      var foundIndex = NosoConst.b58Alphabet.indexOf(currentChar);
       if (foundIndex != -1) {
         total += foundIndex;
       }
@@ -166,18 +166,18 @@ class NosoCrypto {
       resultDiv = _divideBigInt(decimalValue, BigInt.from(58));
       decimalValue = resultDiv.coefficient;
       remainder = resultDiv.remainder.toInt().toString();
-      result = Const.b58Alphabet[int.parse(remainder)] + result;
+      result = NosoConst.b58Alphabet[int.parse(remainder)] + result;
     }
 
     if (decimalValue >= BigInt.from(58)) {
       resultDiv = _divideBigInt(decimalValue, BigInt.from(58));
       decimalValue = resultDiv.coefficient;
       remainder = resultDiv.remainder.toInt().toString();
-      result = Const.b58Alphabet[int.parse(remainder)] + result;
+      result = NosoConst.b58Alphabet[int.parse(remainder)] + result;
     }
 
     if (decimalValue > BigInt.zero) {
-      result = Const.b58Alphabet[decimalValue.toInt()] + result;
+      result = NosoConst.b58Alphabet[decimalValue.toInt()] + result;
     }
 
     return result;
@@ -236,7 +236,7 @@ class NosoCrypto {
   List<int> _nosoBase64Decode(String input) {
     final indexList = <int>[];
     for (var c in input.codeUnits) {
-      final it = Const.b64Alphabet.indexOf(String.fromCharCode(c));
+      final it = NosoConst.b64Alphabet.indexOf(String.fromCharCode(c));
       if (it != -1) {
         indexList.add(it);
       }

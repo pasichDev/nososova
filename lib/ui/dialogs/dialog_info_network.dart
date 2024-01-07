@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/models/node.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 
 import '../../blocs/events/app_data_events.dart';
 import '../../generated/assets.dart';
 import '../../ui/tiles/seed_tile.dart';
-import '../../utils/const/network_const.dart';
-import '../../utils/custom_class/shimmer.dart';
 import '../../utils/date_utils.dart';
-import '../../utils/noso/model/node.dart';
+import '../../utils/network_const.dart';
 import '../common/route/dialog_router.dart';
-import '../components/extra_util.dart';
+import '../common/widgets/node_status.dart';
+import '../common/widgets/shimmer.dart';
 import '../config/responsive.dart';
 import '../theme/style/icons_style.dart';
 import '../theme/style/text_style.dart';
@@ -74,7 +74,7 @@ class DialogInfoNetworkState extends State<DialogInfoNetwork> {
             ),
             itemInfo(
                 AppLocalizations.of(context)!.status,
-                ExtraUtil.getNodeDescriptionString(
+                NodeStatusUi.getNodeDescriptionString(
                     context, state.statusConnected, state.node.seed),
                 StatusConnectNodes.connected)
           ],

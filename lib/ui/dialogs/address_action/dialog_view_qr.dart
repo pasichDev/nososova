@@ -3,7 +3,7 @@ import 'package:nososova/ui/config/responsive.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/noso/model/address_object.dart';
+import '../../../models/address_wallet.dart';
 import '../../theme/style/colors.dart';
 import '../../theme/style/text_style.dart';
 

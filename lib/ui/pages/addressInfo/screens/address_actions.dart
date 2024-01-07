@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../../blocs/events/wallet_events.dart';
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../generated/assets.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../models/address_wallet.dart';
 import '../../../common/route/dialog_router.dart';
 import '../../../common/route/page_router.dart';
 import '../../../theme/style/text_style.dart';

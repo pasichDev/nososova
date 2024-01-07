@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:noso_dart/models/seed.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
-import '../../l10n/app_localizations.dart';
-import '../../models/seed.dart';
-import '../../utils/const/network_const.dart';
-import '../theme/style/text_style.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/network_const.dart';
+import '../../theme/style/text_style.dart';
 
-class ExtraUtil {
-  /// Це в майбутньому замінити..
-
+class NodeStatusUi {
   static Widget getNodeDescription(
       BuildContext context, StatusConnectNodes statusConnected, Seed seed) {
     if (statusConnected == StatusConnectNodes.error) {
@@ -59,7 +57,6 @@ class ExtraUtil {
     StatusConnectNodes statusConnected,
     Seed seed,
   ) {
-
     switch (statusConnected) {
       case StatusConnectNodes.error:
         return AppLocalizations.of(context)!.errorConnection;

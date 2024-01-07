@@ -3,20 +3,20 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:noso_dart/models/node.dart';
+import 'package:noso_dart/models/seed.dart';
+import 'package:noso_dart/models/summary_data.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/events/wallet_events.dart';
 import 'package:nososova/models/apiExplorer/block_info.dart';
 import 'package:nososova/models/app/app_bloc_config.dart';
-import 'package:nososova/models/seed.dart';
-import 'package:nososova/utils/noso/model/node.dart';
-import 'package:nososova/utils/noso/model/summary_data.dart';
 import 'package:nososova/utils/status_api.dart';
 
 import '../models/app/debug.dart';
 import '../models/app/stats.dart';
 import '../models/responses/response_node.dart';
 import '../repositories/repositories.dart';
-import '../utils/const/network_const.dart';
+import '../utils/network_const.dart';
 import 'events/app_data_events.dart';
 import 'events/debug_events.dart';
 
@@ -32,15 +32,16 @@ class AppDataState {
   })  : node = node ?? Node(seed: Seed()),
         statisticsCoin = statisticsCoin ?? StatisticsCoin();
 
-  AppDataState copyWith(
-      {Node? node,
-      StatisticsCoin? statisticsCoin,
-      StatusConnectNodes? statusConnected,}) {
+  AppDataState copyWith({
+    Node? node,
+    StatisticsCoin? statisticsCoin,
+    StatusConnectNodes? statusConnected,
+  }) {
     return AppDataState(
       node: node ?? this.node,
       statisticsCoin: statisticsCoin ?? this.statisticsCoin,
       statusConnected: statusConnected ?? this.statusConnected,
-     );
+    );
   }
 }
 
@@ -106,10 +107,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
           "Repeated attempt to search for a node, the last one ended in failure"));
     }
 
-
     ResponseNode<List<int>> responseTargetNode =
         await _searchTargetNode(initAlgh);
-    final Node? nodeOutput = _repositories.nosoCore
+    final Node? nodeOutput = Node(seed: responseTargetNode.seed)
         .parseResponseNode(responseTargetNode.value, responseTargetNode.seed);
     if (responseTargetNode.errors == null && nodeOutput != null) {
       await _syncNetwork(event, emit, nodeOutput);
@@ -145,8 +145,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       case InitialNodeAlgh.listenUserNodes:
         return await _repositories.networkRepository.fetchNode(
             NetworkRequest.nodeStatus,
-            Seed().tokenizer(
-                _repositories.nosoCore.getRandomNode(listUsersNodes)));
+            Seed().tokenizer(NetworkConst().getRandomNode(listUsersNodes)));
 
       default:
         return await _repositories.networkRepository.getRandomDevNode();
@@ -207,10 +206,10 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
       var isSavedSummary = await _repositories.fileRepository
           .writeSummaryZip(responseSummary.value ?? []);
       if (responseSummary.errors == null && isSavedSummary) {
-        List<SumaryData> sumaryBlock = _repositories.nosoCore.parseSumary(
+        List<SummaryData> sumaryBlock = SummaryData().parseSumary(
             await _repositories.fileRepository.loadSummary() ?? Uint8List(0));
         double totalCoins = sumaryBlock.fold(
-            0, (double sum, SumaryData data) => sum + data.balance);
+            0, (double sum, SummaryData data) => sum + data.balance);
         statsCopyCoin = statsCopyCoin.copyWith(totalCoin: totalCoins);
         _debugBloc.add(AddStringDebug("Download Summary successful"));
 

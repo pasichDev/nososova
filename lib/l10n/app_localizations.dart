@@ -823,6 +823,12 @@ abstract class AppLocalizations {
   /// **'This file is not supported'**
   String get errorNotSupportedWallet;
 
+  /// No description provided for @errorLastTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Your time is behind, please update your time'**
+  String get errorLastTime;
+
   /// No description provided for @unknownError.
   ///
   /// In en, this message translates to:

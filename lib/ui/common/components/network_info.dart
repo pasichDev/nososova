@@ -4,7 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
-import 'package:nososova/utils/const/network_const.dart';
+import 'package:nososova/utils/network_const.dart';
 
 class NetworkInfo extends StatelessWidget {
   final VoidCallback nodeStatusDialog;

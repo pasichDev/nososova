@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:noso_dart/models/address_object.dart';
 import 'package:nososova/database/address.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
 
 part 'database.g.dart';
 
@@ -16,7 +17,7 @@ class MyDatabase extends _$MyDatabase {
 
   Stream<List<Address>> fetchAddresses() => select(addresses).watch();
 
-  Future<void> addAddress(Address value) async {
+  Future<void> addAddress(AddressObject value) async {
     await batch((batch) {
       batch.insert(
           addresses,
@@ -29,7 +30,7 @@ class MyDatabase extends _$MyDatabase {
     // await into(addresses).insertOnConflictUpdate(insertable);
   }
 
-  Future<void> addAddresses(List<Address> value) async {
+  Future<void> addAddresses(List<AddressObject> value) async {
     var insertable = value.map((address) {
       return AddressesCompanion(
         publicKey: Value(address.publicKey),

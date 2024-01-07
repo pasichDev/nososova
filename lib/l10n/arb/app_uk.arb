@@ -121,5 +121,6 @@
   "errorNoSync": "Додаток не синхронізований з основною мережею",
   "errorEmptyListWallet": "Це файл не містить адрес",
   "errorNotSupportedWallet": "Цей файл не підтримується",
-  "unknownError": "Виникла помилка"
+  "unknownError": "Виникла помилка",
+  "errorLastTime": "Ваша час відстає, оновіть ваш час"
 }

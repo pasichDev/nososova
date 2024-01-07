@@ -1,5 +1,5 @@
+import 'package:noso_dart/models/seed.dart';
 import 'package:nososova/models/responses/response.dart';
-import 'package:nososova/models/seed.dart';
 
 class ResponseApi<T> extends Response<T> {
   ResponseApi({

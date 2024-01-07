@@ -1,8 +1,9 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:nososova/utils/noso/model/summary_data.dart';
+import 'package:noso_dart/models/address_object.dart';
+import 'package:noso_dart/models/pending_transaction.dart';
+import 'package:noso_dart/models/summary_data.dart';
 
-import '../../utils/noso/model/address_object.dart';
-import '../../utils/noso/model/pending_transaction.dart';
+import '../../models/address_wallet.dart';
 
 abstract class WalletEvent {}
 
@@ -29,7 +30,7 @@ class AddAddress extends WalletEvent {
 
 /// Event that adds an address to the wallet
 class AddAddresses extends WalletEvent {
-  final List<Address> addresses;
+  final List<AddressObject> addresses;
 
   AddAddresses(this.addresses);
 }
@@ -75,11 +76,12 @@ class SendOrder extends WalletEvent {
   final Address address;
   final int widgetId;
 
-  SendOrder(this.receiver, this.message, this.amount, this.address, this.widgetId);
+  SendOrder(
+      this.receiver, this.message, this.amount, this.address, this.widgetId);
 }
 
 class CalculateBalance extends WalletEvent {
-  final List<SumaryData> summaryData;
+  final List<SummaryData> summaryData;
   final List<Address>? address;
   final bool checkConsensus;
 

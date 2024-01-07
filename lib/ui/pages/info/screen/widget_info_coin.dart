@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
-import 'package:nososova/ui/components/empty_list_widget.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../../models/app/stats.dart';
 import '../../../../utils/status_api.dart';
-import '../../../components/info_item.dart';
-import '../../../components/loading.dart';
+import '../../../common/components/empty_list_widget.dart';
+import '../../../common/components/info_item.dart';
+import '../../../common/components/loading.dart';
 import '../../../config/responsive.dart';
 import '../../../theme/style/text_style.dart';
 

@@ -2,27 +2,29 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:noso_dart/const.dart';
+import 'package:noso_dart/models/address_object.dart';
+import 'package:noso_dart/models/node.dart';
+import 'package:noso_dart/models/order_create.dart';
+import 'package:noso_dart/models/pending_transaction.dart';
+import 'package:noso_dart/models/seed.dart';
+import 'package:noso_dart/models/summary_data.dart';
+import 'package:noso_dart/noso_math.dart';
+import 'package:noso_dart/utils.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/models/app/response_page_listener.dart';
 import 'package:nososova/repositories/repositories.dart';
-import 'package:nososova/utils/noso/model/pending_transaction.dart';
-import 'package:nososova/utils/noso/model/summary_data.dart';
 
+import '../../models/address_wallet.dart';
 import '../models/apiExplorer/transaction_history.dart';
 import '../models/app/debug.dart';
 import '../models/app/response_calculate.dart';
 import '../models/app/state_node.dart';
 import '../models/app/wallet.dart';
 import '../models/responses/response_node.dart';
-import '../models/seed.dart';
 import '../ui/common/responses_util/response_widget_id.dart';
-import '../utils/const/const.dart';
-import '../utils/const/files_const.dart';
-import '../utils/const/network_const.dart';
-import '../utils/noso/model/address_object.dart';
-import '../utils/noso/model/node.dart';
-import '../utils/noso/model/order_create.dart';
-import '../utils/noso/utils.dart';
+import '../utils/files_const.dart';
+import '../utils/network_const.dart';
 import 'debug_bloc.dart';
 import 'events/app_data_events.dart';
 import 'events/debug_events.dart';
@@ -86,7 +88,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   /// The method used to change the alias address
   Future<void> _setAliasAddress(e, emit) async {
-    var isBalanceCorrect = e.address.availableBalance >= Const.customizationFee;
+    var isBalanceCorrect =
+        e.address.availableBalance >= NosoConst.customizationFee;
     if (e.address.hash == "" || e.alias == "" || !isBalanceCorrect) {
       _responseStatusStream.add(ResponseListenerPage(
           idWidget: e.widgetId,
@@ -102,7 +105,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       return;
     }
     ResponseNode resp = await _repositories.networkRepository.fetchNode(
-        "${NewOrderSend().getAliasOrderString(e.address, e.alias)}\n",
+        "${NewOrderSend().getAliasOrderString(e.address, e.alias, NetworkConst.appInfo)}\n",
         appDataBloc.state.node.seed);
 
     if (resp.errors != null) {
@@ -131,14 +134,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   Future<void> _sendOrder(e, emit) async {
     var receiver = e.receiver;
     var message = e.message;
-    var amount = _repositories.nosoCore.convertAmount(e.amount);
+    var amount = NosoMath().convertAmount(e.amount);
     Address address = e.address;
-    var commission = _repositories.nosoCore.getFee(amount);
+    var commission = NosoMath().getFee(amount);
     var widgetId = e.widgetId;
 
-    var isBalanceCorrect =
-        _repositories.nosoCore.convertAmount(address.availableBalance) >=
-            (amount + commission);
+    var isBalanceCorrect = NosoMath().convertAmount(address.availableBalance) >=
+        (amount + commission);
 
     if (receiver == "" || address.hash.isEmpty || !isBalanceCorrect) {
       _responseStatusStream.add(ResponseListenerPage(
@@ -158,14 +160,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           "An attempt to send a payment was unsuccessful. The system is not synchronized with the network"));
       return;
     }
-    var sendString = NewOrderSend().getOrderString(address, message, receiver,
-        amount, commission, appDataBloc.state.node.lastblock, _getTrxCount());
+    var sendString = NewOrderSend().getOrderString(
+        address,
+        message,
+        receiver,
+        amount,
+        commission,
+        appDataBloc.state.node.lastblock,
+        _getTrxCount(),
+        NetworkConst.appInfo);
     var sendStringParse = sendString.split(" ");
+
 
     ResponseNode resp = await _repositories.networkRepository
         .fetchNode("$sendString\n", appDataBloc.state.node.seed);
     var result = String.fromCharCodes(resp.value).split(' ');
-
     if (result.length == 1) {
       _responseStatusStream.add(ResponseListenerPage(
           idWidget: e.widgetId,
@@ -191,6 +200,16 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
             snackBarType: SnackBarType.error));
         _debugBloc.add(AddStringDebug(
             "An attempt to send a payment was unsuccessful. Address blocked"));
+        return;
+      }
+
+      if (int.parse(result[1]) == 3) {
+        _responseStatusStream.add(ResponseListenerPage(
+            idWidget: e.widgetId,
+            codeMessage: 14,
+            snackBarType: SnackBarType.error));
+        _debugBloc.add(AddStringDebug(
+            "Your time is behind, please update your time"));
         return;
       }
       if (int.parse(result[1]) == 10) {
@@ -240,9 +259,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   void _addAddresses(event, emit) async {
-    List<Address> listAddresses = [];
+    List<AddressObject> listAddresses = [];
 
-    for (Address newAddress in event.addresses) {
+    for (AddressObject newAddress in event.addresses) {
       Address? found = state.wallet.address.firstWhere(
           (other) => other.hash == newAddress.hash,
           orElse: () => Address(hash: "", publicKey: "", privateKey: ""));
@@ -307,7 +326,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       var responsePendings = await _repositories.networkRepository
           .fetchNode(NetworkRequest.pendingsList, targetNode.seed);
       pendingsParse =
-          _repositories.nosoCore.parsePendings(responsePendings.value);
+          PendingTransaction().parsePendings(responsePendings.value);
       if (responsePendings.errors != null || pendingsParse.isEmpty) {
         _debugBloc.add(
             AddStringDebug("Error getting pendings, try another connection"));
@@ -355,7 +374,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           nodesList.any((itemNode) => address == itemNode.split("|")[1]);
 
       for (Address address in listAddresses) {
-        if (address.balance >= UtilsDataNoso.getCountMonetToRunNode()) {
+        if (address.balance >= OtherUtils.getCountMonetToRunNode()) {
           address.nodeAvailable = true;
           address.nodeStatusOn = containsSeedWallet(address.hash);
           address.rewardDay = address.nodeStatusOn ? nodeRewardDay : 0;
@@ -391,7 +410,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     do {
       var targetDevNode =
           await _repositories.networkRepository.getRandomDevNode();
-      final Node? nodeOutput = _repositories.nosoCore
+      final Node? nodeOutput = Node(seed: targetDevNode.seed)
           .parseResponseNode(targetDevNode.value, targetDevNode.seed);
       if (targetDevNode.errors != null ||
           nodeOutput == null ||
@@ -413,12 +432,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     int attemptsUser = 0;
 
     do {
-      var randomSeed = Seed()
-          .tokenizer(_repositories.nosoCore.getRandomNode(listNodesUsers));
+      var randomSeed =
+          Seed().tokenizer(NetworkConst().getRandomNode(listNodesUsers));
       var targetUserNode = await _repositories.networkRepository
           .fetchNode(NetworkRequest.nodeStatus, randomSeed);
 
-      final Node? nodeUserOutput = _repositories.nosoCore
+      final Node? nodeUserOutput = Node(seed: targetUserNode.seed)
           .parseResponseNode(targetUserNode.value, targetUserNode.seed);
 
       if (targetUserNode.errors != null ||
@@ -452,15 +471,15 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   }
 
   /// Method that synchronizes the balance of the wallet with the available one
-  Future<ResponseCalculate> _syncBalance(List<SumaryData> summary,
+  Future<ResponseCalculate> _syncBalance(List<SummaryData> summary,
       {List<Address>? address}) async {
     var listAddress = address ?? state.wallet.address;
 
     double totalBalance = 0;
     for (var address in listAddress) {
-      SumaryData found = summary.firstWhere(
+      SummaryData found = summary.firstWhere(
           (other) => other.hash == address.hash,
-          orElse: () => SumaryData());
+          orElse: () => SummaryData());
 
       if (found.hash.isNotEmpty) {
         totalBalance += found.balance;
@@ -469,7 +488,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         address.score = found.score;
         address.custom = found.custom.isEmpty ? null : found.custom;
         address.nodeAvailable =
-            found.balance >= UtilsDataNoso.getCountMonetToRunNode();
+            found.balance >= OtherUtils.getCountMonetToRunNode();
       }
     }
     return ResponseCalculate(address: listAddress, totalBalance: totalBalance);

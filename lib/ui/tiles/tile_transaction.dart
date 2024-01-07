@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:noso_dart/utils.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../generated/assets.dart';
-import '../../utils/other_utils.dart';
 import '../theme/style/colors.dart';
 
 class TransactionTile extends StatefulWidget {
@@ -24,8 +24,8 @@ class TransactionTile extends StatefulWidget {
 }
 
 class TransactionTileState extends State<TransactionTile> {
-
   bool isCustom = false;
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class TransactionTileState extends State<TransactionTile> {
   }
 
   Widget _iconAddress() {
-    if(isCustom){
+    if (isCustom) {
       return AppIconsStyle.icon3x2(Assets.iconsRename);
     }
     if (widget.receiver) {
@@ -51,11 +51,8 @@ class TransactionTileState extends State<TransactionTile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child:
-
-            Text(
-              OtherUtils.hashObfuscation(
-                  widget.receiver
+            child: Text(
+              OtherUtils.hashObfuscation(widget.receiver
                   ? widget.transactionHistory.sender
                   : widget.transactionHistory.receiver),
               style: AppTextStyles.walletAddress.copyWith(
@@ -64,19 +61,15 @@ class TransactionTileState extends State<TransactionTile> {
             ),
           ),
           Text(
-            widget.receiver ?
-            "+${double.parse(widget.transactionHistory.amount).toStringAsFixed(3)}"
-                :
-            "-${(double.parse(widget.transactionHistory.amount) + double.parse(widget.transactionHistory.fee)).toStringAsFixed(3)}",
-
-
+            widget.receiver
+                ? "+${double.parse(widget.transactionHistory.amount).toStringAsFixed(3)}"
+                : "-${(double.parse(widget.transactionHistory.amount) + double.parse(widget.transactionHistory.fee)).toStringAsFixed(3)}",
             style: AppTextStyles.walletAddress.copyWith(
               color: widget.receiver
                   ? CustomColors.positiveBalance
                   : CustomColors.negativeBalance,
             ),
           ),
-
         ],
       ),
       onTap: widget.onTap,

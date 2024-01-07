@@ -11,7 +11,7 @@ import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../../../generated/assets.dart';
-import '../../../utils/const/files_const.dart';
+import '../../../utils/files_const.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
 import '../../common/route/dialog_router.dart';

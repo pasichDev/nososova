@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
 import '../../generated/assets.dart';
-import '../../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
 import '../theme/anim/blinkin_widget.dart';
 import '../theme/style/icons_style.dart';
 

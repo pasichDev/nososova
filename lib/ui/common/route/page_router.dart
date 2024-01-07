@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 import '../../../blocs/app_data_bloc.dart';
 import '../../../blocs/history_transactions_bloc.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../dependency_injection.dart';
+import '../../../models/address_wallet.dart';
 import '../../../models/apiExplorer/transaction_history.dart';
 import '../../../repositories/repositories.dart';
 import '../../config/responsive.dart';
@@ -20,7 +20,6 @@ class PageRouter {
   /// Page for sending payment
   static void routePaymentPage(BuildContext context, Address address,
       {String receiver = ""}) {
-
     if (Responsive.isMobile(context)) {
       Navigator.push(
         context,
@@ -31,7 +30,6 @@ class PageRouter {
           ),
         ),
       );
-
     } else {
       WoltModalSheet.show(
         minDialogWidth: 500,
@@ -46,7 +44,7 @@ class PageRouter {
                 ),
                 backgroundColor: Colors.white,
                 hasSabGradient: false,
-              isTopBarLayerAlwaysVisible: true,
+                isTopBarLayerAlwaysVisible: true,
                 child: BlocProvider.value(
                   value: BlocProvider.of<WalletBloc>(context),
                   child: PaymentScreen(address: address, receiver: receiver),
@@ -55,9 +53,6 @@ class PageRouter {
         },
       );
     }
-
-
-
   }
 
   /// Address information page

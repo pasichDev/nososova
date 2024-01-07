@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/models/address_object.dart';
 import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/config/responsive.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../blocs/events/wallet_events.dart';
 import '../../../blocs/wallet_bloc.dart';
-import '../../../utils/noso/model/address_object.dart';
 import '../../theme/style/text_style.dart';
 
 typedef OnCancelButtonPressed = void Function();
 typedef OnAddToWalletButtonPressed = void Function();
 
 final class DialogImportAddress extends StatefulWidget {
-  final List<Address> address;
+  final List<AddressObject> address;
 
   const DialogImportAddress({super.key, required this.address});
 
@@ -23,7 +23,7 @@ final class DialogImportAddress extends StatefulWidget {
 
 class DialogImportAddressState extends State<DialogImportAddress> {
   late WalletBloc walletBloc;
-  final List<Address> selectedItems = [];
+  final List<AddressObject> selectedItems = [];
   bool selectAll = false;
 
   @override
@@ -36,23 +36,22 @@ class DialogImportAddressState extends State<DialogImportAddress> {
   @override
   Widget build(BuildContext context) {
     var addresses = widget.address;
-    return SafeArea(child: Padding(
+    return SafeArea(
+        child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if(Responsive.isMobile(context))
-            const SizedBox(height: 60),
+          if (Responsive.isMobile(context)) const SizedBox(height: 60),
           Text(
             AppLocalizations.of(context)!.foundAddresses,
             style: AppTextStyles.dialogTitle,
           ),
           const SizedBox(height: 20),
           Expanded(
-           child:
-          ListView.builder(
-             shrinkWrap: false,
+            child: ListView.builder(
+              shrinkWrap: false,
               itemCount: addresses.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = addresses[index];
@@ -60,7 +59,8 @@ class DialogImportAddressState extends State<DialogImportAddress> {
 
                 return ListTile(
                   contentPadding: const EdgeInsets.all(0),
-                  title: Text(item.hash, style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
+                  title: Text(item.hash,
+                      style: AppTextStyles.itemStyle.copyWith(fontSize: 16)),
                   leading: Checkbox(
                     activeColor: CustomColors.primaryColor,
                     value: isSelected,
@@ -80,7 +80,7 @@ class DialogImportAddressState extends State<DialogImportAddress> {
           ),
           const SizedBox(height: 10),
           ListTile(
-              contentPadding: const EdgeInsets.all(0),
+            contentPadding: const EdgeInsets.all(0),
             leading: IconButton(
               icon: Icon(!selectAll ? Icons.select_all : Icons.deselect),
               onPressed: () {
@@ -109,7 +109,11 @@ class DialogImportAddressState extends State<DialogImportAddress> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child:Padding(padding: const EdgeInsets.all(15), child: Text(AppLocalizations.of(context)!.cancel, style: AppTextStyles.walletAddress.copyWith(color: Colors.white))),
+                child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Text(AppLocalizations.of(context)!.cancel,
+                        style: AppTextStyles.walletAddress
+                            .copyWith(color: Colors.white))),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
@@ -122,7 +126,12 @@ class DialogImportAddressState extends State<DialogImportAddress> {
                   }
                   Navigator.pop(context);
                 },
-                child:Padding(padding: const EdgeInsets.all(15), child:  Text(AppLocalizations.of(context)!.addToWallet, style: AppTextStyles.walletAddress.copyWith(color: Colors.white)),),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Text(AppLocalizations.of(context)!.addToWallet,
+                      style: AppTextStyles.walletAddress
+                          .copyWith(color: Colors.white)),
+                ),
               ),
             ],
           ),

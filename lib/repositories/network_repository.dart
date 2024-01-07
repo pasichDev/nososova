@@ -1,4 +1,4 @@
-import 'package:nososova/models/seed.dart';
+import 'package:noso_dart/models/seed.dart';
 import 'package:nososova/services/explorer_stats_service.dart';
 import 'package:nososova/services/node_service.dart';
 

@@ -368,5 +368,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get errorNotSupportedWallet => 'Этот файл не поддерживается';
 
   @override
+  String get errorLastTime => 'Ваше время отстает, обновите ваше время';
+
+  @override
   String get unknownError => 'Произошла ошибка';
 }

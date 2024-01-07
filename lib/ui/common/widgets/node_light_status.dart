@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../models/address_wallet.dart';
 import '../../theme/anim/blinkin_widget.dart';
 import '../../theme/style/colors.dart';
 

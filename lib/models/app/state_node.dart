@@ -1,4 +1,4 @@
-import '../../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
 
 class StateNodes {
   List<Address> nodes;

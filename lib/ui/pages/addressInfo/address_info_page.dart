@@ -3,21 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/const.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/address_actions.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/history_transaction.dart';
 import 'package:nososova/ui/pages/addressInfo/screens/pendings_widget.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../blocs/events/history_transactions_events.dart';
 import '../../../blocs/history_transactions_bloc.dart';
 import '../../../blocs/wallet_bloc.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/const/const.dart';
+import '../../../models/address_wallet.dart';
+import '../../common/components/app_bar_other_page.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../common/responses_util/snackbar_message.dart';
 import '../../common/widgets/node_light_status.dart';
-import '../../components/app_bar_other_page.dart';
 import '../../config/responsive.dart';
 import '../../theme/anim/transform_widget.dart';
 import '../../theme/decoration/card_gradient_decoration.dart';
@@ -275,7 +275,7 @@ class _AddressInfoPageState extends State<AddressInfoPage> {
           top: 20,
           left: 20,
           child: Text(
-            Const.coinName,
+            NosoConst.coinName,
             style: AppTextStyles.titleMax.copyWith(
               color: Colors.white.withOpacity(0.4),
               fontSize: 32,

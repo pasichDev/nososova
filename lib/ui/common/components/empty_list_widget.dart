@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/style/text_style.dart';
+import '../../theme/style/text_style.dart';
+
 
 class EmptyWidget extends StatelessWidget {
   final String title;

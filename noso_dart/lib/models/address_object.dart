@@ -1,9 +1,6 @@
-import 'package:drift/drift.dart';
+import '../utils.dart';
 
-import '../../other_utils.dart';
-
-@DataClassName('Address')
-class Address {
+class AddressObject {
   String hash;
   String? custom;
   String publicKey;
@@ -36,7 +33,7 @@ class Address {
   /// Available balance to perform paid transactions
   get availableBalance => outgoing > balance ? 0 : balance - outgoing;
 
-  Address({
+  AddressObject({
     required this.hash,
     this.custom,
     required this.publicKey,
@@ -53,7 +50,7 @@ class Address {
     this.nodeStatusOn = false,
   });
 
-  Address copyWith({
+  AddressObject copyWith({
     required String hash,
     String? custom,
     required String publicKey,
@@ -69,7 +66,7 @@ class Address {
     bool? nodeOn,
     bool? nodeStatusOn,
   }) {
-    return Address(
+    return AddressObject(
       hash: hash,
       custom: custom ?? this.custom,
       publicKey: publicKey,

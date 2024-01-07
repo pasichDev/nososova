@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noso_dart/const.dart';
+import 'package:noso_dart/utils.dart';
 import 'package:nososova/models/apiExplorer/transaction_history.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 
 import '../../../generated/assets.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/const/const.dart';
-import '../../../utils/custom_class/dasher_divider.dart';
-import '../../../utils/other_utils.dart';
 import '../../config/responsive.dart';
 import '../../theme/style/text_style.dart';
+import 'dasher_divider.dart';
 
 class TransactionWidgetInfo extends StatefulWidget {
   final TransactionHistory transaction;
@@ -77,7 +77,7 @@ class _TransactionWidgetInfoState extends State<TransactionWidgetInfo> {
                 Text(
                     isCustom
                         ? AppLocalizations.of(context)!.editCustom
-                        : "${widget.isReceiver ? "+" : "-"}${amount.toStringAsFixed(5)} ${Const.coinName}",
+                        : "${widget.isReceiver ? "+" : "-"}${amount.toStringAsFixed(5)} ${NosoConst.coinName}",
                     textAlign: TextAlign.center,
                     style: AppTextStyles.titleMax
                         .copyWith(color: Colors.black, fontSize: 36)),
@@ -89,7 +89,8 @@ class _TransactionWidgetInfoState extends State<TransactionWidgetInfo> {
                 const SizedBox(height: 10),
                 if (!widget.isProcess) ...[
                   Text(widget.transaction.timestamp,
-                      style: AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
+                      style:
+                          AppTextStyles.itemStyle.copyWith(color: Colors.grey)),
                 ] else ...[
                   Text(AppLocalizations.of(context)!.sendProcess,
                       style: AppTextStyles.itemStyle
@@ -119,7 +120,7 @@ class _TransactionWidgetInfoState extends State<TransactionWidgetInfo> {
                               widget.transaction.sender)),
                 if (!widget.isReceiver)
                   itemInfo(AppLocalizations.of(context)!.commission,
-                      "${widget.transaction.fee} ${Const.coinName}"),
+                      "${widget.transaction.fee} ${NosoConst.coinName}"),
                 if (isCustom)
                   itemInfo(AppLocalizations.of(context)!.message, "CUSTOM"),
               ],

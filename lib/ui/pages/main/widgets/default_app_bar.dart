@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../../../generated/assets.dart';
+import '../../../common/components/network_info.dart';
 import '../../../common/route/dialog_router.dart';
-import '../../../components/network_info.dart';
 import '../../../config/responsive.dart';
 import '../../../theme/style/icons_style.dart';
 

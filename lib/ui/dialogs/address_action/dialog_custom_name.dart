@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:noso_dart/const.dart';
+import 'package:noso_dart/utils.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
 import '../../../blocs/events/wallet_events.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../utils/const/const.dart';
-import '../../../utils/noso/utils.dart';
+import '../../../models/address_wallet.dart';
 import '../../common/responses_util/response_widget_id.dart';
 import '../../config/responsive.dart';
 import '../../theme/decoration/textfield_decoration.dart';
@@ -109,7 +109,7 @@ class _DialogCustomNameState extends State<DialogCustomName> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        (Const.customizationFee / 100000000).toStringAsFixed(8),
+                        (NosoConst.customizationFee / 100000000).toStringAsFixed(8),
                         style: AppTextStyles.walletAddress
                             .copyWith(color: Colors.black, fontSize: 18),
                       ),
@@ -144,8 +144,7 @@ class _DialogCustomNameState extends State<DialogCustomName> {
 
   _checkAliasText(String text) {
     setState(() {
-      if (text == widget.address.custom ||
-          !UtilsDataNoso.isValidHashNoso(text)) {
+      if (text == widget.address.custom || !OtherUtils.isValidHashNoso(text)) {
         isActiveButtonSend = false;
       } else {
         isActiveButtonSend = true;

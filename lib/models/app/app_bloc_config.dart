@@ -1,4 +1,4 @@
-import '../../utils/const/network_const.dart';
+import '../../utils/network_const.dart';
 
 class AppBlocConfig {
   late String? _lastSeed;

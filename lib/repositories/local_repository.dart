@@ -1,5 +1,7 @@
+import 'package:noso_dart/models/address_object.dart';
 import 'package:nososova/database/database.dart';
-import 'package:nososova/utils/noso/model/address_object.dart';
+
+import '../../models/address_wallet.dart';
 
 class LocalRepository {
   final MyDatabase _database;
@@ -12,11 +14,11 @@ class LocalRepository {
     await _database.deleteWallet(value);
   }
 
-  Future<void> addAddress(Address value) async {
+  Future<void> addAddress(AddressObject value) async {
     await _database.addAddress(value);
   }
 
-  Future<void> addAddresses(List<Address> value) async {
+  Future<void> addAddresses(List<AddressObject> value) async {
     await _database.addAddresses(value);
   }
 }

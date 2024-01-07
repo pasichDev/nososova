@@ -12,7 +12,7 @@ import 'package:nososova/l10n/app_localizations.dart';
 import 'package:nososova/ui/tiles/dialog_tile.dart';
 
 import '../../blocs/events/wallet_events.dart';
-import '../../utils/const/files_const.dart';
+import '../../utils/files_const.dart';
 import '../common/route/dialog_router.dart';
 import '../config/responsive.dart';
 import '../theme/style/text_style.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nososova/utils/const/const.dart';
+import 'package:noso_dart/const.dart';
 
 import '../../../../blocs/wallet_bloc.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -78,7 +78,7 @@ class CardBody extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Text(
-                Const.coinName,
+                NosoConst.coinName,
                 style: AppTextStyles.titleMin,
               ),
             ],

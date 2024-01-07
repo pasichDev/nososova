@@ -1,5 +1,5 @@
-import '../../utils/const/files_const.dart';
-import '../../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
+import '../../utils/files_const.dart';
 
 class ImportWResponse {
   ActionsFileWallet actionsFileWallet;

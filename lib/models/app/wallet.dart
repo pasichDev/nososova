@@ -1,12 +1,12 @@
-import 'package:nososova/utils/noso/model/pending_transaction.dart';
-import 'package:nososova/utils/noso/model/summary_data.dart';
+import 'package:noso_dart/models/pending_transaction.dart';
+import 'package:noso_dart/models/summary_data.dart';
 
-import '../../utils/const/network_const.dart';
-import '../../utils/noso/model/address_object.dart';
+import '../../models/address_wallet.dart';
+import '../../utils/network_const.dart';
 
 class Wallet {
   List<Address> address;
-  List<SumaryData> summary;
+  List<SummaryData> summary;
   List<PendingTransaction> pendings;
   double balanceTotal = 0;
   double totalOutgoing = 0;
@@ -37,7 +37,7 @@ class Wallet {
 
   Wallet copyWith(
       {List<Address>? address,
-      List<SumaryData>? summary,
+      List<SummaryData>? summary,
       List<PendingTransaction>? pendings,
       double? balanceTotal,
       double? totalOutgoing,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:noso_dart/models/seed.dart';
 import 'package:nososova/ui/theme/style/icons_style.dart';
 import 'package:nososova/ui/theme/style/text_style.dart';
 
-import '../../../models/seed.dart';
-import '../../utils/const/network_const.dart';
-import '../../utils/custom_class/shimmer.dart';
-import '../components/extra_util.dart';
+import '../../utils/network_const.dart';
+import '../common/widgets/node_status.dart';
+import '../common/widgets/shimmer.dart';
 import '../config/responsive.dart';
 
 class SeedListItem extends StatelessWidget {
@@ -52,7 +52,7 @@ class SeedListItem extends StatelessWidget {
                   ],
                 ),
               if (Responsive.isMobile(context)) ...[
-                ExtraUtil.getNodeDescription(context, statusConnected, seed)
+                NodeStatusUi.getNodeDescription(context, statusConnected, seed)
               ],
             ],
           ),

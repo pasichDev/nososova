@@ -3,7 +3,7 @@ import 'package:nososova/ui/theme/anim/blinkin_widget.dart';
 import 'package:nososova/ui/theme/style/colors.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../../../../utils/noso/model/address_object.dart';
+import '../../../../models/address_wallet.dart';
 import '../../../theme/style/text_style.dart';
 
 class PendingsWidget extends StatefulWidget {

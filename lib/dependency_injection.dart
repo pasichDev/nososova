@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:noso_dart/noso.dart';
 import 'package:nososova/blocs/app_data_bloc.dart';
 import 'package:nososova/blocs/debug_bloc.dart';
 import 'package:nososova/blocs/history_transactions_bloc.dart';
@@ -13,7 +14,6 @@ import 'package:nososova/services/explorer_stats_service.dart';
 import 'package:nososova/services/file_service.dart';
 import 'package:nososova/services/node_service.dart';
 import 'package:nososova/services/shared_service.dart';
-import 'package:nososova/utils/noso/nosocore.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -41,10 +41,10 @@ Future<void> setupLocator() async {
       networkRepository: locator<NetworkRepository>(),
       sharedRepository: locator<SharedRepository>(),
       fileRepository: locator<FileRepository>(),
-      nosoCore: locator<NosoCore>()));
+      nosoCore: locator<Noso>()));
 
   ///Other utils
-  locator.registerLazySingleton<NosoCore>(() => NosoCore());
+  locator.registerLazySingleton<Noso>(() => Noso());
 
   /// Blocs
   locator.registerLazySingleton<DebugBloc>(() => DebugBloc());

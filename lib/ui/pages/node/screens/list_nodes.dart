@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nososova/blocs/wallet_bloc.dart';
 
 import '../../../../l10n/app_localizations.dart';
-import '../../../components/empty_list_widget.dart';
+import '../../../common/components/empty_list_widget.dart';
 import '../../../tiles/tile_node_address.dart';
 
 class ListNodes extends StatelessWidget {
